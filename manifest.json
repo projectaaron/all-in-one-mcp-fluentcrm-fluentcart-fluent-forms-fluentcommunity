@@ -2,9 +2,9 @@
   "manifest_version": "0.3",
   "name": "fluentmcp",
   "display_name": "FluentMCP — FluentCRM & FluentCart",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Full control of FluentCRM and FluentCart on your WordPress site: contacts, campaigns, orders, products, subscriptions, and more.",
-  "long_description": "Gives your AI assistant create/read/update/delete control over FluentCRM (email marketing & CRM) and FluentCart (e-commerce) by WPManageNinja — 699 documented REST endpoints reachable through 44 consolidated tools. Safe by default: every destructive action (deletes, refunds, cancels, mass-sends, resets) is annotated and refuses to run without explicit confirmation. Products you don't configure are simply disabled; run the verify_setup tool after installing to check your connection.",
+  "long_description": "Gives your AI assistant create/read/update/delete control over FluentCRM (email marketing & CRM) and FluentCart (e-commerce) by WPManageNinja — 699 documented REST endpoints reachable through 44 consolidated tools. Safe by default: every destructive action (deletes, refunds, cancels, mass-sends, resets) is annotated and refuses to run without explicit confirmation. One WordPress Application Password runs everything; run the verify_setup tool after installing to check your connection.",
   "author": {
     "name": "projectaaron",
     "url": "https://github.com/projectaaron"
@@ -35,10 +35,8 @@
       ],
       "env": {
         "FLUENT_SITE_URL": "${user_config.site_url}",
-        "FLUENTCRM_API_USERNAME": "${user_config.fluentcrm_username}",
-        "FLUENTCRM_API_PASSWORD": "${user_config.fluentcrm_password}",
-        "FLUENTCART_API_USERNAME": "${user_config.fluentcart_username}",
-        "FLUENTCART_API_PASSWORD": "${user_config.fluentcart_password}"
+        "FLUENT_API_USERNAME": "${user_config.api_username}",
+        "FLUENT_API_PASSWORD": "${user_config.api_password}"
       }
     }
   },
@@ -49,35 +47,18 @@
       "description": "Your WordPress site root, e.g. https://example.com (not the /wp-admin URL).",
       "required": true
     },
-    "fluentcrm_username": {
+    "api_username": {
       "type": "string",
-      "title": "FluentCRM API Username",
-      "description": "From WP Admin → FluentCRM → Settings → Rest API → Create New API Key. Leave blank to disable the FluentCRM tools.",
-      "required": false,
-      "default": ""
+      "title": "WordPress Username",
+      "description": "The WordPress admin user the server acts as (needs FluentCRM/FluentCart permissions).",
+      "required": true
     },
-    "fluentcrm_password": {
+    "api_password": {
       "type": "string",
-      "title": "FluentCRM API Password",
-      "description": "The application password generated with the API key above.",
+      "title": "Application Password",
+      "description": "Create under WP Admin → Users → your user → Application Passwords → Add New. One password runs both FluentCRM and FluentCart tools.",
       "sensitive": true,
-      "required": false,
-      "default": ""
-    },
-    "fluentcart_username": {
-      "type": "string",
-      "title": "FluentCart API Username",
-      "description": "A WordPress user with FluentCart admin capabilities. Leave blank to disable the FluentCart tools.",
-      "required": false,
-      "default": ""
-    },
-    "fluentcart_password": {
-      "type": "string",
-      "title": "FluentCart API Password",
-      "description": "An Application Password for that user (WP Admin → Users → Profile → Application Passwords).",
-      "sensitive": true,
-      "required": false,
-      "default": ""
+      "required": true
     }
   },
   "tools_generated": true,

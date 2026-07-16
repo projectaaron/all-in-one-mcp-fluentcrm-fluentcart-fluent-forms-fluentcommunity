@@ -113,7 +113,7 @@ describe('FluentClient', () => {
 
   it('normalizes WP errors with actionable hints and never leaks credentials', async () => {
     const cases: Array<[number, RegExp]> = [
-      [401, /FLUENTCRM_API_USERNAME/],
+      [401, /FLUENT_API_USERNAME/],
       [403, /capability|permission/],
       [404, /installed and active/],
       [500, /PHP error log/],

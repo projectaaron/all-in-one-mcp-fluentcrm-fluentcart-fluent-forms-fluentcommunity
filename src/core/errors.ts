@@ -38,9 +38,7 @@ function hintFor(status: number, productTitle: string, envPrefix: string): strin
     case 422:
       return `The request body or parameters were rejected — compare against the endpoint schema in docs/api-reference/`;
     case 401:
-      return `Authentication failed — check that ${envPrefix}_API_USERNAME / ${envPrefix}_API_PASSWORD are correct and the key/application password hasn't been revoked${
-        productTitle === 'FluentCRM' ? ' (keys are created under FluentCRM → Settings → Rest API)' : ''
-      }`;
+      return `Authentication failed — check FLUENT_API_USERNAME / FLUENT_API_PASSWORD (or the ${envPrefix}_API_* overrides) and that the Application Password hasn't been revoked (create one under WP Admin → Users → your user → Application Passwords)`;
     case 403:
       return `Authenticated but not allowed — the ${productTitle} user behind the API credentials lacks the capability/permission for this endpoint (or the endpoint needs a customer browser session, see docs/api-reference/auth.md)`;
     case 404:

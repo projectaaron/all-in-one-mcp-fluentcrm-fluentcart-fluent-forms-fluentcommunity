@@ -169,3 +169,15 @@ credentials live in Claude Desktop's extension settings UI instead of a
   (shown in the extension UI) and version from the live registry/package.json.
 - The `.mcpb` artifact is gitignored; users build it with
   `npm run pack:extension` or take it from a release.
+
+## 2026-07-16 — Single shared credential pair (user-verified FluentCRM change)
+
+User report from a live install: current FluentCRM has **no Settings → Rest
+API page** — the feature was removed as redundant because it only generated
+WordPress core Application Passwords. The official docs still describe the
+old flow; the live product wins. Consequence: `FLUENT_API_USERNAME` /
+`FLUENT_API_PASSWORD` now configure every product (one WP Application
+Password runs the whole server), the extension form is 3 fields, and
+per-product `<PREFIX>_API_*` vars remain as optional overrides for scoped
+setups (resolved override-first in `loadConfig`). auth.md and the generator's
+FluentCRM auth note document both the current behavior and the legacy page.

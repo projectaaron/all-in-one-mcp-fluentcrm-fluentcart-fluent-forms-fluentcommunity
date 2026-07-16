@@ -96,7 +96,7 @@ describe('tool factory', () => {
     const { result } = run({ action: 'get_thing', id: 1 }, [{ status: 401, body: { message: 'bad' } }]);
     const res = await result;
     expect(res.isError).toBe(true);
-    expect(res.content[0].text).toContain('FLUENTCRM_API_USERNAME');
+    expect(res.content[0].text).toContain('FLUENT_API_USERNAME');
   });
 
   it('builds a validating input schema (action enum, confirm only when destructive)', () => {

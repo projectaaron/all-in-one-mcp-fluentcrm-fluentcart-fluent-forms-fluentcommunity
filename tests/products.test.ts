@@ -92,7 +92,7 @@ for (const product of PRODUCTS) {
         client: makeClient(fetchImpl, { namespace: product.namespace, envPrefix: product.envPrefix, productTitle: product.title }),
       });
       const res = (await handler(args as never)) as { content: Array<{ text: string }> };
-      expect(res.content[0].text).toContain(`${product.envPrefix}_API_USERNAME`);
+      expect(res.content[0].text).toContain(`${product.envPrefix}_API_`); // override mentioned in 401 hint
     });
   });
 }
