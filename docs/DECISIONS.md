@@ -69,3 +69,53 @@ every documented endpoint is reachable through some tool.
 `recurring-campaigns`, `campaigns-pro`, `sms`, `abandon-carts`,
 `commerce-reports`, `pro-settings`). Largest groups: settings (38),
 campaigns (32), funnels (31), contacts (31), sms (24).
+
+## 2026-07-16 — SDK v1.29 (not the v2 beta)
+
+The `main` branch of the TypeScript SDK is the v2 beta (split
+`@modelcontextprotocol/server` packages). Production guidance from the SDK's
+own README: stay on `@modelcontextprotocol/sdk` 1.x. We pin `^1.29.0`, Zod
+`^3.25` (the SDK's required peer range), `registerTool` (the `tool()` method
+is deprecated), and `moduleResolution: NodeNext` with `.js` deep imports.
+
+## 2026-07-16 — Action names are full operation slugs
+
+`list_orders`, not `list`. Slightly more tokens per enum, but: zero collisions
+when tools merge docs groups, a 1:1 lexical match with the generated API
+reference and the docs site, and self-describing tool calls in client logs.
+
+## 2026-07-16 — Open-shaped `body`/`query`; envelope-only Zod
+
+Fully modeling 699 request bodies in Zod would be huge and drift-prone, and
+WordPress validates server-side anyway. Zod validates the envelope (action
+enum, param types, pagination bounds, confirm), tool descriptions link to the
+generated per-endpoint schemas, and `outputSchema` keeps `data` open-shaped
+for the same reason. structuredContent is validated by the SDK against the
+declared shape on every call.
+
+## 2026-07-16 — Destructive gating: what counts
+
+`confirm: true` is required for hard-to-undo operations only
+(DELETE-method + delete/remove/detach/cancel/refund/deactivate/reset/
+disconnect/regenerate/bulk slugs on writes; GETs never gate). Routine writes
+(pause/resume/schedule/update) are not gated — over-gating trains users to
+click through confirmations. Review pass caught two things the first
+heuristic got wrong: report GETs with "refund" in the slug were gated
+(fixed: reads never gate), and FluentCRM's `settings/reset-database` — a
+full CRM wipe — wasn't (fixed: `reset` added). `reports/delete-report-emails`
+was moved into `crm_settings` so `crm_reports` stays strictly read-only.
+
+## 2026-07-16 — Customer-session tools ship anyway
+
+`cart_checkout` / `cart_customer_portal` need WP cookie+nonce sessions and
+will mostly 401 under Application Passwords. They exist for full endpoint
+coverage (a hard requirement) with the limitation stated in their own
+descriptions and in auth.md, rather than silently dropping 28 documented
+endpoints.
+
+## 2026-07-16 — Template ships as .tpl files
+
+`src/products/_template/` uses `.ts.tpl` / `tool-map.template.json` names so
+tsc, the map generator, and the registry all ignore it until a real module is
+copied from it. The generator discovers products by the presence of
+`tool-map.json`, so the template can never half-register.
