@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.6.0 — 2026-07-16
+
+- **New tool: `wp_media`** (server-level, like `verify_setup`) — closes the
+  product-photo gap: FluentCart's own upload endpoint needs a multipart file,
+  which doesn't travel through JSON tool calls. `upload_from_url` fetches an
+  image server-side (e.g. from Shopify's CDN) and sideloads it via WordPress
+  core `/wp/v2/media`, optionally setting title/alt text; `get_media` and
+  `list_media` cover lookup. Guards: http(s)-only with private/loopback hosts
+  blocked, image/* content types only, 15 MB cap. Registers only when
+  credentials are configured. 45 tools total.
+- `FluentClient` gains `wpRequest` (authenticated WordPress-core REST with
+  arbitrary method/headers/body) and `fetchUrl` (timeout-bounded external
+  fetch); `requestRaw` now delegates to `wpRequest`.
+
 ## 0.5.2 — 2026-07-16
 
 Field-report fixes from the first production sessions:

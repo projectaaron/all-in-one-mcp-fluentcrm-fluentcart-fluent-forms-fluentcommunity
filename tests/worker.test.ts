@@ -59,14 +59,14 @@ describe('cloudflare worker entry', () => {
     const list = (await (
       await post(`/mcp/${TOKEN}`, { jsonrpc: '2.0', id: 2, method: 'tools/list', params: {} })
     ).json()) as any;
-    expect(list.result.tools.length).toBe(44);
+    expect(list.result.tools.length).toBe(45);
   });
 
   it('accepts Bearer-header auth', async () => {
     const list = (await (
       await post('/mcp', { jsonrpc: '2.0', id: 3, method: 'tools/list', params: {} }, { Authorization: `Bearer ${TOKEN}` })
     ).json()) as any;
-    expect(list.result.tools.length).toBe(44);
+    expect(list.result.tools.length).toBe(45);
   });
 
   it('returns 202 for notification-only bodies and 400 for bad JSON', async () => {
