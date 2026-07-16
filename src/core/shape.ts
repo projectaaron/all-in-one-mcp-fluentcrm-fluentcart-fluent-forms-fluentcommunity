@@ -97,7 +97,7 @@ export function shapeResponse(
 
   if (container) {
     const items = wantProjection
-      ? container.items.map((i) => projectItem(i, wantProjection))
+      ? container.items.map((i) => prune(projectItem(i, wantProjection)))
       : container.items.map((i) => prune(i));
     return {
       data: container.replace(items),
@@ -107,9 +107,25 @@ export function shapeResponse(
     };
   }
 
-  // Single object (get/create/update responses).
-  const data = wantProjection && isRec(raw) ? projectItem(raw, wantProjection) : prune(raw);
-  return { data, summarized: true };
+  // Single object (get/create/update responses). Fluent APIs usually wrap the
+  // record one level down ({subscriber: {...}}, {order: {...}}) — project the
+  // record, not the wrapper, and never project down to an empty object.
+  if (wantProjection && isRec(raw)) {
+    if (matchesProjection(raw, wantProjection)) {
+      return { data: prune(projectItem(raw, wantProjection)), summarized: true };
+    }
+    for (const [key, value] of Object.entries(raw)) {
+      if (isRec(value) && matchesProjection(value, wantProjection)) {
+        return { data: { [key]: prune(projectItem(value, wantProjection)) }, summarized: true };
+      }
+    }
+    // No projection field matches anywhere — pruning beats returning {}.
+  }
+  return { data: prune(raw), summarized: true };
+}
+
+function matchesProjection(rec: Rec, fields: string[]): boolean {
+  return fields.some((f) => f in rec) || 'id' in rec;
 }
 
 /** One-line human text summary for the text content block. */
@@ -120,7 +136,10 @@ export function textSummary(tool: string, action: string, status: number, shaped
     const p = shaped.pagination;
     if (p?.page) line += ` (page ${p.page}${p.total_pages ? `/${p.total_pages}` : ''}${p.total !== undefined ? `, total ${p.total}` : ''})`;
   } else if (isRec(shaped.data)) {
-    const d = shaped.data as Rec;
+    let d = shaped.data as Rec;
+    // Look through a single-key wrapper ({order: {...}}) for the identifiers.
+    const keys = Object.keys(d);
+    if (keys.length === 1 && isRec(d[keys[0]])) d = d[keys[0]] as Rec;
     const ident = ['id', 'uuid', 'email', 'title', 'name'].filter((k) => k in d).map((k) => `${k}=${String(d[k])}`);
     if (ident.length) line += ` — ${ident.slice(0, 2).join(', ')}`;
   }

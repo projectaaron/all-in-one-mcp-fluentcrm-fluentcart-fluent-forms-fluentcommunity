@@ -61,6 +61,38 @@ describe('FluentClient', () => {
     expect(w.calls.length).toBe(1);
   });
 
+  // Regression: FluentCRM's reset_system_logs mutates via GET — destructive
+  // actions set noRetry so a flaky network can't double-fire them.
+  it('does not retry noRetry GETs on 503 or network failure (429 still retries)', async () => {
+    const s = mockFetch([{ status: 503 }, { status: 200, body: {} }]);
+    await expect(
+      makeClient(s.fetchImpl).request({ method: 'GET', path: '/setting/system-logs/reset', noRetry: true })
+    ).rejects.toThrow(FluentApiError);
+    expect(s.calls.length).toBe(1);
+
+    let attempts = 0;
+    const flaky = async () => {
+      attempts++;
+      throw new Error('socket hang up');
+    };
+    await expect(
+      makeClient(flaky as never).request({ method: 'GET', path: '/setting/system-logs/reset', noRetry: true })
+    ).rejects.toThrow(/Could not reach/);
+    expect(attempts).toBe(1);
+
+    const r = mockFetch([{ status: 429 }, { status: 200, body: {} }]);
+    await expect(
+      makeClient(r.fetchImpl).request({ method: 'GET', path: '/setting/system-logs/reset', noRetry: true })
+    ).resolves.toMatchObject({ status: 200 });
+    expect(r.calls.length).toBe(2);
+  });
+
+  it('requestRaw passes an abort signal (timeout applies to the probe)', async () => {
+    const { calls, fetchImpl } = mockFetch([{ status: 200, body: { namespaces: [] } }]);
+    await makeClient(fetchImpl).requestRaw('/', { _fields: 'namespaces' });
+    expect(calls[0].signal).toBeInstanceOf(AbortSignal);
+  });
+
   it('retries network failures for GET only', async () => {
     let attempts = 0;
     const flaky = async () => {

@@ -89,10 +89,11 @@ export class FluentClient {
         }
       } catch (err) {
         // Network-level failure. Retry only when we know the request never
-        // mutated anything (GET/HEAD) — a dropped response on a write could
+        // mutated anything (GET/HEAD, and not flagged noRetry — some Fluent
+        // endpoints mutate via GET) — a dropped response on a write could
         // otherwise double-apply.
         lastError = err;
-        if ((method === 'GET' || method === 'HEAD') && attempt < maxAttempts - 1) continue;
+        if ((method === 'GET' || method === 'HEAD') && !options.noRetry && attempt < maxAttempts - 1) continue;
         throw new FluentApiError({
           status: 0,
           message: err instanceof Error ? err.message : String(err),
@@ -104,8 +105,9 @@ export class FluentClient {
       }
 
       if (RETRYABLE_STATUS.has(response.status) && attempt < maxAttempts - 1) {
-        // 429/5xx: honor Retry-After when present (capped at 30s).
-        if (response.status === 429 || method === 'GET' || method === 'HEAD') {
+        // 429 is always safe to retry (the server refused before executing);
+        // 5xx only for reads that can't mutate (not noRetry).
+        if (response.status === 429 || ((method === 'GET' || method === 'HEAD') && !options.noRetry)) {
           const retryAfter = Number.parseFloat(response.headers.get('retry-after') ?? '');
           if (Number.isFinite(retryAfter) && retryAfter > 0) {
             await this.sleep(Math.min(retryAfter * 1000, 30000));
@@ -139,8 +141,14 @@ export class FluentClient {
     if (query) for (const [k, v] of Object.entries(query)) url.searchParams.set(k, String(v));
     const headers: Record<string, string> = { Accept: 'application/json' };
     if (this.authHeader) headers.Authorization = this.authHeader;
-    const response = await this.fetchImpl(url.toString(), { method: 'GET', headers });
-    return { status: response.status, data: await parseBody(response) };
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), this.opts.timeoutMs);
+    try {
+      const response = await this.fetchImpl(url.toString(), { method: 'GET', headers, signal: controller.signal });
+      return { status: response.status, data: await parseBody(response) };
+    } finally {
+      clearTimeout(timer);
+    }
   }
 
   private backoffMs(attempt: number): number {

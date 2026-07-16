@@ -12,6 +12,7 @@ export const fluentcart: ProductModule = {
     name,
     description: TOOL_META[name].description,
     note: TOOL_META[name].note,
+    idempotent: TOOL_META[name].idempotent,
     actions,
   })),
   summaryFields: SUMMARY_FIELDS,

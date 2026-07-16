@@ -47,6 +47,31 @@ describe('shapeResponse', () => {
     const single = shapeResponse({ id: 9, title: 'T' }, { detail: 'summary', summaryFields: ['title'] });
     expect(single.data).toEqual({ title: 'T', id: 9 });
   });
+
+  // Regression: both Fluent APIs wrap single records one level down
+  // ({subscriber: {...}}, {order: {...}}). Summary projection must reach the
+  // record, not empty out against the wrapper.
+  it('projects wrapped single-record responses instead of returning {}', () => {
+    const wrapped = { subscriber: { id: 7, email: 'c@x.com', status: 'active', notes: 'n'.repeat(999) } };
+    const summary = shapeResponse(wrapped, { detail: 'summary', summaryFields: ['email', 'status'] });
+    expect(summary.data).toEqual({ subscriber: { email: 'c@x.com', status: 'active', id: 7 } });
+
+    const viaFields = shapeResponse(wrapped, { detail: 'summary', fields: ['email'] });
+    expect(viaFields.data).toEqual({ subscriber: { email: 'c@x.com', id: 7 } });
+  });
+
+  it('falls back to pruning (never {}) when no projection field matches', () => {
+    const odd = { message: 'Created', meta: { took: 3 } };
+    const shaped = shapeResponse(odd, { detail: 'summary', summaryFields: ['email', 'status'] });
+    expect(shaped.data).toEqual(odd);
+  });
+
+  it('truncates long values inside projected summary fields', () => {
+    const wrapped = { list: { id: 1, description: 'd'.repeat(1000) } };
+    const shaped = shapeResponse(wrapped, { detail: 'summary', summaryFields: ['description'] });
+    const rec = (shaped.data as { list: Record<string, unknown> }).list;
+    expect(String(rec.description)).toMatch(/… \[1000 chars\]$/);
+  });
 });
 
 describe('textSummary', () => {

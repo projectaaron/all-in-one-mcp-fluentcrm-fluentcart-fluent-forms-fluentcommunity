@@ -20,7 +20,8 @@
     },
     "crm_custom_fields": {
       "description": "View or update the custom contact fields configured in the CRM.",
-      "groups": ["custom-fields"]
+      "groups": ["custom-fields"],
+      "idempotent": true
     },
     "crm_labels": {
       "description": "View, create, update, or delete the labels used to organize items in the CRM.",
@@ -89,6 +90,14 @@
     }
   },
   "operationOverrides": {
-    "reports/delete-report-emails": { "tool": "crm_settings" }
+    "reports/delete-report-emails": { "tool": "crm_settings" },
+    "settings/reset-system-logs": { "destructive": true },
+    "campaigns/schedule-campaign": { "destructive": true },
+    "campaigns/resume-campaign": { "destructive": true },
+    "campaigns-pro/resend-campaign-emails": { "destructive": true },
+    "campaigns-pro/resend-failed-emails": { "destructive": true },
+    "campaigns-pro/resend-unopened-emails": { "destructive": true },
+    "sms/schedule-sms-campaign": { "destructive": true },
+    "sms/resume-sms-campaign": { "destructive": true }
   }
 }

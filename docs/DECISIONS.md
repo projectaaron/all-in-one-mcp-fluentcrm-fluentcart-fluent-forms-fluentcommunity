@@ -119,3 +119,33 @@ endpoints.
 tsc, the map generator, and the registry all ignore it until a real module is
 copied from it. The generator discovers products by the presence of
 `tool-map.json`, so the template can never half-register.
+
+## 2026-07-16 — Final verification outcome (19-agent adversarial review)
+
+A five-dimension review (correctness, safety, DoD audit, docs consistency,
+live stdio probing) confirmed 12 findings; all are fixed:
+
+- **Summary shaping bug (high):** both APIs wrap single records one level
+  down (`{subscriber: {...}}`); summary/field projection hit the wrapper and
+  returned `{}` for every wrapped get/create/update. `shapeResponse` now
+  projects the inner record (preserving the wrapper key) and falls back to
+  pruning instead of ever emptying a response. Projected fields are pruned
+  too, so the documented "truncates long values" claim holds.
+- **`reset_system_logs` (high):** FluentCRM deletes all system logs via a
+  GET. Force-gated destructive by override, and destructive actions now set
+  `noRetry` so the HTTP client never auto-retries a mutating GET.
+- **Mass-send gating:** sending to a whole audience is as irreversible as a
+  delete. `schedule_campaign`, `resume_campaign`, `resend_*` (3), and the SMS
+  schedule/resume equivalents now require `confirm: true`. Single-recipient
+  sends stay ungated. (The safety-audit agent covering this died on API
+  overload; the gating decision was made conservatively without it.)
+  Destructive actions: 98 of 699.
+- **`idempotentHint`** is now a real per-tool opt-in in the tool map
+  (currently `crm_custom_fields` only) instead of documented-but-hardcoded
+  false.
+- **Smaller fixes:** `FLUENT_HTTP_MAX_RETRIES=0` now disables retries;
+  `requestRaw` (verify_setup's probe) respects the configured timeout;
+  `engines` bumped to `>=20.6` (`--env-file` requires it, README says so);
+  tool-catalog examples avoid customer-session endpoints that would 401 under
+  Application Passwords; TOOL_DESIGN inventory table synced to the generated
+  surface (licensing 27, roles 9, products 27/23/9 split, three class cells).

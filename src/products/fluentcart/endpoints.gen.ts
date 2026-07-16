@@ -2713,7 +2713,7 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
   }
 };
 
-export const TOOL_META: Record<string, { description: string; note?: string }> = {
+export const TOOL_META: Record<string, { description: string; note?: string; idempotent?: boolean }> = {
   "cart_orders": {
     "description": "Look up, create, update, refund, and manage store orders, including their statuses, transactions, addresses, and disputes."
   },
