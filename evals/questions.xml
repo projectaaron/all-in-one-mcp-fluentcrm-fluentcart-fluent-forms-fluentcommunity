@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Regression evals for the fluentMCP tool surface. 10 realistic, READ-ONLY,
+  multi-tool questions. Run them against a live site by asking an MCP-connected
+  model each <question> and checking its behavior against <expected_tools> and
+  <verified_answer_criteria> (criteria are structural — they describe what a
+  correct answer must contain, since live data varies per site).
+-->
+<evals>
+  <eval id="1">
+    <question>How many contacts do we have in the CRM in total, and how many of them are currently subscribed?</question>
+    <expected_tools>crm_contacts (action list_contacts, using per_page=1 and reading pagination.total; status filter via query for subscribed)</expected_tools>
+    <verified_answer_criteria>Two integers: overall total and subscribed total, sourced from pagination.total of two list_contacts calls (not from counting one page of records).</verified_answer_criteria>
+  </eval>
+  <eval id="2">
+    <question>List our 5 most recent orders with their status, payment status, and total. Who placed the most recent one?</question>
+    <expected_tools>cart_orders (list_orders, per_page=5, sorted by date descending); cart_customers (get_customer for the newest order's customer_id) or the order's embedded customer</expected_tools>
+    <verified_answer_criteria>Five orders with id/status/payment_status/total_amount, plus the newest order's customer name or email; totals reported in store currency (values are stored in cents).</verified_answer_criteria>
+  </eval>
+  <eval id="3">
+    <question>Which email campaigns were sent in the last 30 days, and what were their open rates?</question>
+    <expected_tools>crm_campaigns (list_campaigns); crm_reports or crm_campaigns get_campaign_overview_stats per recent campaign</expected_tools>
+    <verified_answer_criteria>Campaigns filtered to the last 30 days by date, each with a stat derived from campaign stats (opens/recipients); no write tools called.</verified_answer_criteria>
+  </eval>
+  <eval id="4">
+    <question>Do we have any products that are out of stock or low on inventory?</question>
+    <expected_tools>cart_products (list_products) and/or cart_product_variants (list_all_variants) reading total_stock/available/stock_status</expected_tools>
+    <verified_answer_criteria>Answer derived from variant stock fields (stock_status / available), listing product or variation titles; paginates if needed rather than assuming one page is everything.</verified_answer_criteria>
+  </eval>
+  <eval id="5">
+    <question>What's our store's revenue this month compared to last month?</question>
+    <expected_tools>cart_reports (get_revenue or sales_report / report_overview with date-range query params)</expected_tools>
+    <verified_answer_criteria>Two period figures from cart_reports (not hand-summed from order lists), with the comparison stated; read-only tools only.</verified_answer_criteria>
+  </eval>
+  <eval id="6">
+    <question>Find the customer with email like "gmail.com" who spent the most, and tell me if they're also a CRM contact with any tags.</question>
+    <expected_tools>cart_customers (list_customers with search, sorted/inspected by ltv); crm_contacts (list_contacts with query search on the email, then get_contact for tags)</expected_tools>
+    <verified_answer_criteria>Uses both products: top spender chosen by ltv/purchase totals from FluentCart, then the same email looked up in FluentCRM with tags reported (or "not a contact").</verified_answer_criteria>
+  </eval>
+  <eval id="7">
+    <question>Which of our marketing automations are currently active, and roughly how many contacts are in each?</question>
+    <expected_tools>crm_automations (list_funnels, reading status and subscriber counts; get_funnel_subscribers count via pagination.total if needed)</expected_tools>
+    <verified_answer_criteria>Only active funnels listed, each with a subscriber count from the API (not guessed).</verified_answer_criteria>
+  </eval>
+  <eval id="8">
+    <question>What coupons are currently active, and how many times has each been used?</question>
+    <expected_tools>cart_coupons (list_coupons, reading status and usage counts; get_coupon for detail if needed)</expected_tools>
+    <verified_answer_criteria>Active coupons with code and a usage figure per coupon taken from coupon fields/stats.</verified_answer_criteria>
+  </eval>
+  <eval id="9">
+    <question>Are there any active subscriptions that will bill in the next 7 days? What products are they for?</question>
+    <expected_tools>cart_subscriptions (list_subscriptions filtered/inspected on status + next_billing_date); cart_products (get_product for names) if titles aren't embedded</expected_tools>
+    <verified_answer_criteria>Subscriptions with status active and next_billing_date within 7 days of today, each with its product name; date comparison actually applied.</verified_answer_criteria>
+  </eval>
+  <eval id="10">
+    <question>Check that our WordPress site connection is healthy and both plugins are reachable, then give me one sentence on overall store + CRM size.</question>
+    <expected_tools>verify_setup; crm_contacts (list_contacts per_page=1 for total); cart_orders (list_orders per_page=1 for total)</expected_tools>
+    <verified_answer_criteria>verify_setup output summarized (per-product status), then totals from pagination.total of one-item list calls; no write actions anywhere.</verified_answer_criteria>
+  </eval>
+</evals>
