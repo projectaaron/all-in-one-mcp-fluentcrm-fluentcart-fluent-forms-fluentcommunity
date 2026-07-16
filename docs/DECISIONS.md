@@ -149,3 +149,23 @@ live stdio probing) confirmed 12 findings; all are fixed:
   tool-catalog examples avoid customer-session endpoints that would 401 under
   Application Passwords; TOOL_DESIGN inventory table synced to the generated
   surface (licensing 27, roles 9, products 27/23/9 split, three class cells).
+
+## 2026-07-16 — Claude Desktop extension packaging (MCPB)
+
+Packaged the server as an MCP Bundle (`fluentmcp.mcpb`, manifest spec 0.3,
+built with `@anthropic-ai/mcpb`) so installation is drag-and-drop and
+credentials live in Claude Desktop's extension settings UI instead of a
+`.env` file. Decisions:
+
+- **user_config → env mapping.** The manifest's `user_config` fields map to
+  the same `FLUENT_*` env vars the server already reads — no second config
+  path in code. Passwords are `sensitive: true`; optional fields default to
+  `""`, which `loadConfig` already treats as "not configured", so per-product
+  enablement behaves identically in both install modes.
+- **Bundle contents.** `.mcpbignore` ships only `manifest.json`, `dist/`,
+  production `node_modules/`, `package.json`, README, LICENSE (2.5 MB).
+  `pack:extension` prunes dev deps before packing and restores them after.
+- **No drift.** `gen:catalog` now also syncs the manifest's `tools` array
+  (shown in the extension UI) and version from the live registry/package.json.
+- The `.mcpb` artifact is gitignored; users build it with
+  `npm run pack:extension` or take it from a release.

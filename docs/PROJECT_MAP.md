@@ -66,7 +66,11 @@ fluentMCP/
 ├── .github/workflows/refresh-api-docs.yml  # Weekly reference refresh, PRs on change
 ├── FLUENTCART_DEV_KIT.md         # Upstream dev kit (WP-side gotchas) — kept verbatim
 ├── .env.example                  # All env vars, commented, no real values
-├── CHANGELOG.md · README.md · package.json · tsconfig.json · vitest.config.ts
+├── manifest.json                 # Claude Desktop extension manifest (MCPB 0.3);
+│                                 #   user_config fields map onto the FLUENT_* env vars;
+│                                 #   tools list + version synced by gen:catalog
+├── .mcpbignore                   # What stays OUT of the .mcpb bundle
+├── CHANGELOG.md · README.md · LICENSE · package.json · tsconfig.json · vitest.config.ts
 ```
 
 ## How the pieces connect
@@ -85,6 +89,11 @@ fluentMCP/
    `endpoints.json` — a new upstream endpoint fails CI until it lands in a
    tool (usually automatically via its group's default tool). The catalog is
    regenerated from the same registry, so docs can't drift.
+5. **Extension packaging**: `npm run pack:extension` builds → prunes dev deps
+   → packs `fluentmcp.mcpb` (per `.mcpbignore`) → restores dev deps. The
+   manifest's `user_config` (site URL + per-product credentials, passwords
+   sensitive) feeds the same `FLUENT_*` env vars as `.env`, so both install
+   modes share one config path.
 
 ## Regeneration cheat sheet
 

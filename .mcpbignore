@@ -1,0 +1,21 @@
+# Ship only what the extension needs at runtime:
+# manifest.json, dist/, production node_modules/, package.json, README, LICENSE.
+.git
+.github
+.claude
+src
+tests
+docs
+scripts
+evals
+.env
+.env.example
+.gitattributes
+.gitignore
+.mcpbignore
+tsconfig.json
+vitest.config.ts
+package-lock.json
+FLUENTCART_DEV_KIT.md
+CHANGELOG.md
+*.mcpb
