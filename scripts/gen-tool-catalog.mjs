@@ -70,13 +70,16 @@ for (const product of PRODUCTS) {
   out += '\n';
 }
 
-out += `## Server (1 tool)
+total += 1; // wp_media
+out += `## Server (2 tools)
 
 | Tool | Class | Description |
 |------|-------|-------------|
 | \`verify_setup\` | read | Check site reachability, per-product credentials, plugin presence, and run one harmless read per configured product. |
+| \`wp_media\` | read/write | WordPress media library: upload an image from a URL (server-side fetch — ideal for migrating product photos from another platform's CDN), or look up existing media. |
 
-Example: \`{"name": "verify_setup", "arguments": {}}\`
+Examples: \`{"name": "verify_setup", "arguments": {}}\` ·
+\`{"name": "wp_media", "arguments": {"action": "upload_from_url", "source_url": "https://cdn.example.com/photo.jpg", "alt_text": "Product photo"}}\`
 
 **Total: ${total} tools.**
 `;
@@ -94,6 +97,10 @@ if (fs.existsSync('manifest.json')) {
     {
       name: 'verify_setup',
       description: 'Check site reachability, credentials, and plugin presence — run this first.',
+    },
+    {
+      name: 'wp_media',
+      description: 'Upload an image into the WordPress media library from a URL, or look up existing media.',
     },
     ...PRODUCTS.flatMap((p) => p.tools.map((t) => ({ name: t.name, description: t.description }))),
   ];
