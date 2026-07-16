@@ -1,0 +1,20 @@
+// Cloudflare Workers deployment for fluentMCP (see docs/REMOTE.md).
+//
+// One-time setup:
+//   npx wrangler login
+//   npx wrangler secret put FLUENT_SITE_URL
+//   npx wrangler secret put FLUENT_API_USERNAME
+//   npx wrangler secret put FLUENT_API_PASSWORD
+//   npx wrangler secret put FLUENT_MCP_TOKEN     # openssl rand -hex 32
+// Deploy / update:
+//   npm run deploy:cloudflare
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "fluentmcp",
+  "main": "src/worker.ts",
+  "compatibility_date": "2025-05-05",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true
+  }
+}

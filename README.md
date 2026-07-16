@@ -119,19 +119,25 @@ read-only smoke test yourself: `node --env-file=.env scripts/smoke-test.mjs`.
 ### Option C — Remote connector (works on web, mobile, and desktop)
 
 Host the server once and add it to your Claude account — every surface gets
-the tools:
+the tools. **Easiest host: Cloudflare Workers** (free tier, nothing to keep
+running):
 
 ```bash
-npm install && npm run build
-FLUENT_MCP_TOKEN=$(openssl rand -hex 32)   # the shared secret; save it
-FLUENT_SITE_URL=... FLUENT_API_USERNAME=... FLUENT_API_PASSWORD=... \
-FLUENT_MCP_TOKEN=$FLUENT_MCP_TOKEN npm run start:remote
+npm install
+npx wrangler login                          # opens your browser once
+npx wrangler secret put FLUENT_SITE_URL
+npx wrangler secret put FLUENT_API_USERNAME
+npx wrangler secret put FLUENT_API_PASSWORD
+npx wrangler secret put FLUENT_MCP_TOKEN    # paste output of: openssl rand -hex 32
+npm run deploy:cloudflare
 ```
 
 Then in claude.ai → **Settings → Connectors → Add custom connector**, paste
-`https://your-host/mcp/<token>`. Hosting recipes (Cloudflare Tunnel, Docker,
-any Node PaaS), TLS, and security notes: **[docs/REMOTE.md](docs/REMOTE.md)**.
-The URL contains your secret — treat it like a password.
+`https://fluentmcp.<your-subdomain>.workers.dev/mcp/<token>`. Self-hosting
+alternatives (Cloudflare Tunnel, Docker, any Node PaaS via
+`npm run start:remote`), TLS, and security notes:
+**[docs/REMOTE.md](docs/REMOTE.md)**. The URL contains your secret — treat it
+like a password.
 
 ---
 
