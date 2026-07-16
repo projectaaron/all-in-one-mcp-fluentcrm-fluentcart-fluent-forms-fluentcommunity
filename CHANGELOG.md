@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.5.0 — 2026-07-16
+
+- **Cloudflare Workers deployment** — the recommended remote host.
+  `src/worker.ts` is a fetch-native entry point: since Workers have no Node
+  HTTP server, a minimal stateless single-exchange MCP transport bridges each
+  POST to a fresh server instance. Same endpoints, token auth, and safety
+  behavior as the Node remote mode; config via Worker secrets.
+  `wrangler.jsonc` + `npm run deploy:cloudflare` / `dev:cloudflare`;
+  four-command deploy documented in docs/REMOTE.md (now recipe A).
+- Verified in the real workerd runtime via `wrangler dev`: MCP Inspector over
+  streamable HTTP lists all 44 tools; `verify_setup` executes with outbound
+  fetch; 401/405/202 semantics correct. 9 worker-handler unit tests.
+
 ## 0.4.0 — 2026-07-16
 
 - **Remote mode (Streamable HTTP).** `npm run start:remote` serves the same

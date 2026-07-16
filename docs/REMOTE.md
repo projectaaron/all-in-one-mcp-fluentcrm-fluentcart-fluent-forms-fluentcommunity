@@ -37,7 +37,33 @@ Same variables as the local install (`.env.example`), plus:
 
 ## Hosting recipes
 
-### A. Cloudflare Tunnel (great if you already use Cloudflare)
+### A. Cloudflare Workers (recommended — free tier, no server to run)
+
+The repo ships a Worker entry (`src/worker.ts`) and `wrangler.jsonc`. Deploy
+from your machine in four commands:
+
+```bash
+npm install
+npx wrangler login                          # opens your browser once
+npx wrangler secret put FLUENT_SITE_URL     # e.g. https://your-site.com
+npx wrangler secret put FLUENT_API_USERNAME
+npx wrangler secret put FLUENT_API_PASSWORD
+npx wrangler secret put FLUENT_MCP_TOKEN    # paste output of: openssl rand -hex 32
+npm run deploy:cloudflare
+```
+
+Wrangler prints your URL, e.g. `https://fluentmcp.<your-subdomain>.workers.dev`.
+Connector URL: `https://fluentmcp.<your-subdomain>.workers.dev/mcp/<token>`.
+
+Notes:
+- Secrets live encrypted in Cloudflare, never in the repo. Rotate the token
+  with `wrangler secret put FLUENT_MCP_TOKEN` and update the connector URL.
+- Test locally first with `npm run dev:cloudflare` (uses `.dev.vars`,
+  gitignored).
+- The Worker build is stateless per request and runs the exact same 44 tools,
+  confirm gates, and annotations as every other mode.
+
+### B. Cloudflare Tunnel (run it on your own machine instead)
 
 Runs the server on any machine you control (a home server, a VPS, even your
 Mac) and publishes it through Cloudflare with TLS — no ports opened.
@@ -62,7 +88,7 @@ cloudflared tunnel run --url http://localhost:3000 fluentmcp
 
 Connector URL: `https://mcp.your-domain.com/mcp/<token>`
 
-### B. Any Node host / PaaS (Render, Railway, Fly.io, …)
+### C. Any Node host / PaaS (Render, Railway, Fly.io, …)
 
 The repo ships a `Dockerfile`; every PaaS that runs Docker or Node works.
 Set the env vars in the dashboard, deploy, and note the HTTPS URL the
@@ -76,7 +102,7 @@ node dist/remote.js
 # put nginx/caddy in front for TLS, or use the Docker image behind a proxy
 ```
 
-### C. Docker
+### D. Docker
 
 ```bash
 docker build -t fluentmcp .

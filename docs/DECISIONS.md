@@ -199,3 +199,20 @@ primary deployment now. Two shortcuts taken deliberately:
   McpServer + transport per request (~44 registrations, trivially cheap).
   No session store, restart-transparent, horizontally scalable, and immune to
   the SSE-resumability complexity of stateful mode.
+
+## 2026-07-16 — Cloudflare Workers: fetch-native bridge, not McpAgent
+
+Deployed target is the user's Cloudflare account (they already run one).
+Workers have no `node:http`, and the SDK's StreamableHTTPServerTransport is
+built around Node req/res. Rather than adopting Cloudflare's Durable-Object
+McpAgent stack (extra deps, platform lock, session state we don't need), the
+worker entry implements a ~60-line stateless single-exchange Transport: feed
+the POST body's JSON-RPC message(s) to a fresh McpServer, collect the
+response(s), reply as JSON (202 for notification-only bodies). Server-
+initiated messages are dropped — correct for stateless streamable HTTP.
+`loadConfig(prefixes, env)` accepting an env record (originally for tests)
+made Worker vars/secrets a drop-in. `nodejs_compat` covers Buffer in the
+shared HTTP client. The MCP tools available in this session could read but
+not deploy Workers, and no API token was present — deployment is the user's
+`wrangler login` + `npm run deploy:cloudflare`; the Worker was verified here
+in local workerd via `wrangler dev` with Inspector + curl.

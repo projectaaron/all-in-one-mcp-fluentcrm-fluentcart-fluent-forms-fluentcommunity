@@ -66,6 +66,8 @@ fluentMCP/
 ├── .github/workflows/refresh-api-docs.yml  # Weekly reference refresh, PRs on change
 ├── FLUENTCART_DEV_KIT.md         # Upstream dev kit (WP-side gotchas) — kept verbatim
 ├── .env.example                  # All env vars, commented, no real values
+├── wrangler.jsonc                # Cloudflare Workers deploy config (src/worker.ts entry)
+├── Dockerfile                    # Container image for the Node remote server
 ├── manifest.json                 # Claude Desktop extension manifest (MCPB 0.3);
 │                                 #   user_config fields map onto the FLUENT_* env vars;
 │                                 #   tools list + version synced by gen:catalog
