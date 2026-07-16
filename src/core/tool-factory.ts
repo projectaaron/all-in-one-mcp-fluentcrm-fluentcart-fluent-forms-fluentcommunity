@@ -193,8 +193,16 @@ export function makeHandler(spec: ToolSpec, runtime: ToolRuntime) {
           : {}),
         ...(shaped.summarized ? { note: 'summary view — pass detail:"full" or fields:[...] for complete records' } : {}),
       };
+      // The data must live in the text block too: several MCP clients
+      // (claude.ai among them) surface only `content` to the model, and the
+      // spec says structured results SHOULD also be serialized as text.
       return {
-        content: [{ type: 'text' as const, text: textSummary(spec.name, args.action, response.status, shaped) }],
+        content: [
+          {
+            type: 'text' as const,
+            text: `${textSummary(spec.name, args.action, response.status, shaped)}\n${JSON.stringify(structured)}`,
+          },
+        ],
         structuredContent: structured,
       };
     } catch (e) {
