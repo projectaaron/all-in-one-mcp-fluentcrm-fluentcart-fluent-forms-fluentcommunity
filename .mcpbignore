@@ -19,3 +19,4 @@ package-lock.json
 FLUENTCART_DEV_KIT.md
 CHANGELOG.md
 *.mcpb
+Dockerfile

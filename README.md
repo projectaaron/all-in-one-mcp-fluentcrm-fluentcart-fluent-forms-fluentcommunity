@@ -27,7 +27,15 @@ just FluentCRM, just FluentCart, or both.
 
 ## Install
 
-### Option A — Claude Desktop extension (easiest)
+Three ways to run it — pick by where you want to use Claude:
+
+| | Works in | Setup |
+|---|----------|-------|
+| **A. Desktop extension** (`.mcpb`) | Claude **Desktop app** conversations only | Drag & drop, fill a form |
+| **B. Local config file** | Claude Code / any local MCP client | JSON snippet + `.env` |
+| **C. Remote connector** | **Everywhere** — claude.ai web, mobile, desktop | Host it once, add the URL under Settings → Connectors ([guide](docs/REMOTE.md)) |
+
+### Option A — Claude Desktop extension
 
 No config files. Credentials are entered in a settings form and your
 passwords are stored as sensitive values by Claude Desktop.
@@ -107,6 +115,23 @@ honored if you want a different user per product.)
 
 Then restart your client and ask it to run **`verify_setup`**, or run the
 read-only smoke test yourself: `node --env-file=.env scripts/smoke-test.mjs`.
+
+### Option C — Remote connector (works on web, mobile, and desktop)
+
+Host the server once and add it to your Claude account — every surface gets
+the tools:
+
+```bash
+npm install && npm run build
+FLUENT_MCP_TOKEN=$(openssl rand -hex 32)   # the shared secret; save it
+FLUENT_SITE_URL=... FLUENT_API_USERNAME=... FLUENT_API_PASSWORD=... \
+FLUENT_MCP_TOKEN=$FLUENT_MCP_TOKEN npm run start:remote
+```
+
+Then in claude.ai → **Settings → Connectors → Add custom connector**, paste
+`https://your-host/mcp/<token>`. Hosting recipes (Cloudflare Tunnel, Docker,
+any Node PaaS), TLS, and security notes: **[docs/REMOTE.md](docs/REMOTE.md)**.
+The URL contains your secret — treat it like a password.
 
 ---
 
