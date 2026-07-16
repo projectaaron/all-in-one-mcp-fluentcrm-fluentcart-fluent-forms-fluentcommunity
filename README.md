@@ -56,13 +56,18 @@ passwords are stored as sensitive values by Claude Desktop.
    `fluentmcp.mcpb` into the window (or use "Install extension" and pick the
    file).
 
-3. **Fill in the settings form:**
+3. **Fill in the settings form** — one WordPress Application Password runs
+   both products:
 
    | Field | What to enter |
    |-------|---------------|
    | **WordPress Site URL** | Your site root, e.g. `https://example.com` |
-   | **FluentCRM API Username / Password** | Create under WP Admin → FluentCRM → Settings → **Rest API** → *Create New API Key*. (Create a dedicated Manager first — not an Administrator.) Leave blank if you don't use FluentCRM. |
-   | **FluentCart API Username / Password** | A WordPress admin user + an **Application Password** (WP Admin → Users → your user → Application Passwords → *Add New*). Leave blank if you don't use FluentCart. |
+   | **WordPress Username** | The admin user the server acts as |
+   | **Application Password** | Create under WP Admin → Users → your user → **Application Passwords** → *Add New* |
+
+   > Older FluentCRM docs mention a *FluentCRM → Settings → Rest API* page for
+   > API keys — newer FluentCRM versions removed it as redundant. A standard
+   > WordPress Application Password is all you need.
 
 4. **Verify** — ask Claude: *"Run verify_setup."* It checks the site
    connection, each product's credentials and plugin, and does one harmless
@@ -96,9 +101,9 @@ cp .env.example .env    # then fill in your site URL + credentials
 **Claude Desktop (manual)** — same block under `mcpServers` in
 `claude_desktop_config.json` (Settings → Developer → Edit Config). Prefer
 explicit env over a `.env` file? Drop the `--env-file` arg and add an `"env"`
-object with `FLUENT_SITE_URL`, `FLUENTCRM_API_USERNAME`,
-`FLUENTCRM_API_PASSWORD`, `FLUENTCART_API_USERNAME`,
-`FLUENTCART_API_PASSWORD`.
+object with `FLUENT_SITE_URL`, `FLUENT_API_USERNAME`, `FLUENT_API_PASSWORD`.
+(Per-product `FLUENTCRM_API_*` / `FLUENTCART_API_*` overrides are also
+honored if you want a different user per product.)
 
 Then restart your client and ask it to run **`verify_setup`**, or run the
 read-only smoke test yourself: `node --env-file=.env scripts/smoke-test.mjs`.
@@ -267,8 +272,8 @@ but the human-in-the-loop is your client's approval prompt.
 
 | Symptom | Likely cause / fix |
 |---------|--------------------|
-| `verify_setup` says `not configured` | That product's username/password fields are blank — intentional if you're not using it |
-| 401 errors | Wrong or revoked credentials. FluentCRM keys: FluentCRM → Settings → Rest API. FluentCart: WP Application Password |
+| `verify_setup` says `not configured` | `FLUENT_API_USERNAME` / `FLUENT_API_PASSWORD` (or the extension's username/password fields) are blank |
+| 401 errors | Wrong or revoked credentials — generate a fresh Application Password under WP Admin → Users → your user → Application Passwords |
 | 403 errors | The user behind the credentials lacks permission — or you're calling a customer-session tool (`cart_checkout`, `cart_customer_portal`) |
 | 404 errors | Plugin not installed/active, wrong Site URL (use the site root, not `/wp-admin`), or a Pro endpoint without the Pro plugin |
 | 429 / rate limiting | The server retries with backoff automatically; persistent 429s mean the site's limits need raising |
