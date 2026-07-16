@@ -2715,13 +2715,15 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
 
 export const TOOL_META: Record<string, { description: string; note?: string; idempotent?: boolean }> = {
   "cart_orders": {
-    "description": "Look up, create, update, refund, and manage store orders, including their statuses, transactions, addresses, and disputes."
+    "description": "Look up, create, update, refund, and manage store orders, including their statuses, transactions, addresses, and disputes.",
+    "note": "Order totals and amounts are integers in CENTS (e.g. 1200 = $12.00)."
   },
   "cart_products": {
     "description": "Look up, create, update, delete, and bulk-edit store products, including search, duplication, taxonomy terms, and shipping/tax classes."
   },
   "cart_product_variants": {
-    "description": "Manage product variations: pricing, inventory and stock, bundles, upgrade paths, media, and variant search."
+    "description": "Manage product variations: pricing, inventory and stock, bundles, upgrade paths, media, and variant search.",
+    "note": "PRICE UNITS: despite the API docs' blanket 'cents' claim, variation create/update prices (item_price, compare_price) are plain DOLLARS — sending cents stores a 100× price; read back after writing to confirm. Stock updates expect a variants wrapper with total_stock/available (422 errors name the missing fields)."
   },
   "cart_product_assets": {
     "description": "Manage products' downloadable files and per-product integration feeds."
