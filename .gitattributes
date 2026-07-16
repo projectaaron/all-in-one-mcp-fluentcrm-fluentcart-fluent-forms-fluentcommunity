@@ -1,0 +1,9 @@
+# Keep dev/docs files out of release zipballs (GitHub archive / plugin
+# auto-updater) — only runtime code ships to sites.
+/docs export-ignore
+/scripts export-ignore
+/.github export-ignore
+/.gitattributes export-ignore
+/.gitignore export-ignore
+/FLUENTCART_DEV_KIT.md export-ignore
+/README.md export-ignore
