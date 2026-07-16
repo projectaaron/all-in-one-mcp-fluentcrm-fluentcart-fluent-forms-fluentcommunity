@@ -13,7 +13,7 @@ Initial release.
   `detail`/`page`/`per_page` params; pagination defaults (20/page); summary
   responses by default with `structuredContent` + output schema.
 - **Safety**: accurate `readOnlyHint`/`destructiveHint`/`idempotentHint`/
-  `openWorldHint` per tool; 90 destructive actions (deletes, refunds,
+  `openWorldHint` per tool; 98 destructive actions (deletes, refunds, mass-sends,
   cancels, bulk actions, resets) refuse to run without `confirm: true`.
 - **Shared core**: one HTTP client with Basic-auth injection, retry with
   exponential backoff + `Retry-After` handling, normalized errors with
@@ -26,7 +26,7 @@ Initial release.
 - **Generated, living documentation**: full per-endpoint API references
   scraped from both products' OpenAPI specs (`docs/api-reference/`), tool
   catalog generated from the live registry, weekly CI refresh workflow.
-- **Tests**: 134 unit tests over mocked HTTP (every tool action's endpoint
+- **Tests**: 144 unit tests over mocked HTTP (every tool action's endpoint
   routing, confirm gating, error paths, coverage guarantees); MCP Inspector
   load verification; read-only post-install smoke script; 10-question
   read-only eval file (`evals/questions.xml`).

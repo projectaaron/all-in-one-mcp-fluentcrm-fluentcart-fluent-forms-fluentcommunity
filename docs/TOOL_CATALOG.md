@@ -95,7 +95,7 @@ Example calls:
 - `cart_product_assets`: `{"name":"cart_product_assets","arguments":{"action":"get_downloadable_url","id":123}}`
 - `cart_customers`: `{"name":"cart_customers","arguments":{"action":"list_customers","per_page":5}}`
 - `cart_coupons`: `{"name":"cart_coupons","arguments":{"action":"list_coupon_codes","per_page":5}}`
-- `cart_subscriptions`: `{"name":"cart_subscriptions","arguments":{"action":"list_customer_subscriptions","per_page":5}}`
+- `cart_subscriptions`: `{"name":"cart_subscriptions","arguments":{"action":"list_subscriptions","per_page":5}}`
 - `cart_tax`: `{"name":"cart_tax","arguments":{"action":"list_all_tax_rates","per_page":5}}`
 - `cart_shipping`: `{"name":"cart_shipping","arguments":{"action":"list_shipping_classes","per_page":5}}`
 - `cart_settings`: `{"name":"cart_settings","arguments":{"action":"list_all_payment_methods","per_page":5}}`
@@ -107,8 +107,8 @@ Example calls:
 - `cart_utilities`: `{"name":"cart_utilities","arguments":{"action":"list_activities","per_page":5}}`
 - `cart_storefront`: `{"name":"cart_storefront","arguments":{"action":"list_products","per_page":5}}`
 - `cart_checkout`: `{"name":"cart_checkout","arguments":{"action":"get_available_shipping_methods"}}`
-- `cart_customer_portal`: `{"name":"cart_customer_portal","arguments":{"action":"list_downloads","per_page":5}}`
-- `cart_licensing`: `{"name":"cart_licensing","arguments":{"action":"list_customer_licenses","per_page":5}}`
+- `cart_customer_portal`: `{"name":"cart_customer_portal","arguments":{"action":"get_customer_details","id":123}}`
+- `cart_licensing`: `{"name":"cart_licensing","arguments":{"action":"list_licenses","per_page":5}}`
 - `cart_roles`: `{"name":"cart_roles","arguments":{"action":"list_managers","per_page":5}}`
 - `cart_order_bumps`: `{"name":"cart_order_bumps","arguments":{"action":"list_order_bumps","per_page":5}}`
 
