@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.5.2 — 2026-07-16
+
+Field-report fixes from the first production sessions:
+
+- **422 validation errors now carry their field-level messages.** Fluent
+  returns `{"errors": {"variants.total_stock": [...]}}`; the wrapper
+  previously surfaced only "HTTP 422". The flattened field errors are now in
+  the error text, so agents learn the required body shape in one call.
+- **Price-unit warnings in tool descriptions.** The upstream API docs claim
+  all money is in cents, but variation create/update prices are plain
+  dollars (server multiplies by 100) — an agent following the docs stored a
+  100× price. `cart_product_variants` now warns (dollars, read back after
+  writing); `cart_orders` states its totals are cents.
+
 ## 0.5.1 — 2026-07-16
 
 - **Fix: record data now reaches every MCP client.** Tool results carried the
