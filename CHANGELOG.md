@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.2.0 — 2026-07-16
+
+- **Claude Desktop extension packaging**: `npm run pack:extension` builds
+  `fluentmcp.mcpb` (MCP Bundle, `manifest.json` spec 0.3). Install by
+  drag-and-drop into Claude Desktop → Settings → Extensions; site URL and
+  per-product credentials are entered in the extension's settings form
+  (passwords are `sensitive` fields). Blank credentials disable that product,
+  exactly like the env-var path.
+- The manifest's tool list and version are kept in sync with the live
+  registry by `gen:catalog`.
+- **README rewritten** for readability: extension-first install, a
+  plain-English "How the tools work" section, and grouped tool tables
+  covering all 44 tools.
+
 ## 0.1.0 — 2026-07-16
 
 Initial release.

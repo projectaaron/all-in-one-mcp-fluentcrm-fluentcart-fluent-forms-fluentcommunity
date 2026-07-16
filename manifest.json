@@ -1,0 +1,272 @@
+{
+  "manifest_version": "0.3",
+  "name": "fluentmcp",
+  "display_name": "FluentMCP — FluentCRM & FluentCart",
+  "version": "0.2.0",
+  "description": "Full control of FluentCRM and FluentCart on your WordPress site: contacts, campaigns, orders, products, subscriptions, and more.",
+  "long_description": "Gives your AI assistant create/read/update/delete control over FluentCRM (email marketing & CRM) and FluentCart (e-commerce) by WPManageNinja — 699 documented REST endpoints reachable through 44 consolidated tools. Safe by default: every destructive action (deletes, refunds, cancels, mass-sends, resets) is annotated and refuses to run without explicit confirmation. Products you don't configure are simply disabled; run the verify_setup tool after installing to check your connection.",
+  "author": {
+    "name": "projectaaron",
+    "url": "https://github.com/projectaaron"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/projectaaron/fluentMCP"
+  },
+  "homepage": "https://github.com/projectaaron/fluentMCP",
+  "documentation": "https://github.com/projectaaron/fluentMCP#readme",
+  "support": "https://github.com/projectaaron/fluentMCP/issues",
+  "license": "MIT",
+  "keywords": [
+    "wordpress",
+    "fluentcrm",
+    "fluentcart",
+    "crm",
+    "ecommerce",
+    "wpmanageninja"
+  ],
+  "server": {
+    "type": "node",
+    "entry_point": "dist/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": [
+        "${__dirname}/dist/index.js"
+      ],
+      "env": {
+        "FLUENT_SITE_URL": "${user_config.site_url}",
+        "FLUENTCRM_API_USERNAME": "${user_config.fluentcrm_username}",
+        "FLUENTCRM_API_PASSWORD": "${user_config.fluentcrm_password}",
+        "FLUENTCART_API_USERNAME": "${user_config.fluentcart_username}",
+        "FLUENTCART_API_PASSWORD": "${user_config.fluentcart_password}"
+      }
+    }
+  },
+  "user_config": {
+    "site_url": {
+      "type": "string",
+      "title": "WordPress Site URL",
+      "description": "Your WordPress site root, e.g. https://example.com (not the /wp-admin URL).",
+      "required": true
+    },
+    "fluentcrm_username": {
+      "type": "string",
+      "title": "FluentCRM API Username",
+      "description": "From WP Admin → FluentCRM → Settings → Rest API → Create New API Key. Leave blank to disable the FluentCRM tools.",
+      "required": false,
+      "default": ""
+    },
+    "fluentcrm_password": {
+      "type": "string",
+      "title": "FluentCRM API Password",
+      "description": "The application password generated with the API key above.",
+      "sensitive": true,
+      "required": false,
+      "default": ""
+    },
+    "fluentcart_username": {
+      "type": "string",
+      "title": "FluentCart API Username",
+      "description": "A WordPress user with FluentCart admin capabilities. Leave blank to disable the FluentCart tools.",
+      "required": false,
+      "default": ""
+    },
+    "fluentcart_password": {
+      "type": "string",
+      "title": "FluentCart API Password",
+      "description": "An Application Password for that user (WP Admin → Users → Profile → Application Passwords).",
+      "sensitive": true,
+      "required": false,
+      "default": ""
+    }
+  },
+  "tools_generated": true,
+  "compatibility": {
+    "platforms": [
+      "darwin",
+      "win32",
+      "linux"
+    ],
+    "runtimes": {
+      "node": ">=20.6.0"
+    }
+  },
+  "tools": [
+    {
+      "name": "verify_setup",
+      "description": "Check site reachability, credentials, and plugin presence — run this first."
+    },
+    {
+      "name": "crm_contacts",
+      "description": "Look up, create, update, delete, and manage CRM contacts (subscribers), including their notes, tags, lists, and email history."
+    },
+    {
+      "name": "crm_lists",
+      "description": "View, create, update, or delete the contact lists used to organize CRM subscribers."
+    },
+    {
+      "name": "crm_tags",
+      "description": "View, create, update, or delete the tags used to label CRM contacts."
+    },
+    {
+      "name": "crm_segments",
+      "description": "View, create, update, or delete dynamic contact segments and see which contacts match them."
+    },
+    {
+      "name": "crm_custom_fields",
+      "description": "View or update the custom contact fields configured in the CRM."
+    },
+    {
+      "name": "crm_labels",
+      "description": "View, create, update, or delete the labels used to organize items in the CRM."
+    },
+    {
+      "name": "crm_companies",
+      "description": "Look up, create, update, delete, and manage CRM companies, their notes, and their associated contacts."
+    },
+    {
+      "name": "crm_campaigns",
+      "description": "Create, schedule, send, pause, duplicate, delete, and analyze one-off email campaigns, including resending failed or unopened emails."
+    },
+    {
+      "name": "crm_recurring_campaigns",
+      "description": "Manage recurring (automatically repeating) email campaigns from creation through scheduling and deletion (FluentCRM Pro)."
+    },
+    {
+      "name": "crm_sequences",
+      "description": "Manage email sequence (drip) automations, their emails, and their subscribers (FluentCRM Pro)."
+    },
+    {
+      "name": "crm_automations",
+      "description": "Manage marketing automation funnels and their subscribers, from creation and editing to import, export, and deletion."
+    },
+    {
+      "name": "crm_templates",
+      "description": "Manage reusable email templates, including creating, duplicating, updating, and deleting them."
+    },
+    {
+      "name": "crm_forms",
+      "description": "View and manage the opt-in forms connected to the CRM."
+    },
+    {
+      "name": "crm_webhooks",
+      "description": "Manage incoming webhooks that create or update CRM contacts from external services."
+    },
+    {
+      "name": "crm_smart_links",
+      "description": "Manage Smart Links that tag and redirect contacts when clicked (FluentCRM Pro)."
+    },
+    {
+      "name": "crm_sms",
+      "description": "Manage SMS campaigns, templates, contacts' phone data, and SMS settings (FluentCRM Pro)."
+    },
+    {
+      "name": "crm_reports",
+      "description": "Read-only CRM analytics: dashboard stats, subscriber growth, email and revenue reports, commerce reports, and global search."
+    },
+    {
+      "name": "crm_abandoned_carts",
+      "description": "View abandoned-cart records and their report summary, and delete records in bulk (FluentCRM Pro commerce feature)."
+    },
+    {
+      "name": "crm_settings",
+      "description": "Read or update FluentCRM settings such as double opt-in, business info, email preferences, compliance, and experimental features."
+    },
+    {
+      "name": "crm_settings_pro",
+      "description": "Read or update FluentCRM Pro settings such as the plugin license and Pro-only features."
+    },
+    {
+      "name": "crm_utilities",
+      "description": "Administrative utilities: import contacts from CSV or WordPress users, migrate from other tools, list WordPress users and roles, browse in-app docs, and receive bounce webhooks."
+    },
+    {
+      "name": "cart_orders",
+      "description": "Look up, create, update, refund, and manage store orders, including their statuses, transactions, addresses, and disputes."
+    },
+    {
+      "name": "cart_products",
+      "description": "Look up, create, update, delete, and bulk-edit store products, including search, duplication, taxonomy terms, and shipping/tax classes."
+    },
+    {
+      "name": "cart_product_variants",
+      "description": "Manage product variations: pricing, inventory and stock, bundles, upgrade paths, media, and variant search."
+    },
+    {
+      "name": "cart_product_assets",
+      "description": "Manage products' downloadable files and per-product integration feeds."
+    },
+    {
+      "name": "cart_customers",
+      "description": "Look up, create, update, and manage store customers, their addresses, purchase stats, and linked WordPress users."
+    },
+    {
+      "name": "cart_coupons",
+      "description": "Manage discount coupons: create, update, delete, apply to or remove from orders, and check product eligibility."
+    },
+    {
+      "name": "cart_subscriptions",
+      "description": "View and manage recurring subscriptions: cancel, re-sync from the payment gateway, switch payment methods, and handle early payments."
+    },
+    {
+      "name": "cart_tax",
+      "description": "Manage tax classes, tax rates, per-country configuration, EU VAT/OSS overrides, and order tax records."
+    },
+    {
+      "name": "cart_shipping",
+      "description": "Manage shipping zones, shipping methods, and shipping classes."
+    },
+    {
+      "name": "cart_settings",
+      "description": "Read or update store settings: general store options, modules and addons, permissions, payment methods, storage drivers, and checkout fields."
+    },
+    {
+      "name": "cart_email_notifications",
+      "description": "Manage the store's transactional email templates, global email settings, reminders, and previews."
+    },
+    {
+      "name": "cart_reports",
+      "description": "Read-only store analytics: revenue, orders, products, customers, subscriptions, refunds, licenses, and dashboard summaries."
+    },
+    {
+      "name": "cart_integrations",
+      "description": "Manage global integration feeds and provider settings, and install or activate integration addons."
+    },
+    {
+      "name": "cart_files",
+      "description": "List, upload, and delete files in the store's configured storage drivers."
+    },
+    {
+      "name": "cart_labels_attributes",
+      "description": "Manage store labels and product attribute groups and their terms."
+    },
+    {
+      "name": "cart_utilities",
+      "description": "Store utilities: dashboard stats and onboarding, activity log, order notes, print templates, country data, filter options, and retention snapshots."
+    },
+    {
+      "name": "cart_storefront",
+      "description": "Read-only public storefront data: published products, rendered product listings, and product search — no authentication required."
+    },
+    {
+      "name": "cart_checkout",
+      "description": "Checkout-session operations: place an order, fetch payment and shipping info for the cart, and log a customer in."
+    },
+    {
+      "name": "cart_customer_portal",
+      "description": "Customer-portal operations on the logged-in customer's own profile, orders, addresses, subscriptions, and downloads."
+    },
+    {
+      "name": "cart_licensing",
+      "description": "Manage software licenses: view, extend, regenerate keys, change limits, activate or deactivate sites, plus the public license verification endpoints (FluentCart Pro)."
+    },
+    {
+      "name": "cart_roles",
+      "description": "Manage FluentCart shop roles, permissions, and user assignments (FluentCart Pro)."
+    },
+    {
+      "name": "cart_order_bumps",
+      "description": "Manage checkout order bumps: list, create, update, and delete (FluentCart Pro)."
+    }
+  ]
+}

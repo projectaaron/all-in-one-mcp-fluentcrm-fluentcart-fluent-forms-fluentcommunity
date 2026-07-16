@@ -83,3 +83,20 @@ Example: \`{"name": "verify_setup", "arguments": {}}\`
 
 fs.writeFileSync('docs/TOOL_CATALOG.md', out);
 console.log(`docs/TOOL_CATALOG.md written (${total} tools).`);
+
+// Keep the extension manifest's tool list (shown in the extension UI) in
+// sync with the live registry, and its version in sync with package.json.
+if (fs.existsSync('manifest.json')) {
+  const manifest = JSON.parse(fs.readFileSync('manifest.json', 'utf8'));
+  const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+  manifest.version = pkg.version;
+  manifest.tools = [
+    {
+      name: 'verify_setup',
+      description: 'Check site reachability, credentials, and plugin presence — run this first.',
+    },
+    ...PRODUCTS.flatMap((p) => p.tools.map((t) => ({ name: t.name, description: t.description }))),
+  ];
+  fs.writeFileSync('manifest.json', JSON.stringify(manifest, null, 2) + '\n');
+  console.log(`manifest.json tools synced (${manifest.tools.length}).`);
+}

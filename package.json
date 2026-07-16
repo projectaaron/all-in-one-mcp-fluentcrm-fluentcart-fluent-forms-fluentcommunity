@@ -1,6 +1,6 @@
 {
   "name": "fluentmcp",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "MCP server giving AI harnesses full CRUD control of WPManageNinja Fluent products (FluentCRM, FluentCart) on a WordPress site",
   "license": "MIT",
   "type": "module",
@@ -21,7 +21,8 @@
     "gen:docs": "node scripts/gen-api-docs.mjs",
     "gen:maps": "node scripts/gen-endpoint-maps.mjs",
     "gen:catalog": "node scripts/gen-tool-catalog.mjs",
-    "smoke": "node scripts/smoke-test.mjs"
+    "smoke": "node scripts/smoke-test.mjs",
+    "pack:extension": "npm run build && npm prune --omit=dev && npx --yes @anthropic-ai/mcpb pack . fluentmcp.mcpb && npm ci"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.29.0",
