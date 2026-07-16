@@ -54,3 +54,30 @@ describe('safety regressions', () => {
     expect(annotationsFor(spec('fluentcart', 'cart_settings')).idempotentHint).toBe(false);
   });
 });
+
+// Regression: claude.ai renders only the text content block to the model, so
+// the shaped records must be serialized there, not just in structuredContent.
+import { makeHandler } from '../src/core/tool-factory.js';
+import { FluentClient } from '../src/core/http.js';
+
+describe('text block carries data', () => {
+  it('list responses serialize shaped records into content[0].text', async () => {
+    const client = new FluentClient({
+      siteUrl: 'https://example.com', namespace: 'fluent-cart/v2', product: 'fluentcart',
+      productTitle: 'FluentCart', envPrefix: 'FLUENTCART',
+      credentials: { username: 'u', password: 'p' },
+      fetchImpl: async () => new Response(JSON.stringify({
+        products: { current_page: 1, per_page: 20, total: 1, last_page: 1,
+          data: [{ ID: 92372, post_title: 'Test Product', post_status: 'publish' }],
+          links: [{ url: 'x', label: '1' }], first_page_url: 'x' },
+      }), { status: 200, headers: { 'content-type': 'application/json' } }),
+      sleep: async () => {},
+    });
+    const s = spec('fluentcart', 'cart_products');
+    const handler = makeHandler(s, { client });
+    const res = (await handler({ action: 'list_products' })) as { content: Array<{ text: string }> };
+    expect(res.content[0].text).toContain('Test Product');
+    expect(res.content[0].text).toContain('92372');
+    expect(res.content[0].text).not.toContain('first_page_url');
+  });
+});

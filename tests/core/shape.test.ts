@@ -66,6 +66,18 @@ describe('shapeResponse', () => {
     expect(shaped.data).toEqual(odd);
   });
 
+  // Regression: claude.ai surfaces only the text block; the paginator
+  // boilerplate (links[], page URLs) must not eat the token budget there.
+  it('drops Laravel paginator boilerplate in summary mode, keeps it in full', () => {
+    const noisy = { ...paginator, links: [{ url: 'x', label: '1' }], first_page_url: 'x', path: 'x' };
+    const summary = shapeResponse({ products: noisy }, { detail: 'summary', summaryFields: ['id'] });
+    expect(summary.data).toEqual({ products: { data: [{ id: 1 }, { id: 2 }] } });
+    expect(summary.pagination).toEqual({ page: 2, per_page: 20, total: 45, total_pages: 3 });
+
+    const full = shapeResponse({ products: noisy }, { detail: 'full' });
+    expect((full.data as { products: { links: unknown[] } }).products.links).toHaveLength(1);
+  });
+
   it('truncates long values inside projected summary fields', () => {
     const wrapped = { list: { id: 1, description: 'd'.repeat(1000) } };
     const shaped = shapeResponse(wrapped, { detail: 'summary', summaryFields: ['description'] });
