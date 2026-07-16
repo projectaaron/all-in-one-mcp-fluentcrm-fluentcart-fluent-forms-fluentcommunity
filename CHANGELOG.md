@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.3.0 — 2026-07-16
+
+- **One credential pair runs everything.** Newer FluentCRM versions removed
+  the *Settings → Rest API* key page (redundant with WordPress core
+  Application Passwords — verified on a live install), so the server now
+  takes a single `FLUENT_API_USERNAME` / `FLUENT_API_PASSWORD` for both
+  products. The extension settings form is down to 3 fields: Site URL,
+  WordPress Username, Application Password.
+- Per-product `FLUENTCRM_API_*` / `FLUENTCART_API_*` env vars remain as
+  optional overrides (e.g. a scoped FluentCRM manager user) and win over the
+  shared pair for that product.
+- Auth docs updated (`docs/api-reference/auth.md`, generated FluentCRM
+  overview) to describe current FluentCRM auth and note the removed page.
+
 ## 0.2.0 — 2026-07-16
 
 - **Claude Desktop extension packaging**: `npm run pack:extension` builds

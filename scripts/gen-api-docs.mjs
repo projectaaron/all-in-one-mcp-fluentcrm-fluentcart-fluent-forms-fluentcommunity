@@ -68,7 +68,7 @@ const PRODUCTS = {
     authNote: [
       '| Context | Used by | Auth |',
       '|---------|---------|------|',
-      '| Admin | all endpoints except public bounce handlers | WordPress Application Passwords (HTTP Basic), created under FluentCRM → Settings → Rest API (backed by a FluentCRM Manager account) |',
+      '| Admin | all endpoints except public bounce handlers | WordPress Application Passwords (HTTP Basic) — WP Admin → Users → Profile → Application Passwords. (Older FluentCRM versions offered a Settings → Rest API key page; it was removed as redundant with WP core Application Passwords.) |',
       '| Public | `public-bounce` handlers | Security key in URL (none/webhook-style) |',
     ].join('\n'),
     groups: [

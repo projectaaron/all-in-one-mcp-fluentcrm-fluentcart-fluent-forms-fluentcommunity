@@ -91,7 +91,7 @@ describe('verify_setup', () => {
     const crmReport = res.structuredContent.products.find((p) => p.product === 'fluentcrm')!;
     const cartReport = res.structuredContent.products.find((p) => p.product === 'fluentcart')!;
     expect(crmReport.status).toBe('auth_failed');
-    expect(String(crmReport.detail)).toContain('FLUENTCRM_API_USERNAME');
+    expect(String(crmReport.detail)).toContain('FLUENT_API_USERNAME');
     expect(cartReport.status).toBe('plugin_missing');
     expect(res.structuredContent.ok).toBe(false);
   });
