@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.4.0 — 2026-07-16
+
+- **Remote mode (Streamable HTTP).** `npm run start:remote` serves the same
+  44 tools over HTTP for claude.ai custom connectors — works on web, mobile,
+  and desktop. Stateless (fresh MCP session per request), token-auth via
+  `Authorization: Bearer` or the URL path (`/mcp/<token>`) since claude.ai's
+  connector form can't set headers; refuses to start without a 16+ char
+  `FLUENT_MCP_TOKEN`. Unauthenticated `/healthz`.
+- Shared server builder (`src/server.ts`) now backs both entry points
+  (stdio `dist/index.js`, HTTP `dist/remote.js` / `fluentmcp-remote` bin).
+- `Dockerfile` and `docs/REMOTE.md` (Cloudflare Tunnel, PaaS, Docker
+  recipes; security notes). README gains a which-install-where table.
+
 ## 0.3.0 — 2026-07-16
 
 - **One credential pair runs everything.** Newer FluentCRM versions removed

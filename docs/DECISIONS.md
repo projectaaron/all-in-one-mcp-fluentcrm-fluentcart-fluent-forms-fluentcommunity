@@ -181,3 +181,21 @@ Password runs the whole server), the extension form is 3 fields, and
 per-product `<PREFIX>_API_*` vars remain as optional overrides for scoped
 setups (resolved override-first in `loadConfig`). auth.md and the generator's
 FluentCRM auth note document both the current behavior and the legacy page.
+
+## 2026-07-16 — Remote mode: token-in-URL over OAuth, stateless over sessions
+
+The Desktop extension only exists inside the Desktop app's own conversations;
+the user works across claude.ai surfaces, so remote (Streamable HTTP) is the
+primary deployment now. Two shortcuts taken deliberately:
+
+- **Shared-secret auth instead of OAuth.** claude.ai custom connectors accept
+  a bare URL; a full OAuth 2.1 authorization server (DCR, consent, tokens) is
+  heavy for a single-owner personal server. A ≥16-char token — accepted as a
+  Bearer header or as a URL path segment (`/mcp/<token>`, because the
+  connector form can't set headers) — with timing-safe comparison and an
+  HTTPS-only rule documented in REMOTE.md is proportionate. Revisit OAuth if
+  this ever serves more than one user.
+- **Stateless transport.** `sessionIdGenerator: undefined`; a fresh
+  McpServer + transport per request (~44 registrations, trivially cheap).
+  No session store, restart-transparent, horizontally scalable, and immune to
+  the SSE-resumability complexity of stateful mode.
