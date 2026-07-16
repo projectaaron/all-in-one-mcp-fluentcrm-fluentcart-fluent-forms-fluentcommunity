@@ -72,6 +72,15 @@ discovery is per-operation.
 | `docs/api/*.md` | Generated output — do not edit by hand; rerun the generator. |
 | `docs/fluentcart-api-reference.md` | A **hand-curated** compact overview (one line per endpoint). Update its summary tables manually if you want the overview to track new endpoints; the full detail in `docs/api/` is the generated source of truth. |
 
+## CI auto-refresh
+
+`.github/workflows/refresh-api-docs.yml` reruns the generator weekly and opens
+a PR only when the upstream API actually changed. **One-time repo setup
+required:** the default `GITHUB_TOKEN` cannot open PRs until you enable
+*Settings → Actions → General → Workflow permissions → "Allow GitHub Actions
+to create and approve pull requests"* (off by default on new repos).
+Alternatively point the workflow's `GH_TOKEN` at a PAT or GitHub App token.
+
 ## When something changes upstream
 
 - **New / removed endpoints** → just rerun the generator; it auto-discovers and
