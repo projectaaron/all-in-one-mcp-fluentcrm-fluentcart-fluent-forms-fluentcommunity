@@ -26,6 +26,8 @@ export interface ToolSpec {
   actions: Record<string, EndpointDef>;
   /** Extra sentence(s) appended to the description (auth caveats etc). */
   note?: string;
+  /** Every write action is safely repeatable (sets idempotentHint). */
+  idempotent?: boolean;
 }
 
 export interface ProductCredentials {
@@ -61,6 +63,8 @@ export interface RequestOptions {
   body?: unknown;
   /** Resolve against the site root instead of the REST namespace. */
   siteRoot?: boolean;
+  /** Never retry beyond 429 — set for destructive actions (even GET ones). */
+  noRetry?: boolean;
 }
 
 export interface FluentResponse {

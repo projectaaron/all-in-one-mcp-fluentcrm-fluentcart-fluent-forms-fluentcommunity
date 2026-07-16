@@ -34,4 +34,13 @@ describe('config', () => {
     expect(config.timeoutMs).toBe(30000);
     expect(config.maxRetries).toBe(5);
   });
+
+  it('accepts FLUENT_HTTP_MAX_RETRIES=0 (retries disabled), not for timeout', () => {
+    const config = loadConfig([], {
+      FLUENT_HTTP_MAX_RETRIES: '0',
+      FLUENT_HTTP_TIMEOUT_MS: '0',
+    } as NodeJS.ProcessEnv);
+    expect(config.maxRetries).toBe(0);
+    expect(config.timeoutMs).toBe(30000);
+  });
 });
