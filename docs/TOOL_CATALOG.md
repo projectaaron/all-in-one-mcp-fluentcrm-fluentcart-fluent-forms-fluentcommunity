@@ -112,12 +112,14 @@ Example calls:
 - `cart_roles`: `{"name":"cart_roles","arguments":{"action":"list_managers","per_page":5}}`
 - `cart_order_bumps`: `{"name":"cart_order_bumps","arguments":{"action":"list_order_bumps","per_page":5}}`
 
-## Server (1 tool)
+## Server (2 tools)
 
 | Tool | Class | Description |
 |------|-------|-------------|
 | `verify_setup` | read | Check site reachability, per-product credentials, plugin presence, and run one harmless read per configured product. |
+| `wp_media` | read/write | WordPress media library: upload an image from a URL (server-side fetch — ideal for migrating product photos from another platform's CDN), or look up existing media. |
 
-Example: `{"name": "verify_setup", "arguments": {}}`
+Examples: `{"name": "verify_setup", "arguments": {}}` ·
+`{"name": "wp_media", "arguments": {"action": "upload_from_url", "source_url": "https://cdn.example.com/photo.jpg", "alt_text": "Product photo"}}`
 
-**Total: 44 tools.**
+**Total: 45 tools.**

@@ -7,6 +7,7 @@ import { loadConfig, productEnvStatus, type ServerConfig } from './core/config.j
 import { FluentClient } from './core/http.js';
 import { registerToolSpec } from './core/tool-factory.js';
 import { registerVerifySetup, type ProductEntry } from './core/verify.js';
+import { registerWpMediaTool } from './core/media.js';
 import { PRODUCTS } from './products/index.js';
 import { SERVER_VERSION } from './version.js';
 
@@ -49,6 +50,14 @@ export function buildServer(config: ServerConfig): BuiltServer {
 
   registerVerifySetup(server, entries, config);
   toolCount++;
+
+  // WordPress-core media tool (upload_from_url etc.) — needs credentials, so
+  // it registers only when at least one product is configured.
+  const firstClient = entries.find((e) => e.client)?.client;
+  if (firstClient) {
+    registerWpMediaTool(server, firstClient);
+    toolCount++;
+  }
 
   return { server, entries, toolCount, config };
 }

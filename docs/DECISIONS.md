@@ -233,3 +233,18 @@ encoded in the server:
   flattens Laravel-style `errors` maps into the error message (capped at
   600 chars). The agent that hit this burned ~10 calls reverse-engineering
   ProductVariationRequest.php; one good error message replaces all of that.
+
+## 2026-07-16 — wp_media: server-side sideloading instead of multipart passthrough
+
+Product photos couldn't get into WordPress through the tool surface:
+FluentCart's own `/upload-editor-file` needs a multipart file, and raw binary
+doesn't travel through JSON tool calls. The fix is a server-level `wp_media`
+tool (like verify_setup — WordPress core `/wp/v2/media` is outside both
+Fluent namespaces, so it stays out of the generated product maps and the
+coverage test): `upload_from_url` fetches an image server-side and sideloads
+it, then optionally sets title/alt. Guards: http(s)-only with
+private/loopback hosts refused (the fetch runs with the Worker's network
+position), image/* content types only, 15 MB cap. Registers only when
+credentials exist. Verified live: migrated the Lilly print photo from
+Shopify's CDN into the production media library (attachment 92413) in one
+tool call.

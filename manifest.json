@@ -2,9 +2,9 @@
   "manifest_version": "0.3",
   "name": "fluentmcp",
   "display_name": "FluentMCP — FluentCRM & FluentCart",
-  "version": "0.5.2",
+  "version": "0.6.0",
   "description": "Full control of FluentCRM and FluentCart on your WordPress site: contacts, campaigns, orders, products, subscriptions, and more.",
-  "long_description": "Gives your AI assistant create/read/update/delete control over FluentCRM (email marketing & CRM) and FluentCart (e-commerce) by WPManageNinja — 699 documented REST endpoints reachable through 44 consolidated tools. Safe by default: every destructive action (deletes, refunds, cancels, mass-sends, resets) is annotated and refuses to run without explicit confirmation. One WordPress Application Password runs everything; run the verify_setup tool after installing to check your connection.",
+  "long_description": "Gives your AI assistant create/read/update/delete control over FluentCRM (email marketing & CRM) and FluentCart (e-commerce) by WPManageNinja — 699 documented REST endpoints reachable through 45 consolidated tools. Safe by default: every destructive action (deletes, refunds, cancels, mass-sends, resets) is annotated and refuses to run without explicit confirmation. One WordPress Application Password runs everything; run the verify_setup tool after installing to check your connection.",
   "author": {
     "name": "projectaaron",
     "url": "https://github.com/projectaaron"
@@ -76,6 +76,10 @@
     {
       "name": "verify_setup",
       "description": "Check site reachability, credentials, and plugin presence — run this first."
+    },
+    {
+      "name": "wp_media",
+      "description": "Upload an image into the WordPress media library from a URL, or look up existing media."
     },
     {
       "name": "crm_contacts",
