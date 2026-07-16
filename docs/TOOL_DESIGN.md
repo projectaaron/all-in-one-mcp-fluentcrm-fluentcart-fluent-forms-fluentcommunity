@@ -55,17 +55,26 @@ likely cause, what to try).
 
 - Tools whose actions are all reads: `readOnlyHint: true`.
 - Any tool with writes: `readOnlyHint: false`; `destructiveHint: true` iff
-  at least one action is destructive; `idempotentHint` only when every write
-  action is safely repeatable (rare — settings-save tools).
+  at least one action is destructive; `idempotentHint` is an explicit opt-in
+  in the tool map for tools whose every write is safely repeatable
+  (currently only `crm_custom_fields` — pure save endpoints), conservative
+  `false` everywhere else.
 - `openWorldHint: true` everywhere (a remote WordPress site is an open
   system).
 - **Destructive classification** (action-level, enforced by `confirm`):
   DELETE-method endpoints, and write endpoints whose slugs match
   `delete|remove|detach|cancel|refund|deactivate|reset|disconnect|regenerate|bulk-action|do-bulk|bulk-delete|accept-dispute|un-schedule`.
-  GET endpoints never gate (report slugs like `refund-chart` are reads).
-  Overrides are curated per product module where the heuristic is wrong.
+  GET endpoints never gate via the heuristic (report slugs like
+  `refund-chart` are reads); the one documented GET that mutates —
+  FluentCRM's `reset_system_logs` — is force-gated by an override, and the
+  HTTP client is told not to auto-retry destructive GETs.
+  **Mass-send actions are also confirm-gated by override**: sending email or
+  SMS to a whole audience is as irreversible as a delete
+  (`schedule_campaign`, `resume_campaign`, the three `resend_*` actions,
+  `schedule_sms_campaign`, `resume_sms_campaign`). Single-recipient sends
+  (test emails, one custom SMS) stay ungated.
   Notable catches: FluentCRM's `reset_database` (full CRM wipe) and
-  FluentCart's `regenerate_license_key` are confirm-gated. 90 of 699 actions
+  FluentCart's `regenerate_license_key` are confirm-gated. 98 of 699 actions
   classify as destructive.
 - Annotations are hints; clients decide approval. The README documents how
   to keep every tool ask-first in Claude Code / Claude Desktop.
@@ -88,14 +97,14 @@ likely cause, what to try).
 | `crm_sequences` | sequences (Pro) | 18 | read/write/delete |
 | `crm_automations` | funnels | 31 | read/write/delete |
 | `crm_templates` | templates | 11 | read/write/delete |
-| `crm_forms` | forms | 5 | read |
+| `crm_forms` | forms | 5 | read/write |
 | `crm_webhooks` | webhooks | 5 | read/write/delete |
-| `crm_smart_links` | smart-links (Pro) | 5 | read/write |
+| `crm_smart_links` | smart-links (Pro) | 5 | read/write/delete |
 | `crm_sms` | sms (Pro) | 24 | read/write/delete |
 | `crm_reports` | reports (minus its one DELETE), commerce-reports, global-search | 16 | **read-only** |
 | `crm_abandoned_carts` | abandon-carts (Pro) | 3 | read/delete |
 | `crm_settings` | settings + `reports/delete-report-emails` (log maintenance) | 39 | read/write/delete |
-| `crm_settings_pro` | pro-settings | 11 | read/write |
+| `crm_settings_pro` | pro-settings | 11 | read/write/delete |
 | `crm_utilities` | import, migrators, users, docs, public-bounce | 18 | read/write |
 
 ### FluentCart — 22 tools / 380 endpoints
@@ -103,9 +112,9 @@ likely cause, what to try).
 | Tool | Docs group(s) | Endpoints | Class |
 |------|---------------|-----------|-------|
 | `cart_orders` | orders | 22 | read/write/delete |
-| `cart_products` | products (core: CRUD, search, bulk, taxonomy, duplicates) | ~30 | read/write/delete |
-| `cart_product_variants` | products (variants, pricing, inventory, bundles, upgrade paths) | ~19 | read/write/delete |
-| `cart_product_assets` | products (downloadable files, media, per-product integrations) | ~10 | read/write/delete |
+| `cart_products` | products (core: CRUD, search, bulk, taxonomy, duplicates) | 27 | read/write/delete |
+| `cart_product_variants` | products (variants, pricing, inventory, bundles, upgrade paths) | 23 | read/write/delete |
+| `cart_product_assets` | products (downloadable files, media, per-product integrations) | 9 | read/write/delete |
 | `cart_customers` | customers | 18 | read/write/delete |
 | `cart_coupons` | coupons | 12 | read/write/delete |
 | `cart_subscriptions` | subscriptions | 17 | read/write/delete |
@@ -121,8 +130,8 @@ likely cause, what to try).
 | `cart_storefront` | public-shop | 3 | **read-only**, no auth |
 | `cart_checkout` | checkout | 7 | read/write (customer-session context) |
 | `cart_customer_portal` | customer-profile | 21 | read/write (customer-session context) |
-| `cart_licensing` | licensing (Pro) | 24 | read/write/delete |
-| `cart_roles` | roles-permissions (Pro) | 7 | read/write/delete |
+| `cart_licensing` | licensing (Pro) | 27 | read/write/delete |
+| `cart_roles` | roles-permissions (Pro) | 9 | read/write/delete |
 | `cart_order_bumps` | order-bumps (Pro) | 5 | read/write/delete |
 
 ### Server — 1 tool

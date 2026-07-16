@@ -736,7 +736,7 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/campaigns/{id}/resume",
       "summary": "Resume Campaign",
-      "destructive": false
+      "destructive": true
     },
     "resync_campaign_revenues": {
       "op": "campaigns/resync-campaign-revenues",
@@ -750,7 +750,7 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/campaigns/{id}/schedule",
       "summary": "Schedule Campaign",
-      "destructive": false
+      "destructive": true
     },
     "send_campaign_test_email": {
       "op": "campaigns/send-campaign-test-email",
@@ -834,21 +834,21 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/campaigns-pro/{id}/resend-emails",
       "summary": "Resend Campaign Emails",
-      "destructive": false
+      "destructive": true
     },
     "resend_failed_emails": {
       "op": "campaigns-pro/resend-failed-emails",
       "method": "POST",
       "path": "/campaigns-pro/{id}/resend-failed-emails",
       "summary": "Resend Failed Emails",
-      "destructive": false
+      "destructive": true
     },
     "resend_unopened_emails": {
       "op": "campaigns-pro/resend-unopened-emails",
       "method": "POST",
       "path": "/campaigns-pro/{id}/resend-unopened-emails",
       "summary": "Resend Unopened Emails",
-      "destructive": false
+      "destructive": true
     }
   },
   "crm_recurring_campaigns": {
@@ -1620,14 +1620,14 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/sms/campaigns/{id}/resume",
       "summary": "Resume SMS Campaign",
-      "destructive": false
+      "destructive": true
     },
     "schedule_sms_campaign": {
       "op": "sms/schedule-sms-campaign",
       "method": "POST",
       "path": "/sms/campaigns/{id}/schedule",
       "summary": "Schedule SMS Campaign",
-      "destructive": false
+      "destructive": true
     },
     "send_subscriber_custom_sms": {
       "op": "sms/send-subscriber-custom-sms",
@@ -1983,7 +1983,7 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "GET",
       "path": "/setting/system-logs/reset",
       "summary": "Reset System Logs",
-      "destructive": false
+      "destructive": true
     },
     "run_cron": {
       "op": "settings/run-cron",
@@ -2279,7 +2279,7 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
   }
 };
 
-export const TOOL_META: Record<string, { description: string; note?: string }> = {
+export const TOOL_META: Record<string, { description: string; note?: string; idempotent?: boolean }> = {
   "crm_contacts": {
     "description": "Look up, create, update, delete, and manage CRM contacts (subscribers), including their notes, tags, lists, and email history."
   },
@@ -2293,7 +2293,8 @@ export const TOOL_META: Record<string, { description: string; note?: string }> =
     "description": "View, create, update, or delete dynamic contact segments and see which contacts match them."
   },
   "crm_custom_fields": {
-    "description": "View or update the custom contact fields configured in the CRM."
+    "description": "View or update the custom contact fields configured in the CRM.",
+    "idempotent": true
   },
   "crm_labels": {
     "description": "View, create, update, or delete the labels used to organize items in the CRM."

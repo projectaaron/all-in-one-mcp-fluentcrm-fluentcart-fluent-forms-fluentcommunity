@@ -38,7 +38,9 @@ export function annotationsFor(spec: ToolSpec) {
   return {
     readOnlyHint: readOnly,
     destructiveHint: destructive,
-    idempotentHint: false,
+    // Conservative default; a tool opts in via its map when every write
+    // action is safely repeatable.
+    idempotentHint: spec.idempotent === true,
     openWorldHint: true,
   };
 }
@@ -174,6 +176,7 @@ export function makeHandler(spec: ToolSpec, runtime: ToolRuntime) {
         query,
         body: args.body,
         siteRoot: def.siteRoot,
+        noRetry: def.destructive,
       });
       const shaped = shapeResponse(response.data, {
         detail: args.detail ?? 'summary',

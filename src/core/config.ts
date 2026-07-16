@@ -15,9 +15,9 @@ export interface ProductEnvStatus {
   missing: string[];
 }
 
-const int = (v: string | undefined, fallback: number): number => {
+const int = (v: string | undefined, fallback: number, min = 1): number => {
   const n = v ? Number.parseInt(v, 10) : NaN;
-  return Number.isFinite(n) && n > 0 ? n : fallback;
+  return Number.isFinite(n) && n >= min ? n : fallback;
 };
 
 /** Read configuration for the given env prefixes (one per product). */
@@ -31,7 +31,8 @@ export function loadConfig(envPrefixes: string[], env: NodeJS.ProcessEnv = proce
   return {
     siteUrl: env.FLUENT_SITE_URL?.trim().replace(/\/+$/, '') || undefined,
     timeoutMs: int(env.FLUENT_HTTP_TIMEOUT_MS, 30000),
-    maxRetries: int(env.FLUENT_HTTP_MAX_RETRIES, 3),
+    maxRetries: int(env.FLUENT_HTTP_MAX_RETRIES, 3, 0), // 0 disables retries
+
     credentials,
   };
 }

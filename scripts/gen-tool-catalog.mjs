@@ -19,9 +19,15 @@ function classify(actions) {
 
 function exampleFor(name, actions) {
   const entries = Object.entries(actions);
+  // Prefer admin-context endpoints — /customer-profile/* and /checkout/* need
+  // a customer browser session and would 401 under Application Passwords,
+  // which makes for a misleading first example (auth.md documents this).
+  const admin = (d) => !/^\/(customer-profile|checkout|user\/login)/.test(d.path);
   const pick =
+    entries.find(([a, d]) => a.startsWith('list_') && admin(d)) ??
+    entries.find(([, d]) => d.method === 'GET' && admin(d) && !d.path.includes('{')) ??
+    entries.find(([, d]) => d.method === 'GET' && admin(d)) ??
     entries.find(([a]) => a.startsWith('list_')) ??
-    entries.find(([, d]) => d.method === 'GET' && !d.path.includes('{')) ??
     entries.find(([, d]) => d.method === 'GET') ??
     entries[0];
   const [action, def] = pick;

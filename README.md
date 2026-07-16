@@ -17,6 +17,9 @@ destructive operation.
 
 ### 1. Get the code and build it
 
+Requires **Node 20.6+** (the install path below uses `node --env-file`,
+added in 20.6.0).
+
 ```bash
 git clone https://github.com/projectaaron/fluentMCP.git
 cd fluentMCP
