@@ -33,14 +33,24 @@ No config files. Credentials are entered in a settings form and your
 passwords are stored as sensitive values by Claude Desktop.
 
 1. **Get the extension bundle** — `fluentmcp.mcpb`. Grab it from the
-   repository's releases, or build it yourself:
+   repository's releases, or build it yourself (run the commands **one at a
+   time**):
 
    ```bash
-   git clone https://github.com/projectaaron/fluentMCP.git
+   gh repo clone projectaaron/fluentMCP      # private repo — use the GitHub CLI…
+   # …or SSH: git clone git@github.com:projectaaron/fluentMCP.git
    cd fluentMCP
    npm install
-   npm run pack:extension        # produces fluentmcp.mcpb
+   npm run pack:extension                    # produces fluentmcp.mcpb
    ```
+
+   > **Private-repo note:** a plain
+   > `git clone https://github.com/projectaaron/fluentMCP.git` will prompt
+   > for a username/password — and GitHub no longer accepts account
+   > passwords over HTTPS. Use the GitHub CLI (`brew install gh`,
+   > `gh auth login`) or SSH as shown above, or a
+   > [personal access token](https://github.com/settings/tokens) as the
+   > password.
 
 2. **Install it** — open Claude Desktop → **Settings → Extensions**, and drag
    `fluentmcp.mcpb` into the window (or use "Install extension" and pick the
@@ -60,10 +70,11 @@ passwords are stored as sensitive values by Claude Desktop.
 
 ### Option B — Any MCP client (config file)
 
-Requires **Node 20.6+**. Build once:
+Requires **Node 20.6+**. Build once (see the private-repo note above for
+cloning):
 
 ```bash
-git clone https://github.com/projectaaron/fluentMCP.git
+gh repo clone projectaaron/fluentMCP
 cd fluentMCP
 npm install && npm run build
 cp .env.example .env    # then fill in your site URL + credentials
