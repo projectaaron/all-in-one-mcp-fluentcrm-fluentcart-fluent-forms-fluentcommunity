@@ -60,9 +60,13 @@ likely cause, what to try).
 - `openWorldHint: true` everywhere (a remote WordPress site is an open
   system).
 - **Destructive classification** (action-level, enforced by `confirm`):
-  DELETE-method endpoints, and slugs matching
-  `delete|remove|detach|cancel|refund|bulk-action|do-bulk|accept-dispute|un-schedule|deactivate`.
+  DELETE-method endpoints, and write endpoints whose slugs match
+  `delete|remove|detach|cancel|refund|deactivate|reset|disconnect|regenerate|bulk-action|do-bulk|bulk-delete|accept-dispute|un-schedule`.
+  GET endpoints never gate (report slugs like `refund-chart` are reads).
   Overrides are curated per product module where the heuristic is wrong.
+  Notable catches: FluentCRM's `reset_database` (full CRM wipe) and
+  FluentCart's `regenerate_license_key` are confirm-gated. 90 of 699 actions
+  classify as destructive.
 - Annotations are hints; clients decide approval. The README documents how
   to keep every tool ask-first in Claude Code / Claude Desktop.
 
@@ -88,9 +92,9 @@ likely cause, what to try).
 | `crm_webhooks` | webhooks | 5 | read/write/delete |
 | `crm_smart_links` | smart-links (Pro) | 5 | read/write |
 | `crm_sms` | sms (Pro) | 24 | read/write/delete |
-| `crm_reports` | reports, commerce-reports, global-search | 17 | **read-only** |
+| `crm_reports` | reports (minus its one DELETE), commerce-reports, global-search | 16 | **read-only** |
 | `crm_abandoned_carts` | abandon-carts (Pro) | 3 | read/delete |
-| `crm_settings` | settings | 38 | read/write |
+| `crm_settings` | settings + `reports/delete-report-emails` (log maintenance) | 39 | read/write/delete |
 | `crm_settings_pro` | pro-settings | 11 | read/write |
 | `crm_utilities` | import, migrators, users, docs, public-bounce | 18 | read/write |
 
@@ -139,7 +143,9 @@ likely cause, what to try).
 - **`crm_reports` / `cart_reports` stay pure-read** so the most common
   analytics questions run through tools clients can safely mark read-only.
   The two FluentCart retention-snapshot *write* endpoints move to
-  `cart_utilities` — accuracy of `readOnlyHint` beats taxonomic purity.
+  `cart_utilities`, and FluentCRM's `reports/delete-report-emails` moves to
+  `crm_settings` — accuracy of `readOnlyHint` beats taxonomic purity. The
+  invariant is enforced by `tests/coverage.test.ts`.
 - **Customer-context tools ship despite auth limits.** `cart_checkout` /
   `cart_customer_portal` need WordPress cookie sessions (documented in
   `api-reference/auth.md`); with Application Passwords most calls will 401.

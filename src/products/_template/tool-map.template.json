@@ -1,0 +1,18 @@
+{
+  "product": "__PRODUCT_KEY__",
+  "toolPrefix": "__TOOL_PREFIX__",
+  "tools": {
+    "__TOOL_PREFIX___example_resource": {
+      "description": "One plain sentence a non-developer can understand.",
+      "groups": ["example-docs-group"]
+    },
+    "__TOOL_PREFIX___reports": {
+      "description": "Read-only analytics for __PRODUCT_TITLE__.",
+      "groups": ["reports"],
+      "note": "Optional extra sentence appended to the tool description (auth caveats etc)."
+    }
+  },
+  "operationOverrides": {
+    "example-docs-group/some-write-slug": { "tool": "__TOOL_PREFIX___example_resource", "destructive": true }
+  }
+}

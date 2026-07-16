@@ -1,96 +1,106 @@
 # Project map
 
 Living document: what lives where and how the pieces connect. Update this
-whenever the structure changes. Last updated: 2026-07-16 (Phase 1).
+whenever the structure changes. Last updated: 2026-07-16 (v0.1.0 — all
+phases complete).
 
 ## What this repo is
 
 **fluentMCP** — an MCP (Model Context Protocol) server, written in TypeScript
-on the official `@modelcontextprotocol/sdk` with stdio transport, that gives
-an AI harness full CRUD control over WPManageNinja "Fluent" products on a
-WordPress site. Products ship as self-contained modules; FluentCRM and
-FluentCart are the first two.
+on the official `@modelcontextprotocol/sdk` (v1.x) with stdio transport, that
+gives an AI harness full CRUD control over WPManageNinja "Fluent" products on
+a WordPress site. Products ship as self-contained modules; FluentCRM
+(319 endpoints → 21 tools) and FluentCart (380 endpoints → 22 tools) are the
+first two. 44 tools total including `verify_setup`.
 
 ## Directory structure
 
 ```
 fluentMCP/
 ├── src/
-│   ├── index.ts                  # Entry point: builds server, registers enabled products, stdio
-│   ├── core/                     # Product-agnostic — no product may require editing this
-│   │   ├── config.ts             # Env parsing (site URL, per-product credentials); product enablement
-│   │   ├── http.ts               # Single WordPress REST client: Basic auth injection, retry/backoff,
-│   │   │                         #   rate-limit handling, normalized errors (never logs credentials)
-│   │   ├── errors.ts             # Normalized error type + actionable-message helpers
-│   │   ├── registry.ts           # Product module interface + registration; verify_setup aggregation
-│   │   ├── tool-factory.ts       # Declarative resource-tool builder: action routing, Zod schema
-│   │   │                         #   assembly, confirm:true gating, summary/full shaping, pagination
-│   │   └── shape.ts              # Response shaping: field filtering, summary projections, text summary
+│   ├── index.ts                  # Entry point: config → enabled products → tools → stdio
+│   ├── core/                     # Product-agnostic — adding a product never edits this
+│   │   ├── types.ts              # EndpointDef / ToolSpec / ProductModule contracts
+│   │   ├── config.ts             # Env parsing; per-product enablement (creds present = enabled)
+│   │   ├── http.ts               # THE WordPress REST client: Basic-auth injection, retry with
+│   │   │                         #   backoff + Retry-After, WP-style query serialization,
+│   │   │                         #   site-root paths, normalized errors; creds never logged
+│   │   ├── errors.ts             # FluentApiError + per-status actionable hints
+│   │   ├── shape.ts              # Paginator detection, summary projection, pruning, text summary
+│   │   ├── tool-factory.ts       # Declarative ToolSpec -> registered MCP tool: Zod schema
+│   │   │                         #   assembly, action routing, path substitution, pagination
+│   │   │                         #   defaults, confirm gating, annotations
+│   │   └── verify.ts             # verify_setup diagnostic tool
 │   └── products/
-│       ├── fluentcrm/            # crm_* tools
-│       │   ├── index.ts          # Product module: meta, auth config, tool registration
-│       │   ├── tools/*.ts        # Declarative tool specs (action → endpoint maps)
-│       │   └── summaries.ts      # Per-resource summary field lists
-│       ├── fluentcart/           # cart_* tools (same layout)
-│       └── _template/            # Scaffold for the next Fluent product (see docs/EXTENDING.md)
-├── tests/                        # Vitest; mocked HTTP, no network
-│   ├── core/*.test.ts            # http client, config, confirm gating, shaping
-│   ├── products/*.test.ts        # Table-driven: every tool/action × success/validation/auth/API-error
-│   └── coverage.test.ts          # Asserts every endpoint in endpoints.json maps to a tool action
+│       ├── index.ts              # Registry: the ONLY line touched outside a new module
+│       ├── fluentcrm/
+│       │   ├── tool-map.json     # Curated: docs group -> tool, descriptions, overrides
+│       │   ├── endpoints.gen.ts  # GENERATED action maps (gen-endpoint-maps.mjs)
+│       │   ├── summaries.ts      # Summary-mode field lists per tool
+│       │   └── index.ts          # ProductModule (key, namespace, env prefix, verifyRead)
+│       ├── fluentcart/           # Same layout
+│       └── _template/            # Scaffold (.tpl files, ignored by tsc/generators)
+├── tests/                        # Vitest, mocked HTTP, no network — 134 tests
+│   ├── helpers.ts                # mockFetch + client factory
+│   ├── core/*.test.ts            # http, config, shape, factory, verify (via in-memory MCP client)
+│   ├── products.test.ts          # Table-driven: EVERY action × endpoint-routing/API-error/gating
+│   └── coverage.test.ts          # endpoints.json ↔ tools 1:1; read-only purity; tool budget
 ├── scripts/
-│   ├── gen-api-docs.mjs          # Multi-product API reference generator (see below)
-│   ├── fluentcart-operations.txt # Discovered operation lists (ordering + offline fallback)
-│   ├── fluentcrm-operations.txt
-│   ├── gen-tool-catalog.mjs      # Renders docs/TOOL_CATALOG.md from the live tool registry
-│   └── smoke-test.mjs            # Post-install read-only smoke test against a live site
-├── evals/questions.xml           # 10 realistic read-only multi-tool Q&As
+│   ├── gen-api-docs.mjs          # Multi-product API reference scraper (PRODUCTS config table)
+│   ├── gen-endpoint-maps.mjs     # endpoints.json + tool-map.json -> endpoints.gen.ts
+│   ├── gen-tool-catalog.mjs      # dist registry -> docs/TOOL_CATALOG.md
+│   ├── smoke-test.mjs            # Post-install READ-ONLY smoke test over stdio
+│   └── *-operations.txt          # Discovered operation lists (ordering + offline fallback)
+├── evals/questions.xml           # 10 read-only multi-tool regression Q&As
 ├── docs/
-│   ├── api-reference/
-│   │   ├── fluentcrm.md          # Per-product overview: auth, one table per group (generated)
-│   │   ├── fluentcart.md
-│   │   ├── auth.md               # Confirmed auth models + credential setup for each product
-│   │   ├── fluentcrm/            # Full per-endpoint reference, one file per group (generated)
-│   │   │   └── endpoints.json    #   + machine-readable endpoint inventory (drives coverage test)
-│   │   └── fluentcart/
-│   ├── DECISIONS.md              # Non-obvious decisions, append-only log
+│   ├── api-reference/            # GENERATED per-product references + endpoints.json
+│   │   ├── fluentcrm.md / fluentcart.md   # Overviews (auth, one table per group)
+│   │   ├── fluentcrm/ fluentcart/         # Full per-endpoint schemas + endpoints.json
+│   │   ├── auth.md               # Confirmed auth models (hand-written)
+│   │   └── MAINTAINING.md        # How scraping works + how to refresh (hand-written)
+│   ├── DECISIONS.md              # Append-only decision log
 │   ├── PROJECT_MAP.md            # This file
-│   ├── TOOL_DESIGN.md            # Tool consolidation rationale + endpoint→tool coverage map
-│   ├── TOOL_CATALOG.md           # Every tool: name, one-liner, classification, example (generated)
+│   ├── TOOL_DESIGN.md            # Consolidation rationale + tool inventory + safety policy
+│   ├── TOOL_CATALOG.md           # GENERATED tool catalog with examples
 │   └── EXTENDING.md              # Playbook: add a new Fluent product end-to-end
-├── .github/workflows/refresh-api-docs.yml  # Weekly regeneration of docs/api-reference, PR on change
-├── FLUENTCART_DEV_KIT.md         # Upstream dev kit (gotchas + WP-side reference) — kept verbatim
-├── .env.example                  # All env vars with comments; no real values
-├── CHANGELOG.md
-└── README.md                     # 5-minute install path
+├── .github/workflows/refresh-api-docs.yml  # Weekly reference refresh, PRs on change
+├── FLUENTCART_DEV_KIT.md         # Upstream dev kit (WP-side gotchas) — kept verbatim
+├── .env.example                  # All env vars, commented, no real values
+├── CHANGELOG.md · README.md · package.json · tsconfig.json · vitest.config.ts
 ```
 
 ## How the pieces connect
 
-1. **Docs pipeline** (`scripts/gen-api-docs.mjs`): per-product config →
-   discover `operations/<group>/<slug>` from the docs-site sidebar → fetch
-   each per-operation OpenAPI spec → write `docs/api-reference/<product>/`
-   (one md per group + `endpoints.json` + overview `<product>.md`). Weekly CI
-   refresh opens a PR when upstream changes.
-2. **Server runtime**: `index.ts` reads config (`core/config.ts`), asks the
-   registry for products whose credentials are present, and each product
-   module registers its tools through `core/tool-factory.ts` against the
-   shared HTTP client. Products without credentials are skipped cleanly and
-   reported by `verify_setup` as "not configured".
-3. **Tool factory contract**: a tool spec is data — name, description,
-   annotations, and an `actions` map (`action name → {method, path, params,
-   destructive?, …}`). The factory produces the Zod input schema (action enum
-   + common params + per-action fields), routes calls, enforces
-   `confirm: true` on destructive actions, applies pagination defaults and
-   summary/full shaping. Adding endpoints = editing data, not control flow.
-4. **Coverage guarantee**: `tests/coverage.test.ts` diffs every entry in each
-   product's `endpoints.json` against the union of endpoints reachable from
-   that product's tool specs; unmapped endpoints fail CI.
+1. **Docs pipeline**: `gen-api-docs.mjs` scrapes each product's docs site
+   (shared VitePress/OpenAPI infra) → `docs/api-reference/<product>{,.md}`
+   incl. `endpoints.json`. Weekly CI refresh opens a PR on upstream change.
+2. **Map pipeline**: `gen-endpoint-maps.mjs` joins `endpoints.json` with the
+   curated `tool-map.json` → `endpoints.gen.ts` (action maps). Fails on
+   unassigned groups, collisions, empty tools. `--destructive` prints the
+   gated-action review list.
+3. **Runtime**: `index.ts` loads env config; products with credentials get a
+   `FluentClient` and register their tools through the factory; the rest are
+   skipped and reported by `verify_setup` as `not configured`.
+4. **Coverage loop**: `tests/coverage.test.ts` re-derives the mapping from
+   `endpoints.json` — a new upstream endpoint fails CI until it lands in a
+   tool (usually automatically via its group's default tool). The catalog is
+   regenerated from the same registry, so docs can't drift.
+
+## Regeneration cheat sheet
+
+```bash
+npm run gen:docs      # re-scrape upstream APIs (network)
+npm run gen:maps      # rebuild action maps from endpoints.json (offline)
+npm run build         # tsc
+npm run gen:catalog   # rebuild docs/TOOL_CATALOG.md from dist
+npm test              # 134 tests incl. coverage guarantees
+```
 
 ## Build phases / status
 
-- [x] Phase 0 — repo audit (`DECISIONS.md` 2026-07-16 entries)
-- [ ] Phase 1 — API research & living references (in progress)
-- [ ] Phase 2 — tool surface design (`TOOL_DESIGN.md`)
-- [ ] Phase 3 — server build
-- [ ] Phase 4 — tests, Inspector, smoke, evals
-- [ ] Phase 5 — packaging & docs
+- [x] Phase 0 — repo audit (`DECISIONS.md`)
+- [x] Phase 1 — API research & living references (`docs/api-reference/`)
+- [x] Phase 2 — tool surface design (`TOOL_DESIGN.md`, 44 tools)
+- [x] Phase 3 — server build (core + 2 product modules + verify_setup)
+- [x] Phase 4 — tests (134 passing), Inspector load, smoke, evals
+- [x] Phase 5 — packaging & docs (README, catalog, changelog, EXTENDING, template)
