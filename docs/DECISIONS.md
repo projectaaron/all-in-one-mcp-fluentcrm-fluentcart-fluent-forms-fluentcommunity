@@ -216,3 +216,20 @@ shared HTTP client. The MCP tools available in this session could read but
 not deploy Workers, and no API token was present — deployment is the user's
 `wrangler login` + `npm run deploy:cloudflare`; the Worker was verified here
 in local workerd via `wrangler dev` with Inspector + curl.
+
+## 2026-07-16 — Field reports beat reference docs
+
+Two production findings from the first live agent sessions, both now
+encoded in the server:
+
+- **FluentCart's money units are inconsistent** with its own docs: order
+  totals are cents (BIGINT), but variation prices (`item_price`,
+  `compare_price` — DOUBLE columns) are dollars on create/update, multiplied
+  by 100 server-side. The docs' blanket "all monetary values in cents" caused
+  a live 100× price write. Tool descriptions now state the units per tool;
+  the generated reference inherits upstream's claim, so the tool description
+  is the authoritative warning layer.
+- **Validation errors must pass through verbatim.** parseWpError now
+  flattens Laravel-style `errors` maps into the error message (capped at
+  600 chars). The agent that hit this burned ~10 calls reverse-engineering
+  ProductVariationRequest.php; one good error message replaces all of that.
