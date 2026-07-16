@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.5.1 — 2026-07-16
+
+- **Fix: record data now reaches every MCP client.** Tool results carried the
+  payload only in `structuredContent` with a one-line text summary — but
+  claude.ai surfaces just the text block to the model, so list/get data never
+  arrived ("15 items" with no items). Responses now serialize the shaped
+  payload into the text block as well, per the MCP spec's compatibility
+  guidance. Reported live by the first real user session.
+- Summary mode drops the Laravel paginator boilerplate (`links[]`, page
+  URLs, `from`/`to`) — the clean `pagination` field already carries the
+  numbers; `detail:"full"` keeps the envelope verbatim.
+- `wrangler.jsonc` sets `keep_vars: true` so deploys never clobber
+  dashboard-added plaintext variables (credentials added as "Text" vars were
+  wiped by a redeploy — store credentials as type **Secret**).
+
 ## 0.5.0 — 2026-07-16
 
 - **Cloudflare Workers deployment** — the recommended remote host.

@@ -69,13 +69,15 @@ export function shapeResponse(
   if (Array.isArray(raw)) {
     container = { items: raw, replace: (items) => items };
   } else if (isPaginator(raw)) {
-    container = { items: raw.data, replace: (items) => ({ ...raw, data: items }), pagination: paginationOf(raw) };
+    // Summary mode drops the Laravel paginator boilerplate (links[], page
+    // URLs, from/to) — the clean `pagination` field carries the numbers.
+    container = { items: raw.data, replace: (items) => ({ data: items }), pagination: paginationOf(raw) };
   } else if (isRec(raw)) {
     for (const [key, value] of Object.entries(raw)) {
       if (isPaginator(value)) {
         container = {
           items: value.data,
-          replace: (items) => ({ ...raw, [key]: { ...value, data: items } }),
+          replace: (items) => ({ ...raw, [key]: { data: items } }),
           pagination: paginationOf(value),
         };
         break;
