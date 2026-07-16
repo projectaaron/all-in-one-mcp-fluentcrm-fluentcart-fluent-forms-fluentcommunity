@@ -143,4 +143,26 @@ describe('FluentClient', () => {
     await makeClient(fetchImpl, { credentials: undefined }).request({ method: 'GET', path: '/public/products' });
     expect(calls[0].headers.Authorization).toBeUndefined();
   });
+
+  // Regression (field report): Fluent 422s carry {"errors":{"field":[...]}}
+  // which the wrapper used to swallow — ten wasted tool calls' worth of info.
+  it('surfaces field-level 422 validation errors', async () => {
+    const { fetchImpl } = mockFetch([
+      {
+        status: 422,
+        body: {
+          message: 'The given data was invalid.',
+          errors: {
+            'variants.total_stock': ['The variants.total_stock field is required.'],
+            'variants.available': ['The variants.available field is required.'],
+          },
+        },
+      },
+    ]);
+    const err = await makeClient(fetchImpl)
+      .request({ method: 'POST', path: '/products/1/pricing', body: {} })
+      .catch((e) => e as FluentApiError);
+    expect(err.message).toContain('variants.total_stock: The variants.total_stock field is required.');
+    expect(err.message).toContain('variants.available');
+  });
 });
