@@ -1,0 +1,4560 @@
+{
+  "product": "fluentcart",
+  "source": "https://dev.fluentcart.com/restapi/",
+  "scraped": "2026-07-16",
+  "baseUrl": "https://{website}/wp-json/fluent-cart/v2",
+  "namespace": "fluent-cart/v2",
+  "count": 380,
+  "endpoints": [
+    {
+      "group": "orders",
+      "slug": "accept-dispute",
+      "operationId": "acceptDispute",
+      "method": "POST",
+      "path": "/orders/{order}/transactions/{transaction_id}/accept-dispute/",
+      "summary": "POST Accept Dispute",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "orders",
+      "slug": "bulk-actions",
+      "operationId": "bulkActions",
+      "method": "POST",
+      "path": "/orders/do-bulk-action",
+      "summary": "POST Bulk Actions",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "orders",
+      "slug": "calculate-shipping",
+      "operationId": "calculateShipping",
+      "method": "POST",
+      "path": "/orders/calculate-shipping",
+      "summary": "POST Calculate Shipping",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "orders",
+      "slug": "change-customer",
+      "operationId": "changeCustomer",
+      "method": "POST",
+      "path": "/orders/{order_id}/change-customer",
+      "summary": "POST Change Customer",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "orders",
+      "slug": "create-and-change-customer",
+      "operationId": "createAndChangeCustomer",
+      "method": "POST",
+      "path": "/orders/{order_id}/create-and-change-customer",
+      "summary": "POST Create and Change Customer",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "orders",
+      "slug": "create-custom-order-item",
+      "operationId": "createCustomOrderItem",
+      "method": "POST",
+      "path": "/orders/{order}/create-custom",
+      "summary": "POST Create Custom Order Item",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "orders",
+      "slug": "create-order",
+      "operationId": "createOrder",
+      "method": "POST",
+      "path": "/orders",
+      "summary": "POST Create Order",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "orders",
+      "slug": "delete-order",
+      "operationId": "deleteOrder",
+      "method": "DELETE",
+      "path": "/orders/{order_id}",
+      "summary": "DELETE Delete Order",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "orders",
+      "slug": "generate-missing-licenses",
+      "operationId": "generateMissingLicenses",
+      "method": "POST",
+      "path": "/orders/{order}/generate-missing-licenses",
+      "summary": "POST Generate Missing Licenses",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "orders",
+      "slug": "get-order",
+      "operationId": "getOrder",
+      "method": "GET",
+      "path": "/orders/{order_id}",
+      "summary": "GET Get Order Details",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "orders",
+      "slug": "get-order-transactions",
+      "operationId": "getOrderTransactions",
+      "method": "GET",
+      "path": "/orders/{order}/transactions",
+      "summary": "GET Get Order Transactions",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "orders",
+      "slug": "get-shipping-methods",
+      "operationId": "getShippingMethods",
+      "method": "GET",
+      "path": "/orders/shipping_methods",
+      "summary": "GET Get Shipping Methods",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "orders",
+      "slug": "get-single-transaction",
+      "operationId": "getSingleTransaction",
+      "method": "GET",
+      "path": "/orders/{id}/transactions/{transaction_id}",
+      "summary": "GET Get Single Transaction",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "orders",
+      "slug": "list-orders",
+      "operationId": "listOrders",
+      "method": "GET",
+      "path": "/orders",
+      "summary": "GET List Orders",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "orders",
+      "slug": "mark-as-paid",
+      "operationId": "markOrderAsPaid",
+      "method": "POST",
+      "path": "/orders/{order}/mark-as-paid",
+      "summary": "POST Mark Order as Paid",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "orders",
+      "slug": "refund-order",
+      "operationId": "refundOrder",
+      "method": "POST",
+      "path": "/orders/{order_id}/refund",
+      "summary": "POST Refund Order",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "orders",
+      "slug": "sync-order-statuses",
+      "operationId": "syncOrderStatuses",
+      "method": "PUT",
+      "path": "/orders/{order}/sync-statuses",
+      "summary": "PUT Sync Order Statuses",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "orders",
+      "slug": "update-order",
+      "operationId": "updateOrder",
+      "method": "POST",
+      "path": "/orders/{order_id}",
+      "summary": "POST Update Order",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "orders",
+      "slug": "update-order-address",
+      "operationId": "updateOrderAddress",
+      "method": "PUT",
+      "path": "/orders/{order}/address/{id}",
+      "summary": "PUT Update Order Address",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "orders",
+      "slug": "update-order-address-id",
+      "operationId": "updateOrderAddressId",
+      "method": "POST",
+      "path": "/orders/{order_id}/update-address-id",
+      "summary": "POST Update Order Address ID",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "orders",
+      "slug": "update-statuses",
+      "operationId": "updateOrderStatuses",
+      "method": "PUT",
+      "path": "/orders/{order}/statuses",
+      "summary": "PUT Update Statuses",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "orders",
+      "slug": "update-transaction-status",
+      "operationId": "updateTransactionStatus",
+      "method": "PUT",
+      "path": "/orders/{order}/transactions/{transaction}/status",
+      "summary": "PUT Update Transaction Status",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "add-product-terms",
+      "operationId": "addProductTerms",
+      "method": "POST",
+      "path": "/products/add-product-terms",
+      "summary": "POST Add Product Terms",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "bulk-edit-fetch",
+      "operationId": "bulkEditFetch",
+      "method": "GET",
+      "path": "/products/bulk-edit-data",
+      "summary": "GET Bulk Edit Fetch",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "bulk-insert-products",
+      "operationId": "bulkInsertProducts",
+      "method": "POST",
+      "path": "/products/bulk-insert",
+      "summary": "POST Bulk Insert Products",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "bulk-update-products",
+      "operationId": "bulkUpdateProducts",
+      "method": "POST",
+      "path": "/products/bulk-update",
+      "summary": "POST Bulk Update Products",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "change-integration-status",
+      "operationId": "changeIntegrationStatus",
+      "method": "POST",
+      "path": "/products/{product_id}/integrations/feed/change-status",
+      "summary": "POST Change Integration Status",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "create-dummy-products",
+      "operationId": "createDummyProducts",
+      "method": "POST",
+      "path": "/products/create-dummy",
+      "summary": "POST Create Dummy Products",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "create-product",
+      "operationId": "createProduct",
+      "method": "POST",
+      "path": "/products",
+      "summary": "POST Create Product",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "create-variation",
+      "operationId": "createVariation",
+      "method": "POST",
+      "path": "/products/variants",
+      "summary": "POST Create Variation",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "delete-downloadable-file",
+      "operationId": "deleteDownloadableFile",
+      "method": "DELETE",
+      "path": "/products/{downloadableId}/delete",
+      "summary": "DELETE Delete Downloadable File",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "delete-product",
+      "operationId": "deleteProduct",
+      "method": "DELETE",
+      "path": "/products/{product}",
+      "summary": "DELETE Delete Product",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "delete-product-integration",
+      "operationId": "deleteProductIntegration",
+      "method": "DELETE",
+      "path": "/products/{product_id}/integrations/{integration_id}",
+      "summary": "DELETE Delete Product Integration",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "delete-taxonomy-term",
+      "operationId": "deleteTaxonomyTerm",
+      "method": "POST",
+      "path": "/products/delete-taxonomy-term/{postId}",
+      "summary": "POST Delete Taxonomy Term",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "delete-upgrade-path",
+      "operationId": "deleteUpgradePath",
+      "method": "DELETE",
+      "path": "/products/upgrade-path/{id}/delete",
+      "summary": "DELETE Delete Upgrade Path",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "delete-variation",
+      "operationId": "deleteVariation",
+      "method": "DELETE",
+      "path": "/products/variants/{variantId}",
+      "summary": "DELETE Delete Variation",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "do-bulk-action",
+      "operationId": "doBulkAction",
+      "method": "POST",
+      "path": "/products/do-bulk-action",
+      "summary": "POST Do Bulk Action",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "duplicate-product",
+      "operationId": "duplicateProduct",
+      "method": "POST",
+      "path": "/products/{productId}/duplicate",
+      "summary": "POST Duplicate Product",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "fetch-products-by-ids",
+      "operationId": "fetchProductsByIds",
+      "method": "GET",
+      "path": "/products/fetchProductsByIds",
+      "summary": "GET Fetch Products by IDs",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "fetch-taxonomy-terms",
+      "operationId": "fetchTaxonomyTerms",
+      "method": "GET",
+      "path": "/products/fetch-term",
+      "summary": "GET Fetch Taxonomy Terms",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "fetch-terms-by-parent",
+      "operationId": "fetchTermsByParent",
+      "method": "POST",
+      "path": "/products/fetch-term-by-parent",
+      "summary": "POST Fetch Terms by Parent",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "fetch-variations-by-ids",
+      "operationId": "fetchVariationsByIds",
+      "method": "GET",
+      "path": "/products/fetchVariationsByIds",
+      "summary": "GET Fetch Variations by IDs",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "find-subscription-variants",
+      "operationId": "findSubscriptionVariants",
+      "method": "GET",
+      "path": "/products/findSubscriptionVariants",
+      "summary": "GET Find Subscription Variants",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "get-bundle-info",
+      "operationId": "getBundleInfo",
+      "method": "GET",
+      "path": "/products/get-bundle-info/{productId}",
+      "summary": "GET Get Bundle Info",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "get-downloadable-url",
+      "operationId": "getDownloadableUrl",
+      "method": "GET",
+      "path": "/products/getDownloadableUrl/{downloadableId}",
+      "summary": "GET Get Downloadable URL",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "get-max-excerpt-word-count",
+      "operationId": "getMaxExcerptWordCount",
+      "method": "GET",
+      "path": "/products/get-max-excerpt-word-count",
+      "summary": "GET Get Max Excerpt Word Count",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "get-pricing-widgets",
+      "operationId": "getPricingWidgets",
+      "method": "GET",
+      "path": "/products/{productId}/pricing-widgets",
+      "summary": "GET Get Pricing Widgets",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "get-product",
+      "operationId": "getProduct",
+      "method": "GET",
+      "path": "/products/{product}",
+      "summary": "GET Get Product",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "get-product-integration-feeds",
+      "operationId": "getProductIntegrationFeeds",
+      "method": "GET",
+      "path": "/products/{productId}/integrations",
+      "summary": "GET Get Product Integration Feeds",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "get-product-integration-settings",
+      "operationId": "getProductIntegrationSettings",
+      "method": "GET",
+      "path": "/products/{product_id}/integrations/{integration_name}/settings",
+      "summary": "GET Get Product Integration Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "get-product-pricing",
+      "operationId": "getProductPricing",
+      "method": "GET",
+      "path": "/products/{productId}/pricing",
+      "summary": "GET Get Product Pricing",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "get-related-products",
+      "operationId": "getRelatedProducts",
+      "method": "GET",
+      "path": "/products/{productId}/related-products",
+      "summary": "GET Get Related Products",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "get-upgrade-settings",
+      "operationId": "getUpgradeSettings",
+      "method": "GET",
+      "path": "/products/{id}/upgrade-paths",
+      "summary": "GET Get Upgrade Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "get-variation-upgrade-paths",
+      "operationId": "getVariationUpgradePaths",
+      "method": "GET",
+      "path": "/products/variation/{variantId}/upgrade-paths",
+      "summary": "GET Get Variation Upgrade Paths",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "list-all-variants",
+      "operationId": "listAllVariants",
+      "method": "GET",
+      "path": "/variants",
+      "summary": "GET List All Variants",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "list-product-variations",
+      "operationId": "listProductVariations",
+      "method": "GET",
+      "path": "/products/variants",
+      "summary": "GET List Product Variations",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "list-products",
+      "operationId": "listProducts",
+      "method": "GET",
+      "path": "/products",
+      "summary": "GET List Products",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "remove-shipping-class",
+      "operationId": "removeShippingClass",
+      "method": "POST",
+      "path": "/products/{postId}/shipping-class/remove",
+      "summary": "POST Remove Shipping Class",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "remove-tax-class",
+      "operationId": "removeTaxClass",
+      "method": "POST",
+      "path": "/products/{postId}/tax-class/remove",
+      "summary": "POST Remove Tax Class",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "save-bundle-info",
+      "operationId": "saveBundleInfo",
+      "method": "POST",
+      "path": "/products/save-bundle-info/{variationId}",
+      "summary": "POST Save Bundle Info",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "save-product-integration",
+      "operationId": "saveProductIntegration",
+      "method": "POST",
+      "path": "/products/{product_id}/integrations",
+      "summary": "POST Save Product Integration",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "save-upgrade-path",
+      "operationId": "saveUpgradePath",
+      "method": "POST",
+      "path": "/products/{id}/upgrade-path",
+      "summary": "POST Save Upgrade Path",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "search-product-variant-options",
+      "operationId": "searchProductVariantOptions",
+      "method": "GET",
+      "path": "/products/search-product-variant-options",
+      "summary": "GET Search Product Variant Options",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "search-products-by-name",
+      "operationId": "searchProductsByName",
+      "method": "GET",
+      "path": "/products/searchProductByName",
+      "summary": "GET Search Products by Name",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "search-variants-by-name",
+      "operationId": "searchVariantsByName",
+      "method": "GET",
+      "path": "/products/searchVariantByName",
+      "summary": "GET Search Variants by Name",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "set-variation-media",
+      "operationId": "setVariationMedia",
+      "method": "POST",
+      "path": "/products/variants/{variantId}/setMedia",
+      "summary": "POST Set Variation Media",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "suggest-sku",
+      "operationId": "suggestSku",
+      "method": "GET",
+      "path": "/products/suggest-sku",
+      "summary": "GET Suggest SKU",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "sync-downloadable-files",
+      "operationId": "syncDownloadableFiles",
+      "method": "POST",
+      "path": "/products/{postId}/sync-downloadable-files",
+      "summary": "POST Sync Downloadable Files",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "sync-taxonomy-terms",
+      "operationId": "syncTaxonomyTerms",
+      "method": "POST",
+      "path": "/products/sync-taxonomy-term/{postId}",
+      "summary": "POST Sync Taxonomy Terms",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "update-downloadable-file",
+      "operationId": "updateDownloadableFile",
+      "method": "PUT",
+      "path": "/products/{downloadableId}/update",
+      "summary": "PUT Update Downloadable File",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "update-inventory",
+      "operationId": "updateInventory",
+      "method": "PUT",
+      "path": "/products/{postId}/update-inventory/{variantId}",
+      "summary": "PUT Update Inventory",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "update-long-desc-editor-mode",
+      "operationId": "updateLongDescEditorMode",
+      "method": "POST",
+      "path": "/products/{postId}/update-long-desc-editor-mode",
+      "summary": "POST Update Long Description Editor Mode",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "update-manage-stock",
+      "operationId": "updateManageStock",
+      "method": "PUT",
+      "path": "/products/{postId}/update-manage-stock",
+      "summary": "PUT Update Manage Stock Setting",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "update-product-detail",
+      "operationId": "updateProductDetail",
+      "method": "POST",
+      "path": "/products/detail/{detailId}",
+      "summary": "POST Update Product Detail",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "update-product-pricing",
+      "operationId": "updateProductPricing",
+      "method": "POST",
+      "path": "/products/{postId}/pricing",
+      "summary": "POST Update Product Pricing",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "update-shipping-class",
+      "operationId": "updateShippingClass",
+      "method": "POST",
+      "path": "/products/{postId}/shipping-class",
+      "summary": "POST Update Shipping Class",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "update-tax-class",
+      "operationId": "updateTaxClass",
+      "method": "POST",
+      "path": "/products/{postId}/tax-class",
+      "summary": "POST Update Tax Class",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "update-upgrade-path",
+      "operationId": "updateUpgradePath",
+      "method": "POST",
+      "path": "/products/upgrade-path/{id}/update",
+      "summary": "POST Update Upgrade Path",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "update-variant-option",
+      "operationId": "updateVariantOption",
+      "method": "POST",
+      "path": "/products/{postId}/update-variant-option",
+      "summary": "POST Update Variant Option",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "update-variation",
+      "operationId": "updateVariation",
+      "method": "POST",
+      "path": "/products/variants/{variantId}",
+      "summary": "POST Update Variation",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "update-variation-pricing-table",
+      "operationId": "updateVariationPricingTable",
+      "method": "PUT",
+      "path": "/products/variants/{variantId}/pricing-table",
+      "summary": "PUT Update Variation Pricing Table",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customers",
+      "slug": "attach-user",
+      "operationId": "attachWordPressUser",
+      "method": "POST",
+      "path": "/customers/{customerId}/attachable-user",
+      "summary": "POST Attach WordPress User",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customers",
+      "slug": "bulk-actions",
+      "operationId": "bulkActionCustomers",
+      "method": "POST",
+      "path": "/customers/do-bulk-action",
+      "summary": "POST Bulk Actions",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customers",
+      "slug": "create-address",
+      "operationId": "createCustomerAddress",
+      "method": "POST",
+      "path": "/customers/{customerId}/address",
+      "summary": "POST Create Address",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customers",
+      "slug": "create-customer",
+      "operationId": "createCustomer",
+      "method": "POST",
+      "path": "/customers",
+      "summary": "POST Create Customer",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customers",
+      "slug": "delete-address",
+      "operationId": "deleteCustomerAddress",
+      "method": "DELETE",
+      "path": "/customers/{customerId}/address",
+      "summary": "DELETE Delete Address",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customers",
+      "slug": "detach-user",
+      "operationId": "detachWordPressUser",
+      "method": "POST",
+      "path": "/customers/{customerId}/detach-user",
+      "summary": "POST Detach WordPress User",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customers",
+      "slug": "find-customer-order",
+      "operationId": "findCustomerOrder",
+      "method": "GET",
+      "path": "/customers/{customerId}/order",
+      "summary": "GET Find Customer Order",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customers",
+      "slug": "get-attachable-users",
+      "operationId": "getAttachableUsers",
+      "method": "GET",
+      "path": "/customers/attachable-user",
+      "summary": "GET Get Attachable Users",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customers",
+      "slug": "get-customer",
+      "operationId": "getCustomer",
+      "method": "GET",
+      "path": "/customers/{customerId}",
+      "summary": "GET Get Customer",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customers",
+      "slug": "get-customer-addresses",
+      "operationId": "getCustomerAddresses",
+      "method": "GET",
+      "path": "/customers/{customerId}/address",
+      "summary": "GET Get Customer Addresses",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customers",
+      "slug": "get-customer-orders",
+      "operationId": "getCustomerOrders",
+      "method": "GET",
+      "path": "/customers/{customerId}/orders",
+      "summary": "GET Get Customer Orders",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customers",
+      "slug": "get-customer-stats",
+      "operationId": "getCustomerStats",
+      "method": "GET",
+      "path": "/customers/get-stats/{customer}",
+      "summary": "GET Get Customer Stats",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customers",
+      "slug": "list-customers",
+      "operationId": "listCustomers",
+      "method": "GET",
+      "path": "/customers",
+      "summary": "GET List Customers",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customers",
+      "slug": "recalculate-ltv",
+      "operationId": "recalculateCustomerLtv",
+      "method": "POST",
+      "path": "/customers/{customerId}/recalculate-ltv",
+      "summary": "POST Recalculate Lifetime Value",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customers",
+      "slug": "set-primary-address",
+      "operationId": "setPrimaryAddress",
+      "method": "POST",
+      "path": "/customers/{customerId}/address/make-primary",
+      "summary": "POST Set Primary Address",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customers",
+      "slug": "update-additional-info",
+      "operationId": "updateCustomerAdditionalInfo",
+      "method": "PUT",
+      "path": "/customers/{customerId}/additional-info",
+      "summary": "PUT Update Additional Info (Labels)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customers",
+      "slug": "update-address",
+      "operationId": "updateCustomerAddress",
+      "method": "PUT",
+      "path": "/customers/{customerId}/address",
+      "summary": "PUT Update Address",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customers",
+      "slug": "update-customer",
+      "operationId": "updateCustomer",
+      "method": "PUT",
+      "path": "/customers/{customerId}",
+      "summary": "PUT Update Customer",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "coupons",
+      "slug": "apply-coupon",
+      "operationId": "applyCoupon",
+      "method": "POST",
+      "path": "/coupons/apply",
+      "summary": "POST Apply Coupon",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "coupons",
+      "slug": "cancel-coupon",
+      "operationId": "cancelCoupon",
+      "method": "POST",
+      "path": "/coupons/cancel",
+      "summary": "POST Cancel Coupon",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "coupons",
+      "slug": "check-product-eligibility",
+      "operationId": "checkProductEligibility",
+      "method": "POST",
+      "path": "/coupons/checkProductEligibility",
+      "summary": "POST Check Product Eligibility",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "coupons",
+      "slug": "create-coupon",
+      "operationId": "createCoupon",
+      "method": "POST",
+      "path": "/coupons",
+      "summary": "POST Create Coupon",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "coupons",
+      "slug": "delete-coupon",
+      "operationId": "deleteCoupon",
+      "method": "DELETE",
+      "path": "/coupons/{id}",
+      "summary": "DELETE Coupon",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "coupons",
+      "slug": "get-coupon",
+      "operationId": "getCoupon",
+      "method": "GET",
+      "path": "/coupons/{id}",
+      "summary": "GET Coupon Details",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "coupons",
+      "slug": "get-coupon-settings",
+      "operationId": "getCouponSettings",
+      "method": "GET",
+      "path": "/coupons/getSettings",
+      "summary": "GET Coupon Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "coupons",
+      "slug": "list-coupon-codes",
+      "operationId": "listCouponCodes",
+      "method": "GET",
+      "path": "/coupons/listCoupons",
+      "summary": "GET List Coupon Codes",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "coupons",
+      "slug": "list-coupons",
+      "operationId": "listCoupons",
+      "method": "GET",
+      "path": "/coupons",
+      "summary": "GET List Coupons",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "coupons",
+      "slug": "re-apply-coupons",
+      "operationId": "reApplyCoupons",
+      "method": "POST",
+      "path": "/coupons/re-apply",
+      "summary": "POST Re-apply Coupons",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "coupons",
+      "slug": "store-coupon-settings",
+      "operationId": "storeCouponSettings",
+      "method": "POST",
+      "path": "/coupons/storeCouponSettings",
+      "summary": "POST Store Coupon Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "coupons",
+      "slug": "update-coupon",
+      "operationId": "updateCoupon",
+      "method": "PUT",
+      "path": "/coupons/{id}",
+      "summary": "PUT Update Coupon",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "subscriptions",
+      "slug": "cancel-auto-renew",
+      "operationId": "cancelAutoRenew",
+      "method": "POST",
+      "path": "/customer-profile/subscriptions/{subscription_uuid}/cancel-auto-renew",
+      "summary": "POST Cancel Auto-Renew",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "subscriptions",
+      "slug": "cancel-subscription",
+      "operationId": "cancelSubscription",
+      "method": "PUT",
+      "path": "/orders/{order}/subscriptions/{subscription}/cancel",
+      "summary": "PUT Cancel Subscription",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "subscriptions",
+      "slug": "confirm-subscription-switch",
+      "operationId": "confirmSubscriptionSwitch",
+      "method": "POST",
+      "path": "/customer-profile/subscriptions/{subscription_uuid}/confirm-subscription-switch",
+      "summary": "POST Confirm Subscription Switch",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "subscriptions",
+      "slug": "fetch-subscription-remote",
+      "operationId": "fetchSubscriptionRemote",
+      "method": "PUT",
+      "path": "/orders/{order}/subscriptions/{subscription}/fetch",
+      "summary": "PUT Fetch Subscription from Remote",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "subscriptions",
+      "slug": "generate-early-payment-link",
+      "operationId": "generateEarlyPaymentLink",
+      "method": "POST",
+      "path": "/orders/{order}/subscriptions/{subscription}/early-payment-link",
+      "summary": "POST Generate Early Payment Link",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "subscriptions",
+      "slug": "get-customer-subscription",
+      "operationId": "getCustomerSubscription",
+      "method": "GET",
+      "path": "/customer-profile/subscriptions/{subscription_uuid}",
+      "summary": "GET Get Customer Subscription Details",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "subscriptions",
+      "slug": "get-or-create-plan",
+      "operationId": "getOrCreatePlan",
+      "method": "POST",
+      "path": "/customer-profile/subscriptions/{subscription_uuid}/get-or-create-plan",
+      "summary": "POST Get or Create Plan",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "subscriptions",
+      "slug": "get-setup-intent-attempts",
+      "operationId": "getSetupIntentAttempts",
+      "method": "GET",
+      "path": "/customer-profile/subscriptions/{subscription_uuid}/setup-intent-attempts",
+      "summary": "GET Get Setup Intent Remaining Attempts",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "subscriptions",
+      "slug": "get-subscription",
+      "operationId": "getSubscription",
+      "method": "GET",
+      "path": "/subscriptions/{subscriptionOrderId}",
+      "summary": "GET Get Subscription Details",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "subscriptions",
+      "slug": "initiate-early-payment",
+      "operationId": "initiateEarlyPayment",
+      "method": "POST",
+      "path": "/customer-profile/subscriptions/{subscription_uuid}/initiate-early-payment",
+      "summary": "POST Initiate Early Payment",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "subscriptions",
+      "slug": "list-customer-subscriptions",
+      "operationId": "listCustomerSubscriptions",
+      "method": "GET",
+      "path": "/customer-profile/subscriptions",
+      "summary": "GET List Customer Subscriptions",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "subscriptions",
+      "slug": "list-subscriptions",
+      "operationId": "listSubscriptions",
+      "method": "GET",
+      "path": "/subscriptions",
+      "summary": "GET List Subscriptions",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "subscriptions",
+      "slug": "pause-subscription",
+      "operationId": "pauseSubscription",
+      "method": "PUT",
+      "path": "/orders/{order}/subscriptions/{subscription}/pause",
+      "summary": "PUT Pause Subscription",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "subscriptions",
+      "slug": "reactivate-subscription",
+      "operationId": "reactivateSubscription",
+      "method": "PUT",
+      "path": "/orders/{order}/subscriptions/{subscription}/reactivate",
+      "summary": "PUT Reactivate Subscription",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "subscriptions",
+      "slug": "resume-subscription",
+      "operationId": "resumeSubscription",
+      "method": "PUT",
+      "path": "/orders/{order}/subscriptions/{subscription}/resume",
+      "summary": "PUT Resume Subscription",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "subscriptions",
+      "slug": "switch-payment-method",
+      "operationId": "switchPaymentMethod",
+      "method": "POST",
+      "path": "/customer-profile/subscriptions/{subscription_uuid}/switch-payment-method",
+      "summary": "POST Switch Payment Method",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "subscriptions",
+      "slug": "update-payment-method",
+      "operationId": "updatePaymentMethod",
+      "method": "POST",
+      "path": "/customer-profile/subscriptions/{subscription_uuid}/update-payment-method",
+      "summary": "POST Update Payment Method",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tax",
+      "slug": "create-tax-class",
+      "operationId": "createTaxClass",
+      "method": "POST",
+      "path": "/tax/classes",
+      "summary": "POST Create Tax Class",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tax",
+      "slug": "create-tax-rate",
+      "operationId": "createTaxRate",
+      "method": "POST",
+      "path": "/tax/country/rate",
+      "summary": "POST Create Tax Rate",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tax",
+      "slug": "delete-country-rates",
+      "operationId": "deleteCountryRates",
+      "method": "DELETE",
+      "path": "/tax/country/{country_code}",
+      "summary": "DELETE Delete All Rates for a Country",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tax",
+      "slug": "delete-oss-shipping-tax-override",
+      "operationId": "deleteOssShippingTaxOverride",
+      "method": "DELETE",
+      "path": "/tax/configuration/settings/eu-vat/oss/shipping-override",
+      "summary": "DELETE Delete OSS Shipping Tax Override",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tax",
+      "slug": "delete-oss-tax-override",
+      "operationId": "deleteOssTaxOverride",
+      "method": "DELETE",
+      "path": "/tax/configuration/settings/eu-vat/oss/override",
+      "summary": "DELETE Delete OSS Tax Override",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tax",
+      "slug": "delete-shipping-tax-override",
+      "operationId": "deleteShippingTaxOverride",
+      "method": "DELETE",
+      "path": "/tax/rates/country/override/{id}",
+      "summary": "DELETE Delete Shipping Tax Override",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tax",
+      "slug": "delete-tax-class",
+      "operationId": "deleteTaxClass",
+      "method": "DELETE",
+      "path": "/tax/classes/{id}",
+      "summary": "DELETE Delete Tax Class",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tax",
+      "slug": "delete-tax-rate",
+      "operationId": "deleteTaxRate",
+      "method": "DELETE",
+      "path": "/tax/country/rate/{id}",
+      "summary": "DELETE Delete Tax Rate",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tax",
+      "slug": "get-country-tax-id",
+      "operationId": "getCountryTaxId",
+      "method": "GET",
+      "path": "/tax/country-tax-id/{country_code}",
+      "summary": "GET Get Country Tax ID",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tax",
+      "slug": "get-country-tax-rates",
+      "operationId": "getCountryTaxRates",
+      "method": "GET",
+      "path": "/tax/rates/country/rates/{country_code}",
+      "summary": "GET Get Country Tax Rates",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tax",
+      "slug": "get-eu-tax-rates",
+      "operationId": "getEuTaxRates",
+      "method": "GET",
+      "path": "/tax/configuration/settings/eu-vat/rates",
+      "summary": "GET Get EU Tax Rates",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tax",
+      "slug": "get-preconfigured-tax-rates",
+      "operationId": "getPreconfiguredTaxRates",
+      "method": "GET",
+      "path": "/tax/configuration/rates",
+      "summary": "GET Get Preconfigured Tax Rates",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tax",
+      "slug": "get-tax-settings",
+      "operationId": "getTaxSettings",
+      "method": "GET",
+      "path": "/tax/configuration/settings",
+      "summary": "GET Get Tax Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tax",
+      "slug": "list-all-tax-rates",
+      "operationId": "listAllTaxRates",
+      "method": "GET",
+      "path": "/tax/rates",
+      "summary": "GET List All Tax Rates",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tax",
+      "slug": "list-tax-classes",
+      "operationId": "listTaxClasses",
+      "method": "GET",
+      "path": "/tax/classes",
+      "summary": "GET List Tax Classes",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tax",
+      "slug": "list-tax-records",
+      "operationId": "listTaxRecords",
+      "method": "GET",
+      "path": "/taxes",
+      "summary": "GET List Tax Records",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tax",
+      "slug": "mark-taxes-as-filed",
+      "operationId": "markTaxesAsFiled",
+      "method": "POST",
+      "path": "/taxes",
+      "summary": "POST Mark Taxes as Filed",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tax",
+      "slug": "save-configured-countries",
+      "operationId": "saveConfiguredCountries",
+      "method": "POST",
+      "path": "/tax/configuration/countries",
+      "summary": "POST Save Configured Countries",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tax",
+      "slug": "save-country-tax-id",
+      "operationId": "saveCountryTaxId",
+      "method": "POST",
+      "path": "/tax/country-tax-id/{country_code}",
+      "summary": "POST Save Country Tax ID",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tax",
+      "slug": "save-eu-vat-cross-border-settings",
+      "operationId": "saveEuVatCrossBorderSettings",
+      "method": "POST",
+      "path": "/tax/configuration/settings/eu-vat",
+      "summary": "POST Save EU VAT Cross-Border Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tax",
+      "slug": "save-oss-shipping-tax-override",
+      "operationId": "saveOssShippingTaxOverride",
+      "method": "POST",
+      "path": "/tax/configuration/settings/eu-vat/oss/shipping-override",
+      "summary": "POST Save OSS Shipping Tax Override",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tax",
+      "slug": "save-oss-tax-override",
+      "operationId": "saveOssTaxOverride",
+      "method": "POST",
+      "path": "/tax/configuration/settings/eu-vat/oss/override",
+      "summary": "POST Save OSS Tax Override",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tax",
+      "slug": "save-shipping-tax-override",
+      "operationId": "saveShippingTaxOverride",
+      "method": "POST",
+      "path": "/tax/rates/country/override",
+      "summary": "POST Save Shipping Tax Override",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tax",
+      "slug": "save-tax-settings",
+      "operationId": "saveTaxSettings",
+      "method": "POST",
+      "path": "/tax/configuration/settings",
+      "summary": "POST Save Tax Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tax",
+      "slug": "update-tax-class",
+      "operationId": "updateTaxClass",
+      "method": "PUT",
+      "path": "/tax/classes/{id}",
+      "summary": "PUT Update Tax Class",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tax",
+      "slug": "update-tax-rate",
+      "operationId": "updateTaxRate",
+      "method": "PUT",
+      "path": "/tax/country/rate/{id}",
+      "summary": "PUT Update Tax Rate",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "shipping",
+      "slug": "create-shipping-class",
+      "operationId": "createShippingClass",
+      "method": "POST",
+      "path": "/shipping/classes",
+      "summary": "POST Create Shipping Class",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "shipping",
+      "slug": "create-shipping-method",
+      "operationId": "createShippingMethod",
+      "method": "POST",
+      "path": "/shipping/methods",
+      "summary": "POST Create Shipping Method",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "shipping",
+      "slug": "create-shipping-zone",
+      "operationId": "createShippingZone",
+      "method": "POST",
+      "path": "/shipping/zones",
+      "summary": "POST Create Shipping Zone",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "shipping",
+      "slug": "delete-shipping-class",
+      "operationId": "deleteShippingClass",
+      "method": "DELETE",
+      "path": "/shipping/classes/{id}",
+      "summary": "DELETE Delete Shipping Class",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "shipping",
+      "slug": "delete-shipping-method",
+      "operationId": "deleteShippingMethod",
+      "method": "DELETE",
+      "path": "/shipping/methods/{method_id}",
+      "summary": "DELETE Delete Shipping Method",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "shipping",
+      "slug": "delete-shipping-zone",
+      "operationId": "deleteShippingZone",
+      "method": "DELETE",
+      "path": "/shipping/zones/{id}",
+      "summary": "DELETE Delete Shipping Zone",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "shipping",
+      "slug": "get-shipping-class",
+      "operationId": "getShippingClass",
+      "method": "GET",
+      "path": "/shipping/classes/{id}",
+      "summary": "GET Get Shipping Class",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "shipping",
+      "slug": "get-shipping-zone",
+      "operationId": "getShippingZone",
+      "method": "GET",
+      "path": "/shipping/zones/{id}",
+      "summary": "GET Get Shipping Zone",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "shipping",
+      "slug": "get-zone-states",
+      "operationId": "getZoneStates",
+      "method": "GET",
+      "path": "/shipping/zone/states",
+      "summary": "GET Get Zone States",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "shipping",
+      "slug": "list-shipping-classes",
+      "operationId": "listShippingClasses",
+      "method": "GET",
+      "path": "/shipping/classes",
+      "summary": "GET List Shipping Classes",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "shipping",
+      "slug": "list-shipping-zones",
+      "operationId": "listShippingZones",
+      "method": "GET",
+      "path": "/shipping/zones",
+      "summary": "GET List Shipping Zones",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "shipping",
+      "slug": "update-shipping-class",
+      "operationId": "updateShippingClass",
+      "method": "PUT",
+      "path": "/shipping/classes/{id}",
+      "summary": "PUT Update Shipping Class",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "shipping",
+      "slug": "update-shipping-method",
+      "operationId": "updateShippingMethod",
+      "method": "PUT",
+      "path": "/shipping/methods",
+      "summary": "PUT Update Shipping Method",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "shipping",
+      "slug": "update-shipping-zone",
+      "operationId": "updateShippingZone",
+      "method": "PUT",
+      "path": "/shipping/zones/{id}",
+      "summary": "PUT Update Shipping Zone",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "shipping",
+      "slug": "update-zone-order",
+      "operationId": "updateZoneOrder",
+      "method": "POST",
+      "path": "/shipping/zones/update-order",
+      "summary": "POST Update Zone Order",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "activate-payment-addon",
+      "operationId": "activatePaymentAddon",
+      "method": "POST",
+      "path": "/settings/payment-methods/activate-addon",
+      "summary": "POST Activate Payment Addon",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "activate-plugin-addon",
+      "operationId": "activatePluginAddon",
+      "method": "POST",
+      "path": "/settings/modules/plugin-addons/activate",
+      "summary": "POST Activate Plugin Addon",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "check-paypal-webhook",
+      "operationId": "checkPaypalWebhook",
+      "method": "GET",
+      "path": "/settings/payment-methods/paypal/webhook/check",
+      "summary": "GET Check PayPal Webhook",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "disconnect-payment-method",
+      "operationId": "disconnectPaymentMethod",
+      "method": "POST",
+      "path": "/settings/payment-methods/disconnect",
+      "summary": "POST Disconnect Payment Method",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "exchange-paypal-seller-auth-token",
+      "operationId": "exchangePaypalSellerAuthToken",
+      "method": "POST",
+      "path": "/settings/payment-methods/paypal/seller-auth-token",
+      "summary": "POST Exchange PayPal Seller Auth Token",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-active-storage-drivers",
+      "operationId": "getActiveStorageDrivers",
+      "method": "GET",
+      "path": "/settings/storage-drivers/active-drivers",
+      "summary": "GET Get Active Storage Drivers",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-checkout-fields",
+      "operationId": "getCheckoutFields",
+      "method": "GET",
+      "path": "/checkout-fields/get-fields",
+      "summary": "GET Get Checkout Fields",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-email-shortcodes",
+      "operationId": "getEmailShortcodes",
+      "method": "GET",
+      "path": "/settings/confirmation/shortcode",
+      "summary": "GET Get Email Shortcodes",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-module-settings",
+      "operationId": "getModuleSettings",
+      "method": "GET",
+      "path": "/settings/modules",
+      "summary": "GET Get Module Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-payment-method-connection-info",
+      "operationId": "getPaymentMethodConnectionInfo",
+      "method": "GET",
+      "path": "/settings/payment-methods/connect/info",
+      "summary": "GET Get Payment Method Connection Info",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-payment-method-settings",
+      "operationId": "getPaymentMethodSettings",
+      "method": "GET",
+      "path": "/settings/payment-methods",
+      "summary": "GET Get Payment Method Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-permissions",
+      "operationId": "getPermissions",
+      "method": "GET",
+      "path": "/settings/permissions",
+      "summary": "GET Get Permissions",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-plugin-addons",
+      "operationId": "getPluginAddons",
+      "method": "GET",
+      "path": "/settings/modules/plugin-addons",
+      "summary": "GET Get Plugin Addons",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-storage-driver-settings",
+      "operationId": "getStorageDriverSettings",
+      "method": "GET",
+      "path": "/settings/storage-drivers/{driver}",
+      "summary": "GET Get Storage Driver Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-store-settings",
+      "operationId": "getStoreSettings",
+      "method": "GET",
+      "path": "/settings/store",
+      "summary": "GET Get Store Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "install-payment-addon",
+      "operationId": "installPaymentAddon",
+      "method": "POST",
+      "path": "/settings/payment-methods/install-addon",
+      "summary": "POST Install Payment Addon",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "install-plugin-addon",
+      "operationId": "installPluginAddon",
+      "method": "POST",
+      "path": "/settings/modules/plugin-addons/install",
+      "summary": "POST Install Plugin Addon",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "list-all-payment-methods",
+      "operationId": "listAllPaymentMethods",
+      "method": "GET",
+      "path": "/settings/payment-methods/all",
+      "summary": "GET List All Payment Methods",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "list-all-storage-drivers",
+      "operationId": "listAllStorageDrivers",
+      "method": "GET",
+      "path": "/settings/storage-drivers",
+      "summary": "GET List All Storage Drivers",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "reorder-payment-methods",
+      "operationId": "reorderPaymentMethods",
+      "method": "POST",
+      "path": "/settings/payment-methods/reorder",
+      "summary": "POST Reorder Payment Methods",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-checkout-fields",
+      "operationId": "saveCheckoutFields",
+      "method": "POST",
+      "path": "/checkout-fields/save-fields",
+      "summary": "POST Save Checkout Fields",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-confirmation-settings",
+      "operationId": "saveConfirmationSettings",
+      "method": "POST",
+      "path": "/settings/confirmation",
+      "summary": "POST Save Confirmation Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-module-settings",
+      "operationId": "saveModuleSettings",
+      "method": "POST",
+      "path": "/settings/modules",
+      "summary": "POST Save Module Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-payment-method-design",
+      "operationId": "savePaymentMethodDesign",
+      "method": "POST",
+      "path": "/settings/payment-methods/design",
+      "summary": "POST Save Payment Method Design",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-payment-method-settings",
+      "operationId": "savePaymentMethodSettings",
+      "method": "POST",
+      "path": "/settings/payment-methods",
+      "summary": "POST Save Payment Method Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-permissions",
+      "operationId": "savePermissions",
+      "method": "POST",
+      "path": "/settings/permissions",
+      "summary": "POST Save Permissions",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-storage-driver-settings",
+      "operationId": "saveStorageDriverSettings",
+      "method": "POST",
+      "path": "/settings/storage-drivers",
+      "summary": "POST Save Storage Driver Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-store-settings",
+      "operationId": "saveStoreSettings",
+      "method": "POST",
+      "path": "/settings/store",
+      "summary": "POST Save Store Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "setup-paypal-webhook",
+      "operationId": "setupPaypalWebhook",
+      "method": "POST",
+      "path": "/settings/payment-methods/paypal/webhook/setup",
+      "summary": "POST Setup PayPal Webhook",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "verify-storage-driver-connection",
+      "operationId": "verifyStorageDriverConnection",
+      "method": "POST",
+      "path": "/settings/storage-drivers/verify-info",
+      "summary": "POST Verify Storage Driver Connection",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "email-notification",
+      "slug": "enable-notification",
+      "operationId": "enableEmailNotification",
+      "method": "POST",
+      "path": "/email-notification/enable-notification/{name}",
+      "summary": "POST Enable/Disable Notification",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "email-notification",
+      "slug": "get-notification",
+      "operationId": "getEmailNotification",
+      "method": "GET",
+      "path": "/email-notification/{notification}",
+      "summary": "GET Get Single Notification",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "email-notification",
+      "slug": "get-reminders",
+      "operationId": "getSchedulingSettings",
+      "method": "GET",
+      "path": "/email-notification/reminders",
+      "summary": "GET Get Scheduling Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "email-notification",
+      "slug": "get-settings",
+      "operationId": "getEmailSettings",
+      "method": "GET",
+      "path": "/email-notification/get-settings",
+      "summary": "GET Get Global Email Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "email-notification",
+      "slug": "get-shortcodes",
+      "operationId": "getEmailShortcodes",
+      "method": "GET",
+      "path": "/email-notification/get-short-codes",
+      "summary": "GET Get Shortcodes",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "email-notification",
+      "slug": "list-notifications",
+      "operationId": "listEmailNotifications",
+      "method": "GET",
+      "path": "/email-notification",
+      "summary": "GET List All Notifications",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "email-notification",
+      "slug": "preview-default-template",
+      "operationId": "previewDefaultTemplate",
+      "method": "POST",
+      "path": "/email-notification/preview-default-template",
+      "summary": "POST Preview Default Template",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "email-notification",
+      "slug": "preview-notification",
+      "operationId": "previewEmailNotification",
+      "method": "POST",
+      "path": "/email-notification/preview",
+      "summary": "POST Preview Notification",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "email-notification",
+      "slug": "save-reminders",
+      "operationId": "saveSchedulingSettings",
+      "method": "POST",
+      "path": "/email-notification/reminders",
+      "summary": "POST Save Scheduling Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "email-notification",
+      "slug": "save-settings",
+      "operationId": "saveEmailSettings",
+      "method": "POST",
+      "path": "/email-notification/save-settings",
+      "summary": "POST Save Global Email Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "email-notification",
+      "slug": "update-notification",
+      "operationId": "updateEmailNotification",
+      "method": "PUT",
+      "path": "/email-notification/{notification}",
+      "summary": "PUT Update Notification",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "country-heat-map",
+      "operationId": "getCountryHeatMap",
+      "method": "GET",
+      "path": "/reports/country-heat-map",
+      "summary": "GET Get Country Heat Map",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "customer-report",
+      "operationId": "getCustomerReport",
+      "method": "GET",
+      "path": "/reports/customer-report",
+      "summary": "GET Get Customer Report",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "daily-signups",
+      "operationId": "getDailySignups",
+      "method": "GET",
+      "path": "/reports/daily-signups",
+      "summary": "GET Get Daily Signups",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "dashboard-stats",
+      "operationId": "getDashboardStats",
+      "method": "GET",
+      "path": "/reports/dashboard-stats",
+      "summary": "GET Get Dashboard Stats",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "fetch-new-vs-returning-customer",
+      "operationId": "getNewVsReturningCustomer",
+      "method": "GET",
+      "path": "/reports/fetch-new-vs-returning-customer",
+      "summary": "GET Get New vs Returning Customers",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "fetch-order-by-group",
+      "operationId": "getOrderByGroup",
+      "method": "GET",
+      "path": "/reports/fetch-order-by-group",
+      "summary": "GET Get Orders by Group",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "fetch-report-by-day-and-hour",
+      "operationId": "getReportByDayAndHour",
+      "method": "GET",
+      "path": "/reports/fetch-report-by-day-and-hour",
+      "summary": "GET Get Report by Day and Hour",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "fetch-report-meta",
+      "operationId": "getReportMeta",
+      "method": "GET",
+      "path": "/reports/fetch-report-meta",
+      "summary": "GET Get Report Meta",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "fetch-top-sold-products",
+      "operationId": "getTopSoldProducts",
+      "method": "GET",
+      "path": "/reports/fetch-top-sold-products",
+      "summary": "GET Get Top Sold Products",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "fetch-top-sold-variants",
+      "operationId": "getTopSoldVariants",
+      "method": "GET",
+      "path": "/reports/fetch-top-sold-variants",
+      "summary": "GET Get Top Sold Variants",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "future-renewals",
+      "operationId": "getFutureRenewals",
+      "method": "GET",
+      "path": "/reports/future-renewals",
+      "summary": "GET Get Future Renewals",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "generate-retention-snapshots",
+      "operationId": "generateRetentionSnapshots",
+      "method": "POST",
+      "path": "/reports/retention-snapshots/generate",
+      "summary": "POST Generate Retention Snapshots",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "get-dashboard-summary",
+      "operationId": "getDashboardSummary",
+      "method": "GET",
+      "path": "/reports/get-dashboard-summary",
+      "summary": "GET Get Dashboard Summary",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "get-overview",
+      "operationId": "getReportsOverview",
+      "method": "GET",
+      "path": "/reports/overview",
+      "summary": "GET Get Revenue Overview",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "get-recent-activities",
+      "operationId": "getRecentActivities",
+      "method": "GET",
+      "path": "/reports/get-recent-activities",
+      "summary": "GET Get Recent Activities",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "get-recent-orders",
+      "operationId": "getRecentOrders",
+      "method": "GET",
+      "path": "/reports/get-recent-orders",
+      "summary": "GET Get Recent Orders",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "get-revenue",
+      "operationId": "getRevenue",
+      "method": "GET",
+      "path": "/reports/revenue",
+      "summary": "GET Get Revenue Data",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "item-count-distribution",
+      "operationId": "getItemCountDistribution",
+      "method": "GET",
+      "path": "/reports/item-count-distribution",
+      "summary": "GET Get Item Count Distribution",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "license-chart",
+      "operationId": "getLicenseChart",
+      "method": "GET",
+      "path": "/reports/license-chart",
+      "summary": "GET Get License Line Chart",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "license-pie-chart",
+      "operationId": "getLicensePieChart",
+      "method": "GET",
+      "path": "/reports/license-pie-chart",
+      "summary": "GET Get License Pie Chart",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "license-summary",
+      "operationId": "getLicenseSummary",
+      "method": "GET",
+      "path": "/reports/license-summary",
+      "summary": "GET Get License Summary",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "order-chart",
+      "operationId": "getOrderChart",
+      "method": "GET",
+      "path": "/reports/order-chart",
+      "summary": "GET Get Order Chart",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "order-completion-time",
+      "operationId": "getOrderCompletionTime",
+      "method": "GET",
+      "path": "/reports/order-completion-time",
+      "summary": "GET Get Order Completion Time",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "order-value-distribution",
+      "operationId": "getOrderValueDistribution",
+      "method": "GET",
+      "path": "/reports/order-value-distribution",
+      "summary": "GET Get Order Value Distribution",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "product-performance",
+      "operationId": "getProductPerformance",
+      "method": "GET",
+      "path": "/reports/product-performance",
+      "summary": "GET Get Product Performance",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "product-report",
+      "operationId": "getProductReport",
+      "method": "GET",
+      "path": "/reports/product-report",
+      "summary": "GET Get Product Report",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "quick-order-stats",
+      "operationId": "getQuickOrderStats",
+      "method": "GET",
+      "path": "/reports/quick-order-stats",
+      "summary": "GET Get Quick Order Stats",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "refund-chart",
+      "operationId": "getRefundChart",
+      "method": "GET",
+      "path": "/reports/refund-chart",
+      "summary": "GET Get Refund Chart",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "refund-data-by-group",
+      "operationId": "getRefundDataByGroup",
+      "method": "GET",
+      "path": "/reports/refund-data-by-group",
+      "summary": "GET Get Refund Data by Group",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "report-overview",
+      "operationId": "getReportOverview",
+      "method": "GET",
+      "path": "/reports/report-overview",
+      "summary": "GET Get Report Overview",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "retention-chart",
+      "operationId": "getRetentionChart",
+      "method": "GET",
+      "path": "/reports/retention-chart",
+      "summary": "GET Get Retention Chart",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "retention-snapshots-status",
+      "operationId": "getRetentionSnapshotStatus",
+      "method": "GET",
+      "path": "/reports/retention-snapshots/status",
+      "summary": "GET Check Retention Snapshot Status",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "revenue-by-group",
+      "operationId": "getRevenueByGroup",
+      "method": "GET",
+      "path": "/reports/revenue-by-group",
+      "summary": "GET Get Revenue by Group",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "sales-growth",
+      "operationId": "getSalesGrowth",
+      "method": "GET",
+      "path": "/reports/sales-growth",
+      "summary": "GET Get Sales Growth",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "sales-growth-chart",
+      "operationId": "getSalesGrowthChart",
+      "method": "GET",
+      "path": "/reports/sales-growth-chart",
+      "summary": "GET Get Sales Growth Chart",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "sales-report",
+      "operationId": "getSalesReport",
+      "method": "GET",
+      "path": "/reports/sales-report",
+      "summary": "GET Get Sales Report",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "search-repeat-customer",
+      "operationId": "searchRepeatCustomer",
+      "method": "GET",
+      "path": "/reports/search-repeat-customer",
+      "summary": "GET Search Repeat Customers",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "sources",
+      "operationId": "getSourceReport",
+      "method": "GET",
+      "path": "/reports/sources",
+      "summary": "GET Get Source Report",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "subscription-chart",
+      "operationId": "getSubscriptionChart",
+      "method": "GET",
+      "path": "/reports/subscription-chart",
+      "summary": "GET Get Subscription Chart",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "subscription-cohorts",
+      "operationId": "getSubscriptionCohorts",
+      "method": "GET",
+      "path": "/reports/subscription-cohorts",
+      "summary": "GET Get Subscription Cohorts",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "subscription-retention",
+      "operationId": "getSubscriptionRetention",
+      "method": "GET",
+      "path": "/reports/subscription-retention",
+      "summary": "GET Get Subscription Retention",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "top-products-sold",
+      "operationId": "getTopProductsSold",
+      "method": "GET",
+      "path": "/reports/top-products-sold",
+      "summary": "GET Get Top Products Sold",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "weeks-between-refund",
+      "operationId": "getWeeksBetweenRefund",
+      "method": "GET",
+      "path": "/reports/weeks-between-refund",
+      "summary": "GET Get Weeks Between Refund",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "integration",
+      "slug": "chained-data-request",
+      "operationId": "chainedDataRequest",
+      "method": "POST",
+      "path": "/integration/feed/chained",
+      "summary": "POST Chained Data Request",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "integration",
+      "slug": "change-feed-status",
+      "operationId": "changeFeedStatus",
+      "method": "POST",
+      "path": "/integration/global-feeds/change-status/{integration_id}",
+      "summary": "POST Change Feed Status",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "integration",
+      "slug": "change-product-feed-status",
+      "operationId": "changeProductFeedStatus",
+      "method": "POST",
+      "path": "/products/{product_id}/integrations/feed/change-status",
+      "summary": "POST Change Product Feed Status",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "integration",
+      "slug": "delete-feed",
+      "operationId": "deleteGlobalFeed",
+      "method": "DELETE",
+      "path": "/integration/global-feeds/{integration_id}",
+      "summary": "DELETE Feed",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "integration",
+      "slug": "delete-product-integration",
+      "operationId": "deleteProductIntegrationFeed",
+      "method": "DELETE",
+      "path": "/products/{product_id}/integrations/{integration_id}",
+      "summary": "DELETE Product Integration Feed",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "integration",
+      "slug": "get-dynamic-options",
+      "operationId": "getDynamicOptions",
+      "method": "GET",
+      "path": "/integration/feed/dynamic_options",
+      "summary": "GET Dynamic Options",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "integration",
+      "slug": "get-feed-lists",
+      "operationId": "getFeedMergeFields",
+      "method": "GET",
+      "path": "/integration/feed/lists",
+      "summary": "GET Feed Merge Fields (Lists)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "integration",
+      "slug": "get-feed-settings",
+      "operationId": "getFeedSettings",
+      "method": "GET",
+      "path": "/integration/global-feeds/settings",
+      "summary": "GET Feed Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "integration",
+      "slug": "get-global-feeds",
+      "operationId": "listGlobalIntegrationFeeds",
+      "method": "GET",
+      "path": "/integration/global-feeds",
+      "summary": "GET List Global Integration Feeds",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "integration",
+      "slug": "get-global-settings",
+      "operationId": "getGlobalIntegrationSettings",
+      "method": "GET",
+      "path": "/integration/global-settings",
+      "summary": "GET Global Integration Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "integration",
+      "slug": "get-product-integration-settings",
+      "operationId": "getProductIntegrationSettings",
+      "method": "GET",
+      "path": "/products/{product_id}/integrations/{integration_name}/settings",
+      "summary": "GET Product Integration Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "integration",
+      "slug": "install-addon-plugin",
+      "operationId": "installAddonPlugin",
+      "method": "POST",
+      "path": "/integration/feed/install-plugin",
+      "summary": "POST Install and Activate Add-on Plugin",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "integration",
+      "slug": "list-addons",
+      "operationId": "listIntegrationAddons",
+      "method": "GET",
+      "path": "/integration/addons",
+      "summary": "GET List Available Add-ons",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "integration",
+      "slug": "list-product-feeds",
+      "operationId": "listProductIntegrationFeeds",
+      "method": "GET",
+      "path": "/products/{productId}/integrations",
+      "summary": "GET List Product Integration Feeds",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "integration",
+      "slug": "save-feed-settings",
+      "operationId": "saveFeedSettings",
+      "method": "POST",
+      "path": "/integration/global-feeds/settings",
+      "summary": "POST Save Feed Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "integration",
+      "slug": "save-product-integration",
+      "operationId": "saveProductIntegrationFeed",
+      "method": "POST",
+      "path": "/products/{product_id}/integrations",
+      "summary": "POST Save Product Integration Feed",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "integration",
+      "slug": "set-global-settings",
+      "operationId": "saveGlobalIntegrationSettings",
+      "method": "POST",
+      "path": "/integration/global-settings",
+      "summary": "POST Save Global Integration Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "files",
+      "slug": "delete-file",
+      "operationId": "deleteFile",
+      "method": "DELETE",
+      "path": "/files/delete",
+      "summary": "DELETE Delete File",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "files",
+      "slug": "get-bucket-list",
+      "operationId": "getBucketList",
+      "method": "GET",
+      "path": "/files/bucket-list",
+      "summary": "GET Get Bucket List",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "files",
+      "slug": "list-files",
+      "operationId": "listFiles",
+      "method": "GET",
+      "path": "/files",
+      "summary": "GET List Files",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "files",
+      "slug": "upload-editor-file",
+      "operationId": "uploadEditorFile",
+      "method": "POST",
+      "path": "/upload-editor-file",
+      "summary": "POST Upload Editor File",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "files",
+      "slug": "upload-file",
+      "operationId": "uploadFile",
+      "method": "POST",
+      "path": "/files/upload",
+      "summary": "POST Upload File",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "labels-attributes",
+      "slug": "change-term-sort-order",
+      "operationId": "changeTermSortOrder",
+      "method": "POST",
+      "path": "/options/attr/group/{group_id}/term/{term_id}/serial",
+      "summary": "POST Change Term Sort Order",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "labels-attributes",
+      "slug": "create-attribute-group",
+      "operationId": "createAttributeGroup",
+      "method": "POST",
+      "path": "/options/attr/group",
+      "summary": "POST Create Attribute Group",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "labels-attributes",
+      "slug": "create-attribute-term",
+      "operationId": "createAttributeTerm",
+      "method": "POST",
+      "path": "/options/attr/group/{group_id}/term",
+      "summary": "POST Create Attribute Term",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "labels-attributes",
+      "slug": "create-label",
+      "operationId": "createLabel",
+      "method": "POST",
+      "path": "/labels",
+      "summary": "POST Create Label",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "labels-attributes",
+      "slug": "delete-attribute-group",
+      "operationId": "deleteAttributeGroup",
+      "method": "DELETE",
+      "path": "/options/attr/group/{group_id}",
+      "summary": "DELETE Delete Attribute Group",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "labels-attributes",
+      "slug": "delete-attribute-term",
+      "operationId": "deleteAttributeTerm",
+      "method": "DELETE",
+      "path": "/options/attr/group/{group_id}/term/{term_id}",
+      "summary": "DELETE Delete Attribute Term",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "labels-attributes",
+      "slug": "get-attribute-group",
+      "operationId": "getAttributeGroup",
+      "method": "GET",
+      "path": "/options/attr/group/{group_id}",
+      "summary": "GET Get Attribute Group",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "labels-attributes",
+      "slug": "list-attribute-groups",
+      "operationId": "listAttributeGroups",
+      "method": "GET",
+      "path": "/options/attr/groups",
+      "summary": "GET List Attribute Groups",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "labels-attributes",
+      "slug": "list-attribute-terms",
+      "operationId": "listAttributeTerms",
+      "method": "GET",
+      "path": "/options/attr/group/{group_id}/terms",
+      "summary": "GET List Attribute Terms",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "labels-attributes",
+      "slug": "list-labels",
+      "operationId": "listLabels",
+      "method": "GET",
+      "path": "/labels",
+      "summary": "GET List Labels",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "labels-attributes",
+      "slug": "update-attribute-group",
+      "operationId": "updateAttributeGroup",
+      "method": "PUT",
+      "path": "/options/attr/group/{group_id}",
+      "summary": "PUT Update Attribute Group",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "labels-attributes",
+      "slug": "update-attribute-term",
+      "operationId": "updateAttributeTerm",
+      "method": "POST",
+      "path": "/options/attr/group/{group_id}/term/{term_id}",
+      "summary": "POST Update Attribute Term",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "labels-attributes",
+      "slug": "update-label-selections",
+      "operationId": "updateLabelSelections",
+      "method": "POST",
+      "path": "/labels/update-label-selections",
+      "summary": "POST Update Label Selections",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "dashboard",
+      "slug": "attach-note-to-order",
+      "operationId": "attachNoteToOrder",
+      "method": "POST",
+      "path": "/notes/attach",
+      "summary": "POST Attach Note to Order",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "dashboard",
+      "slug": "create-all-pages",
+      "operationId": "createAllPages",
+      "method": "POST",
+      "path": "/onboarding/create-pages",
+      "summary": "POST Create All Pages",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "dashboard",
+      "slug": "create-single-page",
+      "operationId": "createSinglePage",
+      "method": "POST",
+      "path": "/onboarding/create-page",
+      "summary": "POST Create Single Page",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "dashboard",
+      "slug": "delete-activity",
+      "operationId": "deleteActivity",
+      "method": "DELETE",
+      "path": "/activity/{id}",
+      "summary": "DELETE Delete Activity",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "dashboard",
+      "slug": "get-country-info",
+      "operationId": "getCountryInfo",
+      "method": "GET",
+      "path": "/address-info/get-country-info",
+      "summary": "GET Get Country Info",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "dashboard",
+      "slug": "get-dashboard-stats",
+      "operationId": "getDashboardStats",
+      "method": "GET",
+      "path": "/dashboard/stats",
+      "summary": "GET Get Dashboard Stats",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "dashboard",
+      "slug": "get-filter-options",
+      "operationId": "getFilterOptions",
+      "method": "GET",
+      "path": "/advance_filter/get-filter-options",
+      "summary": "GET Get Filter Options",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "dashboard",
+      "slug": "get-onboarding-data",
+      "operationId": "getOnboardingData",
+      "method": "GET",
+      "path": "/dashboard",
+      "summary": "GET Get Onboarding Data",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "dashboard",
+      "slug": "get-onboarding-settings",
+      "operationId": "getOnboardingSettings",
+      "method": "GET",
+      "path": "/onboarding",
+      "summary": "GET Get Onboarding Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "dashboard",
+      "slug": "get-print-templates",
+      "operationId": "getPrintTemplates",
+      "method": "GET",
+      "path": "/templates/print-templates",
+      "summary": "GET Get Print Templates",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "dashboard",
+      "slug": "get-search-options",
+      "operationId": "getSearchOptions",
+      "method": "GET",
+      "path": "/forms/search_options",
+      "summary": "GET Get Search Options",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "dashboard",
+      "slug": "get-widgets",
+      "operationId": "getWidgets",
+      "method": "GET",
+      "path": "/widgets",
+      "summary": "GET Get Widgets",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "dashboard",
+      "slug": "initialize-app",
+      "operationId": "initializeApp",
+      "method": "GET",
+      "path": "/app/init",
+      "summary": "GET Initialize App",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "dashboard",
+      "slug": "list-activities",
+      "operationId": "listActivities",
+      "method": "GET",
+      "path": "/activity",
+      "summary": "GET List Activities",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "dashboard",
+      "slug": "list-attachments",
+      "operationId": "listAttachments",
+      "method": "GET",
+      "path": "/app/attachments",
+      "summary": "GET List Attachments",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "dashboard",
+      "slug": "list-countries",
+      "operationId": "listCountries",
+      "method": "GET",
+      "path": "/address-info/countries",
+      "summary": "GET List Countries",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "dashboard",
+      "slug": "mark-activity-read",
+      "operationId": "markActivityRead",
+      "method": "PUT",
+      "path": "/activity/{id}/mark-read",
+      "summary": "PUT Mark Activity Read/Unread",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "dashboard",
+      "slug": "save-onboarding-settings",
+      "operationId": "saveOnboardingSettings",
+      "method": "POST",
+      "path": "/onboarding",
+      "summary": "POST Save Onboarding Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "dashboard",
+      "slug": "save-print-templates",
+      "operationId": "savePrintTemplates",
+      "method": "PUT",
+      "path": "/templates/print-templates",
+      "summary": "PUT Save Print Templates",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "dashboard",
+      "slug": "upload-attachment",
+      "operationId": "uploadAttachment",
+      "method": "POST",
+      "path": "/app/upload-attachments",
+      "summary": "POST Upload Attachment",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "public-shop",
+      "slug": "get-product-views",
+      "operationId": "getProductViews",
+      "method": "GET",
+      "path": "/public/product-views",
+      "summary": "GET Get Product Views",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "public-shop",
+      "slug": "list-products",
+      "operationId": "listProducts",
+      "method": "GET",
+      "path": "/public/products",
+      "summary": "GET List Products",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "public-shop",
+      "slug": "search-products",
+      "operationId": "searchProducts",
+      "method": "GET",
+      "path": "/public/product-search",
+      "summary": "GET Search Products",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "checkout",
+      "slug": "get-available-shipping-methods",
+      "operationId": "getAvailableShippingMethods",
+      "method": "GET",
+      "path": "/checkout/get-available-shipping-methods",
+      "summary": "GET Get Available Shipping Methods",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "checkout",
+      "slug": "get-checkout-summary",
+      "operationId": "getCheckoutSummary",
+      "method": "GET",
+      "path": "/checkout/get-checkout-summary-view",
+      "summary": "GET Get Checkout Summary",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "checkout",
+      "slug": "get-country-info",
+      "operationId": "getCountryInfo",
+      "method": "GET",
+      "path": "/checkout/get-country-info",
+      "summary": "GET Get Country Info",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "checkout",
+      "slug": "get-order-info",
+      "operationId": "getOrderInfo",
+      "method": "GET",
+      "path": "/checkout/get-order-info",
+      "summary": "GET Get Order Info",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "checkout",
+      "slug": "get-shipping-methods-list-view",
+      "operationId": "getShippingMethodsListView",
+      "method": "GET",
+      "path": "/checkout/get-shipping-methods-list-view",
+      "summary": "GET Get Shipping Methods List View",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "checkout",
+      "slug": "login",
+      "operationId": "userLogin",
+      "method": "POST",
+      "path": "/user/login",
+      "summary": "POST Login",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "checkout",
+      "slug": "place-order",
+      "operationId": "placeOrder",
+      "method": "POST",
+      "path": "/checkout/place-order",
+      "summary": "POST Place Order",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customer-profile",
+      "slug": "create-address-checkout",
+      "operationId": "createAddressCheckout",
+      "method": "POST",
+      "path": "/customers/add-address",
+      "summary": "POST Create Address (Checkout)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customer-profile",
+      "slug": "create-profile-address",
+      "operationId": "createProfileAddress",
+      "method": "POST",
+      "path": "/customer-profile/create-address",
+      "summary": "POST Create Profile Address",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customer-profile",
+      "slug": "dashboard-overview",
+      "operationId": "dashboardOverview",
+      "method": "GET",
+      "path": "/customer-profile/",
+      "summary": "GET Dashboard Overview",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customer-profile",
+      "slug": "delete-address-checkout",
+      "operationId": "deleteAddressCheckout",
+      "method": "DELETE",
+      "path": "/customers/{customerId}/address",
+      "summary": "DELETE Delete Address (Checkout)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customer-profile",
+      "slug": "delete-profile-address",
+      "operationId": "deleteProfileAddress",
+      "method": "POST",
+      "path": "/customer-profile/delete-address",
+      "summary": "POST Delete Profile Address",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customer-profile",
+      "slug": "get-customer-details",
+      "operationId": "getCustomerDetails",
+      "method": "GET",
+      "path": "/customers/{customerId}",
+      "summary": "GET Get Customer Details",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customer-profile",
+      "slug": "get-customer-orders",
+      "operationId": "getCustomerOrders",
+      "method": "GET",
+      "path": "/customers/{customerId}/orders",
+      "summary": "GET Get Customer Orders",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customer-profile",
+      "slug": "get-order-details",
+      "operationId": "getOrderDetails",
+      "method": "GET",
+      "path": "/customer-profile/orders/{order_uuid}",
+      "summary": "GET Get Order Details",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customer-profile",
+      "slug": "get-profile-details",
+      "operationId": "getProfileDetails",
+      "method": "GET",
+      "path": "/customer-profile/profile",
+      "summary": "GET Get Profile Details",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customer-profile",
+      "slug": "get-transaction-billing-address",
+      "operationId": "getTransactionBillingAddress",
+      "method": "GET",
+      "path": "/customer-profile/orders/{transaction_uuid}/billing-address",
+      "summary": "GET Get Transaction Billing Address",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customer-profile",
+      "slug": "get-upgrade-paths",
+      "operationId": "getUpgradePaths",
+      "method": "GET",
+      "path": "/customer-profile/orders/{order_uuid}/upgrade-paths",
+      "summary": "GET Get Upgrade Paths",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customer-profile",
+      "slug": "list-downloads",
+      "operationId": "listDownloads",
+      "method": "GET",
+      "path": "/customer-profile/downloads",
+      "summary": "GET List Downloads",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customer-profile",
+      "slug": "list-orders",
+      "operationId": "listProfileOrders",
+      "method": "GET",
+      "path": "/customer-profile/orders",
+      "summary": "GET List Orders",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customer-profile",
+      "slug": "make-profile-address-primary",
+      "operationId": "makeProfileAddressPrimary",
+      "method": "POST",
+      "path": "/customer-profile/make-primary-address",
+      "summary": "POST Make Profile Address Primary",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customer-profile",
+      "slug": "save-transaction-billing-address",
+      "operationId": "saveTransactionBillingAddress",
+      "method": "PUT",
+      "path": "/customer-profile/orders/{transaction_uuid}/billing-address",
+      "summary": "PUT Save Transaction Billing Address",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customer-profile",
+      "slug": "select-address-for-checkout",
+      "operationId": "selectAddressForCheckout",
+      "method": "GET",
+      "path": "/customers/{customerAddressId}/update-address-select",
+      "summary": "GET Select Address for Checkout",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customer-profile",
+      "slug": "set-address-as-primary",
+      "operationId": "setAddressAsPrimary",
+      "method": "POST",
+      "path": "/customers/{customerId}/address/make-primary",
+      "summary": "POST Set Address as Primary",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customer-profile",
+      "slug": "update-address-checkout",
+      "operationId": "updateAddressCheckout",
+      "method": "PUT",
+      "path": "/customers/{customerId}/address",
+      "summary": "PUT Update Address (Checkout)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customer-profile",
+      "slug": "update-customer-details",
+      "operationId": "updateCustomerDetails",
+      "method": "PUT",
+      "path": "/customers/{customerId}",
+      "summary": "PUT Update Customer Details",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customer-profile",
+      "slug": "update-profile-address",
+      "operationId": "updateProfileAddress",
+      "method": "POST",
+      "path": "/customer-profile/edit-address",
+      "summary": "POST Update Profile Address",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customer-profile",
+      "slug": "update-profile-details",
+      "operationId": "updateProfileDetails",
+      "method": "POST",
+      "path": "/customer-profile/update",
+      "summary": "POST Update Profile Details",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "licensing",
+      "slug": "activate-plugin-license",
+      "operationId": "activatePluginLicense",
+      "method": "POST",
+      "path": "/settings/license/",
+      "summary": "POST Activate Plugin License",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "licensing",
+      "slug": "activate-site-admin",
+      "operationId": "activateSiteAdmin",
+      "method": "POST",
+      "path": "/licensing/licenses/{id}/activate_site",
+      "summary": "POST Activate Site (Admin)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "licensing",
+      "slug": "deactivate-plugin-license",
+      "operationId": "deactivatePluginLicense",
+      "method": "DELETE",
+      "path": "/settings/license/",
+      "summary": "DELETE Deactivate Plugin License",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "licensing",
+      "slug": "deactivate-site-admin",
+      "operationId": "deactivateSiteAdmin",
+      "method": "POST",
+      "path": "/licensing/licenses/{id}/deactivate_site",
+      "summary": "POST Deactivate Site (Admin)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "licensing",
+      "slug": "deactivate-site-customer",
+      "operationId": "deactivateSiteCustomer",
+      "method": "POST",
+      "path": "/customer-profile/licenses/{license_key}/deactivate_site",
+      "summary": "POST Deactivate Site (Customer)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "licensing",
+      "slug": "delete-license",
+      "operationId": "deleteLicense",
+      "method": "DELETE",
+      "path": "/licensing/licenses/{id}/delete",
+      "summary": "DELETE Delete License",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "licensing",
+      "slug": "extend-license-validity",
+      "operationId": "extendLicenseValidity",
+      "method": "POST",
+      "path": "/licensing/licenses/{id}/extend-validity",
+      "summary": "POST Extend License Validity",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "licensing",
+      "slug": "get-customer-license-details",
+      "operationId": "getCustomerLicenseDetails",
+      "method": "GET",
+      "path": "/customer-profile/licenses/{license_key}",
+      "summary": "GET Get Customer License Details",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "licensing",
+      "slug": "get-customer-licenses-admin",
+      "operationId": "getCustomerLicensesAdmin",
+      "method": "GET",
+      "path": "/licensing/licenses/customer/{id}",
+      "summary": "GET Get Customer Licenses (Admin)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "licensing",
+      "slug": "get-license-activations",
+      "operationId": "getLicenseActivations",
+      "method": "GET",
+      "path": "/customer-profile/licenses/{license_key}/activations",
+      "summary": "GET Get License Activations",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "licensing",
+      "slug": "get-license-chart",
+      "operationId": "getLicenseLineChart",
+      "method": "GET",
+      "path": "/reports/license-chart",
+      "summary": "GET Get License Line Chart",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "licensing",
+      "slug": "get-license-details",
+      "operationId": "getLicenseDetails",
+      "method": "GET",
+      "path": "/licensing/licenses/{id}",
+      "summary": "GET Get License Details",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "licensing",
+      "slug": "get-license-pie-chart",
+      "operationId": "getLicensePieChart",
+      "method": "GET",
+      "path": "/reports/license-pie-chart",
+      "summary": "GET Get License Pie Chart",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "licensing",
+      "slug": "get-license-summary",
+      "operationId": "getLicenseSummary",
+      "method": "GET",
+      "path": "/reports/license-summary",
+      "summary": "GET Get License Summary",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "licensing",
+      "slug": "get-plugin-license-status",
+      "operationId": "getPluginLicenseStatus",
+      "method": "GET",
+      "path": "/settings/license/",
+      "summary": "GET Get Plugin License Status",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "licensing",
+      "slug": "get-product-license-settings",
+      "operationId": "getProductLicenseSettings",
+      "method": "GET",
+      "path": "/licensing/products/{id}/settings",
+      "summary": "GET Get Product License Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "licensing",
+      "slug": "list-customer-licenses",
+      "operationId": "listCustomerLicenses",
+      "method": "GET",
+      "path": "/customer-profile/licenses/",
+      "summary": "GET List Customer Licenses",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "licensing",
+      "slug": "list-licenses",
+      "operationId": "listLicenses",
+      "method": "GET",
+      "path": "/licensing/licenses",
+      "summary": "GET List Licenses",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "licensing",
+      "slug": "public-activate-license",
+      "operationId": "publicActivateLicense",
+      "method": "POST",
+      "path": "/?fluent-cart=activate_license",
+      "summary": "POST Activate License",
+      "security": [],
+      "deprecated": false
+    },
+    {
+      "group": "licensing",
+      "slug": "public-check-license",
+      "operationId": "publicCheckLicense",
+      "method": "GET",
+      "path": "/?fluent-cart=check_license",
+      "summary": "GET Check License",
+      "security": [],
+      "deprecated": false
+    },
+    {
+      "group": "licensing",
+      "slug": "public-deactivate-license",
+      "operationId": "publicDeactivateLicense",
+      "method": "POST",
+      "path": "/?fluent-cart=deactivate_license",
+      "summary": "POST Deactivate License",
+      "security": [],
+      "deprecated": false
+    },
+    {
+      "group": "licensing",
+      "slug": "public-download-license-package",
+      "operationId": "publicDownloadLicensePackage",
+      "method": "GET",
+      "path": "/?fluent-cart=download_license_package",
+      "summary": "GET Download License Package",
+      "security": [],
+      "deprecated": false
+    },
+    {
+      "group": "licensing",
+      "slug": "public-get-license-version",
+      "operationId": "publicGetLicenseVersion",
+      "method": "GET",
+      "path": "/?fluent-cart=get_license_version",
+      "summary": "GET Get License Version",
+      "security": [],
+      "deprecated": false
+    },
+    {
+      "group": "licensing",
+      "slug": "regenerate-license-key",
+      "operationId": "regenerateLicenseKey",
+      "method": "POST",
+      "path": "/licensing/licenses/{id}/regenerate-key",
+      "summary": "POST Regenerate License Key",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "licensing",
+      "slug": "save-product-license-settings",
+      "operationId": "saveProductLicenseSettings",
+      "method": "POST",
+      "path": "/licensing/products/{id}/settings",
+      "summary": "POST Save Product License Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "licensing",
+      "slug": "update-license-activation-limit",
+      "operationId": "updateLicenseActivationLimit",
+      "method": "POST",
+      "path": "/licensing/licenses/{id}/update_limit",
+      "summary": "POST Update License Activation Limit",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "licensing",
+      "slug": "update-license-status",
+      "operationId": "updateLicenseStatus",
+      "method": "POST",
+      "path": "/licensing/licenses/{id}/update_status",
+      "summary": "POST Update License Status",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "roles-permissions",
+      "slug": "assign-role",
+      "operationId": "assignRole",
+      "method": "POST",
+      "path": "/roles",
+      "summary": "POST Assign Role",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "roles-permissions",
+      "slug": "delete-role-assignment",
+      "operationId": "deleteRoleAssignment",
+      "method": "DELETE",
+      "path": "/roles/{key}",
+      "summary": "DELETE Delete Role Assignment",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "roles-permissions",
+      "slug": "get-permissions",
+      "operationId": "getPermissions",
+      "method": "GET",
+      "path": "/settings/permissions",
+      "summary": "GET Get Permissions",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "roles-permissions",
+      "slug": "get-role",
+      "operationId": "getRole",
+      "method": "GET",
+      "path": "/roles/{key}",
+      "summary": "GET Get Role",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "roles-permissions",
+      "slug": "list-managers",
+      "operationId": "listManagers",
+      "method": "GET",
+      "path": "/roles/managers",
+      "summary": "GET List Managers",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "roles-permissions",
+      "slug": "list-roles",
+      "operationId": "listRoles",
+      "method": "GET",
+      "path": "/roles",
+      "summary": "GET List Roles",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "roles-permissions",
+      "slug": "save-permissions",
+      "operationId": "savePermissions",
+      "method": "POST",
+      "path": "/settings/permissions",
+      "summary": "POST Save Permissions",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "roles-permissions",
+      "slug": "search-users",
+      "operationId": "searchUsers",
+      "method": "GET",
+      "path": "/roles/user-list",
+      "summary": "GET Search Users",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "roles-permissions",
+      "slug": "update-role",
+      "operationId": "updateRole",
+      "method": "POST",
+      "path": "/roles/{key}",
+      "summary": "POST Update Role",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "order-bumps",
+      "slug": "create-order-bump",
+      "operationId": "createOrderBump",
+      "method": "POST",
+      "path": "/order_bump",
+      "summary": "POST Create Order Bump",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "order-bumps",
+      "slug": "delete-order-bump",
+      "operationId": "deleteOrderBump",
+      "method": "DELETE",
+      "path": "/order_bump/{id}",
+      "summary": "DELETE Delete Order Bump",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "order-bumps",
+      "slug": "get-order-bump",
+      "operationId": "getOrderBump",
+      "method": "GET",
+      "path": "/order_bump/{id}",
+      "summary": "GET Get Order Bump",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "order-bumps",
+      "slug": "list-order-bumps",
+      "operationId": "listOrderBumps",
+      "method": "GET",
+      "path": "/order_bump",
+      "summary": "GET List Order Bumps",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "order-bumps",
+      "slug": "update-order-bump",
+      "operationId": "updateOrderBump",
+      "method": "PUT",
+      "path": "/order_bump/{id}",
+      "summary": "PUT Update Order Bump",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    }
+  ]
+}
