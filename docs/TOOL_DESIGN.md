@@ -1,7 +1,7 @@
 # Tool surface design
 
 How 699 documented REST endpoints (FluentCRM 319 + FluentCart 380) become
-**44 MCP tools** without losing coverage. Companion documents:
+**45 MCP tools** without losing coverage. Companion documents:
 `TOOL_CATALOG.md` (the concrete tool list, generated), `PROJECT_MAP.md`
 (where the code lives), `api-reference/` (the endpoint inventory).
 
@@ -139,8 +139,9 @@ likely cause, what to try).
 | Tool | Purpose |
 |------|---------|
 | `verify_setup` | Diagnostic: config presence per product, connectivity, plugin/API versions, one harmless read per configured product; unconfigured products report `not configured`, never error |
+| `wp_media` | WordPress-core media library (`/wp/v2/media` — outside both Fluent namespaces): `upload_from_url` sideloads an image server-side (SSRF-guarded, image/* only, 15 MB cap), plus `get_media`/`list_media` |
 
-**Total: 44 tools** (within the 30–60 target).
+**Total: 45 tools** (within the 30–60 target).
 
 ## Design decisions worth defending
 

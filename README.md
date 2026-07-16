@@ -6,7 +6,7 @@ fluentMCP is an [MCP](https://modelcontextprotocol.io) server that connects
 Claude (or any MCP client) to **FluentCRM** and **FluentCart** by
 WPManageNinja. Once connected, you can ask your assistant to look things up,
 create and update them, and run your day-to-day operations — every one of the
-**699 documented REST endpoints** is reachable through **44 tools**, and every
+**699 documented REST endpoints** is reachable through **45 tools**, and every
 risky operation is safety-gated.
 
 **Try asking things like:**
@@ -181,6 +181,13 @@ happened. Every tool also carries honest MCP annotations (`readOnlyHint`,
 Checks your site URL, each product's credentials and plugin presence, and
 runs one harmless read per configured product. Unconfigured products report
 `not configured` — that's normal, not an error.
+
+### `wp_media` — the media library
+
+Uploads an image into the WordPress media library **from a URL** (the server
+fetches it — perfect for migrating product photos from another platform's
+CDN), and looks up existing media. Returns the attachment ID you can wire to
+products/variants with the `cart_*` tools.
 
 ### FluentCRM (`crm_*`) — 21 tools, 319 endpoints
 

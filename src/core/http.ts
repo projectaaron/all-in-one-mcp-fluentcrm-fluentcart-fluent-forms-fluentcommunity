@@ -136,16 +136,66 @@ export class FluentClient {
 
   /** Fetch an arbitrary wp-json path (outside the product namespace). */
   async requestRaw(path: string, query?: Record<string, unknown>): Promise<FluentResponse> {
+    return this.wpRequest({ method: 'GET', path, query });
+  }
+
+  /** Authenticated request against WordPress core REST (`/wp-json/...`),
+   *  with arbitrary method/headers/body — used by the wp_media tool. Throws
+   *  a normalized FluentApiError on non-2xx. */
+  async wpRequest(options: {
+    method: string;
+    path: string;
+    query?: Record<string, unknown>;
+    headers?: Record<string, string>;
+    body?: RequestInit['body'];
+    /** Skip the throw-on-error normalization (verify_setup probes). */
+    tolerant?: boolean;
+  }): Promise<FluentResponse> {
     const site = this.baseUrl.slice(0, this.baseUrl.indexOf('/wp-json/'));
-    const url = new URL(`${site}/wp-json${path.startsWith('/') ? path : `/${path}`}`);
-    if (query) for (const [k, v] of Object.entries(query)) url.searchParams.set(k, String(v));
-    const headers: Record<string, string> = { Accept: 'application/json' };
+    const url = new URL(`${site}/wp-json${options.path.startsWith('/') ? options.path : `/${options.path}`}`);
+    if (options.query) {
+      for (const [k, v] of Object.entries(options.query)) {
+        if (v !== undefined && v !== null) url.searchParams.set(k, String(v));
+      }
+    }
+    const headers: Record<string, string> = { Accept: 'application/json', ...(options.headers ?? {}) };
     if (this.authHeader) headers.Authorization = this.authHeader;
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), this.opts.timeoutMs);
+    let response: Response;
     try {
-      const response = await this.fetchImpl(url.toString(), { method: 'GET', headers, signal: controller.signal });
-      return { status: response.status, data: await parseBody(response) };
+      response = await this.fetchImpl(url.toString(), {
+        method: options.method,
+        headers,
+        body: options.body,
+        signal: controller.signal,
+      });
+    } finally {
+      clearTimeout(timer);
+    }
+    const data = await parseBody(response);
+    if (!response.ok && !options.tolerant) {
+      const { code, message } = parseWpError(data);
+      throw new FluentApiError({
+        status: response.status,
+        code,
+        message,
+        product: 'wordpress',
+        productTitle: 'WordPress',
+        envPrefix: 'FLUENT',
+        endpoint: `${options.method} ${options.path}`,
+      });
+    }
+    return { status: response.status, data };
+  }
+
+  /** Plain fetch of an external URL (no auth header) through the injected
+   *  fetch, with the configured timeout — used to sideload media. */
+  async fetchUrl(url: string): Promise<Response> {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), this.opts.timeoutMs);
+    try {
+      return await this.fetchImpl(url, { method: 'GET', signal: controller.signal });
     } finally {
       clearTimeout(timer);
     }

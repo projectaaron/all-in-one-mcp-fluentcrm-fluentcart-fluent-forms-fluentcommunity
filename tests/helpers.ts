@@ -23,8 +23,13 @@ export function mockFetch(
     };
     calls.push(req);
     const next = typeof responses === 'function' ? responses(req) : responses[Math.min(calls.length - 1, responses.length - 1)];
-    const bodyText = next.body === undefined ? '' : typeof next.body === 'string' ? next.body : JSON.stringify(next.body);
-    return new Response(bodyText, {
+    const body =
+      next.body === undefined
+        ? ''
+        : typeof next.body === 'string' || next.body instanceof ArrayBuffer || next.body instanceof Uint8Array
+          ? (next.body as BodyInit)
+          : JSON.stringify(next.body);
+    return new Response(body, {
       status: next.status,
       headers: { 'content-type': 'application/json', ...(next.headers ?? {}) },
     });

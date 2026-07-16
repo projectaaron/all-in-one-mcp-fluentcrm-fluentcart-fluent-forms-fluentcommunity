@@ -71,7 +71,7 @@ describe('remote streamable-http server', () => {
     expect(init.result.serverInfo.name).toBe('fluentmcp');
 
     const list = await rpcResult(await post(`/mcp/${TOKEN}`, LIST));
-    expect(list.result.tools.length).toBe(44);
+    expect(list.result.tools.length).toBe(45);
     const names = list.result.tools.map((t: { name: string }) => t.name);
     expect(names).toContain('verify_setup');
     expect(names).toContain('crm_contacts');
@@ -80,7 +80,7 @@ describe('remote streamable-http server', () => {
 
   it('accepts the token as a Bearer header too', async () => {
     const list = await rpcResult(await post('/mcp', LIST, { Authorization: `Bearer ${TOKEN}` }));
-    expect(list.result.tools.length).toBe(44);
+    expect(list.result.tools.length).toBe(45);
   });
 
   it('rejects non-POST on the MCP endpoint (stateless mode)', async () => {
