@@ -10,6 +10,7 @@ import {
   errResult,
   executeAction,
   isListAction,
+  lockedRefusal,
   placeholdersOf,
   OUTPUT_SHAPE,
   type ToolArgs,
@@ -181,6 +182,7 @@ export function makeActionHandler(spec: ToolSpec, action: string, runtime: ToolR
   const def = spec.actions[action];
   const placeholders = placeholdersOf(def.path);
   return async (args: ActionArgs) => {
+    if (runtime.lockedTools?.has(label)) return lockedRefusal(label);
     const path_params: Record<string, string | number> = {};
     for (const p of placeholders) {
       const v = args[p];
@@ -222,10 +224,13 @@ export function registerActionTools(
   const names = individualNamesFor(spec);
   for (const [action, def] of Object.entries(spec.actions)) {
     const name = names[action];
+    const locked = runtime.lockedTools?.has(name) === true;
     server.registerTool(
       name,
       {
-        description: actionDescription(spec, def, ctx),
+        description:
+          actionDescription(spec, def, ctx) +
+          (locked ? ' 🔒 LOCKED on this server — calls always refuse; admin-controlled via FLUENT_LOCKED_TOOLS.' : ''),
         inputSchema: buildActionInputShape(action, def),
         outputSchema: OUTPUT_SHAPE,
         annotations: actionAnnotations(spec, def),

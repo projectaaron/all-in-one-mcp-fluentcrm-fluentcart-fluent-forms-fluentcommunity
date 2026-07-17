@@ -65,6 +65,10 @@ export const OUTPUT_SHAPE = {
 export interface ToolRuntime {
   client: FluentClient;
   summaryFields?: string[];
+  /** Tools that refuse unconditionally (canonical individual tool names). */
+  lockedTools?: Set<string>;
+  /** action → canonical individual tool name, for grouped-mode lock checks. */
+  canonicalNames?: Record<string, string>;
 }
 
 export function buildInputShape(spec: ToolSpec) {
@@ -128,6 +132,14 @@ function err(text: string) {
 
 /** Error-result constructor shared with the individual-tool registration. */
 export const errResult = err;
+
+/** The refusal for admin-locked tools — confirm:true cannot open this gate. */
+export function lockedRefusal(label: string) {
+  return err(
+    `🔒 Refused: ${label} is locked on this server (admin-only) — nothing was changed, and confirm:true cannot override the lock. ` +
+      `Enabling it requires the server admin to change FLUENT_LOCKED_TOOLS in the server environment.`
+  );
+}
 
 /** Core execution shared by the grouped and individual registrations.
  *  `label` is the caller-facing name used in messages — `crm_contacts.list_contacts`
@@ -222,12 +234,24 @@ export function makeHandler(spec: ToolSpec, runtime: ToolRuntime) {
     if (!def) {
       return err(`Unknown action "${args.action}" for ${spec.name}. Valid: ${Object.keys(spec.actions).join(', ')}`);
     }
+    const canonical = runtime.canonicalNames?.[args.action];
+    if (canonical && runtime.lockedTools?.has(canonical)) {
+      return lockedRefusal(`${spec.name}.${args.action}`);
+    }
     return executeAction(def, args.action, args, runtime, `${spec.name}.${args.action}`);
   };
 }
 
 export function registerToolSpec(server: McpServer, spec: ToolSpec, runtime: ToolRuntime): void {
-  const description = spec.note ? `${spec.description} ${spec.note}` : spec.description;
+  let description = spec.note ? `${spec.description} ${spec.note}` : spec.description;
+  const lockedActions = runtime.canonicalNames
+    ? Object.entries(runtime.canonicalNames)
+        .filter(([, name]) => runtime.lockedTools?.has(name))
+        .map(([action]) => action)
+    : [];
+  if (lockedActions.length) {
+    description += ` 🔒 Locked actions (always refuse, admin-controlled): ${lockedActions.join(', ')}.`;
+  }
   server.registerTool(
     spec.name,
     {
