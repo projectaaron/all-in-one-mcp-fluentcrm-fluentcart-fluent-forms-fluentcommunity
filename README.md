@@ -182,6 +182,18 @@ Shared conventions, everywhere:
 | `detail` / `fields` | Responses come back as **compact summaries by default**. Ask for `detail: "full"` for the complete record, or `fields: ["id", "status"]` for exactly the columns you want. |
 | `confirm` | Required (`true`) for destructive tools — see below. |
 
+**Locked tools: some things no agent should ever do.** Six operations are
+locked by default and refuse unconditionally — `confirm: true` cannot
+override them: `crm_settings_reset_database` (full CRM wipe),
+`crm_contacts_delete_contacts` (audience-wide delete),
+`crm_settings_delete_rest_key` (API self-lockout),
+`crm_settings_test_delete_request`, `cart_settings_disconnect_payment_method`
+(stops checkout revenue), and `cart_licensing_regenerate_license_key`
+(invalidates customers' keys). They stay visible (marked 🔒 in the map) so
+sessions get a clear refusal instead of a mystery. The set is admin-controlled
+via `FLUENT_LOCKED_TOOLS` (`default`, a replacement list,
+`default,extra_tool`, or `none`).
+
 **Safety: nothing irreversible runs by accident.** Deleting, refunding,
 canceling, bulk actions, resets, and sending a campaign to a whole audience
 are all classified destructive (98 of the 699 operations, marked ⚠ in the

@@ -118,6 +118,18 @@ likely cause, what to try).
   Notable catches: FluentCRM's `reset_database` (full CRM wipe) and
   FluentCart's `regenerate_license_key` are confirm-gated. 98 of 699 actions
   classify as destructive.
+- **Locked tools — a tier above `confirm`.** Six operations have no
+  legitimate agent use and refuse unconditionally (server-side, both modes):
+  `crm_settings_reset_database`, `crm_contacts_delete_contacts`,
+  `crm_settings_delete_rest_key`, `crm_settings_test_delete_request`,
+  `cart_settings_disconnect_payment_method`,
+  `cart_licensing_regenerate_license_key`. Locked tools stay registered and
+  visible (🔒 in tool_map and TOOL_MAP.md) so a session gets an explicit
+  refusal naming FLUENT_LOCKED_TOOLS rather than a missing tool. The set is
+  env-controlled (`FLUENT_LOCKED_TOOLS`: replacement list, `default` token
+  to extend, `none` to disable); generic bulk-action tools stay unlocked by
+  default because bulk tagging is a first-class use case. Grouped mode
+  enforces the same locks by each action's canonical individual name.
 - Annotations are hints; clients decide approval. The README documents how
   to keep every tool ask-first in Claude Code / Claude Desktop.
 
