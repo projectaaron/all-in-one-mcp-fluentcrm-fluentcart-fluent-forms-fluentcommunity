@@ -356,7 +356,7 @@ but the human-in-the-loop is your client's approval prompt.
 ## Development
 
 ```bash
-npm test                 # 144 unit tests, mocked HTTP — no network needed
+npm test                 # 230 unit tests, mocked HTTP — no network needed
 npm run gen:docs         # re-scrape both products' API references
 npm run gen:maps         # regenerate tool action maps from endpoints.json
 npm run build && npm run gen:catalog   # regenerate TOOL_MAP.md + TOOL_CATALOG.md + manifest

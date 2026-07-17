@@ -280,3 +280,31 @@ fast map explaining the whole surface.
   `_list`); `verify_setup` was already individual. The .mcpb manifest lists
   only the always-present built-ins (`tools_generated: true` covers the
   product tools) and gains a Tool Surface user-config option.
+
+## 2026-07-17 — 0.7.1 audit: what the review caught
+
+Eight independent review angles (line-by-line, removed-behavior,
+cross-file, reuse, simplification, efficiency, altitude, conventions) over
+the 0.7.0 diff. Lessons worth keeping:
+
+- **Schema-validated surfaces fail silently.** The SDK strips undeclared
+  arguments, so dropping `page`/`per_page` from non-list GETs didn't error —
+  it returned page 1 as if it were page 2. When narrowing a schema, grep for
+  what the old surface accepted and prove each removal harmless.
+- **Error advice is part of the contract.** The shared executor's
+  "pass id/path_params" recovery text survived into a surface with neither
+  parameter — an unfollowable instruction is a retry loop. Recovery text
+  must be generated from the same schema the caller sees.
+- **Stateless entry points make startup cost a per-request cost.** The
+  Workers bridge rebuilds the McpServer per POST; 704 registrations cost
+  40ms until names/schemas/map data were memoized at module scope (9ms
+  after). Anything computed from module-lifetime singletons should be
+  cached as such.
+- **Names are external API.** The stemmer is a heuristic; a heuristic tweak
+  is a global rename. Mitigations shipped: `toolName` operationOverride to
+  pin names, and the committed generated TOOL_MAP.md making renames
+  diff-visible.
+- **Copies drift immediately.** The built-ins' metadata existed in three
+  places for less than a day and already disagreed. The map data now has
+  one builder (`serverArea`/`mapAreasOf`) consumed by runtime, docs
+  generator, and manifest.

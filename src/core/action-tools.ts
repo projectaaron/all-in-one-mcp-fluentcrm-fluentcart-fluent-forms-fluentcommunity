@@ -7,6 +7,7 @@
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import {
+  errResult,
   executeAction,
   isListAction,
   placeholdersOf,
@@ -20,28 +21,43 @@ import type { EndpointDef, ToolSpec } from './types.js';
  *  companies/company→company, orders/order→order, templates/template→templat. */
 const norm = (w: string) => w.replace(/ies$/, 'y').replace(/e?s$/, '').replace(/e$/, '');
 
+/** Memoized per spec — specs are module-lifetime singletons, and the
+ *  Cloudflare worker rebuilds the server on every request. */
+const NAME_CACHE = new WeakMap<ToolSpec, Record<string, string>>();
+
 /** Derive each action's individual tool name: `<area>_<action minus words the
  *  area name already carries>` (crm_contacts + create_contact →
  *  crm_contacts_create). When stripping would make two actions collide
  *  (delete_contact vs delete_contacts), every collider falls back to the full
  *  `<area>_<action>` form — deterministic and provably unique, since action
  *  names are unique within a spec and stripped names cannot equal a full name
- *  without also colliding as stripped names. */
+ *  without also colliding as stripped names. Tool names are external API: an
+ *  endpoint can pin its name for good via a `toolName` override (set in
+ *  tool-map.json's operationOverrides), which wins over the stemmer. */
 export function individualNamesFor(spec: ToolSpec): Record<string, string> {
+  const cached = NAME_CACHE.get(spec);
+  if (cached) return cached;
+
   const areaWords = new Set(spec.name.split('_').map(norm));
   const candidates: Record<string, string> = {};
   const claims = new Map<string, number>();
-  for (const action of Object.keys(spec.actions)) {
-    // The leading verb always survives (list_lists in crm_lists must become
-    // crm_lists_list, not an empty stem); later words drop when the area
-    // name already carries them.
-    const kept = action.split('_').filter((w, i) => i === 0 || !areaWords.has(norm(w)));
-    candidates[action] = `${spec.name}_${kept.join('_')}`;
+  for (const [action, def] of Object.entries(spec.actions)) {
+    if (def.toolName) {
+      candidates[action] = def.toolName;
+      claims.set(def.toolName, (claims.get(def.toolName) ?? 0) + 1);
+      continue;
+    }
+    // Drop words the area name already carries; if that empties the action
+    // (list_lists in crm_lists), keep the leading verb: crm_lists_list.
+    const words = action.split('_');
+    const kept = words.filter((w) => !areaWords.has(norm(w)));
+    candidates[action] = `${spec.name}_${(kept.length ? kept : [words[0]]).join('_')}`;
     claims.set(candidates[action], (claims.get(candidates[action]) ?? 0) + 1);
   }
   const names: Record<string, string> = {};
   for (const [action, candidate] of Object.entries(candidates)) {
-    names[action] = claims.get(candidate)! > 1 ? `${spec.name}_${action}` : candidate;
+    names[action] =
+      claims.get(candidate)! > 1 && !spec.actions[action].toolName ? `${spec.name}_${action}` : candidate;
   }
   const unique = new Set(Object.values(names));
   if (unique.size !== Object.keys(names).length) {
@@ -51,45 +67,64 @@ export function individualNamesFor(spec: ToolSpec): Record<string, string> {
     if (n.length > 64) throw new Error(`individualNamesFor(${spec.name}): "${n}" exceeds 64 characters`);
     if (!/^[a-z][a-z0-9_]*$/.test(n)) throw new Error(`individualNamesFor(${spec.name}): "${n}" has invalid characters`);
   }
+  NAME_CACHE.set(spec, names);
   return names;
 }
 
-/** Focused input schema for one action: only the parameters it actually uses. */
+// Zod schemas are immutable — the action-invariant fields are singletons
+// shared by all ~700 tools instead of being rebuilt per registration (which
+// the Cloudflare worker would otherwise pay on every request).
+const QUERY_FIELD = z
+  .record(z.unknown())
+  .optional()
+  .describe('Query-string parameters (search, filters, sorting, with[]…), e.g. {"search": "jane@example.com"}');
+const BODY_FIELD = z
+  .record(z.unknown())
+  .optional()
+  .describe('JSON request body, e.g. {"title": "Spring sale"} — schemas in docs/api-reference/');
+const PAGE_FIELD = z.number().int().min(1).optional().describe('Page number (default 1)');
+const PER_PAGE_FIELD = z.number().int().min(1).max(100).optional().describe('Items per page (default 20)');
+const FIELDS_FIELD = z
+  .array(z.string())
+  .optional()
+  .describe('Return only these fields per record, e.g. ["id","status","total_amount"]');
+const DETAIL_FIELD = z
+  .enum(['summary', 'full'])
+  .optional()
+  .describe('"summary" (default) returns key fields and truncates long values; "full" returns the raw API response');
+const CONFIRM_FIELD = z
+  .boolean()
+  .optional()
+  .describe('Must be true to execute this hard-to-undo action. Without it the tool only explains what would happen.');
+
+const SHAPE_CACHE = new WeakMap<EndpointDef, Record<string, z.ZodTypeAny>>();
+
+/** Focused input schema for one action: only the parameters it actually
+ *  uses. Memoized per endpoint (defs are module-lifetime singletons). */
 export function buildActionInputShape(actionName: string, def: EndpointDef) {
+  const cached = SHAPE_CACHE.get(def);
+  if (cached) return cached;
+
   const shape: Record<string, z.ZodTypeAny> = {};
   for (const p of placeholdersOf(def.path)) {
     shape[p] = z
       .union([z.string(), z.number()])
       .describe(`Required path parameter "${p}" of ${def.method} ${def.path}`);
   }
-  shape.query = z
-    .record(z.unknown())
-    .optional()
-    .describe('Query-string parameters (search, filters, sorting, with[]…), e.g. {"search": "jane@example.com"}');
-  if (def.method !== 'GET' && def.method !== 'HEAD') {
-    shape.body = z
-      .record(z.unknown())
-      .optional()
-      .describe('JSON request body, e.g. {"title": "Spring sale"} — schemas in docs/api-reference/');
+  shape.query = QUERY_FIELD;
+  if (def.method !== 'GET' && def.method !== 'HEAD') shape.body = BODY_FIELD;
+  // Every GET gets pagination params (plenty of paginated collections hide
+  // behind get_* names — contact emails, funnel subscribers, …), as do
+  // list/search actions on other methods. Defaults only apply to GET lists.
+  if (def.method === 'GET' || isListAction(actionName)) {
+    shape.page = PAGE_FIELD;
+    shape.per_page = PER_PAGE_FIELD;
   }
-  if (isListAction(actionName) && def.method === 'GET') {
-    shape.page = z.number().int().min(1).optional().describe('Page number (default 1)');
-    shape.per_page = z.number().int().min(1).max(100).optional().describe('Items per page (default 20)');
-  }
-  shape.fields = z
-    .array(z.string())
-    .optional()
-    .describe('Return only these fields per record, e.g. ["id","status","total_amount"]');
-  shape.detail = z
-    .enum(['summary', 'full'])
-    .optional()
-    .describe('"summary" (default) returns key fields and truncates long values; "full" returns the raw API response');
-  if (def.destructive) {
-    shape.confirm = z
-      .boolean()
-      .optional()
-      .describe('Must be true to execute this hard-to-undo action. Without it the tool only explains what would happen.');
-  }
+  shape.fields = FIELDS_FIELD;
+  shape.detail = DETAIL_FIELD;
+  if (def.destructive) shape.confirm = CONFIRM_FIELD;
+
+  SHAPE_CACHE.set(def, shape);
   return shape;
 }
 
@@ -134,7 +169,18 @@ export function makeActionHandler(spec: ToolSpec, action: string, runtime: ToolR
     const path_params: Record<string, string | number> = {};
     for (const p of placeholders) {
       const v = args[p];
-      if (typeof v === 'string' || typeof v === 'number') path_params[p] = v;
+      if ((typeof v === 'string' && v !== '') || typeof v === 'number') path_params[p] = v;
+    }
+    // Individual-mode advice must name the tool's own parameters — the shared
+    // executor's fallback message suggests id/path_params, which don't exist
+    // on this schema and would send a session into a retry loop.
+    const missing = placeholders.filter((p) => path_params[p] === undefined);
+    if (missing.length) {
+      return errResult(
+        `Missing required parameter${missing.length > 1 ? 's' : ''} for ${label}: ${missing.join(', ')} — pass ${
+          missing.length > 1 ? 'them' : 'it'
+        } as top-level argument${missing.length > 1 ? 's' : ''} (not inside query/body). Endpoint: ${def.method} ${def.path}`
+      );
     }
     const toolArgs: ToolArgs = {
       action,

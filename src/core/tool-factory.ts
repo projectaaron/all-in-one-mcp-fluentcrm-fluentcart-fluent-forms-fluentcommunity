@@ -126,6 +126,9 @@ function err(text: string) {
   return { content: [{ type: 'text' as const, text }], isError: true };
 }
 
+/** Error-result constructor shared with the individual-tool registration. */
+export const errResult = err;
+
 /** Core execution shared by the grouped and individual registrations.
  *  `label` is the caller-facing name used in messages — `crm_contacts.list_contacts`
  *  in grouped mode, `crm_contacts_list` in individual mode. */
@@ -161,14 +164,13 @@ export async function executeAction(
   let path = def.path;
   for (const p of placeholders) path = path.replace(`{${p}}`, encodeURIComponent(String(supplied[p])));
 
-  // Query: user query + pagination defaults on list actions.
+  // Query: carry the caller's pagination over, then apply the list defaults.
   const query: Record<string, unknown> = { ...(args.query ?? {}) };
+  if (args.page !== undefined && query.page === undefined) query.page = args.page;
+  if (args.per_page !== undefined && query.per_page === undefined) query.per_page = args.per_page;
   if (isListAction(action) && def.method === 'GET') {
-    if (query.page === undefined) query.page = args.page ?? 1;
-    if (query.per_page === undefined) query.per_page = args.per_page ?? 20;
-  } else {
-    if (args.page !== undefined && query.page === undefined) query.page = args.page;
-    if (args.per_page !== undefined && query.per_page === undefined) query.per_page = args.per_page;
+    if (query.page === undefined) query.page = 1;
+    if (query.per_page === undefined) query.per_page = 20;
   }
 
   try {

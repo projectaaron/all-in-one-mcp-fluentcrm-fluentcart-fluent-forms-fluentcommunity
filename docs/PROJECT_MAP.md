@@ -48,7 +48,7 @@ fluentMCP/
 │       │   └── index.ts          # ProductModule (key, namespace, env prefix, verifyRead)
 │       ├── fluentcart/           # Same layout
 │       └── _template/            # Scaffold (.tpl files, ignored by tsc/generators)
-├── tests/                        # Vitest, mocked HTTP, no network — 230 tests
+├── tests/                        # Vitest, mocked HTTP, no network — 235 tests
 │   ├── helpers.ts                # mockFetch + client factory
 │   ├── core/*.test.ts            # http, config, shape, factory, verify (via in-memory MCP client)
 │   ├── products.test.ts          # Table-driven (grouped handler): EVERY action × routing/gating
@@ -121,7 +121,7 @@ npm run gen:docs      # re-scrape upstream APIs (network)
 npm run gen:maps      # rebuild action maps from endpoints.json (offline)
 npm run build         # tsc
 npm run gen:catalog   # rebuild TOOL_MAP.md + TOOL_CATALOG.md + manifest from dist
-npm test              # 230 tests incl. coverage guarantees
+npm test              # 235 tests incl. coverage guarantees
 ```
 
 ## Build phases / status

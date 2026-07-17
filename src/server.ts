@@ -11,9 +11,9 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { registerActionTools } from './core/action-tools.js';
 import { loadConfig, productEnvStatus, type ServerConfig } from './core/config.js';
 import { FluentClient } from './core/http.js';
-import { registerWpMediaTool, registerWpMediaTools, wpMediaMapTools } from './core/media.js';
+import { registerWpMediaTool, registerWpMediaTools } from './core/media.js';
 import { registerToolSpec } from './core/tool-factory.js';
-import { buildInstructions, mapAreasOf, registerToolMapTool, type MapArea } from './core/tool-map.js';
+import { buildInstructions, mapAreasOf, registerToolMapTool, serverArea, type MapArea } from './core/tool-map.js';
 import { registerVerifySetup, type ProductEntry } from './core/verify.js';
 import { PRODUCTS } from './products/index.js';
 import { SERVER_VERSION } from './version.js';
@@ -35,19 +35,10 @@ export function buildServer(config: ServerConfig): BuiltServer {
   // The map covers every product (disabled ones are marked, not hidden) plus
   // the built-in server tools, and feeds both tool_map and `instructions`.
   const statuses = PRODUCTS.map((module) => productEnvStatus(config, module.envPrefix));
-  const anyConfigured = statuses.some((s) => s.configured) && !!config.siteUrl;
+  // configured already implies siteUrl is set (productEnvStatus checks both).
+  const anyConfigured = statuses.some((s) => s.configured);
   const areas: MapArea[] = PRODUCTS.flatMap((module, i) => mapAreasOf(module, mode, statuses[i].configured));
-  areas.push({
-    area: 'server',
-    product: 'server',
-    enabled: true,
-    description: 'Built-in tools: this map, setup verification, and the WordPress media library.',
-    tools: [
-      { name: 'tool_map', summary: 'This map — overview, per-area drill-down, keyword search', params: [], destructive: false, paginated: false },
-      { name: 'verify_setup', summary: 'Check credentials, connectivity, and plugin presence per product', params: [], destructive: false, paginated: false },
-      ...(anyConfigured ? wpMediaMapTools(mode) : []),
-    ],
-  });
+  areas.push(serverArea(mode, anyConfigured));
 
   const server = new McpServer(
     { name: 'fluentmcp', version: SERVER_VERSION },
