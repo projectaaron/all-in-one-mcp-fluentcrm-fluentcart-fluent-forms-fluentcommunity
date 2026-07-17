@@ -1,5 +1,45 @@
 # Changelog
 
+## 0.7.1 — 2026-07-17
+
+Audit pass over the 0.7.0 surface — eight independent review angles plus a
+consistency sweep; everything found, fixed:
+
+- **Non-list GET tools regained `page`/`per_page`.** ~250 paginated
+  collections hide behind `get_*` names (contact emails, funnel subscribers,
+  order transactions, …); their individual schemas omitted the params, and
+  the SDK's schema validation silently stripped them — a session asking for
+  page 2 got page 1 with no error. Every GET (and list/search of any method)
+  now takes them; defaults still apply only to GET lists.
+- **Missing-param errors now name the tool's own parameter.** The shared
+  executor's message suggested `id`/`path_params`, which individual tools
+  don't accept — following the advice looped forever. Individual handlers
+  now say exactly which top-level argument is missing.
+- **Worker request cost cut 4.5×** (40ms → 9ms per request). Tool names,
+  input schemas, and map data are memoized at module scope — the stateless
+  Cloudflare entry point rebuilds the server per POST and was paying full
+  schema construction every time.
+- **Naming rule refined**: stripping that would empty an action name keeps
+  the verb (`list_lists` → `crm_lists_list`) without inflating noun-first
+  names (`report_overview` → `cart_reports_overview`, not
+  `…_report_overview`). New `toolName` override in `operationOverrides`
+  pins an operation's name for good — tool names are external API.
+- **Grouped-mode tool_map teaches the calling convention** (`crm_contacts
+  {"action": "list_contacts"}`) instead of dot-forms that look callable.
+- **wp_media honors the response conventions**: `detail:"full"` and
+  `fields:[…]` now work on all three media tools (previously the map's
+  conventions promised them server-wide but media ignored them).
+- **Single-sourced surface metadata.** The built-in tools' names/summaries
+  lived in three drifting copies (runtime map, server.ts, docs generator);
+  now one `serverArea()` builder feeds runtime, docs, and manifest. The
+  manifest lists only mode-independent built-ins (`tool_map`,
+  `verify_setup`), so grouped-mode installs no longer advertise tools that
+  don't exist.
+- `verify_setup` reports mode-aware `tools` plus `areas` per product
+  (previously reported area count as "tools"); smoke test pins
+  individual mode; eval expected-tool names corrected; stale counts in
+  README/PROJECT_MAP fixed. 235 tests.
+
 ## 0.7.0 — 2026-07-17
 
 **Individualized tools + the fast map.** The surface is rebuilt so every

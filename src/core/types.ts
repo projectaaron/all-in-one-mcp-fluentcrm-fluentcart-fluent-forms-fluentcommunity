@@ -12,6 +12,9 @@ export interface EndpointDef {
   summary: string;
   /** Hard-to-undo operation — requires `confirm: true`. */
   destructive: boolean;
+  /** Pin this operation's individual tool name (external API stability) —
+   *  set via tool-map.json operationOverrides; wins over the name stemmer. */
+  toolName?: string;
   /** Path lives at the site root (e.g. `/?fluent-cart=...`), not under wp-json. */
   siteRoot?: boolean;
 }

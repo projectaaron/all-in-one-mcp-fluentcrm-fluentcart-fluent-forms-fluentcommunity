@@ -10,6 +10,7 @@ import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { FluentApiError } from './errors.js';
 import type { FluentClient } from './http.js';
+import { OUTPUT_SHAPE } from './tool-factory.js';
 
 const MAX_BYTES = 15 * 1024 * 1024;
 
@@ -76,33 +77,49 @@ function ok(action: string, status: number, summaryLine: string, data: unknown) 
   };
 }
 
+type Shaping = { detail?: 'summary' | 'full'; fields?: string[] };
+
+/** Honor the server-wide response conventions: summary by default,
+ *  detail:"full" for the raw attachment, fields:[…] to project. */
+function shapeMedia(raw: unknown, args: Shaping): unknown {
+  const rec = args.detail === 'full' ? raw : summarizeAttachment(raw);
+  if (args.fields?.length && rec && typeof rec === 'object' && !Array.isArray(rec)) {
+    const r = rec as Rec;
+    const out: Rec = {};
+    for (const f of args.fields) if (f in r) out[f] = r[f];
+    if (!('id' in out) && 'id' in r) out.id = r.id; // never lose the identifier
+    return out;
+  }
+  return rec;
+}
+
 /** The three media operations, shared by both registration modes. Each takes
  *  a `label` — the tool name to use in result text and error messages. */
 
 async function runListMedia(
   client: FluentClient,
   label: string,
-  args: { query?: Record<string, unknown>; page?: number; per_page?: number }
+  args: { query?: Record<string, unknown>; page?: number; per_page?: number } & Shaping
 ) {
   const res = await client.wpRequest({
     method: 'GET',
     path: '/wp/v2/media',
     query: { page: args.page ?? 1, per_page: args.per_page ?? 20, ...(args.query ?? {}) },
   });
-  const items = Array.isArray(res.data) ? res.data.map(summarizeAttachment) : res.data;
+  const items = Array.isArray(res.data) ? res.data.map((item) => shapeMedia(item, args)) : res.data;
   const count = Array.isArray(items) ? items.length : 0;
   return ok('list_media', res.status, `${label} → HTTP ${res.status} — ${count} items`, items);
 }
 
-async function runGetMedia(client: FluentClient, label: string, id: string | number) {
-  const res = await client.wpRequest({ method: 'GET', path: `/wp/v2/media/${encodeURIComponent(String(id))}` });
-  return ok('get_media', res.status, `${label} → HTTP ${res.status}`, summarizeAttachment(res.data));
+async function runGetMedia(client: FluentClient, label: string, args: { id: string | number } & Shaping) {
+  const res = await client.wpRequest({ method: 'GET', path: `/wp/v2/media/${encodeURIComponent(String(args.id))}` });
+  return ok('get_media', res.status, `${label} → HTTP ${res.status}`, shapeMedia(res.data, args));
 }
 
 async function runUploadFromUrl(
   client: FluentClient,
   label: string,
-  args: { source_url: string; filename?: string; title?: string; alt_text?: string }
+  args: { source_url: string; filename?: string; title?: string; alt_text?: string } & Shaping
 ) {
   const source = assertSafeSourceUrl(args.source_url);
   const fetched = await client.fetchUrl(source.toString());
@@ -140,31 +157,38 @@ async function runUploadFromUrl(
     'upload_from_url',
     uploaded.status,
     `${label} → HTTP ${uploaded.status} — attachment id=${summary.id}, ${(bytes.byteLength / 1024).toFixed(0)} KB ${contentType}`,
-    summary
+    shapeMedia(attachment, args)
   );
 }
 
+type MediaResult = ReturnType<typeof ok> | ReturnType<typeof err>;
+
+function caught(label: string, e: unknown): MediaResult {
+  if (e instanceof FluentApiError) return err(e.message);
+  return err(`${label} failed: ${e instanceof Error ? e.message : String(e)}`);
+}
+
 const guard =
-  (label: string, fn: (args: never) => Promise<ReturnType<typeof ok> | ReturnType<typeof err>>) =>
-  async (args: never) => {
+  <A,>(label: string, fn: (args: A) => Promise<MediaResult>) =>
+  async (args: A): Promise<MediaResult> => {
     try {
       return await fn(args);
     } catch (e) {
-      if (e instanceof FluentApiError) return err(e.message);
-      return err(`${label} failed: ${e instanceof Error ? e.message : String(e)}`);
+      return caught(label, e);
     }
   };
-
-const OUT_SHAPE = {
-  ok: z.boolean(),
-  status: z.number(),
-  action: z.string(),
-  data: z.unknown().optional(),
-};
 
 const SOURCE_URL_DESC = 'Public http(s) image URL to sideload, e.g. "https://cdn.shopify.com/s/files/1/xxxx/photo.jpg"';
 const FILENAME_DESC = 'Filename to store as (default: derived from the URL), e.g. "lilly-print-8x10.jpg"';
 const LIST_QUERY_DESC = 'Filters, e.g. {"search": "lilly", "media_type": "image"}';
+
+const SHAPING_SHAPE = {
+  fields: z.array(z.string()).optional().describe('Return only these fields per record, e.g. ["id","source_url"]'),
+  detail: z
+    .enum(['summary', 'full'])
+    .optional()
+    .describe('"summary" (default) returns key attachment fields; "full" returns the raw WordPress attachment'),
+};
 
 /** Individual mode: one tool per media operation. Returns the tool names. */
 export function registerWpMediaTools(server: McpServer, client: FluentClient): string[] {
@@ -178,11 +202,12 @@ export function registerWpMediaTools(server: McpServer, client: FluentClient): s
         filename: z.string().optional().describe(FILENAME_DESC),
         title: z.string().optional().describe('Media title to set after upload'),
         alt_text: z.string().optional().describe('Accessibility alt text to set after upload'),
+        ...SHAPING_SHAPE,
       },
-      outputSchema: OUT_SHAPE,
+      outputSchema: OUTPUT_SHAPE,
       annotations: { title: 'Upload Image From URL', readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: true },
     },
-    guard('wp_media_upload_from_url', (args: { source_url: string; filename?: string; title?: string; alt_text?: string }) =>
+    guard('wp_media_upload_from_url', (args: { source_url: string; filename?: string; title?: string; alt_text?: string } & Shaping) =>
       runUploadFromUrl(client, 'wp_media_upload_from_url', args)
     ) as Parameters<typeof server.registerTool>[2]
   );
@@ -193,13 +218,14 @@ export function registerWpMediaTools(server: McpServer, client: FluentClient): s
       description: 'Get one WordPress media-library attachment by ID. [WordPress · wp_media] GET /wp/v2/media/{id}.',
       inputSchema: {
         id: z.union([z.string(), z.number()]).describe('Attachment ID, e.g. 92401'),
+        ...SHAPING_SHAPE,
       },
-      outputSchema: OUT_SHAPE,
+      outputSchema: OUTPUT_SHAPE,
       annotations: { title: 'Get Media', readOnlyHint: true, destructiveHint: false, idempotentHint: false, openWorldHint: true },
     },
-    guard('wp_media_get', (args: { id: string | number }) => runGetMedia(client, 'wp_media_get', args.id)) as Parameters<
-      typeof server.registerTool
-    >[2]
+    guard('wp_media_get', (args: { id: string | number } & Shaping) =>
+      runGetMedia(client, 'wp_media_get', args)
+    ) as Parameters<typeof server.registerTool>[2]
   );
 
   server.registerTool(
@@ -210,11 +236,12 @@ export function registerWpMediaTools(server: McpServer, client: FluentClient): s
         query: z.record(z.unknown()).optional().describe(LIST_QUERY_DESC),
         page: z.number().int().min(1).optional().describe('Page number (default 1)'),
         per_page: z.number().int().min(1).max(100).optional().describe('Items per page (default 20)'),
+        ...SHAPING_SHAPE,
       },
-      outputSchema: OUT_SHAPE,
+      outputSchema: OUTPUT_SHAPE,
       annotations: { title: 'List Media', readOnlyHint: true, destructiveHint: false, idempotentHint: false, openWorldHint: true },
     },
-    guard('wp_media_list', (args: { query?: Record<string, unknown>; page?: number; per_page?: number }) =>
+    guard('wp_media_list', (args: { query?: Record<string, unknown>; page?: number; per_page?: number } & Shaping) =>
       runListMedia(client, 'wp_media_list', args)
     ) as Parameters<typeof server.registerTool>[2]
   );
@@ -241,8 +268,9 @@ export function registerWpMediaTool(server: McpServer, client: FluentClient): vo
         query: z.record(z.unknown()).optional().describe(LIST_QUERY_DESC),
         page: z.number().int().min(1).optional().describe('Page for list_media (default 1)'),
         per_page: z.number().int().min(1).max(100).optional().describe('Items per page for list_media (default 20)'),
+        ...SHAPING_SHAPE,
       },
-      outputSchema: OUT_SHAPE,
+      outputSchema: OUTPUT_SHAPE,
       annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: true },
     },
     async (args) => {
@@ -251,13 +279,12 @@ export function registerWpMediaTool(server: McpServer, client: FluentClient): vo
         if (args.action === 'list_media') return await runListMedia(client, label, args);
         if (args.action === 'get_media') {
           if (args.id === undefined) return err('get_media needs id (the attachment ID).');
-          return await runGetMedia(client, label, args.id);
+          return await runGetMedia(client, label, { ...args, id: args.id });
         }
         if (!args.source_url) return err('upload_from_url needs source_url (a public image URL).');
         return await runUploadFromUrl(client, label, { ...args, source_url: args.source_url });
       } catch (e) {
-        if (e instanceof FluentApiError) return err(e.message);
-        return err(`${label} failed: ${e instanceof Error ? e.message : String(e)}`);
+        return caught(label, e);
       }
     }
   );
