@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.7.2 — 2026-07-17
+
+Second-pass line-by-line review over the audit fixes themselves:
+
+- `wp_media` `fields:[…]` now projects from the raw attachment, so fields
+  outside the summary set (caption, media_details, …) are reachable.
+- Grouped-mode instructions and tool_map overview count callable tools
+  (46), not operations (~700) — the map now says "46 tools (702
+  operations)".
+- Map conventions state that every GET tool accepts page/per_page (many
+  paginated collections hide behind get_* names), not just list tools.
+- Registration now throws if a future endpoint's path placeholder would
+  shadow a reserved parameter (page, query, fields, …) instead of silently
+  clobbering it; schema cache keyed per (endpoint, action). 239 tests.
+
 ## 0.7.1 — 2026-07-17
 
 Audit pass over the 0.7.0 surface — eight independent review angles plus a

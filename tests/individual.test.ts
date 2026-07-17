@@ -236,3 +236,10 @@ for (const product of PRODUCTS) {
     }
   });
 }
+
+describe('reserved parameter guard', () => {
+  it('throws when a path placeholder shadows an envelope parameter', () => {
+    const def = { op: 'x', method: 'GET', path: '/reports/{page}/export', summary: 'X', destructive: false } as never;
+    expect(() => buildActionInputShape('get_export', def)).toThrow(/reserved "page"/);
+  });
+});

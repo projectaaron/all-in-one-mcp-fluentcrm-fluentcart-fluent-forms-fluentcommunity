@@ -85,6 +85,7 @@ export function serverArea(mode: ToolMode, withMedia: boolean): MapArea {
     area: 'server',
     product: 'server',
     enabled: true,
+    ...(mode === 'grouped' ? { grouped: true as const } : {}),
     description: 'Built-in tools: this map, setup verification, and the WordPress media library.',
     tools: [
       {
@@ -108,8 +109,8 @@ export function serverArea(mode: ToolMode, withMedia: boolean): MapArea {
 
 export const MAP_CONVENTIONS =
   'Conventions: ⚠ tools are hard to undo and require confirm:true (without it they refuse and explain). ' +
-  'List tools take page/per_page (default 20) and query filters. ' +
-  'Responses are compact summaries — pass detail:"full" or fields:["…"] for complete records.';
+  '(paginated) tools page by default (page/per_page, 20 per page); every GET tool also accepts page/per_page — many get_* tools return paginated collections. ' +
+  'All tools take query filters. Responses are compact summaries — pass detail:"full" or fields:["…"] for complete records.';
 
 const GROUPED_NOTE =
   'Grouped mode: entries are area.action — call the AREA tool with an "action" argument, e.g. crm_contacts {"action": "list_contacts"}.';
@@ -122,6 +123,14 @@ function areaLine(a: MapArea): string {
   return `${a.area} (${a.tools.length})${a.enabled ? '' : ' [not configured]'} — ${a.description}`;
 }
 
+/** Registered-tool count: in grouped mode the map's entries are actions of
+ *  one area tool (`crm_contacts.list_contacts`), so count distinct callables. */
+export function callableCount(areas: MapArea[], enabledOnly = false): number {
+  return areas
+    .filter((a) => !enabledOnly || a.enabled)
+    .reduce((n, a) => n + (a.grouped ? new Set(a.tools.map((t) => t.name.split('.')[0])).size : a.tools.length), 0);
+}
+
 /** "FluentCRM: enabled · FluentCart: not configured" — one derivation for
  *  the overview header and the instructions string. */
 export function productStatuses(areas: MapArea[], separator: string, skipServer = false): string {
@@ -132,9 +141,12 @@ export function productStatuses(areas: MapArea[], separator: string, skipServer 
 }
 
 export function renderOverview(areas: MapArea[]): string {
-  const toolCount = areas.reduce((n, a) => n + a.tools.length, 0);
+  const grouped = areas.some((a) => a.grouped);
+  const count = grouped
+    ? `${callableCount(areas)} tools (${areas.reduce((n, a) => n + a.tools.length, 0)} operations)`
+    : `${callableCount(areas)} tools`;
   const lines = [
-    `fluentMCP tool map — ${toolCount} tools in ${areas.length} areas. ${productStatuses(areas, ' · ')}`,
+    `fluentMCP tool map — ${count} in ${areas.length} areas. ${productStatuses(areas, ' · ')}`,
     MAP_CONVENTIONS,
     'Drill down: tool_map {"area": "crm_contacts"} lists every tool in an area with its parameters; tool_map {"search": "refund"} finds tools by keyword.',
     ...(areas.some((a) => a.grouped) ? [GROUPED_NOTE] : []),
@@ -190,7 +202,7 @@ export function renderSearch(areas: MapArea[], term: string): string {
 
 /** The MCP `instructions` string — the first thing a session reads. */
 export function buildInstructions(areas: MapArea[], mode: ToolMode): string {
-  const toolCount = areas.filter((a) => a.enabled).reduce((n, a) => n + a.tools.length, 0);
+  const toolCount = callableCount(areas, true);
   const naming =
     mode === 'individual'
       ? 'Every tool does exactly one thing and is named <area>_<operation>: crm_contacts_list, crm_contacts_create, cart_orders_refund, …'

@@ -80,17 +80,18 @@ function ok(action: string, status: number, summaryLine: string, data: unknown) 
 type Shaping = { detail?: 'summary' | 'full'; fields?: string[] };
 
 /** Honor the server-wide response conventions: summary by default,
- *  detail:"full" for the raw attachment, fields:[…] to project. */
+ *  detail:"full" for the raw attachment, fields:[…] to project. Explicit
+ *  fields project from the RAW record (like shape.ts) — a session asking
+ *  for "caption" must get it even though the summary would drop it. */
 function shapeMedia(raw: unknown, args: Shaping): unknown {
-  const rec = args.detail === 'full' ? raw : summarizeAttachment(raw);
-  if (args.fields?.length && rec && typeof rec === 'object' && !Array.isArray(rec)) {
-    const r = rec as Rec;
+  if (args.fields?.length && raw && typeof raw === 'object' && !Array.isArray(raw)) {
+    const r = raw as Rec;
     const out: Rec = {};
     for (const f of args.fields) if (f in r) out[f] = r[f];
     if (!('id' in out) && 'id' in r) out.id = r.id; // never lose the identifier
     return out;
   }
-  return rec;
+  return args.detail === 'full' ? raw : summarizeAttachment(raw);
 }
 
 /** The three media operations, shared by both registration modes. Each takes

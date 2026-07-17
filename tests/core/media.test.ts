@@ -104,3 +104,23 @@ describe('wp_media.upload_from_url', () => {
     expect(items[0]).not.toHaveProperty('guid');
   });
 });
+
+describe('wp_media response shaping (detail/fields conventions)', () => {
+  const RAW = { id: 5, source_url: 'https://x/y.png', mime_type: 'image/png', caption: { rendered: 'A caption' }, extra: 'kept-only-in-full' };
+
+  it('fields project from the RAW attachment, not the summary', async () => {
+    const { fetchImpl } = mockFetch([{ status: 200, body: RAW }]);
+    const res = await callTool(fetchImpl, { action: 'get_media', id: 5, fields: ['caption'] });
+    expect(res.isError).toBeUndefined();
+    expect(res.structuredContent?.data).toEqual({ id: 5, caption: { rendered: 'A caption' } });
+  });
+
+  it('detail:"full" returns the raw attachment; default stays summarized', async () => {
+    const { fetchImpl } = mockFetch([{ status: 200, body: RAW }]);
+    const full = await callTool(fetchImpl, { action: 'get_media', id: 5, detail: 'full' });
+    expect(full.structuredContent?.data).toEqual(RAW);
+    const { fetchImpl: f2 } = mockFetch([{ status: 200, body: RAW }]);
+    const summary = await callTool(f2, { action: 'get_media', id: 5 });
+    expect((summary.structuredContent?.data as Record<string, unknown>).extra).toBeUndefined();
+  });
+});
