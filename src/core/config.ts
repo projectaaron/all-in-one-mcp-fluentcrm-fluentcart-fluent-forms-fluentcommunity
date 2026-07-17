@@ -14,6 +14,10 @@ export interface ServerConfig {
   maxRetries: number;
   /** Resolved per product prefix: override creds when present, else shared. */
   credentials: Record<string, ProductCredentials | undefined>;
+  /** `individual` (default): one tool per operation. `grouped`: the legacy
+   *  one-tool-per-area surface with an `action` parameter — for clients that
+   *  can't handle a large tool list. Set via FLUENT_TOOL_MODE. */
+  toolMode: 'individual' | 'grouped';
 }
 
 export interface ProductEnvStatus {
@@ -44,6 +48,7 @@ export function loadConfig(envPrefixes: string[], env: NodeJS.ProcessEnv = proce
     timeoutMs: int(env.FLUENT_HTTP_TIMEOUT_MS, 30000),
     maxRetries: int(env.FLUENT_HTTP_MAX_RETRIES, 3, 0), // 0 disables retries
     credentials,
+    toolMode: env.FLUENT_TOOL_MODE?.trim().toLowerCase() === 'grouped' ? 'grouped' : 'individual',
   };
 }
 

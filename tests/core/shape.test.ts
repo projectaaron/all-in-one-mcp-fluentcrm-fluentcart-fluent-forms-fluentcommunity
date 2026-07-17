@@ -89,7 +89,7 @@ describe('shapeResponse', () => {
 describe('textSummary', () => {
   it('summarizes lists with pagination', () => {
     const shaped = shapeResponse({ subscribers: paginator }, { detail: 'summary', summaryFields: ['id'] });
-    const text = textSummary('crm_contacts', 'list_contacts', 200, shaped);
+    const text = textSummary('crm_contacts.list_contacts', 200, shaped);
     expect(text).toContain('crm_contacts.list_contacts');
     expect(text).toContain('2 items');
     expect(text).toContain('page 2/3');
@@ -98,6 +98,6 @@ describe('textSummary', () => {
 
   it('identifies single records', () => {
     const shaped = shapeResponse({ id: 7, email: 'x@y.z' }, { detail: 'summary' });
-    expect(textSummary('crm_contacts', 'get_contact', 200, shaped)).toContain('id=7');
+    expect(textSummary('crm_contacts.get_contact', 200, shaped)).toContain('id=7');
   });
 });

@@ -22,7 +22,10 @@ interface ProductReport {
   api_namespace: string;
   namespace_detected?: boolean;
   test_read?: string;
+  /** Registered tool count for this product (mode-aware). */
   tools?: number;
+  /** Resource areas (tool-name prefixes like crm_contacts). */
+  areas?: number;
   detail?: string;
 }
 
@@ -45,6 +48,7 @@ export function registerVerifySetup(server: McpServer, entries: ProductEntry[], 
             namespace_detected: z.boolean().optional(),
             test_read: z.string().optional(),
             tools: z.number().optional(),
+            areas: z.number().optional(),
             detail: z.string().optional(),
           })
         ),
@@ -89,7 +93,11 @@ export function registerVerifySetup(server: McpServer, entries: ProductEntry[], 
             status: 'ok',
             namespace_detected: namespaceDetected,
             test_read: `${module.verifyRead.label} — ok`,
-            tools: module.tools.length,
+            tools:
+              config.toolMode === 'grouped'
+                ? module.tools.length
+                : module.tools.reduce((n, t) => n + Object.keys(t.actions).length, 0),
+            areas: module.tools.length,
           });
         } catch (e) {
           const err = e instanceof FluentApiError ? e : undefined;
@@ -106,7 +114,7 @@ export function registerVerifySetup(server: McpServer, entries: ProductEntry[], 
       const ok = reports.some((r) => r.status === 'ok') && !reports.some((r) => ['auth_failed', 'plugin_missing', 'error'].includes(r.status));
       const lines = reports.map((r) => {
         const mark = r.status === 'ok' ? '✅' : r.status === 'not_configured' ? '⏭️' : '❌';
-        return `${mark} ${r.title}: ${r.status}${r.tools ? ` (${r.tools} tools)` : ''}${r.detail ? ` — ${r.detail}` : ''}`;
+        return `${mark} ${r.title}: ${r.status}${r.tools ? ` (${r.tools} tools in ${r.areas} areas)` : ''}${r.detail ? ` — ${r.detail}` : ''}`;
       });
       if (!config.siteUrl) lines.unshift('❌ FLUENT_SITE_URL is not set — no product can connect.');
       return {
