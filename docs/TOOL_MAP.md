@@ -8,7 +8,9 @@ tool-surface change. Sessions get the same map at runtime from the
 `{"search": …}` to drill down) and a summary in the MCP `instructions`.
 
 **How to read a line:** `name(required_params)` ⚠ — what it does.
-Conventions: ⚠ tools are hard to undo and require confirm:true (without it they refuse and explain). (paginated) tools page by default (page/per_page, 20 per page); every GET tool also accepts page/per_page — many get_* tools return paginated collections. All tools take query filters. Responses are compact summaries — pass detail:"full" or fields:["…"] for complete records.
+Conventions: ⚠ tools are hard to undo and require confirm:true (without it they refuse and explain). 🔒 tools are locked by the server admin and always refuse — confirm:true cannot override. (paginated) tools page by default (page/per_page, 20 per page); every GET tool also accepts page/per_page — many get_* tools return paginated collections. All tools take query filters. Responses are compact summaries — pass detail:"full" or fields:["…"] for complete records.
+🔒 marks the tools locked **by default**; the server admin controls the set
+via `FLUENT_LOCKED_TOOLS`.
 Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 
 ## Areas
@@ -71,7 +73,7 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `crm_contacts_delete_contact(id)` ⚠ — Delete Contact
 - `crm_contacts_delete_emails(id)` ⚠ — Delete Contact Emails
 - `crm_contacts_delete_note(id, note_id)` ⚠ — Delete Contact Note
-- `crm_contacts_delete_contacts` ⚠ — Delete Contacts
+- `crm_contacts_delete_contacts` ⚠ 🔒 — Delete Contacts
 - `crm_contacts_get(id)` — Get Contact
 - `crm_contacts_get_dynamic_item_view(id)` — Get Contact Dynamic Item View
 - `crm_contacts_get_emails(id)` — Get Contact Emails
@@ -372,7 +374,7 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `crm_settings_delete_report_emails` ⚠ — Report Emails
 - `crm_settings_complete_installation` — Complete Installation Wizard
 - `crm_settings_create_rest_key` — Create REST API Key
-- `crm_settings_delete_rest_key` ⚠ — REST API Key
+- `crm_settings_delete_rest_key` ⚠ 🔒 — REST API Key
 - `crm_settings_get_abandon_cart` — Abandon Cart Settings
 - `crm_settings_get_auto_subscribe` — Auto Subscribe Settings
 - `crm_settings_get_bounce_configs` — Bounce Handler Configurations
@@ -394,7 +396,7 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `crm_settings_install_fluent_smtp` — Install FluentSMTP Plugin
 - `crm_settings_install_fluent_support` — Install Fluent Support Plugin
 - `crm_settings_remove_old_logs` ⚠ — Remove Old Logs
-- `crm_settings_reset_database` ⚠ — Reset Database
+- `crm_settings_reset_database` ⚠ 🔒 — Reset Database
 - `crm_settings_reset_system_logs` ⚠ — Reset System Logs
 - `crm_settings_run_cron` — Run Cron Event
 - `crm_settings_save_abandon_cart` — Save Abandon Cart Settings
@@ -402,7 +404,7 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `crm_settings_save_double_optin` — Save Double Opt-in Settings
 - `crm_settings_save_integration` — Save Integration Settings
 - `crm_settings_save` — Save Global Settings
-- `crm_settings_test_delete_request` ⚠ — Test Request Resolver
+- `crm_settings_test_delete_request` ⚠ 🔒 — Test Request Resolver
 - `crm_settings_test_get_request` — Test Request Resolver
 - `crm_settings_test_post_request` — Test Request Resolver
 - `crm_settings_test_put_request` — Test Request Resolver
@@ -647,7 +649,7 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `cart_settings_activate_payment_addon` — Activate Payment Addon
 - `cart_settings_activate_plugin_addon` — Activate Plugin Addon
 - `cart_settings_check_paypal_webhook` — Check PayPal Webhook
-- `cart_settings_disconnect_payment_method` ⚠ — Disconnect Payment Method
+- `cart_settings_disconnect_payment_method` ⚠ 🔒 — Disconnect Payment Method
 - `cart_settings_exchange_paypal_seller_auth_token` — Exchange PayPal Seller Auth Token
 - `cart_settings_get_active_storage_drivers` — Get Active Storage Drivers
 - `cart_settings_get_checkout_fields` — Get Checkout Fields
@@ -867,7 +869,7 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `cart_licensing_public_deactivate_license` ⚠ — Deactivate License
 - `cart_licensing_public_download_license_package` — Download License Package
 - `cart_licensing_public_get_license_version` — Get License Version
-- `cart_licensing_regenerate_license_key(id)` ⚠ — Regenerate License Key
+- `cart_licensing_regenerate_license_key(id)` ⚠ 🔒 — Regenerate License Key
 - `cart_licensing_save_product_license_settings(id)` — Save Product License Settings
 - `cart_licensing_update_license_activation_limit(id)` — Update License Activation Limit
 - `cart_licensing_update_license_status(id)` — Update License Status

@@ -10,7 +10,7 @@ import {
   individualNamesFor,
   makeActionHandler,
 } from '../src/core/action-tools.js';
-import { placeholdersOf } from '../src/core/tool-factory.js';
+import { makeHandler, placeholdersOf } from '../src/core/tool-factory.js';
 import type { ServerConfig } from '../src/core/config.js';
 import { buildServer } from '../src/server.js';
 import { PRODUCTS } from '../src/products/index.js';
@@ -241,5 +241,55 @@ describe('reserved parameter guard', () => {
   it('throws when a path placeholder shadows an envelope parameter', () => {
     const def = { op: 'x', method: 'GET', path: '/reports/{page}/export', summary: 'X', destructive: false } as never;
     expect(() => buildActionInputShape('get_export', def)).toThrow(/reserved "page"/);
+  });
+});
+
+describe('locked tools refuse unconditionally', () => {
+  const crm = () => PRODUCTS.find((p) => p.key === 'fluentcrm')!;
+  const settings = () => crm().tools.find((t) => t.name === 'crm_settings')!;
+  const locked = new Set(['crm_settings_reset_database']);
+
+  it('individual mode: confirm:true cannot override the lock; no HTTP happens', async () => {
+    const spec = settings();
+    const { calls, fetchImpl } = mockFetch([{ status: 200, body: {} }]);
+    const handler = makeActionHandler(
+      spec,
+      'reset_database',
+      { client: makeClient(fetchImpl), lockedTools: locked },
+      'crm_settings_reset_database'
+    );
+    const res = (await handler({ confirm: true } as never)) as { isError?: boolean; content: Array<{ text: string }> };
+    expect(res.isError).toBe(true);
+    expect(res.content[0].text).toContain('🔒');
+    expect(res.content[0].text).toContain('FLUENT_LOCKED_TOOLS');
+    expect(calls.length).toBe(0);
+  });
+
+  it('grouped mode: the same canonical name locks the action', async () => {
+    const spec = settings();
+    const { calls, fetchImpl } = mockFetch([{ status: 200, body: {} }]);
+    const handler = makeHandler(spec, {
+      client: makeClient(fetchImpl),
+      lockedTools: locked,
+      canonicalNames: individualNamesFor(spec),
+    });
+    const res = (await handler({ action: 'reset_database', confirm: true } as never)) as {
+      isError?: boolean;
+      content: Array<{ text: string }>;
+    };
+    expect(res.isError).toBe(true);
+    expect(res.content[0].text).toContain('🔒');
+    expect(calls.length).toBe(0);
+  });
+
+  it('unlocked tools in the same area are unaffected', async () => {
+    const spec = settings();
+    const { calls, fetchImpl } = mockFetch([{ status: 200, body: {} }]);
+    const names = individualNamesFor(spec);
+    const [action] = Object.entries(spec.actions).find(([, d]) => d.method === 'GET' && !d.destructive)!;
+    const handler = makeActionHandler(spec, action, { client: makeClient(fetchImpl), lockedTools: locked }, names[action]);
+    const res = (await handler({} as never)) as { isError?: boolean };
+    expect(res.isError).toBeUndefined();
+    expect(calls.length).toBe(1);
   });
 });

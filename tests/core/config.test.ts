@@ -71,3 +71,27 @@ describe('config', () => {
     expect(loadConfig([], { FLUENT_TOOL_MODE: 'weird' } as NodeJS.ProcessEnv).toolMode).toBe('individual');
   });
 });
+
+describe('locked tools', () => {
+  it('defaults to the six no-agent-use operations', () => {
+    const locked = loadConfig([], {} as NodeJS.ProcessEnv).lockedTools;
+    expect([...locked].sort()).toEqual([
+      'cart_licensing_regenerate_license_key',
+      'cart_settings_disconnect_payment_method',
+      'crm_contacts_delete_contacts',
+      'crm_settings_delete_rest_key',
+      'crm_settings_reset_database',
+      'crm_settings_test_delete_request',
+    ]);
+  });
+
+  it('supports none, replacement lists, and default expansion', () => {
+    const env = (v: string) => loadConfig([], { FLUENT_LOCKED_TOOLS: v } as NodeJS.ProcessEnv).lockedTools;
+    expect(env('none').size).toBe(0);
+    expect([...env('crm_tags_delete')]).toEqual(['crm_tags_delete']);
+    const extended = env('default, crm_contacts_bulk_action');
+    expect(extended.has('crm_settings_reset_database')).toBe(true);
+    expect(extended.has('crm_contacts_bulk_action')).toBe(true);
+    expect(extended.size).toBe(7);
+  });
+});

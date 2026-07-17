@@ -22,6 +22,8 @@ export interface MapTool {
   destructive: boolean;
   /** True for GET list actions that take page/per_page. */
   paginated: boolean;
+  /** Admin-locked: registered but refuses unconditionally. */
+  locked?: boolean;
 }
 
 export interface MapArea {
@@ -46,8 +48,8 @@ export type ToolMode = 'individual' | 'grouped';
 const AREA_CACHE = new WeakMap<ProductModule, Map<string, MapArea[]>>();
 
 /** Build map areas for one product module. */
-export function mapAreasOf(module: ProductModule, mode: ToolMode, enabled: boolean): MapArea[] {
-  const key = `${mode}:${enabled}`;
+export function mapAreasOf(module: ProductModule, mode: ToolMode, enabled: boolean, locked?: Set<string>): MapArea[] {
+  const key = `${mode}:${enabled}:${locked ? [...locked].sort().join('|') : ''}`;
   let perModule = AREA_CACHE.get(module);
   const hit = perModule?.get(key);
   if (hit) return hit;
@@ -61,13 +63,17 @@ export function mapAreasOf(module: ProductModule, mode: ToolMode, enabled: boole
       description: spec.description,
       ...(spec.note ? { note: spec.note } : {}),
       ...(mode === 'grouped' ? { grouped: true as const } : {}),
-      tools: Object.entries(spec.actions).map(([action, def]) => ({
-        name: names ? names[action] : `${spec.name}.${action}`,
-        summary: def.summary,
-        params: placeholdersOf(def.path),
-        destructive: def.destructive,
-        paginated: isListAction(action) && def.method === 'GET',
-      })),
+      tools: Object.entries(spec.actions).map(([action, def]) => {
+        const canonical = individualNamesFor(spec)[action];
+        return {
+          name: names ? names[action] : `${spec.name}.${action}`,
+          summary: def.summary,
+          params: placeholdersOf(def.path),
+          destructive: def.destructive,
+          paginated: isListAction(action) && def.method === 'GET',
+          ...(locked?.has(canonical) ? { locked: true as const } : {}),
+        };
+      }),
     };
   });
   if (!perModule) {
@@ -109,6 +115,7 @@ export function serverArea(mode: ToolMode, withMedia: boolean): MapArea {
 
 export const MAP_CONVENTIONS =
   'Conventions: ⚠ tools are hard to undo and require confirm:true (without it they refuse and explain). ' +
+  '🔒 tools are locked by the server admin and always refuse — confirm:true cannot override. ' +
   '(paginated) tools page by default (page/per_page, 20 per page); every GET tool also accepts page/per_page — many get_* tools return paginated collections. ' +
   'All tools take query filters. Responses are compact summaries — pass detail:"full" or fields:["…"] for complete records.';
 
@@ -116,7 +123,7 @@ const GROUPED_NOTE =
   'Grouped mode: entries are area.action — call the AREA tool with an "action" argument, e.g. crm_contacts {"action": "list_contacts"}.';
 
 export function toolLine(t: MapTool): string {
-  return `${t.name}${t.params.length ? `(${t.params.join(', ')})` : ''}${t.destructive ? ' ⚠' : ''} — ${t.summary}${t.paginated ? ' (paginated)' : ''}`;
+  return `${t.name}${t.params.length ? `(${t.params.join(', ')})` : ''}${t.destructive ? ' ⚠' : ''}${t.locked ? ' 🔒' : ''} — ${t.summary}${t.paginated ? ' (paginated)' : ''}`;
 }
 
 function areaLine(a: MapArea): string {

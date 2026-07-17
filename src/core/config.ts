@@ -18,6 +18,38 @@ export interface ServerConfig {
    *  one-tool-per-area surface with an `action` parameter — for clients that
    *  can't handle a large tool list. Set via FLUENT_TOOL_MODE. */
   toolMode: 'individual' | 'grouped';
+  /** Tools that refuse unconditionally — confirm:true cannot override.
+   *  Canonical individual tool names; enforced in both modes. */
+  lockedTools: Set<string>;
+}
+
+/** Locked by default: operations no agent has any business executing —
+ *  catastrophic (full CRM wipe, audience-wide delete), self-lockout
+ *  (revoking API keys), or business-breaking with no agent use case
+ *  (disconnecting checkout payments, invalidating customers' license keys).
+ *  Override with FLUENT_LOCKED_TOOLS: a comma-separated list of individual
+ *  tool names replaces this set; the token `default` expands to it
+ *  ("default,crm_contacts_bulk_action" = these plus one more); the single
+ *  value `none` disables locking entirely. */
+export const DEFAULT_LOCKED_TOOLS = [
+  'crm_settings_reset_database',
+  'crm_contacts_delete_contacts',
+  'crm_settings_delete_rest_key',
+  'crm_settings_test_delete_request',
+  'cart_settings_disconnect_payment_method',
+  'cart_licensing_regenerate_license_key',
+] as const;
+
+export function parseLockedTools(raw: string | undefined): Set<string> {
+  if (raw === undefined || raw.trim() === '') return new Set(DEFAULT_LOCKED_TOOLS);
+  const tokens = raw.split(',').map((t) => t.trim().toLowerCase()).filter(Boolean);
+  if (tokens.includes('none')) return new Set();
+  const out = new Set<string>();
+  for (const t of tokens) {
+    if (t === 'default') for (const d of DEFAULT_LOCKED_TOOLS) out.add(d);
+    else out.add(t);
+  }
+  return out;
 }
 
 export interface ProductEnvStatus {
@@ -49,6 +81,7 @@ export function loadConfig(envPrefixes: string[], env: NodeJS.ProcessEnv = proce
     maxRetries: int(env.FLUENT_HTTP_MAX_RETRIES, 3, 0), // 0 disables retries
     credentials,
     toolMode: env.FLUENT_TOOL_MODE?.trim().toLowerCase() === 'grouped' ? 'grouped' : 'individual',
+    lockedTools: parseLockedTools(env.FLUENT_LOCKED_TOOLS),
   };
 }
 

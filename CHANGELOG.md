@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.8.0 — 2026-07-17
+
+**Locked tools — a safety tier above `confirm`.** Some operations have no
+legitimate agent use, and a confused session can produce `confirm: true` as
+easily as any other argument. Locked tools refuse unconditionally,
+server-side, in both tool modes:
+
+- Locked by default: `crm_settings_reset_database` (full CRM wipe),
+  `crm_contacts_delete_contacts` (audience-wide delete),
+  `crm_settings_delete_rest_key` (API self-lockout),
+  `crm_settings_test_delete_request` (diagnostics resolver),
+  `cart_settings_disconnect_payment_method` (stops checkout revenue),
+  `cart_licensing_regenerate_license_key` (invalidates customers' keys).
+- Admin-controlled via `FLUENT_LOCKED_TOOLS`: a comma list of individual
+  tool names replaces the default; the token `default` expands it
+  (`default,crm_contacts_bulk_action`); `none` disables locking.
+- Locked tools stay registered and visible — 🔒 in tool descriptions,
+  tool_map, and TOOL_MAP.md — so sessions get an explicit refusal naming
+  the env var instead of a mystery missing tool.
+- Generic bulk-action tools stay unlocked by default (bulk tagging is a
+  first-class use case); they remain confirm-gated. 244 tests.
+
 ## 0.7.3 — 2026-07-17
 
 Recovered an unmerged field-reported fix (branch
