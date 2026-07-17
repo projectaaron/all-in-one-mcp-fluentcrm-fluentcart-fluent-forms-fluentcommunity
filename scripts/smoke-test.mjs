@@ -19,7 +19,12 @@ const READS = {
   fluentcart: { tool: 'cart_labels_attributes_list', args: { per_page: 1 }, label: 'FluentCart: list 1 label' },
 };
 
-const child = spawn(process.execPath, ['dist/index.js'], { stdio: ['pipe', 'pipe', 'inherit'] });
+// Pin the individual surface — the READS table uses individual tool names,
+// which a FLUENT_TOOL_MODE=grouped in the caller's env would break.
+const child = spawn(process.execPath, ['dist/index.js'], {
+  stdio: ['pipe', 'pipe', 'inherit'],
+  env: { ...process.env, FLUENT_TOOL_MODE: 'individual' },
+});
 let nextId = 0;
 const pending = new Map();
 let buffer = '';

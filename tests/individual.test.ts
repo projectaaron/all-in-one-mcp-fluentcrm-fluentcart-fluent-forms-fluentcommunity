@@ -60,6 +60,29 @@ describe('individual tool names', () => {
     expect(contacts.delete_contact).toBe('crm_contacts_delete_contact');
     expect(contacts.delete_contacts).toBe('crm_contacts_delete_contacts');
   });
+
+  it('keep the leading verb when stripping would empty the name; drop area nouns elsewhere', () => {
+    const crm = PRODUCTS.find((p) => p.key === 'fluentcrm')!;
+    const lists = individualNamesFor(crm.tools.find((t) => t.name === 'crm_lists')!);
+    expect(lists.list_lists).toBe('crm_lists_list');
+    const cart = PRODUCTS.find((p) => p.key === 'fluentcart')!;
+    const reports = individualNamesFor(cart.tools.find((t) => t.name === 'cart_reports')!);
+    // report_overview: "report" is an area word and NOT position-protected.
+    expect(reports.report_overview).toBe('cart_reports_overview');
+  });
+
+  it('honor an explicit toolName override (external-API name pinning)', () => {
+    const spec = {
+      name: 'crm_things',
+      description: 'Things.',
+      actions: {
+        list_things: { op: 'a', method: 'GET', path: '/things', summary: 'List', destructive: false },
+        get_thing: { op: 'b', method: 'GET', path: '/things/{id}', summary: 'Get', destructive: false, toolName: 'crm_things_fetch' },
+      },
+    } as never;
+    const names = individualNamesFor(spec);
+    expect(names).toEqual({ list_things: 'crm_things_list', get_thing: 'crm_things_fetch' });
+  });
 });
 
 describe('individual tool schemas and annotations', () => {
@@ -79,8 +102,10 @@ describe('individual tool schemas and annotations', () => {
           }
 
           expect('confirm' in shape, `${spec.name}.${action} confirm presence`).toBe(def.destructive);
-          const isList = /^(list|search|get_all)/.test(action) && def.method === 'GET';
-          expect('page' in shape, `${spec.name}.${action} page presence`).toBe(isList);
+          // Pagination on every GET (plenty of paginated collections hide
+          // behind get_* names) and on list/search actions of any method.
+          const paged = def.method === 'GET' || /^(list|search|get_all)/.test(action);
+          expect('page' in shape, `${spec.name}.${action} page presence`).toBe(paged);
           expect('body' in shape, `${spec.name}.${action} body presence`).toBe(def.method !== 'GET' && def.method !== 'HEAD');
 
           const ann = actionAnnotations(spec, def);
@@ -101,6 +126,35 @@ describe('individual tool schemas and annotations', () => {
     expect(desc).toContain('confirm:true');
     const readDesc = actionDescription(spec, spec.actions.get_contact, { productTitle: crm.title });
     expect(readDesc).not.toContain('confirm:true');
+  });
+});
+
+describe('individual handler ergonomics', () => {
+  const crm = () => PRODUCTS.find((p) => p.key === 'fluentcrm')!;
+  const contacts = () => crm().tools.find((t) => t.name === 'crm_contacts')!;
+
+  it('missing/empty path params name the top-level parameter, not id/path_params', async () => {
+    const spec = contacts();
+    const { calls, fetchImpl } = mockFetch([{ status: 200, body: {} }]);
+    const handler = makeActionHandler(spec, 'get_contact', { client: makeClient(fetchImpl) }, 'crm_contacts_get');
+    const res = (await handler({ id: '' } as never)) as { isError?: boolean; content: Array<{ text: string }> };
+    expect(res.isError).toBe(true);
+    expect(res.content[0].text).toContain('crm_contacts_get');
+    expect(res.content[0].text).toContain('top-level argument');
+    expect(res.content[0].text).not.toContain('path_params');
+    expect(calls.length).toBe(0);
+  });
+
+  it('non-list GET tools accept and forward page/per_page (no silent stripping)', async () => {
+    const spec = contacts();
+    const shape = buildActionInputShape('get_contact_emails', spec.actions.get_contact_emails);
+    expect('page' in shape && 'per_page' in shape).toBe(true);
+    const { calls, fetchImpl } = mockFetch([{ status: 200, body: {} }]);
+    const handler = makeActionHandler(spec, 'get_contact_emails', { client: makeClient(fetchImpl) }, 'crm_contacts_get_emails');
+    await handler({ id: 7, page: 2, per_page: 50 } as never);
+    const url = new URL(calls[0].url);
+    expect(url.searchParams.get('page')).toBe('2');
+    expect(url.searchParams.get('per_page')).toBe('50');
   });
 });
 

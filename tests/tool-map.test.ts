@@ -10,6 +10,7 @@ import {
   renderArea,
   renderOverview,
   renderSearch,
+  serverArea,
   type MapArea,
 } from '../src/core/tool-map.js';
 import { PRODUCTS } from '../src/products/index.js';
@@ -26,10 +27,29 @@ describe('tool map data', () => {
     expect(fromMap).toEqual(fromSpecs);
   });
 
-  it('uses area.action names in grouped mode', () => {
+  it('uses area.action names in grouped mode and teaches the calling convention', () => {
     const areas = allAreas('grouped');
     const contacts = areas.find((a) => a.area === 'crm_contacts')!;
     expect(contacts.tools.map((t) => t.name)).toContain('crm_contacts.list_contacts');
+    // The dot-form is not a callable tool name — every grouped view must say so.
+    for (const text of [renderOverview(areas), renderArea(contacts), renderSearch(areas, 'refund')]) {
+      expect(text).toContain('"action"');
+    }
+    // Individual mode carries no such noise.
+    expect(renderOverview(allAreas())).not.toContain('Grouped mode');
+  });
+
+  it('server area single-sources the built-ins for both modes', () => {
+    const withMedia = serverArea('individual', true);
+    expect(withMedia.tools.map((t) => t.name)).toEqual([
+      'tool_map',
+      'verify_setup',
+      'wp_media_upload_from_url',
+      'wp_media_get',
+      'wp_media_list',
+    ]);
+    expect(serverArea('grouped', true).tools.some((t) => t.name === 'wp_media.upload_from_url')).toBe(true);
+    expect(serverArea('individual', false).tools.map((t) => t.name)).toEqual(['tool_map', 'verify_setup']);
   });
 });
 

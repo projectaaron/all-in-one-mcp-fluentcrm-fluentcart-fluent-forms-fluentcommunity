@@ -51,6 +51,7 @@ function generate(product) {
       // Upstream summaries embed the HTTP verb ("DELETE Delete Order") — strip it.
       summary: e.summary.replace(/^(GET|POST|PUT|PATCH|DELETE|HEAD)\s+/i, ''),
       destructive,
+      ...(override.toolName ? { toolName: override.toolName } : {}),
       ...(e.path.startsWith('/?') ? { siteRoot: true } : {}),
     };
   }

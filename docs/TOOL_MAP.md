@@ -8,11 +8,8 @@ tool-surface change. Sessions get the same map at runtime from the
 `{"search": …}` to drill down) and a summary in the MCP `instructions`.
 
 **How to read a line:** `name(required_params)` ⚠ — what it does.
-⚠ = hard to undo, requires `confirm: true` (without it the tool refuses and
-explains). *(paginated)* = takes `page`/`per_page` (default 20) plus
-`query` filters. Every tool returns a compact summary by default — pass
-`detail: "full"` or `fields: ["…"]` for complete records. Full endpoint
-schemas: [`docs/api-reference/`](./api-reference/).
+Conventions: ⚠ tools are hard to undo and require confirm:true (without it they refuse and explain). List tools take page/per_page (default 20) and query filters. Responses are compact summaries — pass detail:"full" or fields:["…"] for complete records.
+Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 
 ## Areas
 
@@ -722,7 +719,7 @@ schemas: [`docs/api-reference/`](./api-reference/).
 - `cart_reports_quick_order_stats` — Get Quick Order Stats
 - `cart_reports_refund_chart` — Get Refund Chart
 - `cart_reports_refund_data_by_group` — Get Refund Data by Group
-- `cart_reports_report_overview` — Get Report Overview
+- `cart_reports_overview` — Get Report Overview
 - `cart_reports_retention_chart` — Get Retention Chart
 - `cart_reports_revenue_by_group` — Get Revenue by Group
 - `cart_reports_sales_growth` — Get Sales Growth
@@ -897,8 +894,8 @@ schemas: [`docs/api-reference/`](./api-reference/).
 
 ## Server built-ins
 
-- `tool_map` — The fast map: no args = area overview; {"area": …} or {"search": …} to find the exact tool
-- `verify_setup` — Check site reachability, per-product credentials, and plugin presence — run this first
-- `wp_media_upload_from_url(source_url)` — Upload an image into the WordPress media library from a URL (server-side fetch)
+- `tool_map` — This map — overview, per-area drill-down, keyword search
+- `verify_setup` — Check credentials, connectivity, and plugin presence per product
+- `wp_media_upload_from_url(source_url)` — Upload an image from a URL (server-side fetch)
 - `wp_media_get(id)` — Get one media attachment
 - `wp_media_list` — List or search the media library (paginated)

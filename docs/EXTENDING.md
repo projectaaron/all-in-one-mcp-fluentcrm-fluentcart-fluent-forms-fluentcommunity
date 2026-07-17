@@ -55,6 +55,9 @@ Follow [`TOOL_DESIGN.md`](TOOL_DESIGN.md):
    groups, action-name collisions, or empty tools. Then review destructive
    classification with `node scripts/gen-endpoint-maps.mjs --destructive`;
    fix misses via `operationOverrides` (`{"group/slug": {"destructive": true}}`).
+   The same overrides accept `"action"` (rename the action) and `"toolName"`
+   (pin the operation's individual tool name when the stemmer's choice is
+   wrong or must never change).
    Watch for: anything irreversible that the slug heuristic
    (delete/remove/detach/cancel/refund/deactivate/reset/disconnect/regenerate/bulk)
    doesn't catch.
