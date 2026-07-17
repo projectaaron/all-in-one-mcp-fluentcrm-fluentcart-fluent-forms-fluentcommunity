@@ -120,10 +120,10 @@ Example calls:
 
 | Tool | Class | Description |
 |------|-------|-------------|
-| `tool_map` | read | The fast map — call it first when unsure which tool to use. |
-| `verify_setup` | read | Check site reachability, per-product credentials, plugin presence, and run one harmless read per configured product. |
-| `wp_media_upload_from_url` | write | Upload an image into the WordPress media library from a URL (server-side fetch — ideal for migrating product photos from another platform's CDN). |
-| `wp_media_get` | read | Get one media attachment by ID. |
+| `tool_map` | read | This map — overview, per-area drill-down, keyword search. |
+| `verify_setup` | read | Check credentials, connectivity, and plugin presence per product. |
+| `wp_media_upload_from_url` | write | Upload an image from a URL (server-side fetch). |
+| `wp_media_get` | read | Get one media attachment. |
 | `wp_media_list` | read | List or search the media library. |
 
 Examples: `{"name": "verify_setup", "arguments": {}}` ·

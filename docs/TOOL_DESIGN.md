@@ -37,9 +37,10 @@ inventory).
 Tool name = `<area>_<operation>`. The area is the resource domain (the old
 grouped tool name, e.g. `crm_contacts`), so related tools share a prefix and
 sort/search together. The operation is the docs' action name minus any words
-the area name already carries — except the leading verb, which always
-survives (`list_lists` → `crm_lists_list`). Crude stemming makes
-`contacts`/`contact`, `companies`/`company`, `templates`/`template` match:
+the area name already carries; if stripping would empty the name entirely,
+the leading verb survives (`list_lists` → `crm_lists_list`). Crude stemming
+makes `contacts`/`contact`, `companies`/`company`, `templates`/`template`
+match:
 
 - `crm_contacts` + `create_contact` → `crm_contacts_create`
 - `crm_contacts` + `get_contact_notes` → `crm_contacts_get_notes`
@@ -49,8 +50,14 @@ When stripping would make two operations collide (`delete_contact` vs
 `delete_contacts`), **every collider keeps its full action name**
 (`crm_contacts_delete_contact`, `crm_contacts_delete_contacts`) — a
 deterministic rule with a uniqueness proof in `individualNamesFor`'s
-docstring, backstopped by a generator-time throw and a test. All names are
+docstring, backstopped by a registration-time throw and a test. All names are
 ≤ 64 chars and `^[a-z][a-z0-9_]*$` (enforced by tests).
+
+Tool names are **external API** — sessions, allowlists, and prompts refer to
+them — so two stability mechanisms exist: an operation can pin its name for
+good with a `toolName` entry in `tool-map.json`'s `operationOverrides`
+(wins over the stemmer), and the committed, generated `TOOL_MAP.md` makes
+any accidental rename visible in the diff.
 
 ## The per-tool contract
 
@@ -61,7 +68,7 @@ Each tool's schema carries only what its operation uses:
 | *path params* (`id`, `order_id`, …) | the endpoint's placeholders | Named **required** top-level parameters — no generic `id`/`path_params` indirection |
 | `query` | always | Query-string parameters (search, filters, sort, `with[]`, …) passed through |
 | `body` | non-GET methods | JSON request body |
-| `page`, `per_page` | GET list operations | Pagination. **Defaults: page 1, per_page 20** |
+| `page`, `per_page` | every GET + list/search ops | Pagination (many paginated collections hide behind `get_*` names). **Defaults on GET lists: page 1, per_page 20**; elsewhere forwarded only when given |
 | `fields` | always | Keep only these keys on returned records |
 | `detail` | always | `summary` (default) projects records to per-resource summary fields; `full` returns the raw API response |
 | `confirm` | destructive operations | Must be `true`; otherwise the tool returns an explanation of what would happen and does nothing |

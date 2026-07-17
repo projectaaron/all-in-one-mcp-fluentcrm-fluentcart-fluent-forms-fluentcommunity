@@ -1,6 +1,10 @@
 # Deploy the Worker to Cloudflare on demand (Actions tab → Deploy to
 # Cloudflare Workers → Run workflow, or via the API).
 #
+# NOTE: GitHub only registers workflow_dispatch workflows that exist on the
+# repository's DEFAULT branch — this file must be merged there before the
+# Run workflow button (or API dispatch) works.
+#
 # One-time setup — add two repository secrets (Settings → Secrets and
 # variables → Actions):
 #   CLOUDFLARE_API_TOKEN   Create at dash.cloudflare.com/profile/api-tokens
