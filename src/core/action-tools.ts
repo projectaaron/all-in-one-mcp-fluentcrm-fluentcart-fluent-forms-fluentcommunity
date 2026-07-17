@@ -97,16 +97,27 @@ const CONFIRM_FIELD = z
   .optional()
   .describe('Must be true to execute this hard-to-undo action. Without it the tool only explains what would happen.');
 
-const SHAPE_CACHE = new WeakMap<EndpointDef, Record<string, z.ZodTypeAny>>();
+/** Parameter names owned by the envelope — a path placeholder may not
+ *  shadow them, or the placeholder schema would be silently clobbered. */
+const RESERVED_PARAMS = new Set(['action', 'query', 'body', 'page', 'per_page', 'fields', 'detail', 'confirm']);
+
+const SHAPE_CACHE = new WeakMap<EndpointDef, Map<string, Record<string, z.ZodTypeAny>>>();
 
 /** Focused input schema for one action: only the parameters it actually
- *  uses. Memoized per endpoint (defs are module-lifetime singletons). */
+ *  uses. Memoized per (endpoint, action) — defs are module-lifetime
+ *  singletons, and the shape depends on the action name too (pagination). */
 export function buildActionInputShape(actionName: string, def: EndpointDef) {
-  const cached = SHAPE_CACHE.get(def);
+  let perDef = SHAPE_CACHE.get(def);
+  const cached = perDef?.get(actionName);
   if (cached) return cached;
 
   const shape: Record<string, z.ZodTypeAny> = {};
   for (const p of placeholdersOf(def.path)) {
+    if (RESERVED_PARAMS.has(p)) {
+      throw new Error(
+        `buildActionInputShape(${actionName}): path placeholder {${p}} in ${def.path} collides with the reserved "${p}" parameter — rename it via the endpoint map`
+      );
+    }
     shape[p] = z
       .union([z.string(), z.number()])
       .describe(`Required path parameter "${p}" of ${def.method} ${def.path}`);
@@ -124,7 +135,11 @@ export function buildActionInputShape(actionName: string, def: EndpointDef) {
   shape.detail = DETAIL_FIELD;
   if (def.destructive) shape.confirm = CONFIRM_FIELD;
 
-  SHAPE_CACHE.set(def, shape);
+  if (!perDef) {
+    perDef = new Map();
+    SHAPE_CACHE.set(def, perDef);
+  }
+  perDef.set(actionName, shape);
   return shape;
 }
 

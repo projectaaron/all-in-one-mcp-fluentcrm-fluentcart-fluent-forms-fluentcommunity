@@ -119,3 +119,14 @@ describe('tool_map tool', () => {
     expect(unknown).toContain('cart_orders');
   });
 });
+
+describe('grouped-mode honesty', () => {
+  it('instructions and overview count callable tools, not actions', () => {
+    const areas = [...allAreas('grouped'), serverArea('grouped', true)];
+    const instructions = buildInstructions(areas, 'grouped');
+    expect(instructions).toContain('46 tools'); // 43 areas + tool_map + verify_setup + wp_media
+    const overview = renderOverview(areas);
+    expect(overview).toContain('46 tools');
+    expect(overview).toContain('operations)');
+  });
+});
