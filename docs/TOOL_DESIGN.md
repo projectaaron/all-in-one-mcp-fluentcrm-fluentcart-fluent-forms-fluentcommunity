@@ -1,47 +1,81 @@
 # Tool surface design
 
 How 699 documented REST endpoints (FluentCRM 319 + FluentCart 380) become
-**45 MCP tools** without losing coverage. Companion documents:
-`TOOL_CATALOG.md` (the concrete tool list, generated), `PROJECT_MAP.md`
-(where the code lives), `api-reference/` (the endpoint inventory).
+**699 individualized MCP tools plus a fast map** without losing coverage or
+maintainability. Companion documents: `TOOL_MAP.md` (one line per tool,
+generated), `TOOL_CATALOG.md` (area-level classes + examples, generated),
+`PROJECT_MAP.md` (where the code lives), `api-reference/` (the endpoint
+inventory).
 
 ## Principles
 
-1. **Coverage without sprawl.** Every documented endpoint is reachable; the
-   tool count stays lean (target 30–60). One tool per *resource domain*, an
-   `action` parameter selects the operation — mirroring how the docs
-   themselves group endpoints.
-2. **Data over control flow.** A tool is a declarative spec: name, one
-   sentence, annotations, and an action map (`action → {method, path,
-   destructive, …}`). The shared factory (`src/core/tool-factory.ts`) builds
-   the Zod schema, routes, paginates, shapes, and gates. Endpoints are
-   *generated* into these maps from `endpoints.json` (see "Mechanics"), so an
-   upstream addition is a regen + assignment, never new plumbing.
-3. **Token-lean responses.** Summary projection by default, pagination by
+1. **One tool = one operation, findable in seconds.** Every documented
+   endpoint is its own tool with a name that says what it does
+   (`crm_contacts_list`, `cart_orders_refund`). A session should never have
+   to parse a 31-action enum description to make one call — the schema of
+   each tool contains exactly the parameters that operation needs, with path
+   params as named required fields.
+2. **A fast map over a big surface.** ~700 tools are only usable if finding
+   the right one is one step. Three layers: the MCP `instructions` string
+   (naming rule + conventions, read on connect), the `tool_map` tool
+   (area overview → per-area drill-down → keyword search), and the generated
+   `TOOL_MAP.md` for humans.
+3. **Data over control flow.** A tool is still generated from a declarative
+   spec: area, one sentence, and an action map (`action → {method, path,
+   destructive, …}`) generated from `endpoints.json` (see "Mechanics"). The
+   individual registration (`src/core/action-tools.ts`) derives names,
+   schemas, and annotations from the same maps the legacy grouped surface
+   uses — an upstream addition is a regen + assignment, never new plumbing.
+4. **Token-lean responses.** Summary projection by default, pagination by
    default, `fields` to narrow further, `detail: "full"` only on request.
-4. **Safe by default.** Accurate annotations; destructive actions refuse to
-   run without `confirm: true` and instead *describe what would happen*.
+5. **Safe by default.** Accurate per-operation annotations; destructive
+   tools refuse to run without `confirm: true` and instead *describe what
+   would happen*.
 
-## The uniform tool contract
+## Naming: deterministic, collision-free
 
-Every resource tool takes the same parameter families (per-tool schema only
-includes what that tool actually uses):
+Tool name = `<area>_<operation>`. The area is the resource domain (the old
+grouped tool name, e.g. `crm_contacts`), so related tools share a prefix and
+sort/search together. The operation is the docs' action name minus any words
+the area name already carries — except the leading verb, which always
+survives (`list_lists` → `crm_lists_list`). Crude stemming makes
+`contacts`/`contact`, `companies`/`company`, `templates`/`template` match:
 
-| Param | Type | Meaning |
-|-------|------|---------|
-| `action` | enum (required) | Which operation to perform. The field description lists every action with its required path params and destruction flag, e.g. `get(id)`, `delete(id)!` |
-| `id` | string\|number | Primary path parameter (the `{order_id}`, `{subscriber}`, … of the chosen action) |
-| `path_params` | object | Remaining path parameters when an action has more than one, keyed by placeholder name (e.g. `{"transaction_id": 55}`) |
-| `query` | object | Query-string parameters (search, filters, sort, `with[]`, …) passed through to the endpoint |
-| `body` | object | JSON request body for create/update-style actions |
-| `page`, `per_page` | number | Pagination for list actions. **Defaults: page 1, per_page 20** |
-| `fields` | string[] | Keep only these keys on returned records |
-| `detail` | `"summary"` \| `"full"` | `summary` (default) projects records to per-resource summary fields; `full` returns the raw API response |
-| `confirm` | boolean | Must be `true` for destructive actions; otherwise the tool returns an explanation of what would happen and does nothing |
+- `crm_contacts` + `create_contact` → `crm_contacts_create`
+- `crm_contacts` + `get_contact_notes` → `crm_contacts_get_notes`
+- `cart_orders` + `refund_order` → `cart_orders_refund`
 
-Action names are derived from the docs' own operation slugs
-(`list-orders → list`, `update-statuses → update_statuses`), so the API
-reference, the tool surface, and the coverage test all speak the same names.
+When stripping would make two operations collide (`delete_contact` vs
+`delete_contacts`), **every collider keeps its full action name**
+(`crm_contacts_delete_contact`, `crm_contacts_delete_contacts`) — a
+deterministic rule with a uniqueness proof in `individualNamesFor`'s
+docstring, backstopped by a generator-time throw and a test. All names are
+≤ 64 chars and `^[a-z][a-z0-9_]*$` (enforced by tests).
+
+## The per-tool contract
+
+Each tool's schema carries only what its operation uses:
+
+| Param | When present | Meaning |
+|-------|--------------|---------|
+| *path params* (`id`, `order_id`, …) | the endpoint's placeholders | Named **required** top-level parameters — no generic `id`/`path_params` indirection |
+| `query` | always | Query-string parameters (search, filters, sort, `with[]`, …) passed through |
+| `body` | non-GET methods | JSON request body |
+| `page`, `per_page` | GET list operations | Pagination. **Defaults: page 1, per_page 20** |
+| `fields` | always | Keep only these keys on returned records |
+| `detail` | always | `summary` (default) projects records to per-resource summary fields; `full` returns the raw API response |
+| `confirm` | destructive operations | Must be `true`; otherwise the tool returns an explanation of what would happen and does nothing |
+
+Descriptions follow one shape: `<what it does>. [<Product> · <area>] <METHOD>
+<path>.` plus a `⚠ Hard to undo — requires confirm:true.` warning on
+destructive tools and the area's caveat note (e.g. customer-session auth)
+where one exists.
+
+**Grouped fallback.** `FLUENT_TOOL_MODE=grouped` serves the legacy surface —
+one tool per area (~46 total) with an `action` enum parameter — for MCP
+clients that can't handle a large tool list. Same specs, same handlers, same
+gating; only the registration differs (`src/core/tool-factory.ts` vs
+`src/core/action-tools.ts`, both funneling into a shared `executeAction`).
 
 **Responses** are `structuredContent` conforming to one shared
 `outputSchema` — `{ok, status, action, data, pagination?, note?}` with
@@ -53,14 +87,15 @@ likely cause, what to try).
 
 ## Annotations & safety
 
-- Tools whose actions are all reads: `readOnlyHint: true`.
-- Any tool with writes: `readOnlyHint: false`; `destructiveHint: true` iff
-  at least one action is destructive; `idempotentHint` is an explicit opt-in
-  in the tool map for tools whose every write is safely repeatable
+- Per-operation and therefore accurate: GET/HEAD non-destructive tools carry
+  `readOnlyHint: true`; `destructiveHint` mirrors the operation's own
+  destructive flag. (In grouped mode annotations aggregate per area as
+  before: read-only iff every action reads.) `idempotentHint` is an explicit
+  opt-in in the tool map for areas whose every write is safely repeatable
   (currently only `crm_custom_fields` — pure save endpoints), conservative
   `false` everywhere else.
 - `openWorldHint: true` everywhere (a remote WordPress site is an open
-  system).
+  system); `tool_map` alone is closed-world (it answers from local data).
 - **Destructive classification** (action-level, enforced by `confirm`):
   DELETE-method endpoints, and write endpoints whose slugs match
   `delete|remove|detach|cancel|refund|deactivate|reset|disconnect|regenerate|bulk-action|do-bulk|bulk-delete|accept-dispute|un-schedule`.
@@ -81,10 +116,10 @@ likely cause, what to try).
 
 ## Tool inventory
 
-### FluentCRM — 21 tools / 319 endpoints
+### FluentCRM — 21 areas / 319 tools
 
-| Tool | Docs group(s) | Endpoints | Class |
-|------|---------------|-----------|-------|
+| Area | Docs group(s) | Tools | Class |
+|------|---------------|-------|-------|
 | `crm_contacts` | contacts | 31 | read/write/delete |
 | `crm_lists` | lists | 7 | read/write/delete |
 | `crm_tags` | tags | 7 | read/write/delete |
@@ -107,10 +142,10 @@ likely cause, what to try).
 | `crm_settings_pro` | pro-settings | 11 | read/write/delete |
 | `crm_utilities` | import, migrators, users, docs, public-bounce | 18 | read/write |
 
-### FluentCart — 22 tools / 380 endpoints
+### FluentCart — 22 areas / 380 tools
 
-| Tool | Docs group(s) | Endpoints | Class |
-|------|---------------|-----------|-------|
+| Area | Docs group(s) | Tools | Class |
+|------|---------------|-------|-------|
 | `cart_orders` | orders | 22 | read/write/delete |
 | `cart_products` | products (core: CRUD, search, bulk, taxonomy, duplicates) | 27 | read/write/delete |
 | `cart_product_variants` | products (variants, pricing, inventory, bundles, upgrade paths) | 23 | read/write/delete |
@@ -134,38 +169,52 @@ likely cause, what to try).
 | `cart_roles` | roles-permissions (Pro) | 9 | read/write/delete |
 | `cart_order_bumps` | order-bumps (Pro) | 5 | read/write/delete |
 
-### Server — 1 tool
+### Server built-ins — 5 tools
 
 | Tool | Purpose |
 |------|---------|
+| `tool_map` | The fast map: no args → one line per area; `{area}` → every tool in it with params; `{search}` → keyword lookup. Registered even with nothing configured |
 | `verify_setup` | Diagnostic: config presence per product, connectivity, plugin/API versions, one harmless read per configured product; unconfigured products report `not configured`, never error |
-| `wp_media` | WordPress-core media library (`/wp/v2/media` — outside both Fluent namespaces): `upload_from_url` sideloads an image server-side (SSRF-guarded, image/* only, 15 MB cap), plus `get_media`/`list_media` |
+| `wp_media_upload_from_url` | Sideloads an image server-side into `/wp/v2/media` (SSRF-guarded, image/* only, 15 MB cap) |
+| `wp_media_get` / `wp_media_list` | Media-library lookup |
 
-**Total: 45 tools** (within the 30–60 target).
+**Total: 704 tools** in individual mode (the tables above count *areas*;
+each area's endpoints are its individual tools) — or 46 in grouped mode.
 
 ## Design decisions worth defending
 
-- **Group-per-tool over CRUD-only-per-tool.** The docs' resource groups are
-  the natural seams; mapping tools 1:1 to groups (splitting only the
-  59-endpoint products group, merging only trivially small groups) keeps a
-  stable, predictable correspondence: *tool name = docs page = generated
-  reference file*.
+- **One tool per operation over action mega-tools.** The original surface
+  packed each area into one tool with an `action` enum; a session had to
+  read a 30-signature description and thread generic `id`/`path_params`
+  arguments. Individual tools are self-describing (name + one sentence +
+  exact params), annotations become accurate per operation, and clients
+  with tool search find `cart_orders_refund` directly. The cost — a large
+  `tools/list` — is paid once by clients with deferred tool loading and
+  avoided entirely via the grouped fallback.
+- **The map is a tool, not just a document.** Descriptions of 700 tools are
+  no substitute for an index: `tool_map` gives a session the whole surface
+  in ~50 lines, then exact per-area detail on demand — cheaper than reading
+  700 schemas and faster than guessing names.
+- **Area prefix stays in the name.** The docs' resource groups are still
+  the natural seams; keeping *area = docs page = generated reference file*
+  as the name prefix preserves the stable correspondence (splitting only
+  the 59-endpoint products group, merging only trivially small groups).
 - **`crm_reports` / `cart_reports` stay pure-read** so the most common
   analytics questions run through tools clients can safely mark read-only.
   The two FluentCart retention-snapshot *write* endpoints move to
   `cart_utilities`, and FluentCRM's `reports/delete-report-emails` moves to
   `crm_settings` — accuracy of `readOnlyHint` beats taxonomic purity. The
   invariant is enforced by `tests/coverage.test.ts`.
-- **Customer-context tools ship despite auth limits.** `cart_checkout` /
-  `cart_customer_portal` need WordPress cookie sessions (documented in
-  `api-reference/auth.md`); with Application Passwords most calls will 401.
-  They exist for endpoint coverage and for sites with custom auth setups;
-  their descriptions say so plainly.
+- **Customer-context tools ship despite auth limits.** The
+  `cart_checkout_*` / `cart_customer_portal_*` tools need WordPress cookie
+  sessions (documented in `api-reference/auth.md`); with Application
+  Passwords most calls will 401. They exist for endpoint coverage and for
+  sites with custom auth setups; their descriptions say so plainly.
 - **Open-shaped `body`/`query`.** Full Zod modeling of 699 request bodies
   would be enormous, drift-prone, and mostly redundant — WordPress validates
   server-side and our references document every schema. Zod validates the
-  envelope (action enum, param types, confirm gating); the per-endpoint
-  reference (linked from each tool's description) is the schema authority.
+  envelope (path params, param types, confirm gating); the per-endpoint
+  reference is the schema authority.
 - **Pause/resume/schedule are writes, not destructive.** `confirm` is
   reserved for hard-to-undo operations (delete/cancel/refund/bulk/detach);
   over-gating routine writes would train users to click through confirmations.
@@ -182,6 +231,9 @@ likely cause, what to try).
 2. `tests/coverage.test.ts` recomputes the mapping from `endpoints.json` and
    asserts every operation appears in exactly one tool action. A new upstream
    endpoint therefore fails CI until it's assigned (usually automatic via its
-   group's default tool).
-3. `scripts/gen-tool-catalog.mjs` renders `TOOL_CATALOG.md` from the same
-   specs, so the human catalog can't drift from the real surface.
+   group's default tool). `tests/individual.test.ts` then drives every
+   individual tool against its documented endpoint and asserts the name
+   rules (unique, ≤ 64 chars, area-prefixed).
+3. `scripts/gen-tool-catalog.mjs` renders `TOOL_MAP.md` and
+   `TOOL_CATALOG.md` from the same specs, so the human map can't drift from
+   the real surface.

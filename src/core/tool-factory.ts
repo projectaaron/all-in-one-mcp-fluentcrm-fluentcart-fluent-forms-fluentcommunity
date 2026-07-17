@@ -109,7 +109,7 @@ export function buildInputShape(spec: ToolSpec) {
   return shape;
 }
 
-type ToolArgs = {
+export type ToolArgs = {
   action: string;
   id?: string | number;
   path_params?: Record<string, string | number>;
@@ -126,89 +126,101 @@ function err(text: string) {
   return { content: [{ type: 'text' as const, text }], isError: true };
 }
 
-/** The tool handler, exported separately so tests can drive it directly. */
+/** Core execution shared by the grouped and individual registrations.
+ *  `label` is the caller-facing name used in messages — `crm_contacts.list_contacts`
+ *  in grouped mode, `crm_contacts_list` in individual mode. */
+export async function executeAction(
+  def: EndpointDef,
+  action: string,
+  args: ToolArgs,
+  runtime: ToolRuntime,
+  label: string
+) {
+  // Destructive gate: refuse without confirm, describing the blast radius.
+  if (def.destructive && args.confirm !== true) {
+    return err(
+      `Refused (nothing was changed): ${label} would ${def.summary ? def.summary.toLowerCase().replace(/\.$/, '') : `execute ${def.method} ${def.path}`}` +
+        ` — a hard-to-undo operation. Re-run with confirm: true to proceed.`
+    );
+  }
+
+  // Path substitution: primary placeholder takes `id`, the rest come from
+  // path_params (which may also carry the primary one, by name).
+  const placeholders = placeholdersOf(def.path);
+  const supplied: Record<string, string | number> = { ...(args.path_params ?? {}) };
+  if (args.id !== undefined && placeholders.length && !(placeholders[0] in supplied)) {
+    supplied[placeholders[0]] = args.id;
+  }
+  const missing = placeholders.filter((p) => supplied[p] === undefined || supplied[p] === '');
+  if (missing.length) {
+    return err(
+      `Missing path parameter${missing.length > 1 ? 's' : ''} for ${label}: ${missing.join(', ')}. ` +
+        `Pass the primary one as id (or all of them in path_params). Endpoint: ${def.method} ${def.path}`
+    );
+  }
+  let path = def.path;
+  for (const p of placeholders) path = path.replace(`{${p}}`, encodeURIComponent(String(supplied[p])));
+
+  // Query: user query + pagination defaults on list actions.
+  const query: Record<string, unknown> = { ...(args.query ?? {}) };
+  if (isListAction(action) && def.method === 'GET') {
+    if (query.page === undefined) query.page = args.page ?? 1;
+    if (query.per_page === undefined) query.per_page = args.per_page ?? 20;
+  } else {
+    if (args.page !== undefined && query.page === undefined) query.page = args.page;
+    if (args.per_page !== undefined && query.per_page === undefined) query.per_page = args.per_page;
+  }
+
+  try {
+    const response = await runtime.client.request({
+      method: def.method,
+      path,
+      query,
+      body: args.body,
+      siteRoot: def.siteRoot,
+      noRetry: def.destructive,
+    });
+    const shaped = shapeResponse(response.data, {
+      detail: args.detail ?? 'summary',
+      fields: args.fields,
+      summaryFields: runtime.summaryFields,
+    });
+    const structured = {
+      ok: true,
+      status: response.status,
+      action,
+      data: shaped.data,
+      ...(shaped.pagination && Object.values(shaped.pagination).some((v) => v !== undefined)
+        ? { pagination: shaped.pagination }
+        : {}),
+      ...(shaped.summarized ? { note: 'summary view — pass detail:"full" or fields:[...] for complete records' } : {}),
+    };
+    // The data must live in the text block too: several MCP clients
+    // (claude.ai among them) surface only `content` to the model, and the
+    // spec says structured results SHOULD also be serialized as text.
+    return {
+      content: [
+        {
+          type: 'text' as const,
+          text: `${textSummary(label, response.status, shaped)}\n${JSON.stringify(structured)}`,
+        },
+      ],
+      structuredContent: structured,
+    };
+  } catch (e) {
+    if (e instanceof FluentApiError) return err(e.message);
+    return err(`${label} failed unexpectedly: ${e instanceof Error ? e.message : String(e)}`);
+  }
+}
+
+/** The grouped-mode tool handler, exported separately so tests can drive it directly. */
 export function makeHandler(spec: ToolSpec, runtime: ToolRuntime) {
   return async (args: ToolArgs) => {
     const def = spec.actions[args.action];
     if (!def) {
       return err(`Unknown action "${args.action}" for ${spec.name}. Valid: ${Object.keys(spec.actions).join(', ')}`);
     }
-
-    // Destructive gate: refuse without confirm, describing the blast radius.
-    if (def.destructive && args.confirm !== true) {
-      return err(
-        `Refused (nothing was changed): ${spec.name}.${args.action} would ${def.summary ? def.summary.toLowerCase().replace(/\.$/, '') : `execute ${def.method} ${def.path}`}` +
-          ` — a hard-to-undo operation. Re-run with confirm: true to proceed.`
-      );
-    }
-
-    // Path substitution: primary placeholder takes `id`, the rest come from
-    // path_params (which may also carry the primary one, by name).
-    const placeholders = placeholdersOf(def.path);
-    const supplied: Record<string, string | number> = { ...(args.path_params ?? {}) };
-    if (args.id !== undefined && placeholders.length && !(placeholders[0] in supplied)) {
-      supplied[placeholders[0]] = args.id;
-    }
-    const missing = placeholders.filter((p) => supplied[p] === undefined || supplied[p] === '');
-    if (missing.length) {
-      return err(
-        `Missing path parameter${missing.length > 1 ? 's' : ''} for ${spec.name}.${args.action}: ${missing.join(', ')}. ` +
-          `Pass the primary one as id (or all of them in path_params). Endpoint: ${def.method} ${def.path}`
-      );
-    }
-    let path = def.path;
-    for (const p of placeholders) path = path.replace(`{${p}}`, encodeURIComponent(String(supplied[p])));
-
-    // Query: user query + pagination defaults on list actions.
-    const query: Record<string, unknown> = { ...(args.query ?? {}) };
-    if (isListAction(args.action) && def.method === 'GET') {
-      if (query.page === undefined) query.page = args.page ?? 1;
-      if (query.per_page === undefined) query.per_page = args.per_page ?? 20;
-    } else {
-      if (args.page !== undefined && query.page === undefined) query.page = args.page;
-      if (args.per_page !== undefined && query.per_page === undefined) query.per_page = args.per_page;
-    }
-
-    try {
-      const response = await runtime.client.request({
-        method: def.method,
-        path,
-        query,
-        body: args.body,
-        siteRoot: def.siteRoot,
-        noRetry: def.destructive,
-      });
-      const shaped = shapeResponse(response.data, {
-        detail: args.detail ?? 'summary',
-        fields: args.fields,
-        summaryFields: runtime.summaryFields,
-      });
-      const structured = {
-        ok: true,
-        status: response.status,
-        action: args.action,
-        data: shaped.data,
-        ...(shaped.pagination && Object.values(shaped.pagination).some((v) => v !== undefined)
-          ? { pagination: shaped.pagination }
-          : {}),
-        ...(shaped.summarized ? { note: 'summary view — pass detail:"full" or fields:[...] for complete records' } : {}),
-      };
-      // The data must live in the text block too: several MCP clients
-      // (claude.ai among them) surface only `content` to the model, and the
-      // spec says structured results SHOULD also be serialized as text.
-      return {
-        content: [
-          {
-            type: 'text' as const,
-            text: `${textSummary(spec.name, args.action, response.status, shaped)}\n${JSON.stringify(structured)}`,
-          },
-        ],
-        structuredContent: structured,
-      };
-    } catch (e) {
-      if (e instanceof FluentApiError) return err(e.message);
-      return err(`${spec.name}.${args.action} failed unexpectedly: ${e instanceof Error ? e.message : String(e)}`);
-    }
+    return executeAction(def, args.action, args, runtime, `${spec.name}.${args.action}`);
   };
 }
 
