@@ -248,3 +248,63 @@ position), image/* content types only, 15 MB cap. Registers only when
 credentials exist. Verified live: migrated the Lilly print photo from
 Shopify's CDN into the production media library (attachment 92413) in one
 tool call.
+
+## 2026-07-17 — Individualized tools + the fast map (0.7.0)
+
+The 45 action mega-tools were slow for sessions to learn: picking one
+operation meant parsing a 30-signature `action` enum description, and the
+generic `id`/`path_params` envelope hid what each call actually needed.
+Requirement: every tool individualized (fast to find, fast to use) plus a
+fast map explaining the whole surface.
+
+- **One tool per operation** (default; `FLUENT_TOOL_MODE=grouped` restores
+  the legacy surface for clients that can't handle ~700 tools). Names are
+  `<area>_<operation>` with words the area already carries stripped via
+  crude stemming (`crm_contacts_create`, `cart_orders_refund`); colliders
+  keep their full action name (`crm_contacts_delete_contact` vs
+  `crm_contacts_delete_contacts`). Deterministic, unique (proof sketch in
+  `individualNamesFor`), ≤ 64 chars — all test-enforced. Schemas carry only
+  what the operation uses; path placeholders become named *required*
+  params; annotations became accurate per operation (reads really say
+  `readOnlyHint: true` now).
+- **The fast map is three layers**: MCP `instructions` (naming rule +
+  conventions, read at connect), the `tool_map` tool (~50-line area
+  overview → per-area drill-down → keyword search, registered even when
+  nothing is configured), and generated `docs/TOOL_MAP.md`. Rationale: an
+  index a session can *call* beats 700 descriptions it would have to read.
+- **Shared executor, two registrations.** `makeHandler` (grouped) and
+  `makeActionHandler` (individual) both funnel into one `executeAction` —
+  gating, path substitution, pagination, shaping stay single-sourced, and
+  the grouped surface costs nothing extra to keep.
+- `wp_media` split the same way (`wp_media_upload_from_url` / `_get` /
+  `_list`); `verify_setup` was already individual. The .mcpb manifest lists
+  only the always-present built-ins (`tools_generated: true` covers the
+  product tools) and gains a Tool Surface user-config option.
+
+## 2026-07-17 — 0.7.1 audit: what the review caught
+
+Eight independent review angles (line-by-line, removed-behavior,
+cross-file, reuse, simplification, efficiency, altitude, conventions) over
+the 0.7.0 diff. Lessons worth keeping:
+
+- **Schema-validated surfaces fail silently.** The SDK strips undeclared
+  arguments, so dropping `page`/`per_page` from non-list GETs didn't error —
+  it returned page 1 as if it were page 2. When narrowing a schema, grep for
+  what the old surface accepted and prove each removal harmless.
+- **Error advice is part of the contract.** The shared executor's
+  "pass id/path_params" recovery text survived into a surface with neither
+  parameter — an unfollowable instruction is a retry loop. Recovery text
+  must be generated from the same schema the caller sees.
+- **Stateless entry points make startup cost a per-request cost.** The
+  Workers bridge rebuilds the McpServer per POST; 704 registrations cost
+  40ms until names/schemas/map data were memoized at module scope (9ms
+  after). Anything computed from module-lifetime singletons should be
+  cached as such.
+- **Names are external API.** The stemmer is a heuristic; a heuristic tweak
+  is a global rename. Mitigations shipped: `toolName` operationOverride to
+  pin names, and the committed generated TOOL_MAP.md making renames
+  diff-visible.
+- **Copies drift immediately.** The built-ins' metadata existed in three
+  places for less than a day and already disagreed. The map data now has
+  one builder (`serverArea`/`mapAreasOf`) consumed by runtime, docs
+  generator, and manifest.

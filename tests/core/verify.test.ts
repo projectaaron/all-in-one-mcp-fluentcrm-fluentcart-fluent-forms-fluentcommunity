@@ -60,7 +60,8 @@ describe('verify_setup', () => {
     const crmReport = res.structuredContent.products.find((p) => p.product === 'fluentcrm')!;
     expect(crmReport.status).toBe('ok');
     expect(crmReport.namespace_detected).toBe(true);
-    expect(crmReport.tools).toBe(crm.tools.length);
+    expect(crmReport.tools).toBe(crm.tools.reduce((n, t) => n + Object.keys(t.actions).length, 0));
+    expect(crmReport.areas).toBe(crm.tools.length);
     expect(res.structuredContent.ok).toBe(true);
     expect(res.content[0].text).toContain('✅ FluentCRM: ok');
     expect(res.content[0].text).toContain('⏭️ FluentCart: not_configured');

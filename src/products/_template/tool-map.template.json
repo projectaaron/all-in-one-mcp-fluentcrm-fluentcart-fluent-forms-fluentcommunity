@@ -13,6 +13,7 @@
     }
   },
   "operationOverrides": {
-    "example-docs-group/some-write-slug": { "tool": "__TOOL_PREFIX___example_resource", "destructive": true }
+    "example-docs-group/some-write-slug": { "tool": "__TOOL_PREFIX___example_resource", "destructive": true },
+    "example-docs-group/badly-stemmed-slug": { "toolName": "__TOOL_PREFIX___example_resource_better_name" }
   }
 }

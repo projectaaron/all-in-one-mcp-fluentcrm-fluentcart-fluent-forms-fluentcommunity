@@ -6,6 +6,8 @@
      operationOverride reassigns it) or the generator fails.
    - Action name = slug with '-' -> '_' (override with {action}).
    - Destructive = DELETE method or slug heuristic (override with {destructive}).
+   - Summary = upstream summary minus HTTP-verb prefix (override with {summary}
+     when the upstream name misdescribes the operation).
    Run: node scripts/gen-endpoint-maps.mjs   (offline; reads committed files) */
 import fs from 'node:fs';
 
@@ -49,8 +51,9 @@ function generate(product) {
       method: e.method,
       path: e.path,
       // Upstream summaries embed the HTTP verb ("DELETE Delete Order") — strip it.
-      summary: e.summary.replace(/^(GET|POST|PUT|PATCH|DELETE|HEAD)\s+/i, ''),
+      summary: override.summary ?? e.summary.replace(/^(GET|POST|PUT|PATCH|DELETE|HEAD)\s+/i, ''),
       destructive,
+      ...(override.toolName ? { toolName: override.toolName } : {}),
       ...(e.path.startsWith('/?') ? { siteRoot: true } : {}),
     };
   }
