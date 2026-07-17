@@ -16,8 +16,10 @@ const { PRODUCTS } = await import('../dist/products/index.js');
 const { individualNamesFor } = await import('../dist/core/action-tools.js');
 const { placeholdersOf } = await import('../dist/core/tool-factory.js');
 const { mapAreasOf, serverArea, MAP_CONVENTIONS } = await import('../dist/core/tool-map.js');
+const { DEFAULT_LOCKED_TOOLS } = await import('../dist/core/config.js');
 
-const perProduct = PRODUCTS.map((product) => ({ product, areas: mapAreasOf(product, 'individual', true) }));
+const defaultLocked = new Set(DEFAULT_LOCKED_TOOLS);
+const perProduct = PRODUCTS.map((product) => ({ product, areas: mapAreasOf(product, 'individual', true, defaultLocked) }));
 // Built-ins that exist in every mode and configuration (manifest-safe).
 const coreServerTools = serverArea('individual', false).tools;
 // The full built-in area, media included, for the docs.
@@ -28,7 +30,7 @@ const totalTools = productToolCount + fullServerArea.tools.length;
 const totalAreas = perProduct.reduce((n, p) => n + p.areas.length, 0) + 1;
 
 const mdToolLine = (t) =>
-  `\`${t.name}${t.params.length ? `(${t.params.join(', ')})` : ''}\`${t.destructive ? ' ⚠' : ''} — ${t.summary}${t.paginated ? ' (paginated)' : ''}`;
+  `\`${t.name}${t.params.length ? `(${t.params.join(', ')})` : ''}\`${t.destructive ? ' ⚠' : ''}${t.locked ? ' 🔒' : ''} — ${t.summary}${t.paginated ? ' (paginated)' : ''}`;
 
 /* ---------------------------- docs/TOOL_MAP.md ---------------------------- */
 
@@ -43,6 +45,8 @@ tool-surface change. Sessions get the same map at runtime from the
 
 **How to read a line:** \`name(required_params)\` ⚠ — what it does.
 ${MAP_CONVENTIONS}
+🔒 marks the tools locked **by default**; the server admin controls the set
+via \`FLUENT_LOCKED_TOOLS\`.
 Full endpoint schemas: [\`docs/api-reference/\`](./api-reference/).
 
 ## Areas
