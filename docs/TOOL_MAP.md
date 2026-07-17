@@ -8,7 +8,7 @@ tool-surface change. Sessions get the same map at runtime from the
 `{"search": …}` to drill down) and a summary in the MCP `instructions`.
 
 **How to read a line:** `name(required_params)` ⚠ — what it does.
-Conventions: ⚠ tools are hard to undo and require confirm:true (without it they refuse and explain). List tools take page/per_page (default 20) and query filters. Responses are compact summaries — pass detail:"full" or fields:["…"] for complete records.
+Conventions: ⚠ tools are hard to undo and require confirm:true (without it they refuse and explain). (paginated) tools page by default (page/per_page, 20 per page); every GET tool also accepts page/per_page — many get_* tools return paginated collections. All tools take query filters. Responses are compact summaries — pass detail:"full" or fields:["…"] for complete records.
 Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 
 ## Areas
