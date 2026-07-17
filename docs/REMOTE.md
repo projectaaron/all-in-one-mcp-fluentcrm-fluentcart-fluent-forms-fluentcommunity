@@ -60,8 +60,10 @@ Notes:
   with `wrangler secret put FLUENT_MCP_TOKEN` and update the connector URL.
 - Test locally first with `npm run dev:cloudflare` (uses `.dev.vars`,
   gitignored).
-- The Worker build is stateless per request and runs the exact same 44 tools,
-  confirm gates, and annotations as every other mode.
+- The Worker build is stateless per request and runs the exact same tool
+  surface, confirm gates, and annotations as every other mode (individual
+  tools by default; set a `FLUENT_TOOL_MODE` var to `grouped` for the
+  legacy surface).
 
 ### B. Cloudflare Tunnel (run it on your own machine instead)
 

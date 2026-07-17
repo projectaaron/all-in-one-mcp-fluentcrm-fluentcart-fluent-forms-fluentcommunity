@@ -15,8 +15,8 @@ if (!existsSync('dist/index.js')) {
 }
 
 const READS = {
-  fluentcrm: { tool: 'crm_tags', args: { action: 'list_tags', per_page: 1 }, label: 'FluentCRM: list 1 tag' },
-  fluentcart: { tool: 'cart_labels_attributes', args: { action: 'list_labels', per_page: 1 }, label: 'FluentCart: list 1 label' },
+  fluentcrm: { tool: 'crm_tags_list', args: { per_page: 1 }, label: 'FluentCRM: list 1 tag' },
+  fluentcart: { tool: 'cart_labels_attributes_list', args: { per_page: 1 }, label: 'FluentCart: list 1 label' },
 };
 
 const child = spawn(process.execPath, ['dist/index.js'], { stdio: ['pipe', 'pipe', 'inherit'] });

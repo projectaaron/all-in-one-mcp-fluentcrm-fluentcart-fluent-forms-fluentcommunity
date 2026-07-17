@@ -43,11 +43,14 @@ Follow [`TOOL_DESIGN.md`](TOOL_DESIGN.md):
 
 1. Copy `src/products/_template/` to `src/products/<product>/` and rename
    `tool-map.template.json` → `tool-map.json`.
-2. Assign every docs group to one tool (`<tp>_<resource>`). Split a group
-   only when it exceeds ~35 endpoints; merge tiny related groups. Keep
-   reporting/analytics groups in their own strictly-read-only tool — move any
-   write endpoint out of it via `operationOverrides`.
-3. Write a one-plain-sentence description per tool.
+2. Assign every docs group to one **area** (`<tp>_<resource>`) — each
+   endpoint in the area becomes its own individualized tool named
+   `<area>_<operation>` at registration. Split a group only when it exceeds
+   ~35 endpoints; merge tiny related groups. Keep reporting/analytics groups
+   in their own strictly-read-only area — move any write endpoint out of it
+   via `operationOverrides`.
+3. Write a one-plain-sentence description per area (it shows in the
+   `tool_map` overview and in every one of its tools' descriptions).
 4. Run `node scripts/gen-endpoint-maps.mjs` — it fails loudly on unassigned
    groups, action-name collisions, or empty tools. Then review destructive
    classification with `node scripts/gen-endpoint-maps.mjs --destructive`;
@@ -72,19 +75,22 @@ Follow [`TOOL_DESIGN.md`](TOOL_DESIGN.md):
 `npm run build && npm test`. The existing table-driven suites pick the new
 module up automatically from the registry:
 
-- `tests/products.test.ts` exercises every new action (endpoint URL, API
-  error, confirm gating) with zero new test code.
+- `tests/products.test.ts` (grouped handlers) and
+  `tests/individual.test.ts` (individual tools, names, schemas) exercise
+  every new operation (endpoint URL, API error, confirm gating) with zero
+  new test code.
 - `tests/coverage.test.ts` asserts every endpoint in the new
-  `endpoints.json` is reachable and read-only tools stay pure. It also
-  enforces the 30–60 total tool budget — if the new product bursts it,
-  consolidate further (that budget is a hard product requirement).
+  `endpoints.json` is reachable and read-only areas stay pure. It also
+  enforces the 30–60 *area* budget — if the new product bursts it,
+  consolidate further.
 
 Add product-specific tests only for genuinely product-specific behavior.
 
 ## Step 5 — Document and ship
 
 1. `npm run build && npm run gen:catalog` — regenerates
-   [`TOOL_CATALOG.md`](TOOL_CATALOG.md) including the new product.
+   [`TOOL_MAP.md`](TOOL_MAP.md) and [`TOOL_CATALOG.md`](TOOL_CATALOG.md)
+   including the new product.
 2. Update [`PROJECT_MAP.md`](PROJECT_MAP.md) (structure) and append the
    non-obvious decisions to [`DECISIONS.md`](DECISIONS.md).
 3. Add a `CHANGELOG.md` entry.
@@ -98,6 +104,6 @@ Add product-specific tests only for genuinely product-specific behavior.
 
 - [ ] Generated reference in `docs/api-reference/<product>{,.md}` with auth section
 - [ ] Every documented endpoint mapped (coverage test green)
-- [ ] Tool count justified; read-only tools pure; destructive actions reviewed
-- [ ] `npm test` green; catalog regenerated; env example + README updated
+- [ ] Area count justified; read-only areas pure; destructive operations reviewed
+- [ ] `npm test` green; map + catalog regenerated; env example + README updated
 - [ ] `verify_setup` reports the product correctly in both configured and unconfigured states
