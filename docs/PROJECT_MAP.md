@@ -75,7 +75,9 @@ fluentMCP/
 │   ├── TOOL_MAP.md               # GENERATED fast map: one line per tool, grouped by area
 │   ├── TOOL_CATALOG.md           # GENERATED area-level catalog with examples
 │   └── EXTENDING.md              # Playbook: add a new Fluent product end-to-end
-├── .github/workflows/refresh-api-docs.yml  # Weekly reference refresh, PRs on change
+├── .github/workflows/
+│   ├── refresh-api-docs.yml      # Weekly reference refresh, PRs on change
+│   └── deploy-cloudflare.yml     # Manual-dispatch Worker deploy (needs CLOUDFLARE_API_TOKEN secret)
 ├── FLUENTCART_DEV_KIT.md         # Upstream dev kit (WP-side gotchas) — kept verbatim
 ├── .env.example                  # All env vars, commented, no real values
 ├── wrangler.jsonc                # Cloudflare Workers deploy config (src/worker.ts entry)
