@@ -1,3 +1,3 @@
 /** Single source for the server version reported over MCP.
  *  Keep in sync with package.json (checked by tests). */
-export const SERVER_VERSION = '0.7.2';
+export const SERVER_VERSION = '0.7.3';

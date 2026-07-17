@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.7.3 — 2026-07-17
+
+Recovered an unmerged field-reported fix (branch
+`claude/fluentmcp-image-attachments-nlaw7x`, 2026-07-16) and ported it to
+the individualized surface:
+
+- **New tool: `cart_products_update`** — FluentCart's
+  `POST /products/{postId}/pricing` is, despite the path, the FULL product
+  update and the only route that writes the product gallery / featured
+  image. It was hidden as a "pricing" action under variants, so agents
+  migrating product images could find no working path. The area note
+  documents the landmines: `gallery[0].id` becomes the featured image and
+  `gallery: []` deletes the thumbnail; always send `post_title`/`post_status`
+  (they're set unconditionally); omit `variants` unless rewriting them
+  (`item_price` is ×100 on write).
+- The endpoint generator honors a `summary` operation override for cases
+  where the upstream title misdescribes the endpoint.
+
 ## 0.7.2 — 2026-07-17
 
 Second-pass line-by-line review over the audit fixes themselves:
