@@ -1,5 +1,40 @@
 # Changelog
 
+## 0.7.0 — 2026-07-17
+
+**Individualized tools + the fast map.** The surface is rebuilt so every
+session understands it in seconds:
+
+- **One tool per operation** (was: 45 mega-tools with `action` enums).
+  Every one of the 699 documented endpoints is now its own tool with a name
+  that says what it does — `crm_contacts_list`, `crm_contacts_create`,
+  `cart_orders_refund` — 704 tools total including the built-ins. Names are
+  deterministic: `<area>_<operation>` with redundant words stripped
+  (collisions keep the full action name), unique, ≤ 64 chars, test-enforced.
+- **Focused schemas.** Each tool carries only the parameters its operation
+  uses; path placeholders (`order_id`, `note_id`, …) are named *required*
+  top-level parameters instead of the generic `id`/`path_params` envelope.
+  `body` appears only on writes, `page`/`per_page` only on lists, `confirm`
+  only on destructive tools.
+- **The fast map.** New `tool_map` tool: no args → one line per area
+  (~50 lines for the whole surface); `{"area": "crm_contacts"}` → every
+  tool in the area with its parameters; `{"search": "refund"}` → keyword
+  lookup. The same map ships as generated `docs/TOOL_MAP.md`, and every
+  session receives the naming rule + conventions via MCP `instructions` on
+  connect.
+- **Accurate annotations.** Read-only operations now really carry
+  `readOnlyHint: true` (previously one write in an area forced
+  `readOnlyHint: false` onto its 30 reads).
+- **`wp_media` split** into `wp_media_upload_from_url` / `wp_media_get` /
+  `wp_media_list`.
+- **Legacy surface kept**: `FLUENT_TOOL_MODE=grouped` (env var or the
+  extension's new "Tool Surface" setting) restores the one-tool-per-area
+  surface (~46 tools) for MCP clients that can't handle large tool lists.
+  Same specs, same shared executor, same confirm gating in both modes.
+- Destructive classification, coverage guarantees, and response shaping are
+  unchanged; the safety regression suite now also runs against the
+  individual surface. 230 tests.
+
 ## 0.6.0 — 2026-07-16
 
 - **New tool: `wp_media`** (server-level, like `verify_setup`) — closes the
