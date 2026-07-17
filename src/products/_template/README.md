@@ -6,8 +6,9 @@ Scaffold for adding a new Fluent product — full playbook in
 Usage:
 
 1. `cp -r src/products/_template src/products/<product>`
-2. Rename `tool-map.template.json` → `tool-map.json` and fill in the tool
-   assignments (every docs group → one tool).
+2. Rename `tool-map.template.json` → `tool-map.json` and fill in the area
+   assignments (every docs group → one area; each endpoint in an area
+   registers as its own `<area>_<operation>` tool).
 3. Rename `index.ts.tpl` → `index.ts`, `summaries.ts.tpl` → `summaries.ts`,
    replace the `__PLACEHOLDERS__`.
 4. `node scripts/gen-endpoint-maps.mjs` (generates `endpoints.gen.ts`),

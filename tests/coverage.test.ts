@@ -63,7 +63,7 @@ for (const product of PRODUCTS) {
 }
 
 describe('overall surface', () => {
-  it('stays within the 30-60 tool budget (incl. verify_setup)', () => {
+  it('stays within the 30-60 area budget (incl. verify_setup)', () => {
     const total = PRODUCTS.reduce((n, p) => n + p.tools.length, 0) + 1;
     expect(total).toBeGreaterThanOrEqual(30);
     expect(total).toBeLessThanOrEqual(60);
