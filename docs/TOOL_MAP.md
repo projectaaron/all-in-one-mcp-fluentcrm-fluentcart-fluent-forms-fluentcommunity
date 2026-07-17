@@ -37,8 +37,8 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 | `crm_settings_pro` | 11 | Read or update FluentCRM Pro settings such as the plugin license and Pro-only features. |
 | `crm_utilities` | 18 | Administrative utilities: import contacts from CSV or WordPress users, migrate from other tools, list WordPress users and roles, browse in-app docs, and receive bounce webhooks. |
 | `cart_orders` | 22 | Look up, create, update, refund, and manage store orders, including their statuses, transactions, addresses, and disputes. |
-| `cart_products` | 27 | Look up, create, update, delete, and bulk-edit store products, including search, duplication, taxonomy terms, and shipping/tax classes. |
-| `cart_product_variants` | 23 | Manage product variations: pricing, inventory and stock, bundles, upgrade paths, media, and variant search. |
+| `cart_products` | 28 | Look up, create, update, delete, and bulk-edit store products, including search, duplication, taxonomy terms, and shipping/tax classes. |
+| `cart_product_variants` | 22 | Manage product variations: pricing, inventory and stock, bundles, upgrade paths, media, and variant search. |
 | `cart_product_assets` | 9 | Manage products' downloadable files and per-product integration feeds. |
 | `cart_customers` | 18 | Look up, create, update, and manage store customers, their addresses, purchase stats, and linked WordPress users. |
 | `cart_coupons` | 12 | Manage discount coupons: create, update, delete, apply to or remove from orders, and check product eligibility. |
@@ -471,7 +471,7 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `cart_orders_update_statuses(order)` — Update Statuses
 - `cart_orders_update_transaction_status(order, transaction)` — Update Transaction Status
 
-### cart_products — Look up, create, update, delete, and bulk-edit store products, including search, duplication, taxonomy terms, and shipping/tax classes.
+### cart_products — Look up, create, update, delete, and bulk-edit store products, including search, duplication, taxonomy terms, and shipping/tax classes. cart_products_update: despite its /pricing API path this is the FULL product update and the only action that writes the product gallery/featured image — gallery is [{id, url, title}] where id is a WP media attachment ID, gallery[0] becomes the featured image, and an empty gallery [] deletes the thumbnail. post_title and post_status are set unconditionally, so always send them (omitting them blanks the stored values). Omit variants entirely unless you mean to rewrite them: item_price there is multiplied by 100 on write, so round-tripping read values inflates every price 100×.
 
 - `cart_products_add_terms` — Add Product Terms
 - `cart_products_bulk_edit_fetch` — Bulk Edit Fetch
@@ -498,6 +498,7 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `cart_products_sync_taxonomy_terms(postId)` — Sync Taxonomy Terms
 - `cart_products_update_long_desc_editor_mode(postId)` — Update Long Description Editor Mode
 - `cart_products_update_detail(detailId)` — Update Product Detail
+- `cart_products_update(postId)` — Update Product (post fields, detail, variants, gallery/featured image)
 - `cart_products_update_shipping_class(postId)` — Update Shipping Class
 - `cart_products_update_tax_class(postId)` — Update Tax Class
 
@@ -521,7 +522,6 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `cart_product_variants_set_variation_media(variantId)` — Set Variation Media
 - `cart_product_variants_update_inventory(postId, variantId)` — Update Inventory
 - `cart_product_variants_update_manage_stock(postId)` — Update Manage Stock Setting
-- `cart_product_variants_update_pricing(postId)` — Update Product Pricing
 - `cart_product_variants_update_upgrade_path(id)` — Update Upgrade Path
 - `cart_product_variants_update_option(postId)` — Update Variant Option
 - `cart_product_variants_update_variation(variantId)` — Update Variation

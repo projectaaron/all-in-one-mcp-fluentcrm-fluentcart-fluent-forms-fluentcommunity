@@ -2,7 +2,7 @@
   "manifest_version": "0.3",
   "name": "fluentmcp",
   "display_name": "FluentMCP — FluentCRM & FluentCart",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "description": "Full control of FluentCRM and FluentCart on your WordPress site: contacts, campaigns, orders, products, subscriptions, and more.",
   "long_description": "Gives your AI assistant create/read/update/delete control over FluentCRM (email marketing & CRM) and FluentCart (e-commerce) by WPManageNinja — 699 documented REST endpoints, each as its own individualized tool (crm_contacts_list, cart_orders_refund, …), with a built-in tool_map index so the assistant finds the right tool in one call. Safe by default: every destructive tool (deletes, refunds, cancels, mass-sends, resets) is annotated and refuses to run without explicit confirmation. One WordPress Application Password runs everything; run the verify_setup tool after installing to check your connection. Prefer a small tool list? Set the Tool Surface option to \"grouped\".",
   "author": {

@@ -334,6 +334,13 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "summary": "Update Product Detail",
       "destructive": false
     },
+    "update_product": {
+      "op": "products/update-product-pricing",
+      "method": "POST",
+      "path": "/products/{postId}/pricing",
+      "summary": "Update Product (post fields, detail, variants, gallery/featured image)",
+      "destructive": false
+    },
     "update_shipping_class": {
       "op": "products/update-shipping-class",
       "method": "POST",
@@ -474,13 +481,6 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "PUT",
       "path": "/products/{postId}/update-manage-stock",
       "summary": "Update Manage Stock Setting",
-      "destructive": false
-    },
-    "update_product_pricing": {
-      "op": "products/update-product-pricing",
-      "method": "POST",
-      "path": "/products/{postId}/pricing",
-      "summary": "Update Product Pricing",
       "destructive": false
     },
     "update_upgrade_path": {
@@ -2719,7 +2719,8 @@ export const TOOL_META: Record<string, { description: string; note?: string; ide
     "note": "Order totals and amounts are integers in CENTS (e.g. 1200 = $12.00)."
   },
   "cart_products": {
-    "description": "Look up, create, update, delete, and bulk-edit store products, including search, duplication, taxonomy terms, and shipping/tax classes."
+    "description": "Look up, create, update, delete, and bulk-edit store products, including search, duplication, taxonomy terms, and shipping/tax classes.",
+    "note": "cart_products_update: despite its /pricing API path this is the FULL product update and the only action that writes the product gallery/featured image — gallery is [{id, url, title}] where id is a WP media attachment ID, gallery[0] becomes the featured image, and an empty gallery [] deletes the thumbnail. post_title and post_status are set unconditionally, so always send them (omitting them blanks the stored values). Omit variants entirely unless you mean to rewrite them: item_price there is multiplied by 100 on write, so round-tripping read values inflates every price 100×."
   },
   "cart_product_variants": {
     "description": "Manage product variations: pricing, inventory and stock, bundles, upgrade paths, media, and variant search.",

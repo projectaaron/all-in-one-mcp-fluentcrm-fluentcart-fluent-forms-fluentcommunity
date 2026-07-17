@@ -69,8 +69,8 @@ Example calls:
 | Area | Class | Tools | Description |
 |------|-------|-------|-------------|
 | `cart_orders` | read/write/delete | 22 | Look up, create, update, refund, and manage store orders, including their statuses, transactions, addresses, and disputes. |
-| `cart_products` | read/write/delete | 27 | Look up, create, update, delete, and bulk-edit store products, including search, duplication, taxonomy terms, and shipping/tax classes. |
-| `cart_product_variants` | read/write/delete | 23 | Manage product variations: pricing, inventory and stock, bundles, upgrade paths, media, and variant search. |
+| `cart_products` | read/write/delete | 28 | Look up, create, update, delete, and bulk-edit store products, including search, duplication, taxonomy terms, and shipping/tax classes. |
+| `cart_product_variants` | read/write/delete | 22 | Manage product variations: pricing, inventory and stock, bundles, upgrade paths, media, and variant search. |
 | `cart_product_assets` | read/write/delete | 9 | Manage products' downloadable files and per-product integration feeds. |
 | `cart_customers` | read/write/delete | 18 | Look up, create, update, and manage store customers, their addresses, purchase stats, and linked WordPress users. |
 | `cart_coupons` | read/write/delete | 12 | Manage discount coupons: create, update, delete, apply to or remove from orders, and check product eligibility. |
