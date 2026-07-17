@@ -63,4 +63,11 @@ describe('config', () => {
     expect(config.maxRetries).toBe(0);
     expect(config.timeoutMs).toBe(30000);
   });
+
+  it('tool mode defaults to individual; only "grouped" switches the legacy surface on', () => {
+    expect(loadConfig([], {} as NodeJS.ProcessEnv).toolMode).toBe('individual');
+    expect(loadConfig([], { FLUENT_TOOL_MODE: 'grouped' } as NodeJS.ProcessEnv).toolMode).toBe('grouped');
+    expect(loadConfig([], { FLUENT_TOOL_MODE: ' Grouped ' } as NodeJS.ProcessEnv).toolMode).toBe('grouped');
+    expect(loadConfig([], { FLUENT_TOOL_MODE: 'weird' } as NodeJS.ProcessEnv).toolMode).toBe('individual');
+  });
 });

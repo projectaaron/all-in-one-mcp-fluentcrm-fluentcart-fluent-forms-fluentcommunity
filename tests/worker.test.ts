@@ -59,14 +59,14 @@ describe('cloudflare worker entry', () => {
     const list = (await (
       await post(`/mcp/${TOKEN}`, { jsonrpc: '2.0', id: 2, method: 'tools/list', params: {} })
     ).json()) as any;
-    expect(list.result.tools.length).toBe(45);
+    expect(list.result.tools.length).toBe(704);
   });
 
   it('accepts Bearer-header auth', async () => {
     const list = (await (
       await post('/mcp', { jsonrpc: '2.0', id: 3, method: 'tools/list', params: {} }, { Authorization: `Bearer ${TOKEN}` })
     ).json()) as any;
-    expect(list.result.tools.length).toBe(45);
+    expect(list.result.tools.length).toBe(704);
   });
 
   it('returns 202 for notification-only bodies and 400 for bad JSON', async () => {
@@ -87,7 +87,7 @@ describe('cloudflare worker entry', () => {
         jsonrpc: '2.0',
         id: 4,
         method: 'tools/call',
-        params: { name: 'crm_tags', arguments: { action: 'delete_tag', id: 1 } },
+        params: { name: 'crm_tags_delete', arguments: { id: 1 } },
       })
     ).json()) as any;
     expect(call.result.isError).toBe(true);

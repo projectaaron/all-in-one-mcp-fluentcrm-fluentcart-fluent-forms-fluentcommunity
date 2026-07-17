@@ -1,19 +1,23 @@
 # Tool catalog
 
-Every tool this server exposes: name, what it does, read/write/delete
-classification, action count, and one example call. **Generated** by
+Area-level view of the tool surface: what each area covers, its
+read/write/delete classification, and one example call. **Generated** by
 `scripts/gen-tool-catalog.mjs` from the live registry — regenerate after any
-tool-surface change. Action-level signatures live in each tool's `action`
-parameter description; full endpoint schemas live in
+tool-surface change. The per-tool list (one line per tool) is
+[`docs/TOOL_MAP.md`](./TOOL_MAP.md); full endpoint schemas live in
 [`docs/api-reference/`](./api-reference/).
 
-Destructive actions (marked ⚠ in the tool's action list) always require
-`confirm: true` — without it the tool refuses and explains what would happen.
+Tools are **individualized**: each does exactly one operation and is named
+`<area>_<operation>` (e.g. `crm_contacts_list`, `cart_orders_refund`).
+Destructive tools (⚠ in the map) always require `confirm: true` — without it
+the tool refuses and explains what would happen. Set
+`FLUENT_TOOL_MODE=grouped` to serve the legacy one-tool-per-area surface
+instead (an `action` parameter selects the operation).
 
-## FluentCRM (`crm_*`, 21 tools, 319 endpoints)
+## FluentCRM (`crm_*`, 21 areas, 319 tools)
 
-| Tool | Class | Actions | Description |
-|------|-------|---------|-------------|
+| Area | Class | Tools | Description |
+|------|-------|-------|-------------|
 | `crm_contacts` | read/write/delete | 31 | Look up, create, update, delete, and manage CRM contacts (subscribers), including their notes, tags, lists, and email history. |
 | `crm_lists` | read/write/delete | 7 | View, create, update, or delete the contact lists used to organize CRM subscribers. |
 | `crm_tags` | read/write/delete | 7 | View, create, update, or delete the tags used to label CRM contacts. |
@@ -38,32 +42,32 @@ Destructive actions (marked ⚠ in the tool's action list) always require
 
 Example calls:
 
-- `crm_contacts`: `{"name":"crm_contacts","arguments":{"action":"list_contacts","per_page":5}}`
-- `crm_lists`: `{"name":"crm_lists","arguments":{"action":"list_lists","per_page":5}}`
-- `crm_tags`: `{"name":"crm_tags","arguments":{"action":"list_tags","per_page":5}}`
-- `crm_segments`: `{"name":"crm_segments","arguments":{"action":"list_dynamic_segments","per_page":5}}`
-- `crm_custom_fields`: `{"name":"crm_custom_fields","arguments":{"action":"get_contact_custom_fields"}}`
-- `crm_labels`: `{"name":"crm_labels","arguments":{"action":"list_labels","per_page":5}}`
-- `crm_companies`: `{"name":"crm_companies","arguments":{"action":"list_companies","per_page":5}}`
-- `crm_campaigns`: `{"name":"crm_campaigns","arguments":{"action":"list_campaigns","per_page":5}}`
-- `crm_recurring_campaigns`: `{"name":"crm_recurring_campaigns","arguments":{"action":"list_recurring_campaigns","per_page":5}}`
-- `crm_sequences`: `{"name":"crm_sequences","arguments":{"action":"list_sequences","per_page":5}}`
-- `crm_automations`: `{"name":"crm_automations","arguments":{"action":"list_funnels","per_page":5}}`
-- `crm_templates`: `{"name":"crm_templates","arguments":{"action":"list_all_templates","per_page":5}}`
-- `crm_forms`: `{"name":"crm_forms","arguments":{"action":"list_forms","per_page":5}}`
-- `crm_webhooks`: `{"name":"crm_webhooks","arguments":{"action":"list_sms_webhooks","per_page":5}}`
-- `crm_smart_links`: `{"name":"crm_smart_links","arguments":{"action":"list_smart_links","per_page":5}}`
-- `crm_sms`: `{"name":"crm_sms","arguments":{"action":"list_sms_campaigns","per_page":5}}`
-- `crm_reports`: `{"name":"crm_reports","arguments":{"action":"get_advanced_report_providers"}}`
-- `crm_abandoned_carts`: `{"name":"crm_abandoned_carts","arguments":{"action":"list_abandoned_carts","per_page":5}}`
-- `crm_settings`: `{"name":"crm_settings","arguments":{"action":"get_abandon_cart_settings"}}`
-- `crm_settings_pro`: `{"name":"crm_settings_pro","arguments":{"action":"get_license_status"}}`
-- `crm_utilities`: `{"name":"crm_utilities","arguments":{"action":"list_users","per_page":5}}`
+- `crm_contacts`: `{"name":"crm_contacts_list","arguments":{"per_page":5}}`
+- `crm_lists`: `{"name":"crm_lists_list","arguments":{"per_page":5}}`
+- `crm_tags`: `{"name":"crm_tags_list","arguments":{"per_page":5}}`
+- `crm_segments`: `{"name":"crm_segments_list_dynamic","arguments":{"per_page":5}}`
+- `crm_custom_fields`: `{"name":"crm_custom_fields_get_contact","arguments":{}}`
+- `crm_labels`: `{"name":"crm_labels_list","arguments":{"per_page":5}}`
+- `crm_companies`: `{"name":"crm_companies_list","arguments":{"per_page":5}}`
+- `crm_campaigns`: `{"name":"crm_campaigns_list","arguments":{"per_page":5}}`
+- `crm_recurring_campaigns`: `{"name":"crm_recurring_campaigns_list","arguments":{"per_page":5}}`
+- `crm_sequences`: `{"name":"crm_sequences_list","arguments":{"per_page":5}}`
+- `crm_automations`: `{"name":"crm_automations_list_funnels","arguments":{"per_page":5}}`
+- `crm_templates`: `{"name":"crm_templates_list_all","arguments":{"per_page":5}}`
+- `crm_forms`: `{"name":"crm_forms_list","arguments":{"per_page":5}}`
+- `crm_webhooks`: `{"name":"crm_webhooks_list_sms","arguments":{"per_page":5}}`
+- `crm_smart_links`: `{"name":"crm_smart_links_list","arguments":{"per_page":5}}`
+- `crm_sms`: `{"name":"crm_sms_list_campaigns","arguments":{"per_page":5}}`
+- `crm_reports`: `{"name":"crm_reports_get_advanced_providers","arguments":{}}`
+- `crm_abandoned_carts`: `{"name":"crm_abandoned_carts_list","arguments":{"per_page":5}}`
+- `crm_settings`: `{"name":"crm_settings_get_abandon_cart","arguments":{}}`
+- `crm_settings_pro`: `{"name":"crm_settings_pro_get_license_status","arguments":{}}`
+- `crm_utilities`: `{"name":"crm_utilities_list_users","arguments":{"per_page":5}}`
 
-## FluentCart (`cart_*`, 22 tools, 380 endpoints)
+## FluentCart (`cart_*`, 22 areas, 380 tools)
 
-| Tool | Class | Actions | Description |
-|------|-------|---------|-------------|
+| Area | Class | Tools | Description |
+|------|-------|-------|-------------|
 | `cart_orders` | read/write/delete | 22 | Look up, create, update, refund, and manage store orders, including their statuses, transactions, addresses, and disputes. |
 | `cart_products` | read/write/delete | 27 | Look up, create, update, delete, and bulk-edit store products, including search, duplication, taxonomy terms, and shipping/tax classes. |
 | `cart_product_variants` | read/write/delete | 23 | Manage product variations: pricing, inventory and stock, bundles, upgrade paths, media, and variant search. |
@@ -89,37 +93,41 @@ Example calls:
 
 Example calls:
 
-- `cart_orders`: `{"name":"cart_orders","arguments":{"action":"list_orders","per_page":5}}`
-- `cart_products`: `{"name":"cart_products","arguments":{"action":"list_products","per_page":5}}`
-- `cart_product_variants`: `{"name":"cart_product_variants","arguments":{"action":"list_all_variants","per_page":5}}`
-- `cart_product_assets`: `{"name":"cart_product_assets","arguments":{"action":"get_downloadable_url","id":123}}`
-- `cart_customers`: `{"name":"cart_customers","arguments":{"action":"list_customers","per_page":5}}`
-- `cart_coupons`: `{"name":"cart_coupons","arguments":{"action":"list_coupon_codes","per_page":5}}`
-- `cart_subscriptions`: `{"name":"cart_subscriptions","arguments":{"action":"list_subscriptions","per_page":5}}`
-- `cart_tax`: `{"name":"cart_tax","arguments":{"action":"list_all_tax_rates","per_page":5}}`
-- `cart_shipping`: `{"name":"cart_shipping","arguments":{"action":"list_shipping_classes","per_page":5}}`
-- `cart_settings`: `{"name":"cart_settings","arguments":{"action":"list_all_payment_methods","per_page":5}}`
-- `cart_email_notifications`: `{"name":"cart_email_notifications","arguments":{"action":"list_notifications","per_page":5}}`
-- `cart_reports`: `{"name":"cart_reports","arguments":{"action":"country_heat_map"}}`
-- `cart_integrations`: `{"name":"cart_integrations","arguments":{"action":"list_addons","per_page":5}}`
-- `cart_files`: `{"name":"cart_files","arguments":{"action":"list_files","per_page":5}}`
-- `cart_labels_attributes`: `{"name":"cart_labels_attributes","arguments":{"action":"list_attribute_groups","per_page":5}}`
-- `cart_utilities`: `{"name":"cart_utilities","arguments":{"action":"list_activities","per_page":5}}`
-- `cart_storefront`: `{"name":"cart_storefront","arguments":{"action":"list_products","per_page":5}}`
-- `cart_checkout`: `{"name":"cart_checkout","arguments":{"action":"get_available_shipping_methods"}}`
-- `cart_customer_portal`: `{"name":"cart_customer_portal","arguments":{"action":"get_customer_details","id":123}}`
-- `cart_licensing`: `{"name":"cart_licensing","arguments":{"action":"list_licenses","per_page":5}}`
-- `cart_roles`: `{"name":"cart_roles","arguments":{"action":"list_managers","per_page":5}}`
-- `cart_order_bumps`: `{"name":"cart_order_bumps","arguments":{"action":"list_order_bumps","per_page":5}}`
+- `cart_orders`: `{"name":"cart_orders_list","arguments":{"per_page":5}}`
+- `cart_products`: `{"name":"cart_products_list","arguments":{"per_page":5}}`
+- `cart_product_variants`: `{"name":"cart_product_variants_list_all","arguments":{"per_page":5}}`
+- `cart_product_assets`: `{"name":"cart_product_assets_get_downloadable_url","arguments":{"downloadableId":123}}`
+- `cart_customers`: `{"name":"cart_customers_list","arguments":{"per_page":5}}`
+- `cart_coupons`: `{"name":"cart_coupons_list_codes","arguments":{"per_page":5}}`
+- `cart_subscriptions`: `{"name":"cart_subscriptions_list","arguments":{"per_page":5}}`
+- `cart_tax`: `{"name":"cart_tax_list_all_rates","arguments":{"per_page":5}}`
+- `cart_shipping`: `{"name":"cart_shipping_list_classes","arguments":{"per_page":5}}`
+- `cart_settings`: `{"name":"cart_settings_list_all_payment_methods","arguments":{"per_page":5}}`
+- `cart_email_notifications`: `{"name":"cart_email_notifications_list","arguments":{"per_page":5}}`
+- `cart_reports`: `{"name":"cart_reports_country_heat_map","arguments":{}}`
+- `cart_integrations`: `{"name":"cart_integrations_list_addons","arguments":{"per_page":5}}`
+- `cart_files`: `{"name":"cart_files_list","arguments":{"per_page":5}}`
+- `cart_labels_attributes`: `{"name":"cart_labels_attributes_list_groups","arguments":{"per_page":5}}`
+- `cart_utilities`: `{"name":"cart_utilities_list_activities","arguments":{"per_page":5}}`
+- `cart_storefront`: `{"name":"cart_storefront_list_products","arguments":{"per_page":5}}`
+- `cart_checkout`: `{"name":"cart_checkout_get_available_shipping_methods","arguments":{}}`
+- `cart_customer_portal`: `{"name":"cart_customer_portal_get_details","arguments":{"customerId":123}}`
+- `cart_licensing`: `{"name":"cart_licensing_list_licenses","arguments":{"per_page":5}}`
+- `cart_roles`: `{"name":"cart_roles_list_managers","arguments":{"per_page":5}}`
+- `cart_order_bumps`: `{"name":"cart_order_bumps_list","arguments":{"per_page":5}}`
 
-## Server (2 tools)
+## Server built-ins (5 tools)
 
 | Tool | Class | Description |
 |------|-------|-------------|
+| `tool_map` | read | The fast map — call it first when unsure which tool to use. |
 | `verify_setup` | read | Check site reachability, per-product credentials, plugin presence, and run one harmless read per configured product. |
-| `wp_media` | read/write | WordPress media library: upload an image from a URL (server-side fetch — ideal for migrating product photos from another platform's CDN), or look up existing media. |
+| `wp_media_upload_from_url` | write | Upload an image into the WordPress media library from a URL (server-side fetch — ideal for migrating product photos from another platform's CDN). |
+| `wp_media_get` | read | Get one media attachment by ID. |
+| `wp_media_list` | read | List or search the media library. |
 
 Examples: `{"name": "verify_setup", "arguments": {}}` ·
-`{"name": "wp_media", "arguments": {"action": "upload_from_url", "source_url": "https://cdn.example.com/photo.jpg", "alt_text": "Product photo"}}`
+`{"name": "tool_map", "arguments": {"search": "refund"}}` ·
+`{"name": "wp_media_upload_from_url", "arguments": {"source_url": "https://cdn.example.com/photo.jpg", "alt_text": "Product photo"}}`
 
-**Total: 45 tools.**
+**Total: 704 tools** (`FLUENT_TOOL_MODE=grouped` serves 46 instead).

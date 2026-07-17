@@ -131,8 +131,8 @@ function matchesProjection(rec: Rec, fields: string[]): boolean {
 }
 
 /** One-line human text summary for the text content block. */
-export function textSummary(tool: string, action: string, status: number, shaped: Shaped): string {
-  let line = `${tool}.${action} → HTTP ${status}`;
+export function textSummary(label: string, status: number, shaped: Shaped): string {
+  let line = `${label} → HTTP ${status}`;
   if (shaped.itemCount !== undefined) {
     line += ` — ${shaped.itemCount} item${shaped.itemCount === 1 ? '' : 's'}`;
     const p = shaped.pagination;
