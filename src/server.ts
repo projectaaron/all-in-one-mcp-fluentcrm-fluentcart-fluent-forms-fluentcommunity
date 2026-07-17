@@ -8,7 +8,7 @@
  *  handle a large tool list. */
 
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { registerActionTools } from './core/action-tools.js';
+import { individualNamesFor, registerActionTools } from './core/action-tools.js';
 import { loadConfig, productEnvStatus, type ServerConfig } from './core/config.js';
 import { FluentClient } from './core/http.js';
 import { registerWpMediaTool, registerWpMediaTools } from './core/media.js';
@@ -37,7 +37,9 @@ export function buildServer(config: ServerConfig): BuiltServer {
   const statuses = PRODUCTS.map((module) => productEnvStatus(config, module.envPrefix));
   // configured already implies siteUrl is set (productEnvStatus checks both).
   const anyConfigured = statuses.some((s) => s.configured);
-  const areas: MapArea[] = PRODUCTS.flatMap((module, i) => mapAreasOf(module, mode, statuses[i].configured));
+  const areas: MapArea[] = PRODUCTS.flatMap((module, i) =>
+    mapAreasOf(module, mode, statuses[i].configured, config.lockedTools)
+  );
   areas.push(serverArea(mode, anyConfigured));
 
   const server = new McpServer(
@@ -61,7 +63,13 @@ export function buildServer(config: ServerConfig): BuiltServer {
         maxRetries: config.maxRetries,
       });
       for (const spec of module.tools) {
-        const runtime = { client, summaryFields: module.summaryFields[spec.name] };
+        const runtime = {
+          client,
+          summaryFields: module.summaryFields[spec.name],
+          lockedTools: config.lockedTools,
+          // Grouped mode checks locks by each action's canonical individual name.
+          ...(mode === 'grouped' ? { canonicalNames: individualNamesFor(spec) } : {}),
+        };
         if (mode === 'individual') {
           toolCount += registerActionTools(server, spec, runtime, { productTitle: module.title }).length;
         } else {
