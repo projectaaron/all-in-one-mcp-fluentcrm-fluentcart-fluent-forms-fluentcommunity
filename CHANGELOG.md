@@ -1,5 +1,113 @@
 # Changelog
 
+## 0.7.3 — 2026-07-17
+
+Recovered an unmerged field-reported fix (branch
+`claude/fluentmcp-image-attachments-nlaw7x`, 2026-07-16) and ported it to
+the individualized surface:
+
+- **New tool: `cart_products_update`** — FluentCart's
+  `POST /products/{postId}/pricing` is, despite the path, the FULL product
+  update and the only route that writes the product gallery / featured
+  image. It was hidden as a "pricing" action under variants, so agents
+  migrating product images could find no working path. The area note
+  documents the landmines: `gallery[0].id` becomes the featured image and
+  `gallery: []` deletes the thumbnail; always send `post_title`/`post_status`
+  (they're set unconditionally); omit `variants` unless rewriting them
+  (`item_price` is ×100 on write).
+- The endpoint generator honors a `summary` operation override for cases
+  where the upstream title misdescribes the endpoint.
+
+## 0.7.2 — 2026-07-17
+
+Second-pass line-by-line review over the audit fixes themselves:
+
+- `wp_media` `fields:[…]` now projects from the raw attachment, so fields
+  outside the summary set (caption, media_details, …) are reachable.
+- Grouped-mode instructions and tool_map overview count callable tools
+  (46), not operations (~700) — the map now says "46 tools (702
+  operations)".
+- Map conventions state that every GET tool accepts page/per_page (many
+  paginated collections hide behind get_* names), not just list tools.
+- Registration now throws if a future endpoint's path placeholder would
+  shadow a reserved parameter (page, query, fields, …) instead of silently
+  clobbering it; schema cache keyed per (endpoint, action). 239 tests.
+
+## 0.7.1 — 2026-07-17
+
+Audit pass over the 0.7.0 surface — eight independent review angles plus a
+consistency sweep; everything found, fixed:
+
+- **Non-list GET tools regained `page`/`per_page`.** ~250 paginated
+  collections hide behind `get_*` names (contact emails, funnel subscribers,
+  order transactions, …); their individual schemas omitted the params, and
+  the SDK's schema validation silently stripped them — a session asking for
+  page 2 got page 1 with no error. Every GET (and list/search of any method)
+  now takes them; defaults still apply only to GET lists.
+- **Missing-param errors now name the tool's own parameter.** The shared
+  executor's message suggested `id`/`path_params`, which individual tools
+  don't accept — following the advice looped forever. Individual handlers
+  now say exactly which top-level argument is missing.
+- **Worker request cost cut 4.5×** (40ms → 9ms per request). Tool names,
+  input schemas, and map data are memoized at module scope — the stateless
+  Cloudflare entry point rebuilds the server per POST and was paying full
+  schema construction every time.
+- **Naming rule refined**: stripping that would empty an action name keeps
+  the verb (`list_lists` → `crm_lists_list`) without inflating noun-first
+  names (`report_overview` → `cart_reports_overview`, not
+  `…_report_overview`). New `toolName` override in `operationOverrides`
+  pins an operation's name for good — tool names are external API.
+- **Grouped-mode tool_map teaches the calling convention** (`crm_contacts
+  {"action": "list_contacts"}`) instead of dot-forms that look callable.
+- **wp_media honors the response conventions**: `detail:"full"` and
+  `fields:[…]` now work on all three media tools (previously the map's
+  conventions promised them server-wide but media ignored them).
+- **Single-sourced surface metadata.** The built-in tools' names/summaries
+  lived in three drifting copies (runtime map, server.ts, docs generator);
+  now one `serverArea()` builder feeds runtime, docs, and manifest. The
+  manifest lists only mode-independent built-ins (`tool_map`,
+  `verify_setup`), so grouped-mode installs no longer advertise tools that
+  don't exist.
+- `verify_setup` reports mode-aware `tools` plus `areas` per product
+  (previously reported area count as "tools"); smoke test pins
+  individual mode; eval expected-tool names corrected; stale counts in
+  README/PROJECT_MAP fixed. 235 tests.
+
+## 0.7.0 — 2026-07-17
+
+**Individualized tools + the fast map.** The surface is rebuilt so every
+session understands it in seconds:
+
+- **One tool per operation** (was: 45 mega-tools with `action` enums).
+  Every one of the 699 documented endpoints is now its own tool with a name
+  that says what it does — `crm_contacts_list`, `crm_contacts_create`,
+  `cart_orders_refund` — 704 tools total including the built-ins. Names are
+  deterministic: `<area>_<operation>` with redundant words stripped
+  (collisions keep the full action name), unique, ≤ 64 chars, test-enforced.
+- **Focused schemas.** Each tool carries only the parameters its operation
+  uses; path placeholders (`order_id`, `note_id`, …) are named *required*
+  top-level parameters instead of the generic `id`/`path_params` envelope.
+  `body` appears only on writes, `page`/`per_page` only on lists, `confirm`
+  only on destructive tools.
+- **The fast map.** New `tool_map` tool: no args → one line per area
+  (~50 lines for the whole surface); `{"area": "crm_contacts"}` → every
+  tool in the area with its parameters; `{"search": "refund"}` → keyword
+  lookup. The same map ships as generated `docs/TOOL_MAP.md`, and every
+  session receives the naming rule + conventions via MCP `instructions` on
+  connect.
+- **Accurate annotations.** Read-only operations now really carry
+  `readOnlyHint: true` (previously one write in an area forced
+  `readOnlyHint: false` onto its 30 reads).
+- **`wp_media` split** into `wp_media_upload_from_url` / `wp_media_get` /
+  `wp_media_list`.
+- **Legacy surface kept**: `FLUENT_TOOL_MODE=grouped` (env var or the
+  extension's new "Tool Surface" setting) restores the one-tool-per-area
+  surface (~46 tools) for MCP clients that can't handle large tool lists.
+  Same specs, same shared executor, same confirm gating in both modes.
+- Destructive classification, coverage guarantees, and response shaping are
+  unchanged; the safety regression suite now also runs against the
+  individual surface. 230 tests.
+
 ## 0.6.0 — 2026-07-16
 
 - **New tool: `wp_media`** (server-level, like `verify_setup`) — closes the
