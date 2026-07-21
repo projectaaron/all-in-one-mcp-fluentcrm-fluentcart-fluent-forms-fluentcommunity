@@ -308,3 +308,30 @@ the 0.7.0 diff. Lessons worth keeping:
   places for less than a day and already disagreed. The map data now has
   one builder (`serverArea`/`mapAreasOf`) consumed by runtime, docs
   generator, and manifest.
+
+## 2026-07-17 — Locked tools: a safety tier above confirm (0.8.0)
+
+Field request after reviewing the 98 confirm-gated tools: `confirm: true`
+is a speed bump, not a wall — a confused session produces it as easily as
+any other argument. Added server-side locks that refuse unconditionally in
+both tool modes (grouped mode matches by each action's canonical
+individual name via `ToolRuntime.canonicalNames`, avoiding an import
+cycle).
+
+- **Default lock list** (six, chosen for zero legitimate agent use):
+  `crm_settings_reset_database` (full CRM wipe),
+  `crm_contacts_delete_contacts` (audience-wide delete),
+  `crm_settings_delete_rest_key` (self-lockout),
+  `crm_settings_test_delete_request` (diagnostics resolver),
+  `cart_settings_disconnect_payment_method` (stops checkout revenue),
+  `cart_licensing_regenerate_license_key` (breaks customers' activations).
+- **Deliberately NOT locked**: the generic bulk-action tools
+  (`crm_contacts_bulk_action`, `cart_products_do_bulk_action`, …) — bulk
+  tagging is a flagship use case ("tag everyone who bought X") and runs
+  through exactly those tools. They stay confirm-gated; locking them is
+  one env edit away.
+- **Visible, not hidden**: locked tools stay registered with 🔒 in
+  descriptions/tool_map/TOOL_MAP.md so a session gets an explicit refusal
+  naming FLUENT_LOCKED_TOOLS rather than a mystery missing tool.
+- `FLUENT_LOCKED_TOOLS` semantics: comma list REPLACES the default;
+  `default` token expands it; `none` disables. Unset = default six.
