@@ -1,8 +1,8 @@
 # Project map
 
 Living document: what lives where and how the pieces connect. Update this
-whenever the structure changes. Last updated: 2026-07-17 (v0.7.0 —
-individualized tool surface + fast map).
+whenever the structure changes. Last updated: 2026-07-17 (v0.8.0 —
+individualized surface + fast map + admin-locked tools).
 
 ## What this repo is
 
@@ -14,6 +14,8 @@ a WordPress site. Products ship as self-contained modules; FluentCRM
 first two. Every endpoint is its own individualized tool — 704 total
 including the built-ins (`tool_map`, `verify_setup`, `wp_media_*`); set
 `FLUENT_TOOL_MODE=grouped` for the legacy 46-tool one-tool-per-area surface.
+Six no-agent-use operations are admin-locked by default (refuse even with
+confirm:true; `FLUENT_LOCKED_TOOLS` controls the set).
 
 ## Directory structure
 
@@ -23,7 +25,8 @@ fluentMCP/
 │   ├── index.ts                  # Entry point: config → enabled products → tools → stdio
 │   ├── core/                     # Product-agnostic — adding a product never edits this
 │   │   ├── types.ts              # EndpointDef / ToolSpec / ProductModule contracts
-│   │   ├── config.ts             # Env parsing; per-product enablement (creds present = enabled)
+│   │   ├── config.ts             # Env parsing; per-product enablement; tool mode;
+│   │   │                         #   DEFAULT_LOCKED_TOOLS + FLUENT_LOCKED_TOOLS parsing
 │   │   ├── http.ts               # THE WordPress REST client: Basic-auth injection, retry with
 │   │   │                         #   backoff + Retry-After, WP-style query serialization,
 │   │   │                         #   site-root paths, normalized errors; creds never logged
@@ -48,7 +51,7 @@ fluentMCP/
 │       │   └── index.ts          # ProductModule (key, namespace, env prefix, verifyRead)
 │       ├── fluentcart/           # Same layout
 │       └── _template/            # Scaffold (.tpl files, ignored by tsc/generators)
-├── tests/                        # Vitest, mocked HTTP, no network — 235 tests
+├── tests/                        # Vitest, mocked HTTP, no network — 244 tests
 │   ├── helpers.ts                # mockFetch + client factory
 │   ├── core/*.test.ts            # http, config, shape, factory, verify (via in-memory MCP client)
 │   ├── products.test.ts          # Table-driven (grouped handler): EVERY action × routing/gating
@@ -121,7 +124,7 @@ npm run gen:docs      # re-scrape upstream APIs (network)
 npm run gen:maps      # rebuild action maps from endpoints.json (offline)
 npm run build         # tsc
 npm run gen:catalog   # rebuild TOOL_MAP.md + TOOL_CATALOG.md + manifest from dist
-npm test              # 235 tests incl. coverage guarantees
+npm test              # 244 tests incl. coverage guarantees
 ```
 
 ## Build phases / status
