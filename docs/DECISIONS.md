@@ -335,3 +335,40 @@ cycle).
   naming FLUENT_LOCKED_TOOLS rather than a mystery missing tool.
 - `FLUENT_LOCKED_TOOLS` semantics: comma list REPLACES the default;
   `default` token expands it; `none` disables. Unset = default six.
+
+## 2026-07-24 — WordPress snippets live in the repo but outside the product
+
+Request: put the live FluentCRM subscriber count into Elementor so the
+site's vanity number stops being hardcoded. The natural home for that code
+is WordPress, not this server — it needs FluentCRM's PHP models and
+Elementor's dynamic-tag API in-process, and going through the REST surface
+this server wraps would be a network round trip to reach data already
+sitting in the same database.
+
+So `snippets/` is a deliberate exception to "this repo is the MCP server":
+version-controlled and reviewable here, executed on the WordPress site.
+
+- **Excluded everywhere the product is assembled**: outside `tsconfig`'s
+  `src/**/*.ts`, ignored by the generators, and added to `.mcpbignore` so
+  it can't land in the shipped extension.
+- **Snippet, not plugin.** A plugin would need packaging, a zip, and an
+  update path. Snippet managers (WPCode, Code Snippets) are already how
+  this site carries custom PHP, and a single file is reviewable in one
+  screen.
+- **The dynamic-tag class is declared inside the
+  `elementor/dynamic_tags/register` callback**, not at file scope. It
+  extends `\Elementor\Core\DynamicTags\Tag`, which doesn't exist until
+  Elementor loads — a top-level `extends` fatals the whole site the moment
+  Elementor is deactivated or mid-update. The `class_exists` guard around
+  it covers snippet managers re-evaluating the code on save.
+- **Rounds down by default** (86,362 → `86.3K`, not `86.4K`): a marketing
+  number should never claim more than the CRM actually holds.
+- **Never caches a zero.** A transient hiccup or half-loaded FluentCRM
+  would otherwise pin the site to "0 subscribers" for the full hour TTL.
+- **Tested by harness, not by `npm test`.** There's no PHP test runner
+  here and pulling one in for ~150 lines isn't worth it. `snippets/tests/`
+  holds two plain-PHP harnesses that stub WordPress, Elementor and
+  FluentCRM — 63 assertions covering every format/rounding combination,
+  graceful degradation when either plugin is absent, and re-registration
+  on snippet save. Run them with `php snippets/tests/*.php`; they need
+  nothing installed.
