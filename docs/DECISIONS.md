@@ -372,3 +372,41 @@ version-controlled and reviewable here, executed on the WordPress site.
   graceful degradation when either plugin is absent, and re-registration
   on snippet save. Run them with `php snippets/tests/*.php`; they need
   nothing installed.
+
+## 2026-07-24 — Emails-sent stat forced a stale-while-revalidate cache
+
+Adding "Total Emails Sent" to the Elementor snippet looked like a copy of the
+subscriber tag until the numbers were checked. FluentCRM computes both the
+same way — `Stats::getCounts()` runs `Subscriber::where('status',
+'subscribed')->count()` and `CampaignEmail::where('status', 'sent')->count()`
+— but on this site those are 86k rows and **15.5M** rows. FluentCRM's own
+dashboard warns once `fc_campaign_emails` passes 400,000; we're at 38x that.
+The table has a `(status, scheduled_at)` index, so the count uses it, but it
+still walks 15.5M index entries. Seconds, not milliseconds.
+
+A one-hour transient would therefore hand one unlucky visitor an
+outright slow page every hour. So the cache was reworked rather than copied:
+
+- **Values live in an autoloaded option, not a transient.** Read on nearly
+  every render, two integers — cheaper as part of the autoload query than as
+  its own lookup, and it survives object-cache flushes so there is always
+  something to serve.
+- **Stale serves the old number and schedules a cron refresh.** The only
+  inline recount is the first one ever. An `admin_init` primer usually
+  absorbs even that, so it lands on a logged-in admin rather than a visitor.
+- **Past 4x the TTL we recompute inline anyway** — the safety net for sites
+  running `DISABLE_WP_CRON` with nothing replacing it, where the background
+  refresh would otherwise never fire and the number would freeze forever.
+- **Invalidation marks stale instead of deleting.** Deleting would force the
+  next visitor to pay for the recount; flagging keeps the old value on screen
+  while cron does the work. The flag is only written when not already set, so
+  importing 10,000 contacts writes the option once, not 10,000 times.
+- **Emails-sent is deliberately not hooked to a send event.** That would fire
+  once per recipient mid-campaign. It rides its 6-hour TTL instead.
+- **Registry-driven.** `mag_fcrm_stats()` maps key to TTL and callback; one
+  abstract `MAG_FCRM_Count_Tag` carries every control. A third stat is a
+  registry entry plus an 8-line subclass.
+
+Harnesses grew to 112 assertions, the new ones asserting the thing that
+actually matters: that a request which *could* serve a stale number never
+runs the query. They count callback invocations to prove it.

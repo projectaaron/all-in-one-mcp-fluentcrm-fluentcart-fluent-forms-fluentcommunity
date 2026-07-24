@@ -69,10 +69,13 @@ fluentMCP/
 ├── snippets/                     # WordPress-side PHP — NOT part of the MCP server:
 │   │                             #   not compiled, not in tsconfig, excluded from the .mcpb.
 │   │                             #   Installed by pasting into WPCode / Code Snippets.
-│   ├── fluentcrm-elementor-tags.php  # Elementor dynamic tag + shortcode for the live
-│   │                             #   FluentCRM subscriber count (see snippets/README.md)
-│   └── tests/*.php               # Plain-PHP harnesses (stub WP/Elementor/FluentCRM);
-│                                 #   run with `php snippets/tests/*.php`, no install needed
+│   ├── fluentcrm-elementor-tags.php  # Elementor dynamic tags + shortcodes for live
+│   │                             #   FluentCRM counts: subscribers, emails sent.
+│   │                             #   Stale-while-revalidate cache (see README.md)
+│   └── tests/                    # Plain-PHP harnesses — no WP, composer or PHPUnit:
+│       ├── bootstrap.php         #   WP stubs (options, cron, hooks) + assertions
+│       ├── formatter-test.php    #   Formatting + caching, both plugins absent
+│       └── elementor-test.php    #   Tag registration + rendering, plugins stubbed
 ├── docs/
 │   ├── api-reference/            # GENERATED per-product references + endpoints.json
 │   │   ├── fluentcrm.md / fluentcart.md   # Overviews (auth, one table per group)

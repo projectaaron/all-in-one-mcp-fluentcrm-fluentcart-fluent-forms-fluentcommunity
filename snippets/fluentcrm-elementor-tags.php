@@ -1,15 +1,21 @@
 <?php
 /**
- * FluentCRM → Elementor dynamic tag: Total Email Subscribers
+ * FluentCRM → Elementor dynamic tags
  *
- * Renders the live count of FluentCRM contacts with status "subscribed" —
- * the same figure FluentCRM's dashboard labels "Active Contacts" — so the
- * vanity number on the site stops being hardcoded in a dozen widgets.
+ * Puts live FluentCRM numbers into Elementor so the vanity figures on the
+ * site stop being hardcoded in a dozen widgets.
  *
- * Two ways to use it:
+ *   Total Email Subscribers — contacts with status "subscribed"
+ *   Total Emails Sent       — campaign emails with status "sent"
+ *
+ * Both match FluentCRM's own dashboard tiles exactly: they run the same
+ * queries FluentCrm\App\Services\Stats::getCounts() runs.
+ *
+ * Two ways to use them:
  *   1. Elementor → any text field → the dynamic (database) icon →
- *      FluentCRM → Total Email Subscribers.       (requires Elementor Pro)
- *   2. [fluentcrm_subscribers] anywhere shortcodes run.
+ *      FluentCRM → …                                (requires Elementor Pro)
+ *   2. [fluentcrm_subscribers] / [fluentcrm_emails_sent] anywhere
+ *      shortcodes run.
  *
  * Install: paste into WPCode / Code Snippets as a PHP snippet, omitting the
  * opening <?php line above. See README.md in this directory.
@@ -23,59 +29,222 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /* -------------------------------------------------------------------------
- * 1. Data — the cached count
+ * 1. The stat registry
+ *
+ * Adding a stat means adding an entry here plus a small tag subclass below.
+ * Nothing else changes.
  * ---------------------------------------------------------------------- */
 
-if ( ! function_exists( 'mag_fcrm_total_subscribers' ) ) {
+if ( ! function_exists( 'mag_fcrm_stats' ) ) {
 	/**
-	 * Count FluentCRM contacts with status "subscribed", cached for an hour.
-	 *
-	 * @return int Subscriber count, or 0 if FluentCRM isn't available.
+	 * @return array<string, array{ttl:int, callback:callable}>
 	 */
-	function mag_fcrm_total_subscribers() {
-		$cached = get_transient( 'mag_fcrm_total_subscribers' );
+	function mag_fcrm_stats() {
+		return array(
+			'total_subscribers' => array(
+				// Cheap: ~86k rows, indexed. Safe to recompute inline.
+				'ttl'      => HOUR_IN_SECONDS,
+				'callback' => 'mag_fcrm_count_subscribers',
+			),
+			'emails_sent'       => array(
+				// Expensive: 15M+ rows. FluentCRM itself warns past 400k.
+				// Never let a visitor wait on this one.
+				'ttl'      => 6 * HOUR_IN_SECONDS,
+				'callback' => 'mag_fcrm_count_emails_sent',
+			),
+		);
+	}
+}
 
-		if ( false !== $cached ) {
-			return (int) $cached;
+if ( ! function_exists( 'mag_fcrm_count_subscribers' ) ) {
+	/**
+	 * @return int|null Null when FluentCRM isn't available.
+	 */
+	function mag_fcrm_count_subscribers() {
+		if ( ! class_exists( '\FluentCrm\App\Models\Subscriber' ) ) {
+			return null;
 		}
 
-		if ( ! class_exists( '\FluentCrm\App\Models\Subscriber' ) ) {
+		return (int) \FluentCrm\App\Models\Subscriber::where( 'status', 'subscribed' )->count();
+	}
+}
+
+if ( ! function_exists( 'mag_fcrm_count_emails_sent' ) ) {
+	/**
+	 * @return int|null Null when FluentCRM isn't available.
+	 */
+	function mag_fcrm_count_emails_sent() {
+		if ( ! class_exists( '\FluentCrm\App\Models\CampaignEmail' ) ) {
+			return null;
+		}
+
+		return (int) \FluentCrm\App\Models\CampaignEmail::where( 'status', 'sent' )->count();
+	}
+}
+
+/* -------------------------------------------------------------------------
+ * 2. Caching — stale-while-revalidate
+ *
+ * Counting 15M campaign_emails rows takes seconds, so a visitor must never
+ * be the one paying for it. Values live in an autoloaded option (already in
+ * memory by the time a template renders). When one goes stale we serve the
+ * old number and recompute in the background, so the only inline count is
+ * the very first one — and the admin primer usually absorbs even that.
+ * ---------------------------------------------------------------------- */
+
+if ( ! function_exists( 'mag_fcrm_stat' ) ) {
+	/**
+	 * @param string $key Registry key.
+	 * @return int
+	 */
+	function mag_fcrm_stat( $key ) {
+		$stats = mag_fcrm_stats();
+
+		if ( ! isset( $stats[ $key ] ) ) {
 			return 0;
 		}
 
-		$count = (int) \FluentCrm\App\Models\Subscriber::where( 'status', 'subscribed' )->count();
+		$ttl    = (int) apply_filters( 'mag_fcrm_cache_ttl', $stats[ $key ]['ttl'], $key );
+		$stored = get_option( 'mag_fcrm_stat_' . $key );
 
-		// Never cache a zero: a transient hiccup or a half-loaded FluentCRM
-		// would otherwise pin the site to "0 subscribers" for a full hour.
-		if ( $count > 0 ) {
-			set_transient(
-				'mag_fcrm_total_subscribers',
-				$count,
-				apply_filters( 'mag_fcrm_cache_ttl', HOUR_IN_SECONDS )
-			);
+		$has_value = is_array( $stored ) && isset( $stored['value'], $stored['at'] );
+		$age       = $has_value ? ( time() - (int) $stored['at'] ) : PHP_INT_MAX;
+		$flagged   = $has_value && ! empty( $stored['stale'] );
+
+		if ( $has_value && ! $flagged && $age < $ttl ) {
+			return (int) $stored['value'];
 		}
 
-		return $count;
+		// Stale but usable: hand back the old number, refresh out of band.
+		// Past 4x the TTL we stop trusting cron and just recompute — that's
+		// the safety net for sites running with DISABLE_WP_CRON and no
+		// server-side cron replacing it.
+		if ( $has_value && $age < ( $ttl * 4 ) ) {
+			mag_fcrm_schedule_stat_refresh( $key );
+			return (int) $stored['value'];
+		}
+
+		$value = mag_fcrm_refresh_stat( $key );
+
+		if ( null === $value ) {
+			// FluentCRM unavailable — keep serving the last good number
+			// rather than flashing a zero.
+			return $has_value ? (int) $stored['value'] : 0;
+		}
+
+		return $value;
+	}
+}
+
+if ( ! function_exists( 'mag_fcrm_refresh_stat' ) ) {
+	/**
+	 * Recompute one stat and store it.
+	 *
+	 * @param string $key Registry key.
+	 * @return int|null Null when the source is unavailable (nothing stored).
+	 */
+	function mag_fcrm_refresh_stat( $key ) {
+		$stats = mag_fcrm_stats();
+
+		if ( ! isset( $stats[ $key ] ) || ! is_callable( $stats[ $key ]['callback'] ) ) {
+			return null;
+		}
+
+		$value = call_user_func( $stats[ $key ]['callback'] );
+
+		if ( null === $value ) {
+			return null;
+		}
+
+		update_option(
+			'mag_fcrm_stat_' . $key,
+			array(
+				'value' => (int) $value,
+				'at'    => time(),
+			),
+			true // Autoloaded: read on nearly every render, two ints.
+		);
+
+		return (int) $value;
+	}
+}
+
+if ( ! function_exists( 'mag_fcrm_schedule_stat_refresh' ) ) {
+	/**
+	 * @param string $key Registry key.
+	 * @return void
+	 */
+	function mag_fcrm_schedule_stat_refresh( $key ) {
+		if ( ! wp_next_scheduled( 'mag_fcrm_refresh_stat_event', array( $key ) ) ) {
+			wp_schedule_single_event( time() + 30, 'mag_fcrm_refresh_stat_event', array( $key ) );
+		}
+	}
+}
+
+add_action( 'mag_fcrm_refresh_stat_event', 'mag_fcrm_refresh_stat' );
+
+if ( ! function_exists( 'mag_fcrm_mark_stat_stale' ) ) {
+	/**
+	 * Flag a stat for refresh without discarding its value.
+	 *
+	 * Deleting would force the next visitor to pay for the recount; this way
+	 * they get the old number and cron does the work. The already-stale check
+	 * keeps a bulk import from writing the option once per contact.
+	 *
+	 * @param string $key Registry key.
+	 * @return void
+	 */
+	function mag_fcrm_mark_stat_stale( $key ) {
+		$option = 'mag_fcrm_stat_' . $key;
+		$stored = get_option( $option );
+
+		if ( ! is_array( $stored ) || ! empty( $stored['stale'] ) ) {
+			return;
+		}
+
+		$stored['stale'] = true;
+		update_option( $option, $stored, true );
+
+		mag_fcrm_schedule_stat_refresh( $key );
 	}
 }
 
 if ( ! function_exists( 'mag_fcrm_flush_subscriber_cache' ) ) {
 	/**
-	 * Drop the cached count so the next render recalculates.
-	 *
 	 * @return void
 	 */
 	function mag_fcrm_flush_subscriber_cache() {
-		delete_transient( 'mag_fcrm_total_subscribers' );
+		mag_fcrm_mark_stat_stale( 'total_subscribers' );
 	}
 }
 
-// The hourly TTL is the real mechanism; these just make growth show up sooner.
+// New signups show up without waiting out the TTL. Deliberately NOT hooked
+// for emails_sent: that would fire once per recipient mid-campaign.
 add_action( 'fluent_crm/contact_created', 'mag_fcrm_flush_subscriber_cache' );
 add_action( 'fluent_crm/subscriber_status_changed', 'mag_fcrm_flush_subscriber_cache' );
 
+if ( ! function_exists( 'mag_fcrm_prime_stats' ) ) {
+	/**
+	 * Compute any stat that has never been computed, on an admin request.
+	 *
+	 * The first count has to happen somewhere; better an admin waiting on
+	 * wp-admin than a visitor waiting on the homepage. No-ops once primed.
+	 *
+	 * @return void
+	 */
+	function mag_fcrm_prime_stats() {
+		foreach ( array_keys( mag_fcrm_stats() ) as $key ) {
+			if ( ! is_array( get_option( 'mag_fcrm_stat_' . $key ) ) ) {
+				mag_fcrm_refresh_stat( $key );
+			}
+		}
+	}
+}
+
+add_action( 'admin_init', 'mag_fcrm_prime_stats' );
+
 /* -------------------------------------------------------------------------
- * 2. Formatting
+ * 3. Formatting
  * ---------------------------------------------------------------------- */
 
 if ( ! function_exists( 'mag_fcrm_format_number' ) ) {
@@ -163,7 +332,7 @@ if ( ! function_exists( 'mag_fcrm_format_number' ) ) {
 }
 
 /* -------------------------------------------------------------------------
- * 3. The Elementor dynamic tag
+ * 4. The Elementor dynamic tags
  * ---------------------------------------------------------------------- */
 
 add_action(
@@ -179,17 +348,16 @@ add_action(
 		// Elementor loads, and a top-level "extends" would fatal the site the
 		// moment Elementor is deactivated or mid-update. The class_exists guard
 		// covers snippet managers, which re-evaluate this code on every save.
-		if ( ! class_exists( 'MAG_FCRM_Total_Subscribers_Tag' ) ) {
+		if ( ! class_exists( 'MAG_FCRM_Count_Tag' ) ) {
 
-			class MAG_FCRM_Total_Subscribers_Tag extends \Elementor\Core\DynamicTags\Tag {
+			abstract class MAG_FCRM_Count_Tag extends \Elementor\Core\DynamicTags\Tag {
 
-				public function get_name() {
-					return 'fcrm-total-subscribers';
-				}
-
-				public function get_title() {
-					return esc_html__( 'Total Email Subscribers', 'fluentcrm-elementor-tags' );
-				}
+				/**
+				 * Key into mag_fcrm_stats(). Set by each subclass.
+				 *
+				 * @var string
+				 */
+				protected $stat_key = '';
 
 				public function get_group() {
 					return array( 'fluentcrm' );
@@ -210,7 +378,7 @@ add_action(
 							'type'    => \Elementor\Controls_Manager::SELECT,
 							'default' => 'compact',
 							'options' => array(
-								'compact' => esc_html__( 'Compact — 86.3K', 'fluentcrm-elementor-tags' ),
+								'compact' => esc_html__( 'Compact — 86.3K / 15.5M', 'fluentcrm-elementor-tags' ),
 								'exact'   => esc_html__( 'Exact — 86,362', 'fluentcrm-elementor-tags' ),
 								'round'   => esc_html__( 'Rounded — 86,000', 'fluentcrm-elementor-tags' ),
 								'raw'     => esc_html__( 'Raw digits — 86362 (use for Counter widgets)', 'fluentcrm-elementor-tags' ),
@@ -237,11 +405,13 @@ add_action(
 							'type'      => \Elementor\Controls_Manager::SELECT,
 							'default'   => 1000,
 							'options'   => array(
-								100   => '100',
-								500   => '500',
-								1000  => '1,000',
-								5000  => '5,000',
-								10000 => '10,000',
+								100     => '100',
+								500     => '500',
+								1000    => '1,000',
+								5000    => '5,000',
+								10000   => '10,000',
+								100000  => '100,000',
+								1000000 => '1,000,000',
 							),
 							'condition' => array( 'format' => 'round' ),
 						)
@@ -257,7 +427,7 @@ add_action(
 								'down'    => esc_html__( 'Down — never overstate', 'fluentcrm-elementor-tags' ),
 								'nearest' => esc_html__( 'Nearest', 'fluentcrm-elementor-tags' ),
 							),
-							'description' => esc_html__( 'Rounding down keeps the claim true as the list grows.', 'fluentcrm-elementor-tags' ),
+							'description' => esc_html__( 'Rounding down keeps the claim true as the number grows.', 'fluentcrm-elementor-tags' ),
 							'condition'   => array( 'format' => array( 'compact', 'round' ) ),
 						)
 					);
@@ -286,28 +456,55 @@ add_action(
 
 				public function render() {
 					echo esc_html(
-						mag_fcrm_format_number( mag_fcrm_total_subscribers(), $this->get_settings() )
+						mag_fcrm_format_number( mag_fcrm_stat( $this->stat_key ), $this->get_settings() )
 					);
+				}
+			}
+
+			class MAG_FCRM_Total_Subscribers_Tag extends MAG_FCRM_Count_Tag {
+
+				protected $stat_key = 'total_subscribers';
+
+				public function get_name() {
+					return 'fcrm-total-subscribers';
+				}
+
+				public function get_title() {
+					return esc_html__( 'Total Email Subscribers', 'fluentcrm-elementor-tags' );
+				}
+			}
+
+			class MAG_FCRM_Emails_Sent_Tag extends MAG_FCRM_Count_Tag {
+
+				protected $stat_key = 'emails_sent';
+
+				public function get_name() {
+					return 'fcrm-emails-sent';
+				}
+
+				public function get_title() {
+					return esc_html__( 'Total Emails Sent', 'fluentcrm-elementor-tags' );
 				}
 			}
 		}
 
 		$dynamic_tags->register( new MAG_FCRM_Total_Subscribers_Tag() );
+		$dynamic_tags->register( new MAG_FCRM_Emails_Sent_Tag() );
 	}
 );
 
 /* -------------------------------------------------------------------------
- * 4. Shortcode — for everywhere Elementor doesn't reach
+ * 5. Shortcodes — for everywhere Elementor doesn't reach
  * ---------------------------------------------------------------------- */
 
-if ( ! function_exists( 'mag_fcrm_subscribers_shortcode' ) ) {
+if ( ! function_exists( 'mag_fcrm_stat_shortcode' ) ) {
 	/**
-	 * [fluentcrm_subscribers format="round" round_to="1000" suffix="+"]
-	 *
-	 * @param array $atts Shortcode attributes, same names as the tag controls.
+	 * @param string $key  Registry key.
+	 * @param array  $atts Shortcode attributes, same names as the tag controls.
+	 * @param string $tag  Shortcode name, for shortcode_atts filtering.
 	 * @return string
 	 */
-	function mag_fcrm_subscribers_shortcode( $atts ) {
+	function mag_fcrm_stat_shortcode( $key, $atts, $tag ) {
 		$atts = shortcode_atts(
 			array(
 				'format'    => 'compact',
@@ -318,11 +515,23 @@ if ( ! function_exists( 'mag_fcrm_subscribers_shortcode' ) ) {
 				'suffix'    => '',
 			),
 			$atts,
-			'fluentcrm_subscribers'
+			$tag
 		);
 
-		return esc_html( mag_fcrm_format_number( mag_fcrm_total_subscribers(), $atts ) );
+		return esc_html( mag_fcrm_format_number( mag_fcrm_stat( $key ), $atts ) );
 	}
 }
 
-add_shortcode( 'fluentcrm_subscribers', 'mag_fcrm_subscribers_shortcode' );
+add_shortcode(
+	'fluentcrm_subscribers',
+	function ( $atts ) {
+		return mag_fcrm_stat_shortcode( 'total_subscribers', $atts, 'fluentcrm_subscribers' );
+	}
+);
+
+add_shortcode(
+	'fluentcrm_emails_sent',
+	function ( $atts ) {
+		return mag_fcrm_stat_shortcode( 'emails_sent', $atts, 'fluentcrm_emails_sent' );
+	}
+);
