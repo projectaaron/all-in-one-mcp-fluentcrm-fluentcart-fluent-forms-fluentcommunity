@@ -9,12 +9,17 @@ reviewable and version-controlled.
 
 ## `fluentcrm-elementor-tags.php`
 
-Puts the live FluentCRM subscriber count into Elementor as a dynamic tag, so
-the vanity number ("join 86,000+ readers") stops being hardcoded in a dozen
-widgets and updates itself as the list grows.
+Puts live FluentCRM numbers into Elementor as dynamic tags, so vanity figures
+stop being hardcoded in a dozen widgets and update themselves.
 
-The number is **contacts with status `subscribed`** — the same figure
-FluentCRM's own dashboard calls "Active Contacts."
+| Tag | What it counts | Live value |
+|---|---|---|
+| **Total Email Subscribers** | contacts with status `subscribed` | 86,362 |
+| **Total Emails Sent** | campaign emails with status `sent` | 15,525,776 |
+
+Both run the same queries as FluentCRM's own dashboard tiles
+(`FluentCrm\App\Services\Stats::getCounts()`), so the numbers match what you see
+in wp-admin.
 
 ### Install
 
@@ -27,25 +32,25 @@ line**:
 | **Code Snippets** | Snippets → Add New → paste → "Run snippet everywhere" → Save and Activate |
 | **Child theme** | Append to `functions.php`, keeping the `<?php` line only if the file doesn't already have one |
 
-Nothing to configure. It self-checks: if FluentCRM isn't active it returns `0`
-rather than erroring, and if Elementor isn't active the dynamic tag simply
-doesn't register while the shortcode keeps working.
+Nothing to configure. It self-checks: if FluentCRM isn't active the counts
+return `0` rather than erroring, and if Elementor isn't active the dynamic tags
+simply don't register while the shortcodes keep working.
 
-### Use it in Elementor
+### Use them in Elementor
 
 Requires **Elementor Pro** — dynamic tags register through Elementor's core API,
 but the dynamic-content picker in the editor is a Pro feature.
 
-Edit any text field → click the **dynamic** (database) icon → **FluentCRM →
-Total Email Subscribers**.
+Edit any text field → click the **dynamic** (database) icon → **FluentCRM** →
+pick a tag.
 
-Controls on the tag:
+Both tags share the same controls:
 
 | Control | Default | Notes |
 |---|---|---|
 | **Format** | Compact | `86.3K` / `86,362` / `86,000` / `86362` |
 | **Decimal places** | 1 | Compact only, 0–3 |
-| **Round to nearest** | 1,000 | Rounded only |
+| **Round to nearest** | 1,000 | Rounded only; up to 1,000,000 for the emails figure |
 | **Rounding** | Down | Down never overstates the real number |
 | **Prefix** / **Suffix** | — | e.g. suffix `+` → `86.3K+` |
 
@@ -53,15 +58,18 @@ Controls on the tag:
 > `86.3K`. Set **Format → Raw digits** there, and let the widget's own
 > thousands-separator option handle the commas.
 
-### Use it anywhere else
+### Use them anywhere else
 
 ```
-[fluentcrm_subscribers]                                → 86.3K
-[fluentcrm_subscribers format="exact"]                 → 86,362
-[fluentcrm_subscribers format="round" suffix="+"]      → 86,000+
-[fluentcrm_subscribers format="round" round_to="5000"] → 85,000
-[fluentcrm_subscribers format="raw"]                   → 86362
-[fluentcrm_subscribers prefix="Join " suffix=" people"] → Join 86.3K people
+[fluentcrm_subscribers]                                  → 86.3K
+[fluentcrm_subscribers format="exact"]                   → 86,362
+[fluentcrm_subscribers format="round" suffix="+"]        → 86,000+
+[fluentcrm_subscribers prefix="Join " suffix=" people"]  → Join 86.3K people
+
+[fluentcrm_emails_sent]                                  → 15.5M
+[fluentcrm_emails_sent format="exact"]                   → 15,525,776
+[fluentcrm_emails_sent format="round" round_to="1000000" suffix="+"]
+                                                         → 15,000,000+
 ```
 
 Attribute names match the Elementor controls exactly.
@@ -74,42 +82,70 @@ refreshes. Pass `rounding="nearest"` if you'd rather have `86.4K`.
 
 ### Caching
 
-The count is cached in a transient for **1 hour**, so page loads never hit the
-database for it. The cache also clears immediately on `fluent_crm/contact_created`
-and `fluent_crm/subscriber_status_changed`, so new signups show up right away.
+Counting subscribers is cheap. Counting **sent emails is not** — that table has
+15.5M rows, and FluentCRM itself warns once it passes 400,000. A visitor must
+never be the one waiting on that query.
 
-To change the TTL:
+So values are stored in an autoloaded option (already in memory by the time a
+template renders) and refreshed **stale-while-revalidate**:
+
+- **Fresh** → served straight from the option.
+- **Stale** → the *old* number is served immediately and a one-off WP-Cron job
+  recomputes in the background. No visitor waits.
+- **Very stale** (past 4× the TTL) → recomputed inline. This is the safety net
+  for sites running `DISABLE_WP_CRON` without a server-side cron replacing it.
+- **First ever run** → primed on an admin page load, so the one unavoidable
+  slow count happens to a logged-in admin rather than a visitor.
+- **Source unavailable** → the last good number keeps being served, so a
+  FluentCRM hiccup can't flash a `0` on the site.
+
+TTLs: subscribers 1 hour, emails sent 6 hours. The subscriber count is also
+marked stale on `fluent_crm/contact_created` and
+`fluent_crm/subscriber_status_changed`, so signups show up without waiting out
+the hour. Emails-sent is deliberately **not** hooked that way — it would fire
+once per recipient in the middle of a campaign.
+
+To change a TTL:
 
 ```php
-add_filter( 'mag_fcrm_cache_ttl', function () {
-	return 15 * MINUTE_IN_SECONDS;
-} );
+add_filter( 'mag_fcrm_cache_ttl', function ( $ttl, $key ) {
+	return 'emails_sent' === $key ? DAY_IN_SECONDS : $ttl;
+}, 10, 2 );
 ```
 
-To force a refresh from other code: `mag_fcrm_flush_subscriber_cache();`
+To force a recount from other code: `mag_fcrm_refresh_stat( 'emails_sent' );`
 
 ### Adding another stat
 
-The data and formatting layers are separate, so a second stat is small. Add a
-count function alongside `mag_fcrm_total_subscribers()` — the useful FluentCRM
-scopes are `filterByStatues( [ 'subscribed' ] )`, `filterByLists( [ $id ] )` and
-`filterByTags( [ $id ] )` — then a tag class that calls it. Everything else
-(formatting, controls, caching pattern, shortcode) is reusable as-is.
+Three steps, no other changes:
+
+1. Add a count function returning `int`, or `null` when FluentCRM is missing.
+   The useful FluentCRM scopes are `filterByStatues( [ 'subscribed' ] )`,
+   `filterByLists( [ $id ] )` and `filterByTags( [ $id ] )`.
+2. Register it in `mag_fcrm_stats()` with a TTL.
+3. Add an 8-line subclass of `MAG_FCRM_Count_Tag` declaring `$stat_key`,
+   `get_name()` and `get_title()`, and register it alongside the others.
+
+Formatting, controls, caching and background refresh are all inherited.
 
 ### Verifying
 
-On the site: `[fluentcrm_subscribers format="exact"]` should match FluentCRM →
-Contacts filtered to **Subscribed**, and the "Active Contacts" tile on the
-FluentCRM dashboard.
+On the site: `[fluentcrm_subscribers format="exact"]` and
+`[fluentcrm_emails_sent format="exact"]` should match the "Active Contacts" and
+"Emails Sent" tiles on the FluentCRM dashboard.
 
-Before editing the snippet, run the harnesses in `tests/` — they stub
-WordPress, Elementor and FluentCRM, so they need nothing installed:
+Before editing the snippet, run the harnesses in `tests/`. They stub WordPress,
+Elementor and FluentCRM, so they need nothing installed — no WordPress, no
+composer, no PHPUnit:
 
 ```sh
 php -l snippets/fluentcrm-elementor-tags.php
-php snippets/tests/formatter-test.php    # 46 assertions: every format, rounding, edge case
-php snippets/tests/elementor-test.php    # 17 assertions: tag registration, controls, rendering
+php snippets/tests/formatter-test.php    # 84 assertions: formatting + cache behaviour
+php snippets/tests/elementor-test.php    # 28 assertions: tag registration + rendering
 ```
 
-`formatter-test.php` also loads the snippet with neither plugin present, which
-is what proves the site survives Elementor being deactivated.
+`formatter-test.php` loads the snippet with neither plugin present, which is
+what proves the site survives Elementor being deactivated.
+`elementor-test.php` runs the real count callbacks against a stubbed FluentCRM
+and asserts the queries built are `status = subscribed` and `status = sent` —
+the same ones FluentCRM's dashboard runs.

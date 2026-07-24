@@ -1,38 +1,18 @@
 <?php
 /**
- * Stub Elementor's dynamic-tag API, load the snippet, then fire the
- * registration callback — twice, to prove the class_exists guard survives a
- * snippet manager re-evaluating the code on save.
+ * Stub Elementor and FluentCRM, load the snippet, then fire the registration
+ * callback — twice, to prove the class_exists guard survives a snippet
+ * manager re-evaluating the code on save.
+ *
+ * Unlike formatter-test.php this one lets the REAL count callbacks run, so
+ * the queries they build are checked against what FluentCRM's own
+ * Stats::getCounts() runs.
+ *
+ * Run: php snippets/tests/elementor-test.php
  */
 
 namespace {
-	define( 'ABSPATH', __DIR__ );
-	define( 'HOUR_IN_SECONDS', 3600 );
-
-	$GLOBALS['actions']    = array();
-	$GLOBALS['transients'] = array();
-
-	function get_transient( $k ) {
-		return isset( $GLOBALS['transients'][ $k ] ) ? $GLOBALS['transients'][ $k ] : false; }
-	function set_transient( $k, $v, $t ) {
-		$GLOBALS['transients'][ $k ] = $v; }
-	function delete_transient( $k ) {
-		unset( $GLOBALS['transients'][ $k ] ); }
-	function apply_filters( $tag, $value ) {
-		return $value; }
-	function add_action( $tag, $cb, $prio = 10, $args = 1 ) {
-		$GLOBALS['actions'][ $tag ][] = $cb; }
-	function add_shortcode( $tag, $cb ) {}
-	function shortcode_atts( $pairs, $atts, $sc = '' ) {
-		return array_merge( $pairs, (array) $atts ); }
-	function wp_parse_args( $args, $defaults = array() ) {
-		return array_merge( $defaults, (array) $args ); }
-	function number_format_i18n( $n, $d = 0 ) {
-		return number_format( $n, $d ); }
-	function esc_html( $s ) {
-		return htmlspecialchars( $s, ENT_QUOTES ); }
-	function esc_html__( $s, $d = '' ) {
-		return $s; }
+	require __DIR__ . '/bootstrap.php';
 }
 
 /* ---- Elementor stubs ---- */
@@ -40,7 +20,7 @@ namespace Elementor\Core\DynamicTags {
 	abstract class Tag {
 		public $controls = array();
 		public $settings = array();
-		public function __construct() {
+		public function __construct( array $data = array() ) {
 			$this->register_controls();
 		}
 		protected function register_controls() {}
@@ -73,18 +53,30 @@ namespace Elementor {
 	}
 }
 
-/* ---- FluentCRM stub, so the count path runs for real ---- */
+/* ---- FluentCRM stubs, so the real count callbacks run ---- */
 namespace FluentCrm\App\Models {
-	class Subscriber {
-		public static $lastColumn = null;
-		public static $lastStatus = null;
-		public static function where( $col, $val ) {
-			self::$lastColumn = $col;
-			self::$lastStatus = $val;
-			return new self();
-		}
+
+	class Query {
+		public $rows;
+		public function __construct( $rows ) {
+			$this->rows = $rows; }
 		public function count() {
-			return 86362;
+			return $this->rows; }
+	}
+
+	class Subscriber {
+		public static $where = array();
+		public static function where( $col, $val ) {
+			self::$where = array( $col, $val );
+			return new Query( 86362 );
+		}
+	}
+
+	class CampaignEmail {
+		public static $where = array();
+		public static function where( $col, $val ) {
+			self::$where = array( $col, $val );
+			return new Query( 15525776 );
 		}
 	}
 }
@@ -102,62 +94,84 @@ namespace {
 
 	require __DIR__ . '/../fluentcrm-elementor-tags.php';
 
-	$fails = 0;
-	$pass  = 0;
-	function check( $label, $actual, $expected ) {
-		global $fails, $pass;
-		if ( $actual === $expected ) {
-			$pass++;
-			printf( "  ok   %-50s %s\n", $label, is_bool( $actual ) ? var_export( $actual, true ) : $actual );
-		} else {
-			$fails++;
-			printf( "  FAIL %-50s got %s, want %s\n", $label, var_export( $actual, true ), var_export( $expected, true ) );
-		}
-	}
+	echo "Count callbacks against stubbed FluentCRM:\n";
+	check( 'subscriber count', mag_fcrm_count_subscribers(), 86362 );
+	check( '  ... queried status = subscribed', implode( ' = ', \FluentCrm\App\Models\Subscriber::$where ), 'status = subscribed' );
+	check( 'emails-sent count', mag_fcrm_count_emails_sent(), 15525776 );
+	check( '  ... queried status = sent', implode( ' = ', \FluentCrm\App\Models\CampaignEmail::$where ), 'status = sent' );
 
+	echo "\nFirst registration:\n";
 	$callback = $GLOBALS['actions']['elementor/dynamic_tags/register'][0];
-
-	echo "First registration:\n";
-	$mgr = new FakeTagsManager();
+	$mgr      = new FakeTagsManager();
 	$callback( $mgr );
 
 	check( 'FluentCRM group registered', isset( $mgr->groups['fluentcrm'] ), true );
 	check( 'group title', $mgr->groups['fluentcrm']['title'], 'FluentCRM' );
-	check( 'tag registered', isset( $mgr->tags['fcrm-total-subscribers'] ), true );
+	check( 'both tags registered', implode( ',', array_keys( $mgr->tags ) ), 'fcrm-total-subscribers,fcrm-emails-sent' );
 
-	$tag = $mgr->tags['fcrm-total-subscribers'];
-	check( 'tag title', $tag->get_title(), 'Total Email Subscribers' );
-	check( 'tag group', implode( ',', $tag->get_group() ), 'fluentcrm' );
-	check( 'categories: text + number', implode( ',', $tag->get_categories() ), 'text,number' );
-	check( 'controls registered', implode( ',', array_keys( $tag->controls ) ), 'format,precision,round_to,rounding,prefix,suffix' );
-	check( 'default format is compact', $tag->controls['format']['default'], 'compact' );
-	check( 'raw option present for Counter', isset( $tag->controls['format']['options']['raw'] ), true );
-	check( 'prefix hidden on raw', $tag->controls['prefix']['condition']['format!'], 'raw' );
+	$subs   = $mgr->tags['fcrm-total-subscribers'];
+	$emails = $mgr->tags['fcrm-emails-sent'];
 
-	echo "\nRendering against stubbed FluentCRM (86,362):\n";
+	check( 'subscribers title', $subs->get_title(), 'Total Email Subscribers' );
+	check( 'emails title', $emails->get_title(), 'Total Emails Sent' );
+	check( 'shared group', implode( ',', $emails->get_group() ), 'fluentcrm' );
+	check( 'categories: text + number', implode( ',', $emails->get_categories() ), 'text,number' );
+	check( 'shared controls', implode( ',', array_keys( $emails->controls ) ), 'format,precision,round_to,rounding,prefix,suffix' );
+	check( 'default format is compact', $emails->controls['format']['default'], 'compact' );
+	check( 'raw option present for Counter', isset( $emails->controls['format']['options']['raw'] ), true );
+	check( 'prefix hidden on raw', $emails->controls['prefix']['condition']['format!'], 'raw' );
+	check( 'round_to offers millions', isset( $emails->controls['round_to']['options'][1000000] ), true );
+
+	echo "\nRendering:\n";
+	reset_state();
+
 	ob_start();
-	$tag->render();
-	check( 'default render', ob_get_clean(), '86.3K' );
+	$subs->render();
+	check( 'subscribers, default', ob_get_clean(), '86.3K' );
 
-	check( 'queried column', \FluentCrm\App\Models\Subscriber::$lastColumn, 'status' );
-	check( 'queried value', \FluentCrm\App\Models\Subscriber::$lastStatus, 'subscribed' );
-	check( 'count was cached', get_transient( 'mag_fcrm_total_subscribers' ), 86362 );
-
-	$tag->settings = array( 'format' => 'raw' );
 	ob_start();
-	$tag->render();
-	check( 'raw render for Counter widget', ob_get_clean(), '86362' );
+	$emails->render();
+	check( 'emails sent, default', ob_get_clean(), '15.5M' );
 
-	$tag->settings = array( 'format' => 'round', 'suffix' => '+' );
+	$emails->settings = array( 'format' => 'raw' );
 	ob_start();
-	$tag->render();
-	check( 'rounded render with suffix', ob_get_clean(), '86,000+' );
+	$emails->render();
+	check( 'emails sent, raw for Counter', ob_get_clean(), '15525776' );
+
+	$emails->settings = array( 'format' => 'round', 'round_to' => 1000000, 'suffix' => '+' );
+	ob_start();
+	$emails->render();
+	check( 'emails sent, rounded to millions', ob_get_clean(), '15,000,000+' );
+
+	$subs->settings = array( 'format' => 'exact' );
+	ob_start();
+	$subs->render();
+	check( 'subscribers, exact', ob_get_clean(), '86,362' );
+
+	echo "\nRendering caches rather than re-querying:\n";
+	check( 'subscribers stored', get_option( 'mag_fcrm_stat_total_subscribers' )['value'], 86362 );
+	check( 'emails stored', get_option( 'mag_fcrm_stat_emails_sent' )['value'], 15525776 );
+
+	// Move the underlying numbers. A cached render must not notice.
+	\FluentCrm\App\Models\Subscriber::$where   = array();
+	\FluentCrm\App\Models\CampaignEmail::$where = array();
+
+	$subs->settings = array();
+	ob_start();
+	$subs->render();
+	check( 'second render served from cache', ob_get_clean(), '86.3K' );
+	check( '  ... and never touched the model', \FluentCrm\App\Models\Subscriber::$where, array() );
+
+	$emails->settings = array();
+	ob_start();
+	$emails->render();
+	check( 'emails second render from cache', ob_get_clean(), '15.5M' );
+	check( '  ... and never touched the model', \FluentCrm\App\Models\CampaignEmail::$where, array() );
 
 	echo "\nSecond registration (snippet manager re-save):\n";
 	$mgr2 = new FakeTagsManager();
 	$callback( $mgr2 );
-	check( 'no redeclaration fatal', isset( $mgr2->tags['fcrm-total-subscribers'] ), true );
+	check( 'no redeclaration fatal', implode( ',', array_keys( $mgr2->tags ) ), 'fcrm-total-subscribers,fcrm-emails-sent' );
 
-	printf( "\n%d passed, %d failed\n", $pass, $fails );
-	exit( $fails > 0 ? 1 : 0 );
+	summary();
 }
