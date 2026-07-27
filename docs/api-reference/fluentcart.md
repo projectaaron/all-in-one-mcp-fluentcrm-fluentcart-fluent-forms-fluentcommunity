@@ -1,6 +1,6 @@
 # FluentCart REST API — Reference
 
-> **Source:** <https://dev.fluentcart.com/restapi/> · **Scraped:** 2026-07-16 · **Endpoints:** 380 across 20 groups
+> **Source:** <https://dev.fluentcart.com/restapi/> · **Scraped:** 2026-07-27 · **Endpoints:** 381 across 20 groups
 > Regenerate with `node scripts/gen-api-docs.mjs fluentcart` — see [MAINTAINING.md](./MAINTAINING.md).
 
 **Base URL:** `https://{website}/wp-json/fluent-cart/v2` (namespace `fluent-cart/v2`)
@@ -24,7 +24,7 @@ Credential setup for all products: [auth.md](./auth.md).
 | Customers | 18 | [customers.md](./fluentcart/customers.md) |
 | Coupons | 12 | [coupons.md](./fluentcart/coupons.md) |
 | Subscriptions | 17 | [subscriptions.md](./fluentcart/subscriptions.md) |
-| Tax | 26 | [tax.md](./fluentcart/tax.md) |
+| Tax | 27 | [tax.md](./fluentcart/tax.md) |
 | Shipping | 15 | [shipping.md](./fluentcart/shipping.md) |
 | Settings | 30 | [settings.md](./fluentcart/settings.md) |
 | Email Notifications | 11 | [email-notification.md](./fluentcart/email-notification.md) |
@@ -213,15 +213,11 @@ Full schemas: [`fluentcart/tax.md`](./fluentcart/tax.md)
 |--------|------|---------|
 | POST | `/tax/classes` | POST Create Tax Class |
 | POST | `/tax/country/rate` | POST Create Tax Rate |
-| DELETE | `/tax/country/{country_code}` | DELETE Delete All Rates for a Country |
-| DELETE | `/tax/configuration/settings/eu-vat/oss/shipping-override` | DELETE Delete OSS Shipping Tax Override |
-| DELETE | `/tax/configuration/settings/eu-vat/oss/override` | DELETE Delete OSS Tax Override |
 | DELETE | `/tax/rates/country/override/{id}` | DELETE Delete Shipping Tax Override |
 | DELETE | `/tax/classes/{id}` | DELETE Delete Tax Class |
 | DELETE | `/tax/country/rate/{id}` | DELETE Delete Tax Rate |
 | GET | `/tax/country-tax-id/{country_code}` | GET Get Country Tax ID |
 | GET | `/tax/rates/country/rates/{country_code}` | GET Get Country Tax Rates |
-| GET | `/tax/configuration/settings/eu-vat/rates` | GET Get EU Tax Rates |
 | GET | `/tax/configuration/rates` | GET Get Preconfigured Tax Rates |
 | GET | `/tax/configuration/settings` | GET Get Tax Settings |
 | GET | `/tax/rates` | GET List All Tax Rates |
@@ -231,12 +227,17 @@ Full schemas: [`fluentcart/tax.md`](./fluentcart/tax.md)
 | POST | `/tax/configuration/countries` | POST Save Configured Countries |
 | POST | `/tax/country-tax-id/{country_code}` | POST Save Country Tax ID |
 | POST | `/tax/configuration/settings/eu-vat` | POST Save EU VAT Cross-Border Settings |
-| POST | `/tax/configuration/settings/eu-vat/oss/shipping-override` | POST Save OSS Shipping Tax Override |
-| POST | `/tax/configuration/settings/eu-vat/oss/override` | POST Save OSS Tax Override |
 | POST | `/tax/rates/country/override` | POST Save Shipping Tax Override |
 | POST | `/tax/configuration/settings` | POST Save Tax Settings |
-| PUT | `/tax/classes/{id}` | PUT Update Tax Class |
 | PUT | `/tax/country/rate/{id}` | PUT Update Tax Rate |
+| DELETE | `/tax/product-overrides/{id}` | DELETE Delete Product Category Tax Override |
+| GET | `/tax/configuration/settings/eu-vat/product-overrides` | GET Get EU VAT Product Overrides |
+| GET | `/tax/configuration/settings/eu-vat/oss-rates` | GET Get OSS Country Rates |
+| GET | `/tax/product-overrides/{country_code}` | GET Get Product Category Tax Overrides |
+| POST | `/tax/configuration/settings/eu-vat/reset-rates` | POST Reset EU VAT Rates |
+| POST | `/tax/configuration/settings/eu-vat/oss-rates` | POST Save OSS Country Rates |
+| POST | `/tax/product-overrides` | POST Save Product Category Tax Override |
+| POST | `/tax/country-status/{country_code}` | POST Update Country Tax Status |
 
 ### Shipping
 
