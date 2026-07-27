@@ -1,7 +1,7 @@
 # Tool map
 
 The fast map of this server: **every tool, one line each, grouped by area** —
-704 tools in 44 areas. **Generated** by
+705 tools in 44 areas. **Generated** by
 `scripts/gen-tool-catalog.mjs` from the live registry; regenerate after any
 tool-surface change. Sessions get the same map at runtime from the
 `tool_map` tool (no args = area overview, `{"area": …}` /
@@ -45,7 +45,7 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 | `cart_customers` | 18 | Look up, create, update, and manage store customers, their addresses, purchase stats, and linked WordPress users. |
 | `cart_coupons` | 12 | Manage discount coupons: create, update, delete, apply to or remove from orders, and check product eligibility. |
 | `cart_subscriptions` | 17 | View and manage recurring subscriptions: cancel, re-sync from the payment gateway, switch payment methods, and handle early payments. |
-| `cart_tax` | 26 | Manage tax classes, tax rates, per-country configuration, EU VAT/OSS overrides, and order tax records. |
+| `cart_tax` | 27 | Manage tax classes, tax rates, per-country configuration, EU VAT/OSS overrides, and order tax records. |
 | `cart_shipping` | 15 | Manage shipping zones, shipping methods, and shipping classes. |
 | `cart_settings` | 30 | Read or update store settings: general store options, modules and addons, permissions, payment methods, storage drivers, and checkout fields. |
 | `cart_email_notifications` | 11 | Manage the store's transactional email templates, global email settings, reminders, and previews. |
@@ -601,15 +601,11 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 
 - `cart_tax_create_class` — Create Tax Class
 - `cart_tax_create_rate` — Create Tax Rate
-- `cart_tax_delete_country_rates(country_code)` ⚠ — Delete All Rates for a Country
-- `cart_tax_delete_oss_shipping_override` ⚠ — Delete OSS Shipping Tax Override
-- `cart_tax_delete_oss_override` ⚠ — Delete OSS Tax Override
 - `cart_tax_delete_shipping_override(id)` ⚠ — Delete Shipping Tax Override
 - `cart_tax_delete_class(id)` ⚠ — Delete Tax Class
 - `cart_tax_delete_rate(id)` ⚠ — Delete Tax Rate
 - `cart_tax_get_country_id(country_code)` — Get Country Tax ID
 - `cart_tax_get_country_rates(country_code)` — Get Country Tax Rates
-- `cart_tax_get_eu_rates` — Get EU Tax Rates
 - `cart_tax_get_preconfigured_rates` — Get Preconfigured Tax Rates
 - `cart_tax_get_settings` — Get Tax Settings
 - `cart_tax_list_all_rates` — List All Tax Rates (paginated)
@@ -619,12 +615,17 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `cart_tax_save_configured_countries` — Save Configured Countries
 - `cart_tax_save_country_id(country_code)` — Save Country Tax ID
 - `cart_tax_save_eu_vat_cross_border_settings` — Save EU VAT Cross-Border Settings
-- `cart_tax_save_oss_shipping_override` — Save OSS Shipping Tax Override
-- `cart_tax_save_oss_override` — Save OSS Tax Override
 - `cart_tax_save_shipping_override` — Save Shipping Tax Override
 - `cart_tax_save_settings` — Save Tax Settings
-- `cart_tax_update_class(id)` — Update Tax Class
 - `cart_tax_update_rate(id)` — Update Tax Rate
+- `cart_tax_delete_product_override(id)` ⚠ — Delete Product Category Tax Override
+- `cart_tax_get_eu_vat_product_overrides` — Get EU VAT Product Overrides
+- `cart_tax_get_oss_country_rates` — Get OSS Country Rates
+- `cart_tax_get_product_overrides(country_code)` — Get Product Category Tax Overrides
+- `cart_tax_reset_eu_vat_rates` ⚠ — Reset EU VAT Rates
+- `cart_tax_save_oss_country_rates` — Save OSS Country Rates
+- `cart_tax_save_product_override` — Save Product Category Tax Override
+- `cart_tax_update_country_status(country_code)` — Update Country Tax Status
 
 ### cart_shipping — Manage shipping zones, shipping methods, and shipping classes.
 

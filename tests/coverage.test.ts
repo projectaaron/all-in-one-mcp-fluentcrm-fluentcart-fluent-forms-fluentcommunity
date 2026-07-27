@@ -33,9 +33,14 @@ for (const product of PRODUCTS) {
     it('action methods and paths match the documented inventory', () => {
       const byOp = new Map(inventory.endpoints.map((e) => [`${e.group}/${e.slug}`, e]));
       for (const spec of product.tools) {
-        for (const def of Object.values(spec.actions)) {
-          const doc = byOp.get(def.op)!;
-          expect(`${def.method} ${def.path}`).toBe(`${doc.method} ${doc.path}`);
+        for (const [action, def] of Object.entries(spec.actions)) {
+          // An action whose op has been dropped upstream must fail by name —
+          // without this guard the lookup below null-derefs and reports
+          // "Cannot read properties of undefined", which says nothing about
+          // which tool is now pointing at a route that no longer exists.
+          const doc = byOp.get(def.op);
+          expect(doc, `${spec.name}.${action} maps ${def.op}, absent from the documented inventory`).toBeDefined();
+          expect(`${def.method} ${def.path}`, `${spec.name}.${action}`).toBe(`${doc!.method} ${doc!.path}`);
         }
       }
     });

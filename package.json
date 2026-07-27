@@ -1,6 +1,6 @@
 {
   "name": "fluentmcp",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "MCP server giving AI harnesses full CRUD control of WPManageNinja Fluent products (FluentCRM, FluentCart) on a WordPress site",
   "license": "MIT",
   "type": "module",
