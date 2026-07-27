@@ -335,3 +335,78 @@ cycle).
   naming FLUENT_LOCKED_TOOLS rather than a mystery missing tool.
 - `FLUENT_LOCKED_TOOLS` semantics: comma list REPLACES the default;
   `default` token expands it; `none` disables. Unset = default six.
+
+## 2026-07-24 — WordPress snippets live in the repo but outside the product
+
+Request: put the live FluentCRM subscriber count into Elementor so the
+site's vanity number stops being hardcoded. The natural home for that code
+is WordPress, not this server — it needs FluentCRM's PHP models and
+Elementor's dynamic-tag API in-process, and going through the REST surface
+this server wraps would be a network round trip to reach data already
+sitting in the same database.
+
+So `snippets/` is a deliberate exception to "this repo is the MCP server":
+version-controlled and reviewable here, executed on the WordPress site.
+
+- **Excluded everywhere the product is assembled**: outside `tsconfig`'s
+  `src/**/*.ts`, ignored by the generators, and added to `.mcpbignore` so
+  it can't land in the shipped extension.
+- **Snippet, not plugin.** A plugin would need packaging, a zip, and an
+  update path. Snippet managers (WPCode, Code Snippets) are already how
+  this site carries custom PHP, and a single file is reviewable in one
+  screen.
+- **The dynamic-tag class is declared inside the
+  `elementor/dynamic_tags/register` callback**, not at file scope. It
+  extends `\Elementor\Core\DynamicTags\Tag`, which doesn't exist until
+  Elementor loads — a top-level `extends` fatals the whole site the moment
+  Elementor is deactivated or mid-update. The `class_exists` guard around
+  it covers snippet managers re-evaluating the code on save.
+- **Rounds down by default** (86,362 → `86.3K`, not `86.4K`): a marketing
+  number should never claim more than the CRM actually holds.
+- **Never caches a zero.** A transient hiccup or half-loaded FluentCRM
+  would otherwise pin the site to "0 subscribers" for the full hour TTL.
+- **Tested by harness, not by `npm test`.** There's no PHP test runner
+  here and pulling one in for ~150 lines isn't worth it. `snippets/tests/`
+  holds two plain-PHP harnesses that stub WordPress, Elementor and
+  FluentCRM — 63 assertions covering every format/rounding combination,
+  graceful degradation when either plugin is absent, and re-registration
+  on snippet save. Run them with `php snippets/tests/*.php`; they need
+  nothing installed.
+
+## 2026-07-24 — Emails-sent stat forced a stale-while-revalidate cache
+
+Adding "Total Emails Sent" to the Elementor snippet looked like a copy of the
+subscriber tag until the numbers were checked. FluentCRM computes both the
+same way — `Stats::getCounts()` runs `Subscriber::where('status',
+'subscribed')->count()` and `CampaignEmail::where('status', 'sent')->count()`
+— but on this site those are 86k rows and **15.5M** rows. FluentCRM's own
+dashboard warns once `fc_campaign_emails` passes 400,000; we're at 38x that.
+The table has a `(status, scheduled_at)` index, so the count uses it, but it
+still walks 15.5M index entries. Seconds, not milliseconds.
+
+A one-hour transient would therefore hand one unlucky visitor an
+outright slow page every hour. So the cache was reworked rather than copied:
+
+- **Values live in an autoloaded option, not a transient.** Read on nearly
+  every render, two integers — cheaper as part of the autoload query than as
+  its own lookup, and it survives object-cache flushes so there is always
+  something to serve.
+- **Stale serves the old number and schedules a cron refresh.** The only
+  inline recount is the first one ever. An `admin_init` primer usually
+  absorbs even that, so it lands on a logged-in admin rather than a visitor.
+- **Past 4x the TTL we recompute inline anyway** — the safety net for sites
+  running `DISABLE_WP_CRON` with nothing replacing it, where the background
+  refresh would otherwise never fire and the number would freeze forever.
+- **Invalidation marks stale instead of deleting.** Deleting would force the
+  next visitor to pay for the recount; flagging keeps the old value on screen
+  while cron does the work. The flag is only written when not already set, so
+  importing 10,000 contacts writes the option once, not 10,000 times.
+- **Emails-sent is deliberately not hooked to a send event.** That would fire
+  once per recipient mid-campaign. It rides its 6-hour TTL instead.
+- **Registry-driven.** `mag_fcrm_stats()` maps key to TTL and callback; one
+  abstract `MAG_FCRM_Count_Tag` carries every control. A third stat is a
+  registry entry plus an 8-line subclass.
+
+Harnesses grew to 112 assertions, the new ones asserting the thing that
+actually matters: that a request which *could* serve a stale number never
+runs the query. They count callback invocations to prove it.
