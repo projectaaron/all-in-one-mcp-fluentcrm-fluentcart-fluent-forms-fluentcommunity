@@ -1,10 +1,10 @@
 {
   "product": "fluentcart",
   "source": "https://dev.fluentcart.com/restapi/",
-  "scraped": "2026-07-16",
+  "scraped": "2026-07-27",
   "baseUrl": "https://{website}/wp-json/fluent-cart/v2",
   "namespace": "fluent-cart/v2",
-  "count": 380,
+  "count": 381,
   "endpoints": [
     {
       "group": "orders",
@@ -1568,42 +1568,6 @@
     },
     {
       "group": "tax",
-      "slug": "delete-country-rates",
-      "operationId": "deleteCountryRates",
-      "method": "DELETE",
-      "path": "/tax/country/{country_code}",
-      "summary": "DELETE Delete All Rates for a Country",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "tax",
-      "slug": "delete-oss-shipping-tax-override",
-      "operationId": "deleteOssShippingTaxOverride",
-      "method": "DELETE",
-      "path": "/tax/configuration/settings/eu-vat/oss/shipping-override",
-      "summary": "DELETE Delete OSS Shipping Tax Override",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "tax",
-      "slug": "delete-oss-tax-override",
-      "operationId": "deleteOssTaxOverride",
-      "method": "DELETE",
-      "path": "/tax/configuration/settings/eu-vat/oss/override",
-      "summary": "DELETE Delete OSS Tax Override",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "tax",
       "slug": "delete-shipping-tax-override",
       "operationId": "deleteShippingTaxOverride",
       "method": "DELETE",
@@ -1657,18 +1621,6 @@
       "method": "GET",
       "path": "/tax/rates/country/rates/{country_code}",
       "summary": "GET Get Country Tax Rates",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "tax",
-      "slug": "get-eu-tax-rates",
-      "operationId": "getEuTaxRates",
-      "method": "GET",
-      "path": "/tax/configuration/settings/eu-vat/rates",
-      "summary": "GET Get EU Tax Rates",
       "security": [
         "ApplicationPasswords"
       ],
@@ -1784,30 +1736,6 @@
     },
     {
       "group": "tax",
-      "slug": "save-oss-shipping-tax-override",
-      "operationId": "saveOssShippingTaxOverride",
-      "method": "POST",
-      "path": "/tax/configuration/settings/eu-vat/oss/shipping-override",
-      "summary": "POST Save OSS Shipping Tax Override",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "tax",
-      "slug": "save-oss-tax-override",
-      "operationId": "saveOssTaxOverride",
-      "method": "POST",
-      "path": "/tax/configuration/settings/eu-vat/oss/override",
-      "summary": "POST Save OSS Tax Override",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "tax",
       "slug": "save-shipping-tax-override",
       "operationId": "saveShippingTaxOverride",
       "method": "POST",
@@ -1832,11 +1760,11 @@
     },
     {
       "group": "tax",
-      "slug": "update-tax-class",
-      "operationId": "updateTaxClass",
+      "slug": "update-tax-rate",
+      "operationId": "updateTaxRate",
       "method": "PUT",
-      "path": "/tax/classes/{id}",
-      "summary": "PUT Update Tax Class",
+      "path": "/tax/country/rate/{id}",
+      "summary": "PUT Update Tax Rate",
       "security": [
         "ApplicationPasswords"
       ],
@@ -1844,11 +1772,95 @@
     },
     {
       "group": "tax",
-      "slug": "update-tax-rate",
-      "operationId": "updateTaxRate",
-      "method": "PUT",
-      "path": "/tax/country/rate/{id}",
-      "summary": "PUT Update Tax Rate",
+      "slug": "delete-product-override",
+      "operationId": "deleteProductOverride",
+      "method": "DELETE",
+      "path": "/tax/product-overrides/{id}",
+      "summary": "DELETE Delete Product Category Tax Override",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tax",
+      "slug": "get-eu-vat-product-overrides",
+      "operationId": "getEuVatProductOverrides",
+      "method": "GET",
+      "path": "/tax/configuration/settings/eu-vat/product-overrides",
+      "summary": "GET Get EU VAT Product Overrides",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tax",
+      "slug": "get-oss-country-rates",
+      "operationId": "getOssCountryRates",
+      "method": "GET",
+      "path": "/tax/configuration/settings/eu-vat/oss-rates",
+      "summary": "GET Get OSS Country Rates",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tax",
+      "slug": "get-product-overrides",
+      "operationId": "getProductOverrides",
+      "method": "GET",
+      "path": "/tax/product-overrides/{country_code}",
+      "summary": "GET Get Product Category Tax Overrides",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tax",
+      "slug": "reset-eu-vat-rates",
+      "operationId": "resetEuVatRates",
+      "method": "POST",
+      "path": "/tax/configuration/settings/eu-vat/reset-rates",
+      "summary": "POST Reset EU VAT Rates",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tax",
+      "slug": "save-oss-country-rates",
+      "operationId": "saveOssCountryRates",
+      "method": "POST",
+      "path": "/tax/configuration/settings/eu-vat/oss-rates",
+      "summary": "POST Save OSS Country Rates",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tax",
+      "slug": "save-product-override",
+      "operationId": "saveProductOverride",
+      "method": "POST",
+      "path": "/tax/product-overrides",
+      "summary": "POST Save Product Category Tax Override",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tax",
+      "slug": "update-country-status",
+      "operationId": "updateCountryStatus",
+      "method": "POST",
+      "path": "/tax/country-status/{country_code}",
+      "summary": "POST Update Country Tax Status",
       "security": [
         "ApplicationPasswords"
       ],

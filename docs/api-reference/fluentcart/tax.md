@@ -1,6 +1,6 @@
 # FluentCart API — Tax
 
-26 endpoints. Base URL: `https://{website}/wp-json/fluent-cart/v2`. See the [FluentCart overview](../fluentcart.md) for auth and the full group list.
+27 endpoints. Base URL: `https://{website}/wp-json/fluent-cart/v2`. See the [FluentCart overview](../fluentcart.md) for auth and the full group list.
 
 _Generated from the FluentCart OpenAPI specs (dev.fluentcart.com)._
 
@@ -10,28 +10,20 @@ _Generated from the FluentCart OpenAPI specs (dev.fluentcart.com)._
 
 **POST Create Tax Class**
 
-Create a new tax class. A unique slug is auto-generated from the title.
+Create a new tax class. A unique slug is auto-generated from the title. Pass slug "reduced" or "zero" to create one of the built-in classes (title is then set automatically). A maximum of 6 tax classes is allowed; the built-in "standard" class always exists and cannot be deleted.
 
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`, required)
 
-- `title` (string) **required** — Tax class title (max 192 characters)
-- `description` (string) — Description of the tax class
-- `categories` (array<integer>) — Array of product category IDs associated with this tax class
-- `priority` (integer) _(default: `0`)_ — Sort priority (higher values appear first, default: 0)
+- `title` (string) **required** _(maxLength: 30)_ — Tax class title (max 30 characters). Required unless a built-in slug is passed
+- `slug` (string) — Optional. Pass a built-in slug (reduced or zero) to create that built-in class; otherwise the slug is auto-generated from the title
 
 Example:
 
 ```json
 {
-  "title": "Digital Goods",
-  "description": "Tax class for digital products",
-  "categories": [
-    12,
-    15
-  ],
-  "priority": 7
+  "title": "Digital Goods"
 }
 ```
 
@@ -42,35 +34,52 @@ Example:
 
   Schema (`application/json`):
 
+  - `class` (TaxClass)
   - `message` (string)
 
   Example:
 
 ```json
 {
-  "message": "Tax class has been created successfully"
+  "class": {
+    "id": 4,
+    "title": "Digital Goods",
+    "slug": "digital-goods",
+    "meta": [],
+    "created_at": "2025-06-01 12:00:00",
+    "updated_at": "2025-06-01 12:00:00"
+  },
+  "message": "Tax class created successfully"
 }
 ```
 
 
-- **422** — Validation failed.
+- **422** — Title exceeds 30 characters.
 
   Schema (`application/json`):
 
-  - `errors` (object)
-    - `title` (array<string>)
   - `message` (string)
 
   Example:
 
 ```json
 {
-  "errors": {
-    "title": [
-      "Tax class title is required."
-    ]
-  },
-  "message": "Validation failed"
+  "message": "Tax class name must be 30 characters or fewer"
+}
+```
+
+
+- **423** — Limit reached, missing title, or duplicate class. Returned when 6 classes already exist, the title is missing, or a class with the same slug already exists.
+
+  Schema (`application/json`):
+
+  - `message` (string)
+
+  Example:
+
+```json
+{
+  "message": "Maximum of 6 tax classes allowed"
 }
 ```
 
@@ -164,158 +173,6 @@ Example:
 ```json
 {
   "message": "Tax class is required"
-}
-```
-
-
-
----
-
-## DELETE `/tax/country/{country_code}`
-
-**DELETE Delete All Rates for a Country**
-
-Delete all tax rates for a specific country.
-
-**Auth:** ApplicationPasswords
-
-**Path parameters**
-
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `country_code` | string | yes | ISO 3166-1 alpha-2 country code (e.g., US, DE) |
-
-
-**Responses**
-
-- **200** — Country rates deleted successfully.
-
-  Schema (`application/json`):
-
-  - `message` (string)
-
-  Example:
-
-```json
-{
-  "message": "Country has been deleted successfully"
-}
-```
-
-
-- **400** — Failed to delete country rates.
-
-  Schema (`application/json`):
-
-  - `message` (string)
-
-  Example:
-
-```json
-{
-  "message": "Failed to delete country"
-}
-```
-
-
-
----
-
-## DELETE `/tax/configuration/settings/eu-vat/oss/shipping-override`
-
-**DELETE Delete OSS Shipping Tax Override**
-
-Delete all EU shipping tax rate overrides for a specific country. Optionally filter by state/region.
-
-**Auth:** ApplicationPasswords
-
-**Query parameters**
-
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `country` | string | yes | ISO 3166-1 alpha-2 country code |
-| `state` | string | no | State/region code to narrow the deletion scope |
-
-
-**Responses**
-
-- **200** — OSS shipping override deleted successfully.
-
-  Schema (`application/json`):
-
-  - `message` (string)
-
-  Example:
-
-```json
-{
-  "message": "OSS shipping override deleted successfully"
-}
-```
-
-
-- **423** — Validation failed or no matching records found.
-
-  Schema (`application/json`):
-
-  - `message` (string)
-
-  Example:
-
-```json
-{
-  "message": "No matching OSS shipping override found to delete"
-}
-```
-
-
-
----
-
-## DELETE `/tax/configuration/settings/eu-vat/oss/override`
-
-**DELETE Delete OSS Tax Override**
-
-Delete all EU tax rate overrides for a specific country. Optionally filter by state/region.
-
-**Auth:** ApplicationPasswords
-
-**Query parameters**
-
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `country` | string | yes | ISO 3166-1 alpha-2 country code |
-| `state` | string | no | State/region code to narrow the deletion scope |
-
-
-**Responses**
-
-- **200** — OSS tax override deleted successfully.
-
-  Schema (`application/json`):
-
-  - `message` (string)
-
-  Example:
-
-```json
-{
-  "message": "OSS tax override deleted successfully"
-}
-```
-
-
-- **423** — Validation failed or no matching records found.
-
-  Schema (`application/json`):
-
-  - `message` (string)
-
-  Example:
-
-```json
-{
-  "message": "No matching OSS tax override found to delete"
 }
 ```
 
@@ -485,7 +342,7 @@ Retrieve the store's tax identification number (VAT/GST/EIN) for a specific coun
 
 **GET Get Country Tax Rates**
 
-Retrieve all tax rates for a specific country, including the associated tax class and country-level configuration settings.
+Retrieve all tax rates for a specific country (ordered by priority, then ID), the country-level form configuration, and whether tax is enabled for the country.
 
 **Auth:** ApplicationPasswords
 
@@ -496,6 +353,13 @@ Retrieve all tax rates for a specific country, including the associated tax clas
 | `country_code` | string | yes | ISO 3166-1 alpha-2 country code (e.g., US, DE, GB) |
 
 
+**Query parameters**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `class_id` | integer | no | Optional tax class ID to filter the rates |
+
+
 **Responses**
 
 - **200** — Successful response. Returns tax rates for the specified country.
@@ -503,11 +367,9 @@ Retrieve all tax rates for a specific country, including the associated tax clas
   Schema (`application/json`):
 
   - `tax_rates` (array<TaxRate>)
-  - `settings` (object)
-    - `compound_tax` (boolean)
-    - `tax_id_label` (string)
-    - `states` (object)
-      - _(object)_
+  - `settings` (object) — Country-level form configuration from the built-in tax config. Falls back to the continent configuration (e.g., EU) and is null when neither defines one
+    - `hidden` (array<string>) — Address fields hidden in the rate form for this country (e.g., city, zip, state)
+  - `tax_enabled` (boolean) — Whether tax collection is enabled for this country (default: true)
 
   Example:
 
@@ -528,104 +390,17 @@ Retrieve all tax rates for a specific country, including the associated tax clas
       "is_compound": 0,
       "for_shipping": null,
       "for_order": 0,
-      "formatted_state": "",
-      "tax_class": {
-        "id": 1,
-        "title": "Standard"
-      }
+      "formatted_state": ""
     }
   ],
   "settings": {
-    "compound_tax": true,
-    "tax_id_label": "VAT",
-    "states": {
-      "BW": "Baden-Württemberg",
-      "BY": "Bavaria",
-      "BE": "Berlin",
-      "HH": "Hamburg",
-      "NW": "North Rhine-Westphalia"
-    }
-  }
-}
-```
-
-
-
----
-
-## GET `/tax/configuration/settings/eu-vat/rates`
-
-**GET Get EU Tax Rates**
-
-Retrieve all tax rates in the EU group from the database, grouped by region and country.
-
-**Auth:** ApplicationPasswords
-
-**Responses**
-
-- **200** — Successful response. Returns EU tax rates grouped by region and country.
-
-  Schema (`application/json`):
-
-  - `tax_rates` (array<object>)
-    - `group_name` (string)
-    - `group_code` (string)
-    - `countries` (array<object>)
-      - `country_code` (string)
-      - `country_name` (string)
-      - `rates` (array<object>)
-        - `class_id` (integer)
-        - `name` (string)
-        - `rate` (string)
-        - `for_shipping` (integer)
-      - `total_rates` (integer)
-    - `total_countries` (integer)
-
-  Example:
-
-```json
-{
-  "tax_rates": [
-    {
-      "group_name": "European Union",
-      "group_code": "EU",
-      "countries": [
-        {
-          "country_code": "DE",
-          "country_name": "Germany",
-          "rates": [
-            {
-              "class_id": 1,
-              "name": "standard",
-              "rate": "19.0000",
-              "for_shipping": null
-            },
-            {
-              "class_id": 2,
-              "name": "reduced",
-              "rate": "7.0000",
-              "for_shipping": null
-            }
-          ],
-          "total_rates": 2
-        },
-        {
-          "country_code": "FR",
-          "country_name": "France",
-          "rates": [
-            {
-              "class_id": 1,
-              "name": "standard",
-              "rate": "20.0000",
-              "for_shipping": null
-            }
-          ],
-          "total_rates": 1
-        }
-      ],
-      "total_countries": 2
-    }
-  ]
+    "hidden": [
+      "city",
+      "zip",
+      "state"
+    ]
+  },
+  "tax_enabled": true
 }
 ```
 
@@ -751,17 +526,18 @@ Retrieve the full list of preconfigured tax rates from the built-in tax rates da
 
 **GET Get Tax Settings**
 
-Retrieve the current global tax configuration settings.
+Retrieve the current global tax configuration settings along with the store country.
 
 **Auth:** ApplicationPasswords
 
 **Responses**
 
-- **200** — Successful response. Returns the current tax settings.
+- **200** — Successful response. Returns the current tax settings and the store country.
 
   Schema (`application/json`):
 
   - `settings` (TaxSettings)
+  - `store_country` (string) — The store country code from store settings (empty string when unset)
 
   Example:
 
@@ -771,20 +547,44 @@ Retrieve the current global tax configuration settings.
     "tax_inclusion": "included",
     "tax_calculation_basis": "shipping",
     "tax_rounding": "item",
+    "checkout_tax_breakdown_display": "itemized",
+    "tax_display_label": "Tax",
     "enable_tax": "yes",
-    "price_suffix": "",
+    "price_suffix_included": "",
+    "price_suffix_excluded": "",
     "eu_vat_settings": {
       "require_vat_number": "no",
       "local_reverse_charge": "yes",
+      "reverse_charge_price_mode": "fixed",
       "vat_reverse_excluded_categories": [
         30,
         42
       ],
       "method": "oss",
       "oss_country": "DE",
-      "oss_vat": "DE123456789"
+      "oss_vat": "DE123456789",
+      "country_wise_vat": [],
+      "country_registrations": [
+        {
+          "country": "DE",
+          "vat": "DE123456789",
+          "rate": 19,
+          "rates": {
+            "standard": {
+              "rate": 19,
+              "label": "VAT"
+            },
+            "reduced": {
+              "rate": 7,
+              "label": "Reduced VAT"
+            }
+          },
+          "tax_label": "VAT"
+        }
+      ]
     }
-  }
+  },
+  "store_country": "DE"
 }
 ```
 
@@ -871,7 +671,7 @@ Retrieve all tax rates from the database, grouped by continent/region and countr
 
 **GET List Tax Classes**
 
-Retrieve all tax classes, sorted by priority (highest first), then by newest first when priority is equal.
+Retrieve all tax classes ordered by ID (oldest first), along with the maximum allowed number of classes and the next built-in class (Reduced or Zero) that has not been created yet.
 
 **Auth:** ApplicationPasswords
 
@@ -881,31 +681,22 @@ Retrieve all tax classes, sorted by priority (highest first), then by newest fir
 
   Schema (`application/json`):
 
-  - `tax_classes` (array<TaxClass>)
+  - `classes` (array<TaxClass>)
+  - `max_classes` (integer) — Maximum number of tax classes allowed (6)
+  - `next_builtin` (object) — The next built-in class not yet created (null when both reduced and zero exist)
+    - `slug` (string)
+    - `title` (string)
 
   Example:
 
 ```json
 {
-  "tax_classes": [
+  "classes": [
     {
       "id": 1,
       "title": "Standard",
       "slug": "standard",
-      "description": "Standard tax rate for most products",
-      "meta": {
-        "categories": [
-          5,
-          12,
-          18
-        ],
-        "priority": 10
-      },
-      "categories": [
-        5,
-        12,
-        18
-      ],
+      "meta": [],
       "created_at": "2025-01-15 10:00:00",
       "updated_at": "2025-01-15 10:00:00"
     },
@@ -913,39 +704,24 @@ Retrieve all tax classes, sorted by priority (highest first), then by newest fir
       "id": 2,
       "title": "Reduced",
       "slug": "reduced",
-      "description": "Reduced tax rate for essential goods",
-      "meta": {
-        "categories": [
-          8,
-          22
-        ],
-        "priority": 5
-      },
-      "categories": [
-        8,
-        22
-      ],
+      "meta": [],
       "created_at": "2025-01-15 10:15:00",
       "updated_at": "2025-01-15 10:15:00"
     },
     {
       "id": 3,
-      "title": "Zero",
-      "slug": "zero",
-      "description": "Zero tax rate for exempt products",
-      "meta": {
-        "categories": [
-          30
-        ],
-        "priority": 2
-      },
-      "categories": [
-        30
-      ],
+      "title": "Digital Goods",
+      "slug": "digital-goods",
+      "meta": [],
       "created_at": "2025-01-15 10:30:00",
       "updated_at": "2025-01-15 10:30:00"
     }
-  ]
+  ],
+  "max_classes": 6,
+  "next_builtin": {
+    "slug": "zero",
+    "title": "Zero"
+  }
 }
 ```
 
@@ -1194,20 +970,24 @@ Example:
 
 **POST Save EU VAT Cross-Border Settings**
 
-Save EU VAT cross-border registration settings. Handles the configuration of how cross-border EU VAT is managed (OSS, home country, or specific country registrations).
+Multi-action endpoint for EU VAT settings, dispatched by the action field: euCrossBorderSettings saves the cross-border registration configuration (OSS, home country, or specific country registrations); saveCountryRegistration creates or updates a per-country VAT registration with per-class rates; deleteCountryRegistration removes a per-country VAT registration.
 
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`, required)
 
-- `action` (string) **required** _(enum: `euCrossBorderSettings`)_ — Action identifier
-- `eu_vat_settings` (object) **required**
-  - `method` (string) **required** _(enum: `oss`, `home`, `specific`)_ — Cross-border method
-  - `oss_country` (string) — Country of OSS registration (required when method is oss)
+- `action` (string) **required** _(enum: `euCrossBorderSettings`, `saveCountryRegistration`, `deleteCountryRegistration`)_ — Which operation to perform
+- `eu_vat_settings` (object) — euCrossBorderSettings only. Merged into the stored eu_vat_settings
+  - `method` (string) _(enum: `oss`, `home`, `specific`)_ — Cross-border method (required)
+  - `oss_country` (string) — Country of OSS registration (required when method is oss; must be an EU VAT country)
   - `oss_vat` (string) — OSS VAT number
-  - `home_country` (string) — Home country code (required when method is home)
+  - `home_country` (string) — Home country code (required when method is home; must be an EU VAT country)
   - `home_vat` (string) — Home VAT number
-- `reset_registration` (string) _(enum: `yes`, `no`)_ — Set to yes to clear the current method (reset registration)
+- `reset_registration` (string) _(enum: `yes`, `no`)_ — euCrossBorderSettings only. Set to yes to clear the current method (reset registration)
+- `country` (string) — saveCountryRegistration / deleteCountryRegistration. ISO 3166-1 alpha-2 code of an EU VAT country (required)
+- `vat` (string) _(maxLength: 50)_ — saveCountryRegistration only. VAT registration number (max 50 characters)
+- `rates` (object) — saveCountryRegistration only. Per-class rates keyed by tax class slug; at least one rate must be greater than 0 and every slug must reference an existing tax class
+  - _(object)_
 
 Example:
 
@@ -1225,7 +1005,7 @@ Example:
 
 **Responses**
 
-- **200** — EU VAT settings saved successfully.
+- **200** — Settings saved. The message depends on the action: "EU VAT settings saved successfully", "Country VAT registration saved successfully", or "Country registration removed successfully".
 
   Schema (`application/json`):
 
@@ -1240,7 +1020,7 @@ Example:
 ```
 
 
-- **423** — Validation failed or invalid action.
+- **422** — Unknown action ("Invalid method") or validation failed for the given action.
 
   Schema (`application/json`):
 
@@ -1255,161 +1035,6 @@ Example:
   "message": "Validation failed for EU VAT settings",
   "errors": {
     "method": "Select a cross-border registration type"
-  }
-}
-```
-
-
-
----
-
-## POST `/tax/configuration/settings/eu-vat/oss/shipping-override`
-
-**POST Save OSS Shipping Tax Override**
-
-Save or update OSS shipping tax rate overrides for a specific EU country. Supports the for_shipping field for shipping-specific tax rates.
-
-**Auth:** ApplicationPasswords
-
-**Request body** (`application/json`, required)
-
-- `country_code` (string) **required** — ISO 3166-1 alpha-2 country code of the EU member state
-- `overrides` (array<object>) **required** — Array of override objects
-  - `type` (string) **required** _(enum: `standard`, `reduced`, `zero`)_ — Tax class slug
-  - `rate` (string) **required** — The overridden tax rate percentage
-  - `for_shipping` (integer) _(default: `0`)_ — Shipping-specific tax rate override (default: 0)
-
-Example:
-
-```json
-{
-  "country_code": "IT",
-  "overrides": [
-    {
-      "type": "standard",
-      "rate": "22.0000",
-      "for_shipping": 10
-    },
-    {
-      "type": "reduced",
-      "rate": "10.0000",
-      "for_shipping": 5
-    }
-  ]
-}
-```
-
-
-**Responses**
-
-- **200** — OSS shipping tax override saved successfully.
-
-  Schema (`application/json`):
-
-  - `message` (string)
-
-  Example:
-
-```json
-{
-  "message": "OSS tax override saved successfully"
-}
-```
-
-
-- **423** — Validation failed.
-
-  Schema (`application/json`):
-
-  - `message` (string)
-  - `errors` (object)
-    - `country_code` (string)
-
-  Example:
-
-```json
-{
-  "message": "Validation failed for OSS tax override",
-  "errors": {
-    "country_code": "Select country of OSS registration"
-  }
-}
-```
-
-
-
----
-
-## POST `/tax/configuration/settings/eu-vat/oss/override`
-
-**POST Save OSS Tax Override**
-
-Save or update OSS (One-Stop Shop) tax rate overrides for a specific EU country.
-
-**Auth:** ApplicationPasswords
-
-**Request body** (`application/json`, required)
-
-- `country_code` (string) **required** — ISO 3166-1 alpha-2 country code of the EU member state
-- `overrides` (array<object>) **required** — Array of override objects
-  - `type` (string) **required** _(enum: `standard`, `reduced`, `zero`)_ — Tax class slug
-  - `rate` (string) **required** — The overridden tax rate percentage
-
-Example:
-
-```json
-{
-  "country_code": "FR",
-  "overrides": [
-    {
-      "type": "standard",
-      "rate": "20.0000"
-    },
-    {
-      "type": "reduced",
-      "rate": "5.5000"
-    },
-    {
-      "type": "zero",
-      "rate": "0.0000"
-    }
-  ]
-}
-```
-
-
-**Responses**
-
-- **200** — OSS tax override saved successfully.
-
-  Schema (`application/json`):
-
-  - `message` (string)
-
-  Example:
-
-```json
-{
-  "message": "OSS tax override saved successfully"
-}
-```
-
-
-- **423** — Validation failed.
-
-  Schema (`application/json`):
-
-  - `message` (string)
-  - `errors` (object)
-    - `country_code` (string)
-
-  Example:
-
-```json
-{
-  "message": "Validation failed for OSS tax override",
-  "errors": {
-    "country_code": "Select country of OSS registration"
   }
 }
 ```
@@ -1480,7 +1105,7 @@ Example:
 
 **POST Save Tax Settings**
 
-Save the global tax configuration settings. If tax is enabled for the first time, initial tax classes are automatically created.
+Save the global tax configuration settings. Invalid enum values are silently replaced with their defaults. If tax is enabled, initial tax classes are automatically created.
 
 **Auth:** ApplicationPasswords
 
@@ -1490,12 +1115,18 @@ Save the global tax configuration settings. If tax is enabled for the first time
   - `enable_tax` (string) _(enum: `yes`, `no`)_ — Enable or disable tax calculation
   - `tax_inclusion` (string) _(enum: `included`, `excluded`)_ — Whether prices include tax
   - `tax_calculation_basis` (string) _(enum: `shipping`, `billing`, `store`)_ — Address basis for tax calculation
-  - `tax_rounding` (string) _(enum: `item`, `subtotal`)_ — Rounding method
-  - `price_suffix` (string) — Text appended after product prices
+  - `tax_rounding` (string) _(enum: `item`, `total`, `subtotal`)_ — Where tax rounding is applied
+  - `checkout_tax_breakdown_display` (string) _(enum: `itemized`, `simplified`)_ — How the tax breakdown is displayed at checkout
+  - `tax_display_label` (string) — Label used when displaying tax amounts
+  - `price_suffix_included` (string) — Text appended after prices that include tax
+  - `price_suffix_excluded` (string) — Text appended after prices that exclude tax
   - `eu_vat_settings` (object) — EU VAT configuration object
     - `require_vat_number` (string) _(enum: `yes`, `no`)_
     - `local_reverse_charge` (string) _(enum: `yes`, `no`)_
+    - `reverse_charge_price_mode` (string) _(enum: `fixed`, `dynamic`; default: `fixed`)_ — Invalid values are replaced with fixed
     - `vat_reverse_excluded_categories` (array<integer>)
+    - `country_wise_vat` (array<object>)
+      - _(object)_
 
 Example:
 
@@ -1506,14 +1137,19 @@ Example:
     "tax_inclusion": "excluded",
     "tax_calculation_basis": "billing",
     "tax_rounding": "subtotal",
-    "price_suffix": "excl. VAT",
+    "checkout_tax_breakdown_display": "itemized",
+    "tax_display_label": "VAT",
+    "price_suffix_included": "incl. VAT",
+    "price_suffix_excluded": "excl. VAT",
     "eu_vat_settings": {
       "require_vat_number": "yes",
       "local_reverse_charge": "yes",
+      "reverse_charge_price_mode": "fixed",
       "vat_reverse_excluded_categories": [
         12,
         15
-      ]
+      ],
+      "country_wise_vat": []
     }
   }
 }
@@ -1533,64 +1169,6 @@ Example:
 ```json
 {
   "message": "Settings saved successfully"
-}
-```
-
-
-
----
-
-## PUT `/tax/classes/{id}`
-
-**PUT Update Tax Class**
-
-Update an existing tax class. The slug is automatically regenerated if the title changes.
-
-**Auth:** ApplicationPasswords
-
-**Path parameters**
-
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `id` | integer | yes | Tax class ID |
-
-
-**Request body** (`application/json`, required)
-
-- `title` (string) **required** — Tax class title (max 192 characters)
-- `description` (string) — Description of the tax class
-- `categories` (array<integer>) — Array of product category IDs associated with this tax class
-- `priority` (integer) — Sort priority (higher values appear first, default: 0)
-
-Example:
-
-```json
-{
-  "title": "Digital Goods Updated",
-  "description": "Updated description",
-  "categories": [
-    12,
-    15,
-    20
-  ],
-  "priority": 8
-}
-```
-
-
-**Responses**
-
-- **200** — Tax class updated successfully.
-
-  Schema (`application/json`):
-
-  - `message` (string)
-
-  Example:
-
-```json
-{
-  "message": "Tax class has been updated successfully"
 }
 ```
 
@@ -1690,6 +1268,558 @@ Example:
     }
   },
   "message": "Tax rate has been updated successfully"
+}
+```
+
+
+
+---
+
+## DELETE `/tax/product-overrides/{id}`
+
+**DELETE Delete Product Category Tax Override**
+
+Delete a product category tax override by its ID.
+
+**Auth:** ApplicationPasswords
+
+**Path parameters**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `id` | integer | yes | Override (meta row) ID |
+
+
+**Responses**
+
+- **200** — Override deleted.
+
+  Schema (`application/json`):
+
+  - `message` (string)
+
+  Example:
+
+```json
+{
+  "message": "Product category tax override deleted"
+}
+```
+
+
+- **422** — Override not found.
+
+  Schema (`application/json`):
+
+  - `message` (string)
+
+  Example:
+
+```json
+{
+  "message": "Override not found"
+}
+```
+
+
+
+---
+
+## GET `/tax/configuration/settings/eu-vat/product-overrides`
+
+**GET Get EU VAT Product Overrides**
+
+Retrieve product category tax overrides for all EU countries, plus every EU tax rate that has a shipping tax override set. class_id and class_label are appended to each row for convenience.
+
+**Auth:** ApplicationPasswords
+
+**Responses**
+
+- **200** — Successful response. Returns EU product category overrides and shipping overrides.
+
+  Schema (`application/json`):
+
+  - `overrides` (array<ProductCategoryTaxOverride>)
+  - `shipping_overrides` (array<EuShippingOverride>)
+
+  Example:
+
+```json
+{
+  "overrides": [
+    {
+      "id": 12,
+      "object_type": "tax_override",
+      "object_id": 15,
+      "meta_key": "product_category_override",
+      "meta_value": {
+        "country": "DE",
+        "state": "",
+        "city": "",
+        "postcode": "",
+        "category_id": 15,
+        "category_name": "Books",
+        "tax_label": "Reduced VAT",
+        "override_state_tax": "no",
+        "rate": 7,
+        "class_id": 1
+      },
+      "class_id": 1,
+      "class_label": "Standard",
+      "created_at": "2025-06-01 12:00:00",
+      "updated_at": "2025-06-01 12:00:00"
+    }
+  ],
+  "shipping_overrides": [
+    {
+      "id": 8,
+      "class_id": 1,
+      "country": "DE",
+      "state": "",
+      "postcode": "",
+      "city": "",
+      "rate": "19.0000",
+      "name": "DE Standard Tax",
+      "group": "EU",
+      "priority": 1,
+      "is_compound": 0,
+      "for_shipping": "7.0000",
+      "for_order": 0,
+      "class_label": "Standard"
+    }
+  ]
+}
+```
+
+
+
+---
+
+## GET `/tax/configuration/settings/eu-vat/oss-rates`
+
+**GET Get OSS Country Rates**
+
+Retrieve per-country EU VAT rates for every tax class. Each country entry includes the effective rate per class (custom database value or built-in default), plus top-level standard-class values for backward compatibility, and the list of tax classes.
+
+**Auth:** ApplicationPasswords
+
+**Responses**
+
+- **200** — Successful response. Returns EU country rates per tax class.
+
+  Schema (`application/json`):
+
+  - `rates` (array<object>)
+    - `country` (string) — ISO 3166-1 alpha-2 country code
+    - `label` (string) — Country display name
+    - `rate` (number) — Standard-class effective rate (backward compatibility)
+    - `tax_label` (string) — Standard-class label, defaults to VAT
+    - `default_rate` (number) — Built-in default standard rate
+    - `has_custom` (boolean) — Whether the standard class has a custom rate row
+    - `class_rates` (object) — Per-class rates keyed by tax class slug
+      - _(object)_
+  - `classes` (array<object>)
+    - `slug` (string)
+    - `title` (string)
+    - `id` (integer)
+
+  Example:
+
+```json
+{
+  "rates": [
+    {
+      "country": "DE",
+      "label": "Germany",
+      "rate": 19,
+      "tax_label": "VAT",
+      "default_rate": 19,
+      "has_custom": true,
+      "class_rates": {
+        "standard": {
+          "rate": 19,
+          "default_rate": 19,
+          "has_custom": true,
+          "label": ""
+        },
+        "reduced": {
+          "rate": 7,
+          "default_rate": 7,
+          "has_custom": true,
+          "label": ""
+        },
+        "zero": {
+          "rate": 0,
+          "default_rate": 0,
+          "has_custom": false,
+          "label": ""
+        }
+      }
+    }
+  ],
+  "classes": [
+    {
+      "slug": "standard",
+      "title": "Standard",
+      "id": 1
+    },
+    {
+      "slug": "reduced",
+      "title": "Reduced",
+      "id": 2
+    },
+    {
+      "slug": "zero",
+      "title": "Zero",
+      "id": 3
+    }
+  ]
+}
+```
+
+
+
+---
+
+## GET `/tax/product-overrides/{country_code}`
+
+**GET Get Product Category Tax Overrides**
+
+Retrieve all product category tax overrides for a specific country. Each override is a meta row whose meta_value holds the location, category, rate, and tax class data; class_id and class_label are appended for convenience.
+
+**Auth:** ApplicationPasswords
+
+**Path parameters**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `country_code` | string | yes | ISO 3166-1 alpha-2 country code (e.g., US, DE) |
+
+
+**Responses**
+
+- **200** — Successful response. Returns the product category tax overrides for the country.
+
+  Schema (`application/json`):
+
+  - `overrides` (array<ProductCategoryTaxOverride>)
+
+  Example:
+
+```json
+{
+  "overrides": [
+    {
+      "id": 12,
+      "object_type": "tax_override",
+      "object_id": 15,
+      "meta_key": "product_category_override",
+      "meta_value": {
+        "country": "DE",
+        "state": "",
+        "city": "",
+        "postcode": "",
+        "category_id": 15,
+        "category_name": "Books",
+        "tax_label": "Reduced VAT",
+        "override_state_tax": "no",
+        "rate": 7,
+        "class_id": 1
+      },
+      "class_id": 1,
+      "class_label": "Standard",
+      "created_at": "2025-06-01 12:00:00",
+      "updated_at": "2025-06-01 12:00:00"
+    }
+  ]
+}
+```
+
+
+
+---
+
+## POST `/tax/configuration/settings/eu-vat/reset-rates`
+
+**POST Reset EU VAT Rates**
+
+Reset all country-level EU standard VAT rates back to the built-in defaults. Custom rate values and auto-generated labels are overwritten; state-specific entries and shipping overrides on the rows are preserved. No request body is required.
+
+**Auth:** ApplicationPasswords
+
+**Responses**
+
+- **200** — EU rates reset.
+
+  Schema (`application/json`):
+
+  - `message` (string)
+
+  Example:
+
+```json
+{
+  "message": "EU tax rates have been reset to defaults"
+}
+```
+
+
+
+---
+
+## POST `/tax/configuration/settings/eu-vat/oss-rates`
+
+**POST Save OSS Country Rates**
+
+Save per-country EU VAT rates. Each entry may provide class_rates keyed by tax class slug ({rate, label}); rates are upserted per country and class in the EU group. When class_rates is omitted, the single rate value is applied to the standard class (backward compatibility). Entries with unknown tax class slugs or without a country are skipped.
+
+**Auth:** ApplicationPasswords
+
+**Request body** (`application/json`, required)
+
+- `rates` (array<object>) **required** — Array of country rate entries
+  - `country` (string) **required** — ISO 3166-1 alpha-2 code of an EU VAT country
+  - `tax_label` (string) — Shared label fallback for classes without their own label
+  - `rate` (number) — Standard-class rate (used only when class_rates is omitted)
+  - `class_rates` (object) — Per-class rates keyed by tax class slug
+    - _(object)_
+
+Example:
+
+```json
+{
+  "rates": [
+    {
+      "country": "DE",
+      "tax_label": "VAT",
+      "class_rates": {
+        "standard": {
+          "rate": 19,
+          "label": "VAT"
+        },
+        "reduced": {
+          "rate": 7,
+          "label": "Reduced VAT"
+        }
+      }
+    }
+  ]
+}
+```
+
+
+**Responses**
+
+- **200** — OSS country rates saved.
+
+  Schema (`application/json`):
+
+  - `message` (string)
+
+  Example:
+
+```json
+{
+  "message": "OSS country rates saved successfully"
+}
+```
+
+
+- **422** — Validation failed — one or more entries reference a non-EU VAT country.
+
+  Schema (`application/json`):
+
+  - `message` (string)
+  - `errors` (object)
+    - _(object)_
+
+  Example:
+
+```json
+{
+  "message": "Validation failed for OSS country rates",
+  "errors": {
+    "rates.0.country": "Select a valid EU VAT country"
+  }
+}
+```
+
+
+
+---
+
+## POST `/tax/product-overrides`
+
+**POST Save Product Category Tax Override**
+
+Create or update a product category tax override. Pass id to update an existing override. Without id, an existing override matching the same category, location, and tax class is updated in place; otherwise a new override is created. Pass source_type "shipping" with source_id to convert an existing shipping tax override into a product override (the shipping override is removed).
+
+**Auth:** ApplicationPasswords
+
+**Request body** (`application/json`, required)
+
+- `id` (integer) — Existing override ID to update (omit to create or upsert by category/location/class)
+- `country` (string) **required** — ISO 3166-1 alpha-2 country code
+- `state` (string) — State/province code (optional)
+- `city` (string) — City name (optional, max 45 characters)
+- `postcode` (string) — Postcode/ZIP code (optional)
+- `category_id` (integer) **required** — Product category (product-categories term) ID
+- `tax_label` (string) — Display label for the override tax
+- `override_state_tax` (string) _(enum: `yes`, `no`)_ — Whether the override replaces state-level tax (default: no)
+- `rate` (number) — Override tax rate percentage (negative values are clamped to 0)
+- `class_id` (integer) — Tax class ID the override applies to (0 = none; must exist when non-zero)
+- `source_type` (string) — Set to "shipping" together with source_id to convert a shipping override into this product override
+- `source_id` (integer) — Tax rate ID of the shipping override being converted (used with source_type "shipping")
+
+Example:
+
+```json
+{
+  "country": "DE",
+  "category_id": 15,
+  "tax_label": "Reduced VAT",
+  "override_state_tax": "no",
+  "rate": 7,
+  "class_id": 1
+}
+```
+
+
+**Responses**
+
+- **200** — Override saved or updated.
+
+  Schema (`application/json`):
+
+  - `override` (ProductCategoryTaxOverride)
+  - `message` (string)
+
+  Example:
+
+```json
+{
+  "override": {
+    "id": 12,
+    "object_type": "tax_override",
+    "object_id": 15,
+    "meta_key": "product_category_override",
+    "meta_value": {
+      "country": "DE",
+      "state": "",
+      "city": "",
+      "postcode": "",
+      "category_id": 15,
+      "category_name": "Books",
+      "tax_label": "Reduced VAT",
+      "override_state_tax": "no",
+      "rate": 7,
+      "class_id": 1
+    },
+    "class_id": 1,
+    "class_label": "Standard",
+    "created_at": "2025-06-01 12:00:00",
+    "updated_at": "2025-06-01 12:00:00"
+  },
+  "message": "Product category tax override saved"
+}
+```
+
+
+- **404** — Override (or shipping override source) not found.
+
+  Schema (`application/json`):
+
+  - `message` (string)
+
+  Example:
+
+```json
+{
+  "message": "Override not found"
+}
+```
+
+
+- **422** — Validation failed — missing country/category, invalid country code, invalid tax class, invalid product category, or a conflicting override already exists for the same category, location, and tax class.
+
+  Schema (`application/json`):
+
+  - `message` (string)
+  - `errors` (object)
+    - _(object)_
+
+  Example:
+
+```json
+{
+  "message": "An override already exists for the selected category, location, and tax class"
+}
+```
+
+
+
+---
+
+## POST `/tax/country-status/{country_code}`
+
+**POST Update Country Tax Status**
+
+Enable or disable tax collection for a specific country. Accepts an ISO 3166-1 alpha-2 country code or the special code EU to toggle the whole EU group. By default every country is enabled; disabling stores a flag in the fct_meta table.
+
+**Auth:** ApplicationPasswords
+
+**Path parameters**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `country_code` | string | yes | ISO 3166-1 alpha-2 country code (e.g., US, DE) or EU for the EU group |
+
+
+**Request body** (`application/json`, required)
+
+- `enabled` (integer) **required** _(enum: `0`, `1`)_ — 1 to enable tax for the country, 0 to disable
+
+Example:
+
+```json
+{
+  "enabled": 1
+}
+```
+
+
+**Responses**
+
+- **200** — Country tax status updated.
+
+  Schema (`application/json`):
+
+  - `enabled` (boolean) — The new status
+  - `message` (string)
+
+  Example:
+
+```json
+{
+  "enabled": true,
+  "message": "Tax has been enabled successfully"
+}
+```
+
+
+- **422** — Invalid country code or validation failed.
+
+  Schema (`application/json`):
+
+  - `message` (string)
+  - `errors` (object)
+    - _(object)_
+
+  Example:
+
+```json
+{
+  "message": "Invalid country code"
 }
 ```
 
