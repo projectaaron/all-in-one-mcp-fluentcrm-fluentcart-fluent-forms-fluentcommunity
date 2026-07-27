@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import worker from '../src/worker.js';
+import { INDIVIDUAL_TOOL_COUNT } from './helpers.js';
 
 const TOKEN = 'test-secret-token-0123456789abcdef';
 const env = {
@@ -59,14 +60,14 @@ describe('cloudflare worker entry', () => {
     const list = (await (
       await post(`/mcp/${TOKEN}`, { jsonrpc: '2.0', id: 2, method: 'tools/list', params: {} })
     ).json()) as any;
-    expect(list.result.tools.length).toBe(704);
+    expect(list.result.tools.length).toBe(INDIVIDUAL_TOOL_COUNT);
   });
 
   it('accepts Bearer-header auth', async () => {
     const list = (await (
       await post('/mcp', { jsonrpc: '2.0', id: 3, method: 'tools/list', params: {} }, { Authorization: `Bearer ${TOKEN}` })
     ).json()) as any;
-    expect(list.result.tools.length).toBe(704);
+    expect(list.result.tools.length).toBe(INDIVIDUAL_TOOL_COUNT);
   });
 
   it('returns 202 for notification-only bodies and 400 for bad JSON', async () => {

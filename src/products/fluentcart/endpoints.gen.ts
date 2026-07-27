@@ -927,27 +927,6 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "summary": "Create Tax Rate",
       "destructive": false
     },
-    "delete_country_rates": {
-      "op": "tax/delete-country-rates",
-      "method": "DELETE",
-      "path": "/tax/country/{country_code}",
-      "summary": "Delete All Rates for a Country",
-      "destructive": true
-    },
-    "delete_oss_shipping_tax_override": {
-      "op": "tax/delete-oss-shipping-tax-override",
-      "method": "DELETE",
-      "path": "/tax/configuration/settings/eu-vat/oss/shipping-override",
-      "summary": "Delete OSS Shipping Tax Override",
-      "destructive": true
-    },
-    "delete_oss_tax_override": {
-      "op": "tax/delete-oss-tax-override",
-      "method": "DELETE",
-      "path": "/tax/configuration/settings/eu-vat/oss/override",
-      "summary": "Delete OSS Tax Override",
-      "destructive": true
-    },
     "delete_shipping_tax_override": {
       "op": "tax/delete-shipping-tax-override",
       "method": "DELETE",
@@ -981,13 +960,6 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "GET",
       "path": "/tax/rates/country/rates/{country_code}",
       "summary": "Get Country Tax Rates",
-      "destructive": false
-    },
-    "get_eu_tax_rates": {
-      "op": "tax/get-eu-tax-rates",
-      "method": "GET",
-      "path": "/tax/configuration/settings/eu-vat/rates",
-      "summary": "Get EU Tax Rates",
       "destructive": false
     },
     "get_preconfigured_tax_rates": {
@@ -1053,20 +1025,6 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "summary": "Save EU VAT Cross-Border Settings",
       "destructive": false
     },
-    "save_oss_shipping_tax_override": {
-      "op": "tax/save-oss-shipping-tax-override",
-      "method": "POST",
-      "path": "/tax/configuration/settings/eu-vat/oss/shipping-override",
-      "summary": "Save OSS Shipping Tax Override",
-      "destructive": false
-    },
-    "save_oss_tax_override": {
-      "op": "tax/save-oss-tax-override",
-      "method": "POST",
-      "path": "/tax/configuration/settings/eu-vat/oss/override",
-      "summary": "Save OSS Tax Override",
-      "destructive": false
-    },
     "save_shipping_tax_override": {
       "op": "tax/save-shipping-tax-override",
       "method": "POST",
@@ -1081,18 +1039,67 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "summary": "Save Tax Settings",
       "destructive": false
     },
-    "update_tax_class": {
-      "op": "tax/update-tax-class",
-      "method": "PUT",
-      "path": "/tax/classes/{id}",
-      "summary": "Update Tax Class",
-      "destructive": false
-    },
     "update_tax_rate": {
       "op": "tax/update-tax-rate",
       "method": "PUT",
       "path": "/tax/country/rate/{id}",
       "summary": "Update Tax Rate",
+      "destructive": false
+    },
+    "delete_product_override": {
+      "op": "tax/delete-product-override",
+      "method": "DELETE",
+      "path": "/tax/product-overrides/{id}",
+      "summary": "Delete Product Category Tax Override",
+      "destructive": true
+    },
+    "get_eu_vat_product_overrides": {
+      "op": "tax/get-eu-vat-product-overrides",
+      "method": "GET",
+      "path": "/tax/configuration/settings/eu-vat/product-overrides",
+      "summary": "Get EU VAT Product Overrides",
+      "destructive": false
+    },
+    "get_oss_country_rates": {
+      "op": "tax/get-oss-country-rates",
+      "method": "GET",
+      "path": "/tax/configuration/settings/eu-vat/oss-rates",
+      "summary": "Get OSS Country Rates",
+      "destructive": false
+    },
+    "get_product_overrides": {
+      "op": "tax/get-product-overrides",
+      "method": "GET",
+      "path": "/tax/product-overrides/{country_code}",
+      "summary": "Get Product Category Tax Overrides",
+      "destructive": false
+    },
+    "reset_eu_vat_rates": {
+      "op": "tax/reset-eu-vat-rates",
+      "method": "POST",
+      "path": "/tax/configuration/settings/eu-vat/reset-rates",
+      "summary": "Reset EU VAT Rates",
+      "destructive": true
+    },
+    "save_oss_country_rates": {
+      "op": "tax/save-oss-country-rates",
+      "method": "POST",
+      "path": "/tax/configuration/settings/eu-vat/oss-rates",
+      "summary": "Save OSS Country Rates",
+      "destructive": false
+    },
+    "save_product_override": {
+      "op": "tax/save-product-override",
+      "method": "POST",
+      "path": "/tax/product-overrides",
+      "summary": "Save Product Category Tax Override",
+      "destructive": false
+    },
+    "update_country_status": {
+      "op": "tax/update-country-status",
+      "method": "POST",
+      "path": "/tax/country-status/{country_code}",
+      "summary": "Update Country Tax Status",
       "destructive": false
     }
   },
