@@ -1,4 +1,26 @@
+import { readFileSync } from 'node:fs';
 import { FluentClient, type FetchLike } from '../src/core/http.js';
+import { PRODUCTS } from '../src/products/index.js';
+
+/** Built-in tools registered in every mode and configuration. */
+export const SERVER_TOOLS = ['verify_setup', 'tool_map', 'wp_media_upload_from_url', 'wp_media_get', 'wp_media_list'];
+
+/** Endpoints documented across every product's api-reference inventory.
+ *  Derived from the committed inventories rather than written as a literal:
+ *  scripts/gen-api-docs.mjs refreshes those from upstream on a weekly
+ *  schedule, and a hardcoded total turns any upstream API change into a
+ *  handful of unrelated-looking count failures across four test files
+ *  instead of the one coverage failure that actually says what drifted. */
+export const DOCUMENTED_ENDPOINTS = PRODUCTS.reduce((total, product) => {
+  const inventory = JSON.parse(
+    readFileSync(new URL(`../docs/api-reference/${product.key}/endpoints.json`, import.meta.url), 'utf8')
+  ) as { count: number };
+  return total + inventory.count;
+}, 0);
+
+/** What `tools/list` returns in individual mode: one tool per documented
+ *  endpoint, plus the built-ins. */
+export const INDIVIDUAL_TOOL_COUNT = DOCUMENTED_ENDPOINTS + SERVER_TOOLS.length;
 
 export interface CapturedRequest {
   url: string;

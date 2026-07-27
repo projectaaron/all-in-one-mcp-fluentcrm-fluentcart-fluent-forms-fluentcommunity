@@ -6,7 +6,7 @@ fluentMCP is an [MCP](https://modelcontextprotocol.io) server that connects
 Claude (or any MCP client) to **FluentCRM** and **FluentCart** by
 WPManageNinja. Once connected, you can ask your assistant to look things up,
 create and update them, and run your day-to-day operations — every one of the
-**699 documented REST endpoints** is its own **individualized tool** with a
+**700 documented REST endpoints** is its own **individualized tool** with a
 clear name (`crm_contacts_list`, `cart_orders_refund`, …), a built-in
 **`tool_map`** answers "which tool do I need?" in one call, and every risky
 operation is safety-gated.
@@ -196,7 +196,7 @@ via `FLUENT_LOCKED_TOOLS` (`default`, a replacement list,
 
 **Safety: nothing irreversible runs by accident.** Deleting, refunding,
 canceling, bulk actions, resets, and sending a campaign to a whole audience
-are all classified destructive (98 of the 699 operations, marked ⚠ in the
+are all classified destructive (97 of the 700 operations, marked ⚠ in the
 map). Called without `confirm: true`, the tool refuses, does nothing, and
 explains what would have happened. Annotations are now accurate per
 operation — every read-only tool really carries `readOnlyHint: true`, so
