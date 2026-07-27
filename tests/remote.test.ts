@@ -2,6 +2,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import type { Server } from 'node:http';
 import { loadConfig } from '../src/core/config.js';
 import { createRemoteServer, MIN_TOKEN_LENGTH } from '../src/remote-server.js';
+import { INDIVIDUAL_TOOL_COUNT } from './helpers.js';
 
 const TOKEN = 'test-secret-token-0123456789abcdef';
 const env = {
@@ -71,7 +72,7 @@ describe('remote streamable-http server', () => {
     expect(init.result.serverInfo.name).toBe('fluentmcp');
 
     const list = await rpcResult(await post(`/mcp/${TOKEN}`, LIST));
-    expect(list.result.tools.length).toBe(704);
+    expect(list.result.tools.length).toBe(INDIVIDUAL_TOOL_COUNT);
     const names = list.result.tools.map((t: { name: string }) => t.name);
     expect(names).toContain('verify_setup');
     expect(names).toContain('tool_map');
@@ -82,7 +83,7 @@ describe('remote streamable-http server', () => {
 
   it('accepts the token as a Bearer header too', async () => {
     const list = await rpcResult(await post('/mcp', LIST, { Authorization: `Bearer ${TOKEN}` }));
-    expect(list.result.tools.length).toBe(704);
+    expect(list.result.tools.length).toBe(INDIVIDUAL_TOOL_COUNT);
   });
 
   it('rejects non-POST on the MCP endpoint (stateless mode)', async () => {
