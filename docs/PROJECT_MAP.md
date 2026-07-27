@@ -10,8 +10,8 @@ individualized surface + fast map + admin-locked tools).
 on the official `@modelcontextprotocol/sdk` (v1.x) with stdio transport, that
 gives an AI harness full CRUD control over WPManageNinja "Fluent" products on
 a WordPress site. Products ship as self-contained modules; FluentCRM
-(319 endpoints, 21 areas) and FluentCart (380 endpoints, 22 areas) are the
-first two. Every endpoint is its own individualized tool — 704 total
+(319 endpoints, 21 areas) and FluentCart (381 endpoints, 22 areas) are the
+first two. Every endpoint is its own individualized tool — 705 total
 including the built-ins (`tool_map`, `verify_setup`, `wp_media_*`); set
 `FLUENT_TOOL_MODE=grouped` for the legacy 46-tool one-tool-per-area surface.
 Six no-agent-use operations are admin-locked by default (refuse even with
