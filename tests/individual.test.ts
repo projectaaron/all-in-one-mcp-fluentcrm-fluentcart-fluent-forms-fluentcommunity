@@ -14,9 +14,7 @@ import { makeHandler, placeholdersOf } from '../src/core/tool-factory.js';
 import type { ServerConfig } from '../src/core/config.js';
 import { buildServer } from '../src/server.js';
 import { PRODUCTS } from '../src/products/index.js';
-import { makeClient, mockFetch } from './helpers.js';
-
-const SERVER_TOOLS = ['verify_setup', 'tool_map', 'wp_media_upload_from_url', 'wp_media_get', 'wp_media_list'];
+import { DOCUMENTED_ENDPOINTS, INDIVIDUAL_TOOL_COUNT, SERVER_TOOLS, makeClient, mockFetch } from './helpers.js';
 
 describe('individual tool names', () => {
   it('are unique across every product and the built-in server tools', () => {
@@ -25,7 +23,7 @@ describe('individual tool names', () => {
       for (const spec of product.tools) all.push(...Object.values(individualNamesFor(spec)));
     }
     expect(all.length).toBe(new Set(all).size);
-    expect(all.length).toBe(699 + SERVER_TOOLS.length);
+    expect(all.length).toBe(DOCUMENTED_ENDPOINTS + SERVER_TOOLS.length);
   });
 
   it('are lowercase identifiers of at most 64 characters, prefixed by their area', () => {
@@ -169,8 +167,8 @@ describe('buildServer tool modes', () => {
     toolMode,
   });
 
-  it('individual mode registers one tool per operation (699 + 5 built-ins)', () => {
-    expect(buildServer(config('individual')).toolCount).toBe(704);
+  it('individual mode registers one tool per documented operation, plus the built-ins', () => {
+    expect(buildServer(config('individual')).toolCount).toBe(INDIVIDUAL_TOOL_COUNT);
   });
 
   it('grouped mode keeps the legacy surface (43 areas + verify_setup, wp_media, tool_map)', () => {

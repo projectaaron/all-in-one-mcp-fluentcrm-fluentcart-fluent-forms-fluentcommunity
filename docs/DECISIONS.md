@@ -86,7 +86,7 @@ reference and the docs site, and self-describing tool calls in client logs.
 
 ## 2026-07-16 — Open-shaped `body`/`query`; envelope-only Zod
 
-Fully modeling 699 request bodies in Zod would be huge and drift-prone, and
+Fully modeling 700 request bodies in Zod would be huge and drift-prone, and
 WordPress validates server-side anyway. Zod validates the envelope (action
 enum, param types, pagination bounds, confirm), tool descriptions link to the
 generated per-endpoint schemas, and `outputSchema` keeps `data` open-shaped
@@ -139,7 +139,7 @@ live stdio probing) confirmed 12 findings; all are fixed:
   schedule/resume equivalents now require `confirm: true`. Single-recipient
   sends stay ungated. (The safety-audit agent covering this died on API
   overload; the gating decision was made conservatively without it.)
-  Destructive actions: 98 of 699.
+  Destructive actions: 97 of 700.
 - **`idempotentHint`** is now a real per-tool opt-in in the tool map
   (currently `crm_custom_fields` only) instead of documented-but-hardcoded
   false.
@@ -296,7 +296,7 @@ the 0.7.0 diff. Lessons worth keeping:
   parameter — an unfollowable instruction is a retry loop. Recovery text
   must be generated from the same schema the caller sees.
 - **Stateless entry points make startup cost a per-request cost.** The
-  Workers bridge rebuilds the McpServer per POST; 704 registrations cost
+  Workers bridge rebuilds the McpServer per POST; 705 registrations cost
   40ms until names/schemas/map data were memoized at module scope (9ms
   after). Anything computed from module-lifetime singletons should be
   cached as such.

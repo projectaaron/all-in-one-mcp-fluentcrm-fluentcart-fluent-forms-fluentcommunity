@@ -1,5 +1,35 @@
 # Changelog
 
+## 0.9.0 — 2026-07-27
+
+**FluentCart's tax API changed upstream; the tool surface now matches it.**
+The weekly docs refresh had already recorded the change in
+`docs/api-reference/`, but the server's endpoint maps still pointed at the
+old routes — seven tools were calling endpoints FluentCart no longer serves.
+
+- **Removed (7)** — these routes are gone upstream and the tools that
+  wrapped them would have failed at call time: `cart_tax_delete_country_rates`,
+  `cart_tax_delete_oss_shipping_override`, `cart_tax_delete_oss_override`,
+  `cart_tax_get_eu_rates`, `cart_tax_save_oss_shipping_override`,
+  `cart_tax_save_oss_override`, `cart_tax_update_class`.
+- **Added (8)** — EU VAT/OSS handling was reworked upstream around
+  per-country OSS rates and per-product overrides:
+  `cart_tax_get_oss_country_rates`, `cart_tax_save_oss_country_rates`,
+  `cart_tax_get_eu_vat_product_overrides`, `cart_tax_get_product_overrides`,
+  `cart_tax_save_product_override`, `cart_tax_delete_product_override`,
+  `cart_tax_reset_eu_vat_rates`, `cart_tax_update_country_status`.
+- `cart_tax_delete_product_override` and `cart_tax_reset_eu_vat_rates` are
+  confirm-gated by the usual slug heuristic. Totals: **700 endpoints, 705
+  tools, 97 destructive** (FluentCart 381, FluentCRM 319).
+- Test counts that tracked the endpoint total are now derived from the
+  committed api-reference inventories instead of written as literals — the
+  refresh workflow runs weekly, and a hardcoded 704 turned every upstream
+  API change into four unrelated-looking count failures.
+- The coverage test now fails by name when an action maps an operation that
+  is absent from the inventory. It previously null-dereffed on exactly the
+  drift this release fixes, reporting "Cannot read properties of undefined"
+  instead of naming the stale tool. 244 tests.
+
 ## 0.8.0 — 2026-07-17
 
 **Locked tools — a safety tier above `confirm`.** Some operations have no

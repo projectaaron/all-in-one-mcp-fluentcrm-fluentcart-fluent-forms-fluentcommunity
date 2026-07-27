@@ -1,7 +1,7 @@
 # Tool surface design
 
-How 699 documented REST endpoints (FluentCRM 319 + FluentCart 380) become
-**699 individualized MCP tools plus a fast map** without losing coverage or
+How 700 documented REST endpoints (FluentCRM 319 + FluentCart 381) become
+**700 individualized MCP tools plus a fast map** without losing coverage or
 maintainability. Companion documents: `TOOL_MAP.md` (one line per tool,
 generated), `TOOL_CATALOG.md` (area-level classes + examples, generated),
 `PROJECT_MAP.md` (where the code lives), `api-reference/` (the endpoint
@@ -87,7 +87,7 @@ gating; only the registration differs (`src/core/tool-factory.ts` vs
 **Responses** are `structuredContent` conforming to one shared
 `outputSchema` — `{ok, status, action, data, pagination?, note?}` with
 `data` deliberately open-shaped (the upstream response shapes vary per
-endpoint and version; faithfully passing them through beats maintaining 699
+endpoint and version; faithfully passing them through beats maintaining 700
 brittle schemas) — plus a one-line text summary ("12 of 481 orders,
 page 1"). Errors return `isError` with an actionable message (what failed,
 likely cause, what to try).
@@ -116,7 +116,7 @@ likely cause, what to try).
   `schedule_sms_campaign`, `resume_sms_campaign`). Single-recipient sends
   (test emails, one custom SMS) stay ungated.
   Notable catches: FluentCRM's `reset_database` (full CRM wipe) and
-  FluentCart's `regenerate_license_key` are confirm-gated. 98 of 699 actions
+  FluentCart's `regenerate_license_key` are confirm-gated. 97 of 700 actions
   classify as destructive.
 - **Locked tools — a tier above `confirm`.** Six operations have no
   legitimate agent use and refuse unconditionally (server-side, both modes):
@@ -197,7 +197,7 @@ likely cause, what to try).
 | `wp_media_upload_from_url` | Sideloads an image server-side into `/wp/v2/media` (SSRF-guarded, image/* only, 15 MB cap) |
 | `wp_media_get` / `wp_media_list` | Media-library lookup |
 
-**Total: 704 tools** in individual mode (the tables above count *areas*;
+**Total: 705 tools** in individual mode (the tables above count *areas*;
 each area's endpoints are its individual tools) — or 46 in grouped mode.
 
 ## Design decisions worth defending
@@ -229,7 +229,7 @@ each area's endpoints are its individual tools) — or 46 in grouped mode.
   sessions (documented in `api-reference/auth.md`); with Application
   Passwords most calls will 401. They exist for endpoint coverage and for
   sites with custom auth setups; their descriptions say so plainly.
-- **Open-shaped `body`/`query`.** Full Zod modeling of 699 request bodies
+- **Open-shaped `body`/`query`.** Full Zod modeling of 700 request bodies
   would be enormous, drift-prone, and mostly redundant — WordPress validates
   server-side and our references document every schema. Zod validates the
   envelope (path params, param types, confirm gating); the per-endpoint

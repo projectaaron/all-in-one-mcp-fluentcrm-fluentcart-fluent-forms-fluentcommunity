@@ -64,7 +64,7 @@ Example calls:
 - `crm_settings_pro`: `{"name":"crm_settings_pro_get_license_status","arguments":{}}`
 - `crm_utilities`: `{"name":"crm_utilities_list_users","arguments":{"per_page":5}}`
 
-## FluentCart (`cart_*`, 22 areas, 380 tools)
+## FluentCart (`cart_*`, 22 areas, 381 tools)
 
 | Area | Class | Tools | Description |
 |------|-------|-------|-------------|
@@ -75,7 +75,7 @@ Example calls:
 | `cart_customers` | read/write/delete | 18 | Look up, create, update, and manage store customers, their addresses, purchase stats, and linked WordPress users. |
 | `cart_coupons` | read/write/delete | 12 | Manage discount coupons: create, update, delete, apply to or remove from orders, and check product eligibility. |
 | `cart_subscriptions` | read/write/delete | 17 | View and manage recurring subscriptions: cancel, re-sync from the payment gateway, switch payment methods, and handle early payments. |
-| `cart_tax` | read/write/delete | 26 | Manage tax classes, tax rates, per-country configuration, EU VAT/OSS overrides, and order tax records. |
+| `cart_tax` | read/write/delete | 27 | Manage tax classes, tax rates, per-country configuration, EU VAT/OSS overrides, and order tax records. |
 | `cart_shipping` | read/write/delete | 15 | Manage shipping zones, shipping methods, and shipping classes. |
 | `cart_settings` | read/write/delete | 30 | Read or update store settings: general store options, modules and addons, permissions, payment methods, storage drivers, and checkout fields. |
 | `cart_email_notifications` | read/write | 11 | Manage the store's transactional email templates, global email settings, reminders, and previews. |
@@ -130,4 +130,4 @@ Examples: `{"name": "verify_setup", "arguments": {}}` ·
 `{"name": "tool_map", "arguments": {"search": "refund"}}` ·
 `{"name": "wp_media_upload_from_url", "arguments": {"source_url": "https://cdn.example.com/photo.jpg", "alt_text": "Product photo"}}`
 
-**Total: 704 tools** (`FLUENT_TOOL_MODE=grouped` serves 46 instead).
+**Total: 705 tools** (`FLUENT_TOOL_MODE=grouped` serves 46 instead).
