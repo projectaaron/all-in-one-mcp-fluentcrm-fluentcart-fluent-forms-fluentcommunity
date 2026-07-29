@@ -1,6 +1,6 @@
 # FluentCart REST API — Reference
 
-> **Source:** <https://dev.fluentcart.com/restapi/> · **Scraped:** 2026-07-27 · **Endpoints:** 381 across 20 groups
+> **Source:** <https://dev.fluentcart.com/restapi/> · **Scraped:** 2026-07-29 · **Endpoints:** 381 across 20 groups
 > Regenerate with `node scripts/gen-api-docs.mjs fluentcart` — see [MAINTAINING.md](./MAINTAINING.md).
 
 **Base URL:** `https://{website}/wp-json/fluent-cart/v2` (namespace `fluent-cart/v2`)
