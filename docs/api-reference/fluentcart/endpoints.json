@@ -1,7 +1,7 @@
 {
   "product": "fluentcart",
   "source": "https://dev.fluentcart.com/restapi/",
-  "scraped": "2026-07-27",
+  "scraped": "2026-07-29",
   "baseUrl": "https://{website}/wp-json/fluent-cart/v2",
   "namespace": "fluent-cart/v2",
   "count": 381,
