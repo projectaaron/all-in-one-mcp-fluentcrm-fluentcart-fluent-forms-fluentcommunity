@@ -1,8 +1,9 @@
 # Project map
 
 Living document: what lives where and how the pieces connect. Update this
-whenever the structure changes. Last updated: 2026-07-17 (v0.8.0 —
-individualized surface + fast map + admin-locked tools).
+whenever the structure changes. Last updated: 2026-07-29 (v0.9.0 — tool
+surface realigned to FluentCart's reworked tax API; CI/deploy pipeline
+repaired end to end).
 
 ## What this repo is
 
