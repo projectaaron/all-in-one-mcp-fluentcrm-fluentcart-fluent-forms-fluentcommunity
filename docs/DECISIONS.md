@@ -410,3 +410,61 @@ outright slow page every hour. So the cache was reworked rather than copied:
 Harnesses grew to 112 assertions, the new ones asserting the thing that
 actually matters: that a request which *could* serve a stale number never
 runs the query. They count callback invocations to prove it.
+
+## 2026-07-29 — The refresh pipeline shipped docs without shipping code (0.9.0)
+
+A scheduled "Refresh API docs" run failed and mailed a red build. The failure
+in the email was the least interesting thing in it. Unpicking the run turned
+up four independent breakages stacked on one pipeline, and one design flaw
+that is still open.
+
+**What actually broke, innermost first.**
+
+- **The refresh only ever regenerated *docs*.** `gen-api-docs.mjs` rewrites
+  `docs/api-reference/`; `gen-endpoint-maps.mjs` turns that into
+  `endpoints.gen.ts`. The workflow ran the first and never the second, and
+  nothing tied them together. When FluentCart reworked its tax API — 7
+  operations dropped, 8 added around per-country OSS rates and per-product
+  overrides — the docs recorded it and the server did not. Seven tools went
+  on advertising routes upstream no longer serves. Regenerating fixed it (the
+  `tax` group needed no override edits); 700 endpoints, 705 tools, 97
+  destructive.
+- **`gh pr create --base main` in a repo whose default branch was not
+  `main`.** It had never succeeded, so nobody had learned it was wrong. The
+  base now comes from `github.event.repository.default_branch` — which is
+  what let the same workflow keep working through the rename to `main` an
+  hour later, verified by a dispatch that read `BASE_BRANCH: main`.
+- **Actions could not open PRs at all.** "Allow GitHub Actions to create and
+  approve pull requests" is off by default on new repos. Repo setting, not
+  code — so the step now fails naming the setting and linking a compare URL,
+  and says the docs are already pushed. A workflow that cannot fix its own
+  blocker should at least explain it.
+- **The deploy workflow pinned Node 20; wrangler v4 requires 22.** It got
+  through install and 244 tests, then died in one second. `package.json`'s
+  `engines` floor (`>=20.6`) describes the server, not the deploy toolchain —
+  the pin now carries a comment saying not to "correct" it back.
+
+**Two guards failed at their own job, both worth more than the fixes.**
+
+- **The coverage test null-dereffed on exactly the drift it exists to
+  catch.** `byOp.get(def.op)!` on a dropped operation reported "Cannot read
+  properties of undefined" — no tool, no operation, nothing actionable. It
+  now fails with `cart_tax.get_oss_country_rates maps tax/get-eu-tax-rates,
+  absent from the documented inventory`. Verified by reintroducing the drift
+  deliberately.
+- **A hardcoded `704` across four test files.** Six of eight failures were
+  that one number. Those tests assert *one tool per operation plus built-ins*
+  — a relationship — written as a literal that a weekly upstream refresh
+  invalidates. Now derived from the committed inventories. Still a real
+  assertion: `endpoints.json` and `endpoints.gen.ts` are separately
+  committed, so a stale generated file fails. It just no longer breaks four
+  unrelated files whenever Fluent ships an API change.
+
+**Open: the refresh opens a PR when nothing changed.** Change detection is
+`git status --porcelain`, and every regeneration rewrites a `scraped:`
+datestamp in four files. PR #9 was exactly that — dates moved 07-27 → 07-29,
+counts identical at 381/319, not one operation different. Left as-is for now
+and merged, but every scheduled run will raise a no-op PR until the check
+ignores the datestamp (or the generator stops writing it when nothing else
+moved). Weekly noise trains you to rubber-stamp the diff, which is the
+failure mode that let the tax drift sit unnoticed in the first place.
