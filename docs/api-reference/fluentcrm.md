@@ -1,6 +1,6 @@
 # FluentCRM REST API — Reference
 
-> **Source:** <https://developers.fluentcrm.com/rest-api/> · **Scraped:** 2026-07-27 · **Endpoints:** 319 across 28 groups
+> **Source:** <https://developers.fluentcrm.com/rest-api/> · **Scraped:** 2026-07-29 · **Endpoints:** 319 across 28 groups
 > Regenerate with `node scripts/gen-api-docs.mjs fluentcrm` — see [MAINTAINING.md](./MAINTAINING.md).
 
 **Base URL:** `https://{website}/wp-json/fluent-crm/v2` (namespace `fluent-crm/v2`)
