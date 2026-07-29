@@ -460,11 +460,26 @@ that is still open.
   committed, so a stale generated file fails. It just no longer breaks four
   unrelated files whenever Fluent ships an API change.
 
-**Open: the refresh opens a PR when nothing changed.** Change detection is
-`git status --porcelain`, and every regeneration rewrites a `scraped:`
-datestamp in four files. PR #9 was exactly that — dates moved 07-27 → 07-29,
-counts identical at 381/319, not one operation different. Left as-is for now
-and merged, but every scheduled run will raise a no-op PR until the check
-ignores the datestamp (or the generator stops writing it when nothing else
-moved). Weekly noise trains you to rubber-stamp the diff, which is the
-failure mode that let the tax drift sit unnoticed in the first place.
+**The refresh used to open a PR when nothing had changed — now fixed.**
+Change detection is `git status --porcelain`, and every regeneration rewrote
+a `scraped:` datestamp. PR #9 was exactly that: dates moved 07-27 → 07-29,
+counts identical at 381/319, not one operation different. Left as a weekly
+no-op PR it would have been worse than clutter — noise trains you to
+rubber-stamp the diff, which is the failure mode that let the tax drift sit
+unnoticed above.
+
+`gen-api-docs.mjs` now writes a stamped file only when today's run would
+change something other than the stamp. The test is exact rather than a
+date-shaped regex over the diff: re-render with the date already committed,
+and if that reproduces the file byte-for-byte, the stamp was the only thing
+that would have moved, so leave the file alone. Judged per file — a run can
+restamp `endpoints.json` while the overview keeps its old date, because the
+question is only ever "did *this* file's content move".
+
+That also makes the field honest. `scraped:` now means the date the content
+was actually captured; a later run returning identical bytes recaptured
+nothing and has no business claiming otherwise.
+
+Verified against live upstream both ways: a stale stamp over unchanged
+content leaves the files untouched, and a doctored inventory is rewritten
+*and* restamped.
