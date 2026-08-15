@@ -8,7 +8,7 @@ import { buildInputShape, makeHandler, placeholdersOf } from '../src/core/tool-f
 import { PRODUCTS } from '../src/products/index.js';
 import { makeClient, mockFetch } from './helpers.js';
 
-function argsFor(def: { path: string; destructive: boolean }, action: string) {
+function argsFor(def: { path: string; destructive: boolean; requiredBody?: string[] }, action: string) {
   const placeholders = placeholdersOf(def.path);
   const args: Record<string, unknown> = { action };
   if (placeholders.length) {
@@ -16,6 +16,7 @@ function argsFor(def: { path: string; destructive: boolean }, action: string) {
     args.path_params = Object.fromEntries(placeholders.slice(1).map((p, i) => [p, 100 + i]));
   }
   if (def.destructive) args.confirm = true;
+  if (def.requiredBody) args.body = Object.fromEntries(def.requiredBody.map((k) => [k, {}]));
   return { args, placeholders };
 }
 
