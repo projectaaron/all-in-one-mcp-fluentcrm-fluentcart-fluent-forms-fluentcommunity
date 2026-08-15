@@ -98,6 +98,18 @@
     "campaigns-pro/resend-failed-emails": { "destructive": true },
     "campaigns-pro/resend-unopened-emails": { "destructive": true },
     "sms/schedule-sms-campaign": { "destructive": true },
-    "sms/resume-sms-campaign": { "destructive": true }
+    "sms/resume-sms-campaign": { "destructive": true },
+    "sequences/create-sequence-email": {
+      "requiredBody": ["email"],
+      "bodyNote": "Body shape: {\"email\": {\"email_subject\", \"email_body\", \"email_pre_header\"?, \"design_template\"?, \"template_id\"?, \"settings\": {\"timings\": {\"delay\", \"delay_unit\", \"is_anytime\"}}}} — every field nests under the top-level \"email\" object (the plugin silently ignores flat body fields and the insert fails). The row title is set from email_subject; the send delay comes from settings.timings."
+    },
+    "sequences/update-sequence-email": {
+      "requiredBody": ["email"],
+      "bodyNote": "Body shape: {\"email\": {\"email_subject\", \"email_body\", \"email_pre_header\"?, \"design_template\"?, \"template_id\"?, \"settings\": {\"timings\": {\"delay\", \"delay_unit\", \"is_anytime\"}}}} — every field nests under the top-level \"email\" object (the plugin silently ignores flat body fields). The row title is set from email_subject; the send delay comes from settings.timings."
+    },
+    "sequences/create-or-update-sequence-email": {
+      "requiredBody": ["route_method", "sequence_id", "email"],
+      "bodyNote": "Body shape: {\"route_method\": \"create\"|\"update\", \"sequence_id\": <sequence id>, \"mail_id\": <sequence email id — update only>, \"email\": {...}} — the \"email\" object uses the same nested shape as crm_sequences_create_email; without route_method the endpoint returns 422 \"Invalid route_method\"."
+    }
   }
 }

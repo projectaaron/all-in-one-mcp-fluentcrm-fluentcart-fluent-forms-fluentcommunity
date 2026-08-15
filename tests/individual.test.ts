@@ -156,6 +156,80 @@ describe('individual handler ergonomics', () => {
   });
 });
 
+describe('wrapper-key body preflight', () => {
+  // The plugin ignores flat body fields on these endpoints and then dies on
+  // an opaque SQL error (`Column 'title' cannot be null`) — the server must
+  // refuse a flat/missing body with the expected shape before calling.
+  const crm = () => PRODUCTS.find((p) => p.key === 'fluentcrm')!;
+  const sequences = () => crm().tools.find((t) => t.name === 'crm_sequences')!;
+
+  it('crm_sequences_create_email refuses a flat body before any HTTP', async () => {
+    const spec = sequences();
+    const { calls, fetchImpl } = mockFetch([{ status: 200, body: {} }]);
+    const handler = makeActionHandler(spec, 'create_sequence_email', { client: makeClient(fetchImpl) }, 'crm_sequences_create_email');
+    const res = (await handler({
+      id: 1258,
+      body: { title: 'T', email_subject: 'S', email_body: '<p>B</p>', delay: 1 },
+    } as never)) as { isError?: boolean; content: Array<{ text: string }> };
+    expect(res.isError).toBe(true);
+    expect(res.content[0].text).toContain('email');
+    expect(res.content[0].text).toContain('"email"');
+    expect(res.content[0].text).toContain('POST /sequences/{id}/email');
+    expect(calls.length).toBe(0);
+  });
+
+  it('a properly nested body passes through verbatim as JSON', async () => {
+    const spec = sequences();
+    const { calls, fetchImpl } = mockFetch([{ status: 200, body: { email: { id: 12 } } }]);
+    const handler = makeActionHandler(spec, 'create_sequence_email', { client: makeClient(fetchImpl) }, 'crm_sequences_create_email');
+    const body = { email: { email_subject: 'S', email_body: '<p>B</p>', settings: { timings: { delay: '1', delay_unit: 'days' } } } };
+    const res = (await handler({ id: 1258, body } as never)) as { isError?: boolean };
+    expect(res.isError).toBeUndefined();
+    expect(calls.length).toBe(1);
+    expect(calls[0].headers['Content-Type']).toBe('application/json');
+    expect(JSON.parse(calls[0].body!)).toEqual(body);
+  });
+
+  it('create_or_update_sequence_email names every missing discriminator key', async () => {
+    const spec = sequences();
+    const { calls, fetchImpl } = mockFetch([{ status: 200, body: {} }]);
+    const handler = makeActionHandler(
+      spec,
+      'create_or_update_sequence_email',
+      { client: makeClient(fetchImpl) },
+      'crm_sequences_create_or_update_email'
+    );
+    const res = (await handler({
+      body: { sequence_id: 1258, email: { email_subject: 'S' } },
+    } as never)) as { isError?: boolean; content: Array<{ text: string }> };
+    expect(res.isError).toBe(true);
+    expect(res.content[0].text).toContain('route_method');
+    expect(res.content[0].text).not.toContain('sequence_id,');
+    expect(calls.length).toBe(0);
+  });
+
+  it('grouped mode shares the same preflight', async () => {
+    const spec = sequences();
+    const { calls, fetchImpl } = mockFetch([{ status: 200, body: {} }]);
+    const handler = makeHandler(spec, { client: makeClient(fetchImpl) });
+    const res = (await handler({
+      action: 'create_sequence_email',
+      id: 1258,
+      body: { email_subject: 'S' },
+    })) as { isError?: boolean; content: Array<{ text: string }> };
+    expect(res.isError).toBe(true);
+    expect(res.content[0].text).toContain('"email"');
+    expect(calls.length).toBe(0);
+  });
+
+  it('the tool description carries the body-shape note', () => {
+    const spec = sequences();
+    const desc = actionDescription(spec, spec.actions.create_sequence_email, { productTitle: 'FluentCRM' });
+    expect(desc).toContain('Body shape');
+    expect(desc).toContain('"email"');
+  });
+});
+
 describe('buildServer tool modes', () => {
   const config = (toolMode: ServerConfig['toolMode'], creds = true): ServerConfig => ({
     siteUrl: creds ? 'https://example.com' : undefined,
@@ -189,6 +263,7 @@ for (const product of PRODUCTS) {
           const placeholders = placeholdersOf(def.path);
           const args: Record<string, unknown> = Object.fromEntries(placeholders.map((p, i) => [p, 11 + i]));
           if (def.destructive) args.confirm = true;
+          if (def.requiredBody) args.body = Object.fromEntries(def.requiredBody.map((k) => [k, {}]));
 
           // Success path: the exact documented endpoint is called.
           const ok = mockFetch([{ status: 200, body: { ok: true } }]);
