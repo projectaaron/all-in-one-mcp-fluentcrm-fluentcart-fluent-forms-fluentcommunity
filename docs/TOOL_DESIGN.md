@@ -76,7 +76,12 @@ Each tool's schema carries only what its operation uses:
 Descriptions follow one shape: `<what it does>. [<Product> · <area>] <METHOD>
 <path>.` plus a `⚠ Hard to undo — requires confirm:true.` warning on
 destructive tools and the area's caveat note (e.g. customer-session auth)
-where one exists.
+where one exists. Endpoints whose payload must nest under a wrapper key
+(e.g. the sequence-email routes, which ignore flat fields and expect
+`{"email": {…}}`) additionally carry a body-shape note, and the executor
+refuses a body missing the declared `requiredBody` keys before any HTTP —
+with that same shape guidance — instead of letting the plugin fail on an
+opaque SQL error.
 
 **Grouped fallback.** `FLUENT_TOOL_MODE=grouped` serves the legacy surface —
 one tool per area (~46 total) with an `action` enum parameter — for MCP
@@ -243,7 +248,7 @@ each area's endpoints are its individual tools) — or 46 in grouped mode.
 1. `scripts/gen-endpoint-maps.mjs` reads each product's
    `docs/api-reference/<product>/endpoints.json` plus the product module's
    curated assignment table (`group → tool`, with per-operation overrides for
-   splits/renames/destructive flags) and emits
+   splits/renames/destructive flags/required body shapes) and emits
    `src/products/<product>/endpoints.gen.ts` — the action maps the factory
    consumes. Collisions (two ops mapping to one action name) fail the
    generator.

@@ -54,6 +54,8 @@ function generate(product) {
       summary: override.summary ?? e.summary.replace(/^(GET|POST|PUT|PATCH|DELETE|HEAD)\s+/i, ''),
       destructive,
       ...(override.toolName ? { toolName: override.toolName } : {}),
+      ...(override.requiredBody ? { requiredBody: override.requiredBody } : {}),
+      ...(override.bodyNote ? { bodyNote: override.bodyNote } : {}),
       ...(e.path.startsWith('/?') ? { siteRoot: true } : {}),
     };
   }

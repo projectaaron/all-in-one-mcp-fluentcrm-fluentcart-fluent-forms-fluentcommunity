@@ -15,6 +15,14 @@ export interface EndpointDef {
   /** Pin this operation's individual tool name (external API stability) —
    *  set via tool-map.json operationOverrides; wins over the name stemmer. */
   toolName?: string;
+  /** Top-level body keys the endpoint requires. Checked before the HTTP call
+   *  so a malformed body fails fast with guidance instead of an opaque
+   *  plugin-side error — set via tool-map.json operationOverrides. */
+  requiredBody?: string[];
+  /** Body-shape hint for endpoints whose payload nests under a wrapper key
+   *  (the plugin silently ignores flat fields). Appended to the tool
+   *  description and to missing-body errors — set via operationOverrides. */
+  bodyNote?: string;
   /** Path lives at the site root (e.g. `/?fluent-cart=...`), not under wp-json. */
   siteRoot?: boolean;
 }
