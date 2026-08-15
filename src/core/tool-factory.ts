@@ -176,6 +176,21 @@ export async function executeAction(
   let path = def.path;
   for (const p of placeholders) path = path.replace(`{${p}}`, encodeURIComponent(String(supplied[p])));
 
+  // Wrapper-key endpoints: verify the required top-level body keys before
+  // calling — the plugin silently ignores flat fields and then fails with an
+  // opaque SQL error (e.g. "Column 'title' cannot be null"), so a flat or
+  // missing body must be refused here with the expected shape instead.
+  if (def.requiredBody?.length) {
+    const body = args.body ?? {};
+    const missingKeys = def.requiredBody.filter((k) => body[k] === undefined);
+    if (missingKeys.length) {
+      return err(
+        `Missing required body key${missingKeys.length > 1 ? 's' : ''} for ${label}: ${missingKeys.join(', ')} — nothing was sent. ` +
+          `${def.bodyNote ?? ''} Endpoint: ${def.method} ${def.path}`.trimStart()
+      );
+    }
+  }
+
   // Query: carry the caller's pagination over, then apply the list defaults.
   const query: Record<string, unknown> = { ...(args.query ?? {}) };
   if (args.page !== undefined && query.page === undefined) query.page = args.page;

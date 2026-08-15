@@ -1,5 +1,26 @@
 # Changelog
 
+## Unreleased
+
+**Wrapper-key request bodies fail fast with the expected shape.** The
+FluentCRM sequence-email endpoints read every field from a top-level
+`email` object and silently ignore flat body fields, so a flat payload to
+`crm_sequences_create_email` inserted pure defaults and died on
+`Column 'title' cannot be null` — a 500 that said nothing about the actual
+mistake.
+
+- New per-operation overrides in `tool-map.json`: `requiredBody` (top-level
+  body keys checked in the shared executor before any HTTP — a missing key
+  now returns an actionable refusal instead of the plugin-side SQL error)
+  and `bodyNote` (a body-shape hint appended to the tool description and to
+  that refusal). Both flow through `gen-endpoint-maps.mjs` into
+  `endpoints.gen.ts`; both tool modes share the check.
+- Applied to `crm_sequences_create_email` and `crm_sequences_update_email`
+  (body nests under `email`; title derives from `email_subject`, send delay
+  from `settings.timings`) and `crm_sequences_create_or_update_email`
+  (additionally needs the `route_method` discriminator and `sequence_id` —
+  its 422 `"Invalid route_method"` was the same missing-shape problem).
+
 ## 0.9.0 — 2026-07-27
 
 **FluentCart's tax API changed upstream; the tool surface now matches it.**

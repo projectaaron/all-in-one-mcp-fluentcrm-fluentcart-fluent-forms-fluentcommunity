@@ -971,7 +971,13 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/sequences/sequence-email-update-create",
       "summary": "Create or Update Sequence Email",
-      "destructive": false
+      "destructive": false,
+      "requiredBody": [
+        "route_method",
+        "sequence_id",
+        "email"
+      ],
+      "bodyNote": "Body shape: {\"route_method\": \"create\"|\"update\", \"sequence_id\": <sequence id>, \"mail_id\": <sequence email id — update only>, \"email\": {...}} — the \"email\" object uses the same nested shape as crm_sequences_create_email; without route_method the endpoint returns 422 \"Invalid route_method\"."
     },
     "create_sequence": {
       "op": "sequences/create-sequence",
@@ -985,7 +991,11 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/sequences/{id}/email",
       "summary": "Create Sequence Email",
-      "destructive": false
+      "destructive": false,
+      "requiredBody": [
+        "email"
+      ],
+      "bodyNote": "Body shape: {\"email\": {\"email_subject\", \"email_body\", \"email_pre_header\"?, \"design_template\"?, \"template_id\"?, \"settings\": {\"timings\": {\"delay\", \"delay_unit\", \"is_anytime\"}}}} — every field nests under the top-level \"email\" object (the plugin silently ignores flat body fields and the insert fails). The row title is set from email_subject; the send delay comes from settings.timings."
     },
     "delete_sequence": {
       "op": "sequences/delete-sequence",
@@ -1076,7 +1086,11 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "PUT",
       "path": "/sequences/{id}/email/{email_id}",
       "summary": "Update Sequence Email",
-      "destructive": false
+      "destructive": false,
+      "requiredBody": [
+        "email"
+      ],
+      "bodyNote": "Body shape: {\"email\": {\"email_subject\", \"email_body\", \"email_pre_header\"?, \"design_template\"?, \"template_id\"?, \"settings\": {\"timings\": {\"delay\", \"delay_unit\", \"is_anytime\"}}}} — every field nests under the top-level \"email\" object (the plugin silently ignores flat body fields). The row title is set from email_subject; the send delay comes from settings.timings."
     }
   },
   "crm_automations": {

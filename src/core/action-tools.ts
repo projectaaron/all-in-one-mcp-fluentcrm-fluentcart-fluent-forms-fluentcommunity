@@ -149,6 +149,7 @@ export function actionDescription(spec: ToolSpec, def: EndpointDef, ctx: { produ
   const summary = def.summary.replace(/\.?\s*$/, '');
   const parts = [`${summary}.`, `[${ctx.productTitle} · ${spec.name}] ${def.method} ${def.path}.`];
   if (def.destructive) parts.push('⚠ Hard to undo — requires confirm:true.');
+  if (def.bodyNote) parts.push(def.bodyNote);
   if (spec.note) parts.push(spec.note);
   return parts.join(' ');
 }
