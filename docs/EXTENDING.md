@@ -55,9 +55,14 @@ Follow [`TOOL_DESIGN.md`](TOOL_DESIGN.md):
    groups, action-name collisions, or empty tools. Then review destructive
    classification with `node scripts/gen-endpoint-maps.mjs --destructive`;
    fix misses via `operationOverrides` (`{"group/slug": {"destructive": true}}`).
-   The same overrides accept `"action"` (rename the action) and `"toolName"`
+   The same overrides accept `"action"` (rename the action), `"toolName"`
    (pin the operation's individual tool name when the stemmer's choice is
-   wrong or must never change).
+   wrong or must never change), and — for endpoints whose body nests under a
+   wrapper key the plugin requires (flat fields get silently ignored) —
+   `"requiredBody"` (top-level body keys checked before the HTTP call, so a
+   malformed body fails fast with guidance instead of an opaque plugin-side
+   error) plus `"bodyNote"` (a body-shape hint appended to the tool
+   description and to that error).
    Watch for: anything irreversible that the slug heuristic
    (delete/remove/detach/cancel/refund/deactivate/reset/disconnect/regenerate/bulk)
    doesn't catch.
