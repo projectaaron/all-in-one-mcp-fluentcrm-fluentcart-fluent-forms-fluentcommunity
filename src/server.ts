@@ -77,6 +77,9 @@ export function buildServer(config: ServerConfig): BuiltServer {
           toolCount++;
         }
       }
+      // Hand-written product extras (e.g. the sequence schedule preview) —
+      // standalone tools in both modes.
+      if (module.extras) toolCount += module.extras.register(server, client).length;
     }
     return { module, status, client };
   });
