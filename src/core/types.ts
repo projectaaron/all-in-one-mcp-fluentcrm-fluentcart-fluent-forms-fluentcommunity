@@ -1,5 +1,9 @@
 /** Shared types for the product-agnostic core. */
 
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+// Type-only circular import (http.ts imports this module's interfaces) — fine for TS.
+import type { FluentClient } from './http.js';
+
 /** One reachable REST endpoint, as generated into a product's endpoints.gen.ts. */
 export interface EndpointDef {
   /** `group/slug` from the product's docs — the coverage key. */
@@ -46,6 +50,18 @@ export interface ProductCredentials {
   password: string;
 }
 
+/** A product's hand-written tools beyond the generated endpoint surface —
+ *  e.g. the FluentCRM sequence schedule preview. Registered in both tool
+ *  modes and listed in tool_map under an existing area. */
+export interface ProductExtras {
+  /** Area key the tools are listed under in tool_map, e.g. `crm_sequences`. */
+  area: string;
+  /** tool_map entries (name/summary/params/destructive/paginated). */
+  mapTools: Array<{ name: string; summary: string; params: string[]; destructive: boolean; paginated: boolean }>;
+  /** Register the tools; returns the registered names. */
+  register: (server: McpServer, client: FluentClient) => string[];
+}
+
 /** A self-contained Fluent product module. Adding a product never touches core. */
 export interface ProductModule {
   /** Product key, e.g. `fluentcrm`. Also the docs/api-reference/<key> name. */
@@ -64,6 +80,8 @@ export interface ProductModule {
   summaryFields: Record<string, string[]>;
   /** A harmless authenticated GET used by verify_setup, e.g. `/tags`. */
   verifyRead: { path: string; query?: Record<string, unknown>; label: string };
+  /** Hand-written tools beyond the generated endpoint surface. */
+  extras?: ProductExtras;
 }
 
 export interface RequestOptions {

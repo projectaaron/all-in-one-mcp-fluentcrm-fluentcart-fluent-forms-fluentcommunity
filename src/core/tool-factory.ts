@@ -6,6 +6,15 @@ import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { FluentClient } from './http.js';
 import { FluentApiError } from './errors.js';
+import {
+  buildMergedBody,
+  diffRecords,
+  pairedReadFor,
+  recordUpdatedAt,
+  verifyWrite,
+  type MergedBody,
+  type Verification,
+} from './merge.js';
 import { shapeResponse, textSummary } from './shape.js';
 import type { EndpointDef, ToolSpec } from './types.js';
 
@@ -60,6 +69,20 @@ export const OUTPUT_SHAPE = {
     .optional()
     .describe('Present on paginated list responses'),
   note: z.string().optional().describe('Server-side remark, e.g. that results were summarized'),
+  mode: z
+    .enum(['merge', 'replace'])
+    .optional()
+    .describe('How the write body was applied: "merge" (partial body deep-merged onto the current record) or "replace"'),
+  dry_run: z.boolean().optional().describe('True when nothing was written — the response describes what would happen'),
+  would_send: z.unknown().optional().describe('Dry run only: the exact request that would be sent'),
+  changed: z
+    .record(z.object({ from: z.unknown(), to: z.unknown() }))
+    .optional()
+    .describe('Post-write verification: fields that differ between the record before and after the write, by dotted path'),
+  warnings: z
+    .array(z.string())
+    .optional()
+    .describe('Unintended-looking effects: fields that changed without being in your request body, or supplied fields that did not take effect'),
 };
 
 export interface ToolRuntime {
@@ -104,11 +127,33 @@ export function buildInputShape(spec: ToolSpec) {
       .optional()
       .describe('"summary" (default) returns key fields and truncates long values; "full" returns the raw API response'),
   };
-  if (anyDestructive) {
+  const anyWrite = Object.values(spec.actions).some((d) => d.method !== 'GET' && d.method !== 'HEAD');
+  const anyPaired = Object.keys(spec.actions).some((a) => pairedReadFor(spec, a));
+  if (anyWrite) {
+    shape.dry_run = z
+      .boolean()
+      .optional()
+      .describe('Preview without writing: returns the exact request (and, for merge-capable updates, the field diff) that would be applied.');
+  }
+  if (anyPaired) {
+    shape.mode = z
+      .enum(['merge', 'replace'])
+      .optional()
+      .describe(
+        '"merge" (default on update actions with a paired GET) deep-merges your partial body onto the current record so omitted fields are preserved; "replace" sends your body as the complete record (requires confirm:true — omitted fields may be cleared).'
+      );
+    shape.if_unmodified_since = z
+      .string()
+      .optional()
+      .describe('Optimistic concurrency: refuse the write if the record\'s updated_at no longer equals this value (as returned by a prior read).');
+  }
+  if (anyDestructive || anyPaired) {
     shape.confirm = z
       .boolean()
       .optional()
-      .describe('Must be true to execute destructive actions (marked ⚠). Without it the tool only explains what would happen.');
+      .describe(
+        'Must be true to execute destructive actions (marked ⚠) or mode:"replace" writes. Without it the tool only explains what would happen.'
+      );
   }
   return shape;
 }
@@ -124,6 +169,9 @@ export type ToolArgs = {
   fields?: string[];
   detail?: 'summary' | 'full';
   confirm?: boolean;
+  mode?: 'merge' | 'replace';
+  dry_run?: boolean;
+  if_unmodified_since?: string;
 };
 
 function err(text: string) {
@@ -141,21 +189,45 @@ export function lockedRefusal(label: string) {
   );
 }
 
+const isPlainRecord = (v: unknown): v is Record<string, unknown> =>
+  !!v && typeof v === 'object' && !Array.isArray(v);
+
 /** Core execution shared by the grouped and individual registrations.
  *  `label` is the caller-facing name used in messages — `crm_contacts.list_contacts`
- *  in grouped mode, `crm_contacts_list` in individual mode. */
+ *  in grouped mode, `crm_contacts_list` in individual mode. `spec` (when
+ *  provided) enables merge-mode writes: PUT/PATCH actions with a GET action on
+ *  the identical path deep-merge partial bodies and verify the write. */
 export async function executeAction(
   def: EndpointDef,
   action: string,
   args: ToolArgs,
   runtime: ToolRuntime,
-  label: string
+  label: string,
+  spec?: ToolSpec
 ) {
+  const dryRun = args.dry_run === true;
   // Destructive gate: refuse without confirm, describing the blast radius.
-  if (def.destructive && args.confirm !== true) {
+  // A dry run never touches the endpoint, so it may pass the gate.
+  if (def.destructive && args.confirm !== true && !dryRun) {
     return err(
       `Refused (nothing was changed): ${label} would ${def.summary ? def.summary.toLowerCase().replace(/\.$/, '') : `execute ${def.method} ${def.path}`}` +
         ` — a hard-to-undo operation. Re-run with confirm: true to proceed.`
+    );
+  }
+
+  const isWrite = def.method !== 'GET' && def.method !== 'HEAD';
+  const readDef = isWrite && spec ? pairedReadFor(spec, action) : undefined;
+  const wantReplace = args.mode === 'replace';
+  if (args.mode === 'merge' && !readDef) {
+    return err(
+      `${label} cannot merge: no GET endpoint is registered on ${def.path} to read the current record from. ` +
+        `This write sends your body as-is (omitted fields may be cleared by the plugin) — drop the mode parameter to proceed.`
+    );
+  }
+  if (readDef && wantReplace && args.confirm !== true && !dryRun) {
+    return err(
+      `Refused (nothing was changed): mode:"replace" sends your body as the complete record — every field you omit may be cleared by the plugin. ` +
+        `Re-run with confirm: true to replace, or drop the mode parameter to deep-merge your partial body onto the current record instead.`
     );
   }
 
@@ -201,29 +273,144 @@ export async function executeAction(
   }
 
   try {
+    // Merge-capable write: read the record first, so partial bodies can be
+    // hydrated (merge mode) and the write can be verified (both modes).
+    const notes: string[] = [];
+    let bodyToSend = args.body;
+    let beforeRaw: unknown;
+    let merged: MergedBody | undefined;
+    const bodyIsMergeable = isPlainRecord(args.body) && Object.keys(args.body).length > 0;
+    if (readDef && bodyIsMergeable) {
+      try {
+        beforeRaw = (await runtime.client.request({ method: 'GET', path, siteRoot: def.siteRoot })).data;
+      } catch (e) {
+        const msg = e instanceof FluentApiError ? e.message : String(e);
+        if (!wantReplace) {
+          return err(
+            `${label}: could not read the current record to merge your partial body onto — nothing was written. ` +
+              `Underlying read: ${msg} If the record exists and the read keeps failing, mode:"replace" with confirm:true writes without merging.`
+          );
+        }
+        notes.push('pre-write read failed — post-write verification unavailable');
+      }
+      if (beforeRaw !== undefined) {
+        if (args.if_unmodified_since) {
+          const current = recordUpdatedAt(beforeRaw);
+          if (current && current !== args.if_unmodified_since) {
+            return err(
+              `Refused (nothing was changed): ${label} precondition failed — the record's updated_at is now "${current}", not "${args.if_unmodified_since}". ` +
+                `Someone else modified it since you read it. Re-read the record and retry with the fresh timestamp.`
+            );
+          }
+        }
+        merged = buildMergedBody(beforeRaw, args.body as Record<string, unknown>);
+        if (!wantReplace) {
+          bodyToSend = merged.body;
+          if (merged.strategy === 'none') {
+            notes.push('merge unavailable — the body shape did not line up with the record; body sent as supplied');
+          }
+        }
+      }
+    } else if (args.if_unmodified_since) {
+      return err(
+        `${label} cannot check if_unmodified_since: the precondition needs a merge-capable write (a GET on ${def.path} plus a JSON body) to read the record's updated_at from. Drop the parameter to proceed.`
+      );
+    }
+
+    // Dry run: report exactly what would be sent (plus the field-level diff
+    // when the current record was readable) and stop before any write.
+    if (dryRun) {
+      const wouldChange =
+        merged && !wantReplace && merged.base !== undefined ? diffRecords(merged.base, bodyToSend) : undefined;
+      const structured = {
+        ok: true,
+        status: 0,
+        action,
+        dry_run: true,
+        ...(readDef && isWrite ? { mode: wantReplace ? ('replace' as const) : ('merge' as const) } : {}),
+        would_send: {
+          method: def.method,
+          path,
+          ...(Object.keys(query).length ? { query } : {}),
+          ...(bodyToSend !== undefined ? { body: bodyToSend } : {}),
+        },
+        ...(wouldChange ? { changed: wouldChange } : {}),
+        note: 'dry run — nothing was written',
+      };
+      return {
+        content: [
+          {
+            type: 'text' as const,
+            text: `${label} dry run — nothing was written. Would send ${def.method} ${path}${
+              wouldChange ? ` changing ${Object.keys(wouldChange).length} field(s)` : ''
+            }.\n${JSON.stringify(structured)}`,
+          },
+        ],
+        structuredContent: structured,
+      };
+    }
+
     const response = await runtime.client.request({
       method: def.method,
       path,
       query,
-      body: args.body,
+      body: bodyToSend,
       siteRoot: def.siteRoot,
       noRetry: def.destructive,
     });
+
+    // Post-write verification: re-read the record and compare against both
+    // the pre-write state and the caller's original body. The write and the
+    // re-read both succeeded at the HTTP level from here on, so verification
+    // failures degrade to a note rather than masking the write's outcome.
+    let verification: Verification | undefined;
+    if (readDef && bodyIsMergeable && beforeRaw !== undefined) {
+      try {
+        const afterRaw = (await runtime.client.request({ method: 'GET', path, siteRoot: def.siteRoot })).data;
+        verification = verifyWrite(
+          beforeRaw,
+          afterRaw,
+          args.body as Record<string, unknown>,
+          merged?.toRecordPath ?? ((p) => p)
+        );
+      } catch {
+        notes.push('post-write verification read failed — the write itself succeeded');
+      }
+    }
+    if (verification?.rejected) {
+      return err(
+        `${label} returned HTTP ${response.status} but the record did not change — none of your supplied fields landed. ` +
+          `The endpoint most likely ignored the request body. ${def.bodyNote ?? 'Check the expected body shape in docs/api-reference/.'}`
+      );
+    }
+
     const shaped = shapeResponse(response.data, {
       detail: args.detail ?? 'summary',
       fields: args.fields,
       summaryFields: runtime.summaryFields,
     });
+    if (shaped.summarized) notes.push('summary view — pass detail:"full" or fields:[...] for complete records');
     const structured = {
       ok: true,
       status: response.status,
       action,
       data: shaped.data,
+      ...(readDef && bodyIsMergeable ? { mode: wantReplace ? ('replace' as const) : ('merge' as const) } : {}),
+      ...(verification ? { changed: verification.changed } : {}),
+      ...(verification?.warnings.length ? { warnings: verification.warnings } : {}),
       ...(shaped.pagination && Object.values(shaped.pagination).some((v) => v !== undefined)
         ? { pagination: shaped.pagination }
         : {}),
-      ...(shaped.summarized ? { note: 'summary view — pass detail:"full" or fields:[...] for complete records' } : {}),
+      ...(notes.length ? { note: notes.join('; ') } : {}),
     };
+    let summaryLine = textSummary(label, response.status, shaped);
+    if (verification) {
+      const changedCount = Object.keys(verification.changed).length;
+      summaryLine += ` — verified: ${changedCount} field${changedCount === 1 ? '' : 's'} changed`;
+      if (verification.warnings.length) {
+        summaryLine += `, ⚠ ${verification.warnings.length} warning${verification.warnings.length === 1 ? '' : 's'}`;
+      }
+    }
     // The data must live in the text block too: several MCP clients
     // (claude.ai among them) surface only `content` to the model, and the
     // spec says structured results SHOULD also be serialized as text.
@@ -231,7 +418,7 @@ export async function executeAction(
       content: [
         {
           type: 'text' as const,
-          text: `${textSummary(label, response.status, shaped)}\n${JSON.stringify(structured)}`,
+          text: `${summaryLine}\n${JSON.stringify(structured)}`,
         },
       ],
       structuredContent: structured,
@@ -253,7 +440,7 @@ export function makeHandler(spec: ToolSpec, runtime: ToolRuntime) {
     if (canonical && runtime.lockedTools?.has(canonical)) {
       return lockedRefusal(`${spec.name}.${args.action}`);
     }
-    return executeAction(def, args.action, args, runtime, `${spec.name}.${args.action}`);
+    return executeAction(def, args.action, args, runtime, `${spec.name}.${args.action}`, spec);
   };
 }
 
