@@ -63,17 +63,23 @@ export function mapAreasOf(module: ProductModule, mode: ToolMode, enabled: boole
       description: spec.description,
       ...(spec.note ? { note: spec.note } : {}),
       ...(mode === 'grouped' ? { grouped: true as const } : {}),
-      tools: Object.entries(spec.actions).map(([action, def]) => {
-        const canonical = individualNamesFor(spec)[action];
-        return {
-          name: names ? names[action] : `${spec.name}.${action}`,
-          summary: def.summary,
-          params: placeholdersOf(def.path),
-          destructive: def.destructive,
-          paginated: isListAction(action) && def.method === 'GET',
-          ...(locked?.has(canonical) ? { locked: true as const } : {}),
-        };
-      }),
+      tools: [
+        ...Object.entries(spec.actions).map(([action, def]) => {
+          const canonical = individualNamesFor(spec)[action];
+          return {
+            name: names ? names[action] : `${spec.name}.${action}`,
+            summary: def.summary,
+            params: placeholdersOf(def.path),
+            destructive: def.destructive,
+            paginated: isListAction(action) && def.method === 'GET',
+            ...(locked?.has(canonical) ? { locked: true as const } : {}),
+          };
+        }),
+        // Hand-written extras listed under their home area. They register as
+        // standalone tools in both modes, so their names never take the
+        // grouped `area.action` form.
+        ...(module.extras?.area === spec.name ? module.extras.mapTools : []),
+      ],
     };
   });
   if (!perModule) {

@@ -16,6 +16,7 @@ import {
   type ToolArgs,
   type ToolRuntime,
 } from './tool-factory.js';
+import { pairedReadFor } from './merge.js';
 import type { EndpointDef, ToolSpec } from './types.js';
 
 /** Crude stem for redundancy checks — both sides get the same treatment, so
@@ -97,19 +98,54 @@ const CONFIRM_FIELD = z
   .boolean()
   .optional()
   .describe('Must be true to execute this hard-to-undo action. Without it the tool only explains what would happen.');
+const CONFIRM_REPLACE_FIELD = z
+  .boolean()
+  .optional()
+  .describe(
+    'Required (true) for mode:"replace" — acknowledges that fields omitted from the body may be cleared. Not needed in merge mode.'
+  );
+const DRY_RUN_FIELD = z
+  .boolean()
+  .optional()
+  .describe('Preview without writing: returns the exact request (and, on merge-capable updates, the field diff) that would be applied.');
+const MODE_FIELD = z
+  .enum(['merge', 'replace'])
+  .optional()
+  .describe(
+    '"merge" (default): your partial body is deep-merged onto the current record, so omitted fields are preserved. "replace": your body is sent as the complete record — omitted fields may be cleared (requires confirm:true).'
+  );
+const IF_UNMODIFIED_FIELD = z
+  .string()
+  .optional()
+  .describe(
+    'Optimistic concurrency: refuse the write when the record\'s updated_at no longer equals this value (as returned by a prior read), e.g. "2026-08-15 19:25:54".'
+  );
 
 /** Parameter names owned by the envelope — a path placeholder may not
  *  shadow them, or the placeholder schema would be silently clobbered. */
-const RESERVED_PARAMS = new Set(['action', 'query', 'body', 'page', 'per_page', 'fields', 'detail', 'confirm']);
+const RESERVED_PARAMS = new Set([
+  'action',
+  'query',
+  'body',
+  'page',
+  'per_page',
+  'fields',
+  'detail',
+  'confirm',
+  'mode',
+  'dry_run',
+  'if_unmodified_since',
+]);
 
 const SHAPE_CACHE = new WeakMap<EndpointDef, Map<string, Record<string, z.ZodTypeAny>>>();
 
 /** Focused input schema for one action: only the parameters it actually
- *  uses. Memoized per (endpoint, action) — defs are module-lifetime
+ *  uses. Memoized per (endpoint, action+pairing) — defs are module-lifetime
  *  singletons, and the shape depends on the action name too (pagination). */
-export function buildActionInputShape(actionName: string, def: EndpointDef) {
+export function buildActionInputShape(actionName: string, def: EndpointDef, paired = false) {
+  const cacheKey = paired ? `${actionName}|paired` : actionName;
   let perDef = SHAPE_CACHE.get(def);
-  const cached = perDef?.get(actionName);
+  const cached = perDef?.get(cacheKey);
   if (cached) return cached;
 
   const shape: Record<string, z.ZodTypeAny> = {};
@@ -124,7 +160,8 @@ export function buildActionInputShape(actionName: string, def: EndpointDef) {
       .describe(`Required path parameter "${p}" of ${def.method} ${def.path}`);
   }
   shape.query = QUERY_FIELD;
-  if (def.method !== 'GET' && def.method !== 'HEAD') shape.body = BODY_FIELD;
+  const isWrite = def.method !== 'GET' && def.method !== 'HEAD';
+  if (isWrite) shape.body = BODY_FIELD;
   // Every GET gets pagination params (plenty of paginated collections hide
   // behind get_* names — contact emails, funnel subscribers, …), as do
   // list/search actions on other methods. Defaults only apply to GET lists.
@@ -134,21 +171,40 @@ export function buildActionInputShape(actionName: string, def: EndpointDef) {
   }
   shape.fields = FIELDS_FIELD;
   shape.detail = DETAIL_FIELD;
+  if (isWrite) shape.dry_run = DRY_RUN_FIELD;
+  if (paired) {
+    shape.mode = MODE_FIELD;
+    shape.if_unmodified_since = IF_UNMODIFIED_FIELD;
+  }
   if (def.destructive) shape.confirm = CONFIRM_FIELD;
+  else if (paired) shape.confirm = CONFIRM_REPLACE_FIELD;
 
   if (!perDef) {
     perDef = new Map();
     SHAPE_CACHE.set(def, perDef);
   }
-  perDef.set(actionName, shape);
+  perDef.set(cacheKey, shape);
   return shape;
 }
 
-/** One-sentence description: what it does, where it lives, how it's called. */
-export function actionDescription(spec: ToolSpec, def: EndpointDef, ctx: { productTitle: string }): string {
+/** One-sentence description: what it does, where it lives, how it's called.
+ *  Every write states its body semantics — [merge] endpoints preserve omitted
+ *  fields; [replace] endpoints may clear them (the plugins treat updates as
+ *  full replaces and report 200 either way). */
+export function actionDescription(
+  spec: ToolSpec,
+  def: EndpointDef,
+  ctx: { productTitle: string },
+  paired = false
+): string {
   const summary = def.summary.replace(/\.?\s*$/, '');
   const parts = [`${summary}.`, `[${ctx.productTitle} · ${spec.name}] ${def.method} ${def.path}.`];
   if (def.destructive) parts.push('⚠ Hard to undo — requires confirm:true.');
+  if (paired) {
+    parts.push('[merge] Partial bodies are safe: omitted fields are read from the current record and preserved, and the response reports what actually changed.');
+  } else if (def.method === 'PUT' || def.method === 'PATCH') {
+    parts.push('[replace — omitted fields may be cleared] Send the complete object; dry_run:true previews the request.');
+  }
   if (def.bodyNote) parts.push(def.bodyNote);
   if (spec.note) parts.push(spec.note);
   return parts.join(' ');
@@ -175,6 +231,9 @@ type ActionArgs = Record<string, unknown> & {
   fields?: string[];
   detail?: 'summary' | 'full';
   confirm?: boolean;
+  mode?: 'merge' | 'replace';
+  dry_run?: boolean;
+  if_unmodified_since?: string;
 };
 
 /** Adapter: individual-tool args (named path params at the top level) →
@@ -210,8 +269,11 @@ export function makeActionHandler(spec: ToolSpec, action: string, runtime: ToolR
       fields: args.fields,
       detail: args.detail,
       confirm: args.confirm,
+      mode: args.mode,
+      dry_run: args.dry_run,
+      if_unmodified_since: args.if_unmodified_since,
     };
-    return executeAction(def, action, toolArgs, runtime, label);
+    return executeAction(def, action, toolArgs, runtime, label, spec);
   };
 }
 
@@ -226,13 +288,14 @@ export function registerActionTools(
   for (const [action, def] of Object.entries(spec.actions)) {
     const name = names[action];
     const locked = runtime.lockedTools?.has(name) === true;
+    const paired = pairedReadFor(spec, action) !== undefined;
     server.registerTool(
       name,
       {
         description:
-          actionDescription(spec, def, ctx) +
+          actionDescription(spec, def, ctx, paired) +
           (locked ? ' 🔒 LOCKED on this server — calls always refuse; admin-controlled via FLUENT_LOCKED_TOOLS.' : ''),
-        inputSchema: buildActionInputShape(action, def),
+        inputSchema: buildActionInputShape(action, def, paired),
         outputSchema: OUTPUT_SHAPE,
         annotations: actionAnnotations(spec, def),
       },

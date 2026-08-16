@@ -2,6 +2,66 @@
 
 ## Unreleased
 
+**Writes are now self-describing: merge by default, verified after, and
+previewable.** The Fluent update endpoints behave as full replaces — fields
+omitted from a PUT body are cleared, not preserved — while returning 200
+either way. A partial `crm_sequences_update_email` body silently wiped the
+email's `title` and `settings.template_config` in the field; the connector
+reported `ok: true`. That entire failure class is now closed at the executor:
+
+- **Merge mode (default) on paired updates.** Every PUT/PATCH action with a
+  GET registered on the identical path (27 across both products —
+  `crm_sequences_update_email`, `crm_contacts_update`,
+  `crm_campaigns_update`, `cart_coupons_update`, `cart_customers_update`, …)
+  now reads the current record first and deep-merges the supplied body onto
+  it, so omitted fields survive. Handles wrapped (`{"email": {…}}`),
+  record-shaped, and flat-body-vs-wrapped-GET responses; when the shapes
+  don't line up the body passes through untouched (with a note) rather than
+  being guessed at. `mode:"replace"` restores full-PUT semantics and is
+  confirm-gated like destructive actions. Tool descriptions declare the
+  semantics: `[merge]` on paired updates, `[replace — omitted fields may be
+  cleared]` on unpaired ones.
+- **Post-write verification.** Merge-capable writes re-read the record and
+  diff it: the response's `changed` map lists every field that actually
+  changed (dotted paths, from → to), and `warnings` calls out fields that
+  changed without being in the request body and supplied fields that didn't
+  take effect. A write whose supplied values all differ from the record yet
+  changed nothing returns an error instead of `ok: true` — the
+  ignored-body case can no longer report success.
+- **`dry_run:true` on every write tool** returns the exact request that
+  would be sent — for merge-capable updates, including the computed
+  field-level diff — and touches nothing (it also satisfies the confirm
+  gate, since nothing executes).
+- **`if_unmodified_since` optimistic concurrency** on merge-capable
+  updates: pass the record's `updated_at` from a prior read and the write
+  refuses if someone (say, a human in wp-admin) modified the record since.
+
+**Sequence timing is now visible before a contact enrolls.** Sequence
+`delay` is an absolute offset from enrollment in seconds — not relative to
+the previous email — which is invisible in the API and easy to configure
+into a 31-emails-on-day-one accident. Three hand-written FluentCRM tools
+(the first product `extras`, registered alongside the generated surface and
+listed under `crm_sequences` in the tool map):
+
+- `crm_sequences_preview_schedule` — the computed send timetable for a
+  hypothetical enrollment: absolute delays, `is_anytime`/`sending_time`
+  windows, allowed sending days, site timezone (from
+  `wp/v2/settings`, overridable). Flags same-delay groups, windows that land
+  before enrollment+delay, and the empty-`sending_time` config the plugin
+  turns into a corrupt send datetime.
+- `crm_sequences_validate` — timing lint: duplicate delays (same-delay
+  emails send as one group), `is_anytime`/`sending_time` mismatches, and
+  timings-vs-delay-column drift (the scheduler uses the column).
+- `crm_sequences_bulk_update_emails` — many merge-mode email updates in one
+  call with per-row diffs/warnings, `dry_run`, and `stop_on_error`
+  (documented honestly: REST offers no transaction, so written rows stay
+  written).
+
+The sequence-email `bodyNote`s now spell out the timing semantics (absolute
+delay recomputed from `settings.timings` on save; `title` derived from
+`email_subject`; ignored `sending_time`) so the landmines are in the tool
+descriptions, not just this changelog.
+
 **Wrapper-key request bodies fail fast with the expected shape.** The
 FluentCRM sequence-email endpoints read every field from a top-level
 `email` object and silently ignore flat body fields, so a flat payload to

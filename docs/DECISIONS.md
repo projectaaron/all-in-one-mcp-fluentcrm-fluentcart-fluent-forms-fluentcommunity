@@ -483,3 +483,55 @@ nothing and has no business claiming otherwise.
 Verified against live upstream both ways: a stale stamp over unchanged
 content leaves the files untouched, and a doctored inventory is rewritten
 *and* restamped.
+
+## 2026-08-16 — Writes that describe what they did (merge mode + verification)
+
+A field report from building two 37-email sequences on the live site: a
+partial `crm_sequences_update_email` body — just new timings — returned
+`{"ok": true, "status": 200}` and wiped the email's `title` and
+`settings.template_config`. The Fluent update endpoints are full replaces
+that report 200 either way, and an agent reasonably assumes MCP write tools
+merge. The response even contained the evidence (`"title": ""`) and the
+connector still said success. The report's framing is the design principle
+adopted here: *make writes self-describing, so the caller can tell what it
+just did to the data.*
+
+**Merge is the default, and pairing is structural, not configured.** A
+PUT/PATCH merges when the same spec registers a GET on the identical path —
+no per-endpoint opt-in list to maintain, and the rule is honest by
+construction: merging requires reading the current record, so it exists
+exactly where a read exists (27 actions across both products). The executor
+reads, deep-merges the partial body onto the record, writes, re-reads, and
+diffs. Body-shape alignment is inferred, not guessed: wrapped
+(`{"email": {…}}` on both sides), record-shaped (top-level `id`), and
+flat-body-vs-wrapped-GET each hydrate differently, and anything else passes
+through untouched with a note — degrading to today's behavior plus
+verification, never to invented shape.
+
+**Verification separates intent from effect.** The diff is classified
+against the caller's *original* body, not the merged one: changes outside it
+become warnings ("field was not in your request body"), supplied values that
+didn't land become warnings, and a write whose supplied values all differ
+from the record yet changed nothing is an error — the
+`create_sequence_email`-class ignored-body bug can no longer return
+`ok: true`. Derived-column recomputes (sequence `delay` from
+`settings.timings`) intentionally warn: the noise is the confirmation.
+
+**Costs accepted.** A merge-capable write is now three HTTP round trips
+(read, write, verify-read). The report that motivated this spent hours
+undoing one silent replace and fell back to raw SQL over SSH; two extra
+GETs per write is cheap against that. `mode:"replace"` keeps full-PUT
+semantics available but confirm-gated — the dangerous default became the
+explicit choice. `dry_run` and `if_unmodified_since` fell out of the same
+read-before-write machinery nearly for free.
+
+**Sequence timing got its own tools instead of more prose.** `delay` being
+absolute-from-enrollment (not relative to the previous email) was only
+discoverable by reading FluentCampaign Pro's source over SSH. The bodyNotes
+now state it, but the real fix is `crm_sequences_preview_schedule` /
+`crm_sequences_validate` — a computed timetable and a timing linter, the
+first hand-written product `extras` beside the generated surface. They are
+connector-side models of the Pro scheduler (its source is not
+redistributable), so they are labeled as computed and kept conservative:
+they flag configs the plugin provably mishandles (empty `sending_time`
+with `is_anytime: "no"`) rather than trying to emulate every branch.

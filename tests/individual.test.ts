@@ -10,20 +10,22 @@ import {
   individualNamesFor,
   makeActionHandler,
 } from '../src/core/action-tools.js';
+import { pairedReadFor } from '../src/core/merge.js';
 import { makeHandler, placeholdersOf } from '../src/core/tool-factory.js';
 import type { ServerConfig } from '../src/core/config.js';
 import { buildServer } from '../src/server.js';
 import { PRODUCTS } from '../src/products/index.js';
-import { DOCUMENTED_ENDPOINTS, INDIVIDUAL_TOOL_COUNT, SERVER_TOOLS, makeClient, mockFetch } from './helpers.js';
+import { INDIVIDUAL_TOOL_COUNT, PRODUCT_EXTRA_TOOLS, SERVER_TOOLS, makeClient, mockFetch } from './helpers.js';
 
 describe('individual tool names', () => {
-  it('are unique across every product and the built-in server tools', () => {
+  it('are unique across every product, its extras, and the built-in server tools', () => {
     const all = [...SERVER_TOOLS];
     for (const product of PRODUCTS) {
       for (const spec of product.tools) all.push(...Object.values(individualNamesFor(spec)));
+      all.push(...(product.extras?.mapTools.map((t) => t.name) ?? []));
     }
     expect(all.length).toBe(new Set(all).size);
-    expect(all.length).toBe(DOCUMENTED_ENDPOINTS + SERVER_TOOLS.length);
+    expect(all.length).toBe(INDIVIDUAL_TOOL_COUNT);
   });
 
   it('are lowercase identifiers of at most 64 characters, prefixed by their area', () => {
@@ -245,8 +247,8 @@ describe('buildServer tool modes', () => {
     expect(buildServer(config('individual')).toolCount).toBe(INDIVIDUAL_TOOL_COUNT);
   });
 
-  it('grouped mode keeps the legacy surface (43 areas + verify_setup, wp_media, tool_map)', () => {
-    expect(buildServer(config('grouped')).toolCount).toBe(46);
+  it('grouped mode keeps the legacy surface (43 areas + extras + verify_setup, wp_media, tool_map)', () => {
+    expect(buildServer(config('grouped')).toolCount).toBe(46 + PRODUCT_EXTRA_TOOLS);
   });
 
   it('with nothing configured only tool_map and verify_setup register', () => {
@@ -280,11 +282,15 @@ for (const product of PRODUCTS) {
           };
           expect(res.isError, `${names[action]} unexpectedly errored: ${res.content?.[0]?.text}`).toBeUndefined();
           expect(res.structuredContent?.ok).toBe(true);
-          expect(ok.calls.length, `${names[action]} did not call the API`).toBe(1);
-          expect(ok.calls[0].method).toBe(def.method);
+          // Merge-capable writes (a PUT with a GET on the same path, called
+          // with a body) read before and verify after: GET, write, GET.
+          const mergeCapable = pairedReadFor(spec, action) !== undefined && args.body !== undefined;
+          expect(ok.calls.length, `${names[action]} did not call the API`).toBe(mergeCapable ? 3 : 1);
+          const writeCall = mergeCapable ? ok.calls[1] : ok.calls[0];
+          expect(writeCall.method).toBe(def.method);
           let expectedPath = def.path;
           placeholders.forEach((p, i) => (expectedPath = expectedPath.replace(`{${p}}`, String(11 + i))));
-          const calledUrl = new URL(ok.calls[0].url);
+          const calledUrl = new URL(writeCall.url);
           const expectedUrl = def.siteRoot
             ? new URL(`https://example.com${expectedPath}`)
             : new URL(`https://example.com/wp-json/${product.namespace}${expectedPath}`);
