@@ -1,5 +1,6 @@
 import type { ProductModule } from '../../core/types.js';
 import { TOOL_ENDPOINTS, TOOL_META } from './endpoints.gen.js';
+import { registerSequenceTools, SEQUENCE_EXTRA_MAP_TOOLS } from './sequence-tools.js';
 import { SUMMARY_FIELDS } from './summaries.js';
 
 export const fluentcrm: ProductModule = {
@@ -17,4 +18,5 @@ export const fluentcrm: ProductModule = {
   })),
   summaryFields: SUMMARY_FIELDS,
   verifyRead: { path: '/tags', query: { per_page: 1 }, label: 'list tags (1)' },
+  extras: { area: 'crm_sequences', mapTools: SEQUENCE_EXTRA_MAP_TOOLS, register: registerSequenceTools },
 };

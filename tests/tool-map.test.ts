@@ -14,6 +14,7 @@ import {
   type MapArea,
 } from '../src/core/tool-map.js';
 import { PRODUCTS } from '../src/products/index.js';
+import { PRODUCT_EXTRA_TOOLS } from './helpers.js';
 
 function allAreas(mode: 'individual' | 'grouped' = 'individual', enabled = true): MapArea[] {
   return PRODUCTS.flatMap((p) => mapAreasOf(p, mode, enabled));
@@ -23,7 +24,10 @@ describe('tool map data', () => {
   it('covers every individual tool exactly once', () => {
     const areas = allAreas();
     const fromMap = areas.flatMap((a) => a.tools.map((t) => t.name)).sort();
-    const fromSpecs = PRODUCTS.flatMap((p) => p.tools.flatMap((s) => Object.values(individualNamesFor(s)))).sort();
+    const fromSpecs = PRODUCTS.flatMap((p) => [
+      ...p.tools.flatMap((s) => Object.values(individualNamesFor(s))),
+      ...(p.extras?.mapTools.map((t) => t.name) ?? []),
+    ]).sort();
     expect(fromMap).toEqual(fromSpecs);
   });
 
@@ -123,10 +127,13 @@ describe('tool_map tool', () => {
 describe('grouped-mode honesty', () => {
   it('instructions and overview count callable tools, not actions', () => {
     const areas = [...allAreas('grouped'), serverArea('grouped', true)];
+    // 43 area tools + product extras (standalone in both modes) + tool_map +
+    // verify_setup + wp_media.
+    const expected = `${43 + PRODUCT_EXTRA_TOOLS + 3} tools`;
     const instructions = buildInstructions(areas, 'grouped');
-    expect(instructions).toContain('46 tools'); // 43 areas + tool_map + verify_setup + wp_media
+    expect(instructions).toContain(expected);
     const overview = renderOverview(areas);
-    expect(overview).toContain('46 tools');
+    expect(overview).toContain(expected);
     expect(overview).toContain('operations)');
   });
 });
