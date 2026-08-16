@@ -14,7 +14,7 @@ the tool refuses and explains what would happen. Set
 `FLUENT_TOOL_MODE=grouped` to serve the legacy one-tool-per-area surface
 instead (an `action` parameter selects the operation).
 
-## FluentCRM (`crm_*`, 21 areas, 319 tools)
+## FluentCRM (`crm_*`, 21 areas, 322 tools)
 
 | Area | Class | Tools | Description |
 |------|-------|-------|-------------|
@@ -130,4 +130,4 @@ Examples: `{"name": "verify_setup", "arguments": {}}` ·
 `{"name": "tool_map", "arguments": {"search": "refund"}}` ·
 `{"name": "wp_media_upload_from_url", "arguments": {"source_url": "https://cdn.example.com/photo.jpg", "alt_text": "Product photo"}}`
 
-**Total: 705 tools** (`FLUENT_TOOL_MODE=grouped` serves 46 instead).
+**Total: 708 tools** (`FLUENT_TOOL_MODE=grouped` serves 46 instead).
