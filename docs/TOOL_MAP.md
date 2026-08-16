@@ -1,7 +1,7 @@
 # Tool map
 
 The fast map of this server: **every tool, one line each, grouped by area** —
-705 tools in 44 areas. **Generated** by
+708 tools in 44 areas. **Generated** by
 `scripts/gen-tool-catalog.mjs` from the live registry; regenerate after any
 tool-surface change. Sessions get the same map at runtime from the
 `tool_map` tool (no args = area overview, `{"area": …}` /
@@ -26,7 +26,7 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 | `crm_companies` | 19 | Look up, create, update, delete, and manage CRM companies, their notes, and their associated contacts. |
 | `crm_campaigns` | 39 | Create, schedule, send, pause, duplicate, delete, and analyze one-off email campaigns, including resending failed or unopened emails. |
 | `crm_recurring_campaigns` | 14 | Manage recurring (automatically repeating) email campaigns from creation through scheduling and deletion (FluentCRM Pro). |
-| `crm_sequences` | 18 | Manage email sequence (drip) automations, their emails, and their subscribers (FluentCRM Pro). |
+| `crm_sequences` | 21 | Manage email sequence (drip) automations, their emails, and their subscribers (FluentCRM Pro). |
 | `crm_automations` | 31 | Manage marketing automation funnels and their subscribers, from creation and editing to import, export, and deletion. |
 | `crm_templates` | 11 | Manage reusable email templates, including creating, duplicating, updating, and deleting them. |
 | `crm_forms` | 5 | View and manage the opt-in forms connected to the CRM. |
@@ -244,6 +244,9 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `crm_sequences_remove_subscribers(id)` ⚠ — Remove Sequence Subscribers
 - `crm_sequences_update(id)` — Update Sequence
 - `crm_sequences_update_email(id, email_id)` — Update Sequence Email
+- `crm_sequences_preview_schedule(id)` — Computed send timetable for a hypothetical enrollment (connector-side)
+- `crm_sequences_validate(id)` — Timing sanity checks: duplicate delays, broken sending_time, timings drift
+- `crm_sequences_bulk_update_emails(id)` — Merge-mode updates for many sequence emails in one call, with per-row verification
 
 ### crm_automations — Manage marketing automation funnels and their subscribers, from creation and editing to import, export, and deletion.
 

@@ -4,6 +4,7 @@
  *  plus per-product auth-failure and per-tool validation checks. */
 import { describe, expect, it } from 'vitest';
 import { z } from 'zod';
+import { pairedReadFor } from '../src/core/merge.js';
 import { buildInputShape, makeHandler, placeholdersOf } from '../src/core/tool-factory.js';
 import { PRODUCTS } from '../src/products/index.js';
 import { makeClient, mockFetch } from './helpers.js';
@@ -36,8 +37,12 @@ for (const product of PRODUCTS) {
             const res = (await handler(args as never)) as { isError?: boolean; content: Array<{ text: string }>; structuredContent?: { ok: boolean } };
             expect(res.isError, `${spec.name}.${action} unexpectedly errored: ${res.content?.[0]?.text}`).toBeUndefined();
             expect(res.structuredContent?.ok).toBe(true);
-            expect(ok.calls.length, `${spec.name}.${action} did not call the API`).toBe(1);
-            expect(ok.calls[0].method).toBe(def.method);
+            // Merge-capable writes (a PUT with a GET on the same path, called
+            // with a body) read before and verify after: GET, write, GET.
+            const mergeCapable = pairedReadFor(spec, action) !== undefined && args.body !== undefined;
+            expect(ok.calls.length, `${spec.name}.${action} did not call the API`).toBe(mergeCapable ? 3 : 1);
+            const writeCall = mergeCapable ? ok.calls[1] : ok.calls[0];
+            expect(writeCall.method).toBe(def.method);
 
             // URL must be the substituted template
             let expectedPath = def.path;
@@ -45,7 +50,7 @@ for (const product of PRODUCTS) {
               expectedPath = expectedPath.replace(`{${placeholders[0]}}`, '11');
               placeholders.slice(1).forEach((p, i) => (expectedPath = expectedPath.replace(`{${p}}`, String(100 + i))));
             }
-            const calledUrl = new URL(ok.calls[0].url);
+            const calledUrl = new URL(writeCall.url);
             const expectedUrl = def.siteRoot
               ? new URL(`https://example.com${expectedPath}`)
               : new URL(`https://example.com/wp-json/${product.namespace}${expectedPath}`);
