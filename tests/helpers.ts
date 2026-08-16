@@ -18,9 +18,12 @@ export const DOCUMENTED_ENDPOINTS = PRODUCTS.reduce((total, product) => {
   return total + inventory.count;
 }, 0);
 
+/** Hand-written product extras (schedule preview, validator, bulk updates). */
+export const PRODUCT_EXTRA_TOOLS = PRODUCTS.reduce((n, p) => n + (p.extras?.mapTools.length ?? 0), 0);
+
 /** What `tools/list` returns in individual mode: one tool per documented
- *  endpoint, plus the built-ins. */
-export const INDIVIDUAL_TOOL_COUNT = DOCUMENTED_ENDPOINTS + SERVER_TOOLS.length;
+ *  endpoint, plus product extras, plus the built-ins. */
+export const INDIVIDUAL_TOOL_COUNT = DOCUMENTED_ENDPOINTS + PRODUCT_EXTRA_TOOLS + SERVER_TOOLS.length;
 
 export interface CapturedRequest {
   url: string;
