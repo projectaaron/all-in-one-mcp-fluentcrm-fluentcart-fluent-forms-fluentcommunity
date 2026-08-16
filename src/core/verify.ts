@@ -94,9 +94,10 @@ export function registerVerifySetup(server: McpServer, entries: ProductEntry[], 
             namespace_detected: namespaceDetected,
             test_read: `${module.verifyRead.label} — ok`,
             tools:
-              config.toolMode === 'grouped'
+              (config.toolMode === 'grouped'
                 ? module.tools.length
-                : module.tools.reduce((n, t) => n + Object.keys(t.actions).length, 0),
+                : module.tools.reduce((n, t) => n + Object.keys(t.actions).length, 0)) +
+              (module.extras?.mapTools.length ?? 0),
             areas: module.tools.length,
           });
         } catch (e) {
