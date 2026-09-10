@@ -1,10 +1,10 @@
 # Authentication — confirmed models per product
 
 Verified against each product's official docs on 2026-07-16 (not guessed;
-WP Social Ninja verified against a live install on 2026-09-10 — it has no
-docs site). All products authenticate with **WordPress Application Passwords
-over HTTP Basic auth** — but the credentials are created in different places
-and carry different permission models.
+WP Social Ninja and Fluent Forms verified against a live install and the
+plugin source on 2026-09-10). All products authenticate with **WordPress
+Application Passwords over HTTP Basic auth** — but the credentials are
+created in different places and carry different permission models.
 
 ## FluentCRM
 
@@ -57,6 +57,36 @@ and carry different permission models.
   exposed here as `social_settings_list_managers` etc.) is the
   least-privilege option — an Application Password for a manager user scopes
   the API to their permissions.
+
+## Fluent Forms
+
+- **Source:** <https://developers.fluentforms.com/api/endpoints/> (generated
+  index: [`fluentforms.md`](./fluentforms.md)), cross-checked against the
+  plugin source and a live install.
+- **Namespace:** `https://<site>/wp-json/fluentform/v1`
+- **Model:** HTTP Basic `username:application_password` — standard WordPress
+  **Application Passwords**.
+- **Note on the docs:** every Fluent Forms endpoint page shows
+  `-H 'X-WP-Nonce: <nonce>'` and says "Auth: X-WP-Nonce header". **That is
+  not a second auth model and it does not apply to Application Passwords.**
+  It describes how the wp-admin UI calls the API: that client is
+  cookie-authenticated, and WordPress requires a nonce for cookie auth. The
+  routes' own permission callbacks are pure capability checks — every policy
+  resolves to `Acl::hasPermission()` → `current_user_can()` — and
+  `Acl::verifyNonce()` returns early unless `wp_doing_ajax()`, so no nonce is
+  ever checked on a REST request. Verified in
+  `app/Http/Policies/*.php` and `app/Modules/Acl/Acl.php` (v6.x).
+- **Method override:** the docs also mention sending `PUT`/`PATCH`/`DELETE`
+  as `POST` with `X-HTTP-Method-Override`. Those methods are registered
+  natively; the override is only a fallback for hosts that block them, and
+  this server does not use it.
+- **Scoping:** Fluent Forms Managers (Fluent Forms → Settings → Managers,
+  exposed as `forms_admin_list_managers` etc.) with per-form permissions are
+  the least-privilege option; an Application Password for a manager user
+  scopes the API to their forms.
+- **Exception:** `POST /form-submit` is public (`PublicPolicy` returns true) —
+  it is the endpoint the front-end form posts to, and it creates a real
+  submission plus all of its side effects.
 
 ## What this server does with it
 

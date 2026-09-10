@@ -39,6 +39,10 @@ export const DEFAULT_LOCKED_TOOLS = [
   'cart_settings_disconnect_payment_method',
   'cart_licensing_regenerate_license_key',
   'social_settings_delete_all_data',
+  // Installs/activates an ARBITRARY wordpress.org plugin by slug — i.e. adds
+  // and runs new code on the site. No agent has business doing that.
+  'forms_utilities_install_plugin',
+  'forms_utilities_activate_plugin',
 ] as const;
 
 export function parseLockedTools(raw: string | undefined): Set<string> {
