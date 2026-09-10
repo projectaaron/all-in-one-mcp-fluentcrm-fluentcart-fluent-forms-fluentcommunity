@@ -1,0 +1,1102 @@
+{
+  "product": "fluentforms",
+  "source": "https://developers.fluentforms.com/api/endpoints/ (auto-extracted route reference) reconciled against the live REST route index (GET /wp-json/fluentform/v1)",
+  "scraped": "2026-09-10",
+  "baseUrl": "https://{website}/wp-json/fluentform/v1",
+  "namespace": "fluentform/v1",
+  "count": 91,
+  "endpoints": [
+    {
+      "group": "forms",
+      "slug": "list-forms",
+      "operationId": "listForms",
+      "method": "GET",
+      "path": "/forms",
+      "summary": "GET List Forms",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "forms",
+      "slug": "create-form",
+      "operationId": "createForm",
+      "method": "POST",
+      "path": "/forms",
+      "summary": "POST Create Form",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "forms",
+      "slug": "ping",
+      "operationId": "ping",
+      "method": "GET",
+      "path": "/forms/ping",
+      "summary": "GET Ping Forms API",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "forms",
+      "slug": "list-form-templates",
+      "operationId": "listFormTemplates",
+      "method": "GET",
+      "path": "/forms/templates",
+      "summary": "GET List Form Templates",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "forms",
+      "slug": "get-form",
+      "operationId": "getForm",
+      "method": "GET",
+      "path": "/forms/{form_id}",
+      "summary": "GET Get Form",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "forms",
+      "slug": "update-form",
+      "operationId": "updateForm",
+      "method": "POST",
+      "path": "/forms/{form_id}",
+      "summary": "POST Update Form",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "forms",
+      "slug": "delete-form",
+      "operationId": "deleteForm",
+      "method": "DELETE",
+      "path": "/forms/{form_id}",
+      "summary": "DELETE Delete Form",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "forms",
+      "slug": "duplicate-form",
+      "operationId": "duplicateForm",
+      "method": "POST",
+      "path": "/forms/{form_id}/duplicate",
+      "summary": "POST Duplicate Form",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "forms",
+      "slug": "convert-form",
+      "operationId": "convertForm",
+      "method": "POST",
+      "path": "/forms/{form_id}/convert",
+      "summary": "POST Convert Form Type",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "forms",
+      "slug": "clear-form-edit-history",
+      "operationId": "clearFormEditHistory",
+      "method": "POST",
+      "path": "/forms/{form_id}/clearHistory",
+      "summary": "POST Clear Form Edit History",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "forms",
+      "slug": "get-form-edit-history",
+      "operationId": "getFormEditHistory",
+      "method": "GET",
+      "path": "/forms/{form_id}/editHistory",
+      "summary": "GET Get Form Edit History",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "forms",
+      "slug": "get-form-fields",
+      "operationId": "getFormFields",
+      "method": "GET",
+      "path": "/forms/{form_id}/fields",
+      "summary": "GET Get Form Fields",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "forms",
+      "slug": "find-form-shortcode-page",
+      "operationId": "findFormShortcodePage",
+      "method": "GET",
+      "path": "/forms/{form_id}/findShortCodePage",
+      "summary": "GET Find Form Shortcode Page",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "forms",
+      "slug": "list-form-pages",
+      "operationId": "listFormPages",
+      "method": "GET",
+      "path": "/forms/{form_id}/pages",
+      "summary": "GET List Pages Embedding the Form",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "forms",
+      "slug": "get-form-resources",
+      "operationId": "getFormResources",
+      "method": "GET",
+      "path": "/forms/{form_id}/resources",
+      "summary": "GET Get Form Resources",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "forms",
+      "slug": "get-form-shortcodes",
+      "operationId": "getFormShortcodes",
+      "method": "GET",
+      "path": "/forms/{form_id}/shortcodes",
+      "summary": "GET Get Form Shortcodes",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "analytics",
+      "slug": "reset-form-analytics",
+      "operationId": "resetFormAnalytics",
+      "method": "POST",
+      "path": "/analytics/{form_id}/reset",
+      "summary": "POST Reset Form Analytics",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "submissions",
+      "slug": "list-submissions",
+      "operationId": "listSubmissions",
+      "method": "GET",
+      "path": "/submissions",
+      "summary": "GET List Submissions",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "submissions",
+      "slug": "list-all-submissions",
+      "operationId": "listAllSubmissions",
+      "method": "GET",
+      "path": "/submissions/all",
+      "summary": "GET List All Submissions",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "submissions",
+      "slug": "bulk-action-submissions",
+      "operationId": "bulkActionSubmissions",
+      "method": "POST",
+      "path": "/submissions/bulk-actions",
+      "summary": "POST Bulk Action Submissions",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "submissions",
+      "slug": "print-submissions",
+      "operationId": "printSubmissions",
+      "method": "GET",
+      "path": "/submissions/print",
+      "summary": "GET Print Submissions",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "submissions",
+      "slug": "get-submission-resources",
+      "operationId": "getSubmissionResources",
+      "method": "GET",
+      "path": "/submissions/resources",
+      "summary": "GET Get Submission Resources",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "submissions",
+      "slug": "get-submission",
+      "operationId": "getSubmission",
+      "method": "GET",
+      "path": "/submissions/{entry_id}",
+      "summary": "GET Get Submission",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "submissions",
+      "slug": "delete-submission",
+      "operationId": "deleteSubmission",
+      "method": "DELETE",
+      "path": "/submissions/{entry_id}",
+      "summary": "DELETE Delete Submission",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "submissions",
+      "slug": "toggle-submission-favorite",
+      "operationId": "toggleSubmissionFavorite",
+      "method": "POST",
+      "path": "/submissions/{entry_id}/is-favorite",
+      "summary": "POST Toggle Submission Favorite",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "submissions",
+      "slug": "get-submission-logs",
+      "operationId": "getSubmissionLogs",
+      "method": "GET",
+      "path": "/submissions/{entry_id}/logs",
+      "summary": "GET Get Submission Logs",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "submissions",
+      "slug": "delete-submission-logs",
+      "operationId": "deleteSubmissionLogs",
+      "method": "DELETE",
+      "path": "/submissions/{entry_id}/logs",
+      "summary": "DELETE Delete Submission Logs",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "submissions",
+      "slug": "get-submission-notes",
+      "operationId": "getSubmissionNotes",
+      "method": "GET",
+      "path": "/submissions/{entry_id}/notes",
+      "summary": "GET Get Submission Notes",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "submissions",
+      "slug": "create-submission-note",
+      "operationId": "createSubmissionNote",
+      "method": "POST",
+      "path": "/submissions/{entry_id}/notes",
+      "summary": "POST Create Submission Note",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "submissions",
+      "slug": "update-submission-status",
+      "operationId": "updateSubmissionStatus",
+      "method": "POST",
+      "path": "/submissions/{entry_id}/status",
+      "summary": "POST Update Submission Status",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "submissions",
+      "slug": "get-submission-users",
+      "operationId": "getSubmissionUsers",
+      "method": "GET",
+      "path": "/submissions/{entry_id}/submission-users",
+      "summary": "GET Get Submission Users",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "submissions",
+      "slug": "update-submission-user",
+      "operationId": "updateSubmissionUser",
+      "method": "POST",
+      "path": "/submissions/{entry_id}/update-submission-user",
+      "summary": "POST Update Submission User",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "form-submit",
+      "slug": "submit-form",
+      "operationId": "submitForm",
+      "method": "POST",
+      "path": "/form-submit",
+      "summary": "POST Submit a Form Entry",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-form-settings",
+      "operationId": "getFormSettings",
+      "method": "GET",
+      "path": "/settings/{form_id}",
+      "summary": "GET Get Form Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-form-settings",
+      "operationId": "saveFormSettings",
+      "method": "POST",
+      "path": "/settings/{form_id}",
+      "summary": "POST Save Form Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "delete-form-settings",
+      "operationId": "deleteFormSettings",
+      "method": "DELETE",
+      "path": "/settings/{form_id}",
+      "summary": "DELETE Delete Form Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-general-settings",
+      "operationId": "getGeneralSettings",
+      "method": "GET",
+      "path": "/settings/{form_id}/general",
+      "summary": "GET Get General Form Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-general-settings",
+      "operationId": "saveGeneralSettings",
+      "method": "POST",
+      "path": "/settings/{form_id}/general",
+      "summary": "POST Save General Form Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-customizer-settings",
+      "operationId": "getCustomizerSettings",
+      "method": "GET",
+      "path": "/settings/{form_id}/customizer",
+      "summary": "GET Get Form Customizer Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-customizer-settings",
+      "operationId": "saveCustomizerSettings",
+      "method": "POST",
+      "path": "/settings/{form_id}/customizer",
+      "summary": "POST Save Form Customizer Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-entry-columns",
+      "operationId": "saveEntryColumns",
+      "method": "POST",
+      "path": "/settings/{form_id}/entry-columns",
+      "summary": "POST Save Entry Columns",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-conversational-design",
+      "operationId": "getConversationalDesign",
+      "method": "GET",
+      "path": "/settings/{form_id}/conversational-design",
+      "summary": "GET Get Conversational Form Design",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-conversational-design",
+      "operationId": "saveConversationalDesign",
+      "method": "POST",
+      "path": "/settings/{form_id}/store-conversational-design",
+      "summary": "POST Save Conversational Form Design",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-form-preset",
+      "operationId": "getFormPreset",
+      "method": "GET",
+      "path": "/settings/{form_id}/preset",
+      "summary": "GET Get Form Style Preset",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-form-preset",
+      "operationId": "saveFormPreset",
+      "method": "POST",
+      "path": "/settings/{form_id}/save-preset",
+      "summary": "POST Save Form Style Preset",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "integrations",
+      "slug": "list-global-integrations",
+      "operationId": "listGlobalIntegrations",
+      "method": "GET",
+      "path": "/integrations",
+      "summary": "GET List Global Integrations",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "integrations",
+      "slug": "save-global-integration",
+      "operationId": "saveGlobalIntegration",
+      "method": "POST",
+      "path": "/integrations",
+      "summary": "POST Save Global Integration",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "integrations",
+      "slug": "update-integration-module-status",
+      "operationId": "updateIntegrationModuleStatus",
+      "method": "POST",
+      "path": "/integrations/update-status",
+      "summary": "POST Update Integration Module Status",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "integrations",
+      "slug": "get-form-integration",
+      "operationId": "getFormIntegration",
+      "method": "GET",
+      "path": "/integrations/{form_id}",
+      "summary": "GET Get Form Integration",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "integrations",
+      "slug": "save-form-integration",
+      "operationId": "saveFormIntegration",
+      "method": "POST",
+      "path": "/integrations/{form_id}",
+      "summary": "POST Save Form Integration",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "integrations",
+      "slug": "delete-form-integration",
+      "operationId": "deleteFormIntegration",
+      "method": "DELETE",
+      "path": "/integrations/{form_id}",
+      "summary": "DELETE Delete Form Integration",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "integrations",
+      "slug": "list-form-integrations",
+      "operationId": "listFormIntegrations",
+      "method": "GET",
+      "path": "/integrations/{form_id}/form-integrations",
+      "summary": "GET List Form Integrations",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "integrations",
+      "slug": "get-integration-list-component",
+      "operationId": "getIntegrationListComponent",
+      "method": "GET",
+      "path": "/integrations/{form_id}/integration-list-id",
+      "summary": "GET Get Integration List Component",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "report",
+      "slug": "get-api-logs-report",
+      "operationId": "getApiLogsReport",
+      "method": "GET",
+      "path": "/report/api-logs",
+      "summary": "GET Get API Logs Report",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "report",
+      "slug": "get-completion-rate",
+      "operationId": "getCompletionRate",
+      "method": "GET",
+      "path": "/report/completion-rate",
+      "summary": "GET Get Form Completion Rate",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "report",
+      "slug": "get-country-heatmap",
+      "operationId": "getCountryHeatmap",
+      "method": "GET",
+      "path": "/report/country-heatmap",
+      "summary": "GET Get Country Heatmap",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "report",
+      "slug": "get-form-stats",
+      "operationId": "getFormStats",
+      "method": "GET",
+      "path": "/report/form-stats",
+      "summary": "GET Get Form Stats",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "report",
+      "slug": "get-form-report",
+      "operationId": "getFormReport",
+      "method": "GET",
+      "path": "/report/forms/{form_id}",
+      "summary": "GET Get Form Report",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "report",
+      "slug": "get-heatmap-data",
+      "operationId": "getHeatmapData",
+      "method": "GET",
+      "path": "/report/heatmap-data",
+      "summary": "GET Get Heatmap Data",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "report",
+      "slug": "get-net-revenue",
+      "operationId": "getNetRevenue",
+      "method": "GET",
+      "path": "/report/net-revenue",
+      "summary": "GET Get Net Revenue",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "report",
+      "slug": "get-overview-chart",
+      "operationId": "getOverviewChart",
+      "method": "GET",
+      "path": "/report/overview-chart",
+      "summary": "GET Get Overview Chart",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "report",
+      "slug": "get-payment-types",
+      "operationId": "getPaymentTypes",
+      "method": "GET",
+      "path": "/report/payment-types",
+      "summary": "GET Get Payment Types Report",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "report",
+      "slug": "get-revenue-chart",
+      "operationId": "getRevenueChart",
+      "method": "GET",
+      "path": "/report/revenue-chart",
+      "summary": "GET Get Revenue Chart",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "report",
+      "slug": "list-report-forms",
+      "operationId": "listReportForms",
+      "method": "GET",
+      "path": "/report/select-forms",
+      "summary": "GET List Forms for Reports",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "report",
+      "slug": "get-submissions-analysis",
+      "operationId": "getSubmissionsAnalysis",
+      "method": "GET",
+      "path": "/report/submissions-analysis",
+      "summary": "GET Get Submissions Analysis",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "report",
+      "slug": "get-subscriptions-report",
+      "operationId": "getSubscriptionsReport",
+      "method": "GET",
+      "path": "/report/subscriptions",
+      "summary": "GET Get Subscriptions Report",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "report",
+      "slug": "get-top-performing-forms",
+      "operationId": "getTopPerformingForms",
+      "method": "GET",
+      "path": "/report/top-performing-forms",
+      "summary": "GET Get Top Performing Forms",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "report",
+      "slug": "query-submissions-report",
+      "operationId": "querySubmissionsReport",
+      "method": "POST",
+      "path": "/report/submissions",
+      "summary": "POST Query Submissions Report",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "global-settings",
+      "slug": "get-global-settings",
+      "operationId": "getGlobalSettings",
+      "method": "GET",
+      "path": "/global-settings",
+      "summary": "GET Get Global Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "global-settings",
+      "slug": "save-global-settings",
+      "operationId": "saveGlobalSettings",
+      "method": "POST",
+      "path": "/global-settings",
+      "summary": "POST Save Global Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "license",
+      "slug": "get-license",
+      "operationId": "getLicense",
+      "method": "GET",
+      "path": "/license",
+      "summary": "GET Get License Status",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "license",
+      "slug": "activate-license",
+      "operationId": "activateLicense",
+      "method": "POST",
+      "path": "/license",
+      "summary": "POST Activate License",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "license",
+      "slug": "deactivate-license",
+      "operationId": "deactivateLicense",
+      "method": "DELETE",
+      "path": "/license",
+      "summary": "DELETE Deactivate License",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "managers",
+      "slug": "list-managers",
+      "operationId": "listManagers",
+      "method": "GET",
+      "path": "/managers",
+      "summary": "GET List Managers",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "managers",
+      "slug": "add-manager",
+      "operationId": "addManager",
+      "method": "POST",
+      "path": "/managers",
+      "summary": "POST Add Manager",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "managers",
+      "slug": "remove-manager",
+      "operationId": "removeManager",
+      "method": "DELETE",
+      "path": "/managers",
+      "summary": "DELETE Remove Manager",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "managers",
+      "slug": "list-manager-users",
+      "operationId": "listManagerUsers",
+      "method": "GET",
+      "path": "/managers/users",
+      "summary": "GET List Assignable Users",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "roles",
+      "slug": "list-roles",
+      "operationId": "listRoles",
+      "method": "GET",
+      "path": "/roles",
+      "summary": "GET List Roles and Capabilities",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "roles",
+      "slug": "add-role-capability",
+      "operationId": "addRoleCapability",
+      "method": "POST",
+      "path": "/roles",
+      "summary": "POST Add Role Capability",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "logs",
+      "slug": "list-logs",
+      "operationId": "listLogs",
+      "method": "GET",
+      "path": "/logs",
+      "summary": "GET List Logs",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "logs",
+      "slug": "delete-logs",
+      "operationId": "deleteLogs",
+      "method": "DELETE",
+      "path": "/logs",
+      "summary": "DELETE Delete Logs",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "logs",
+      "slug": "get-log-filters",
+      "operationId": "getLogFilters",
+      "method": "GET",
+      "path": "/logs/filters",
+      "summary": "GET Get Log Filters",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "global-search",
+      "slug": "global-search",
+      "operationId": "globalSearch",
+      "method": "GET",
+      "path": "/global-search",
+      "summary": "GET Global Search",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "notice",
+      "slug": "handle-admin-notice",
+      "operationId": "handleAdminNotice",
+      "method": "POST",
+      "path": "/notice",
+      "summary": "POST Handle Admin Notice Action",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "suggested-plugins",
+      "slug": "check-plugin-statuses",
+      "operationId": "checkPluginStatuses",
+      "method": "POST",
+      "path": "/suggested-plugins/check-plugin-statuses",
+      "summary": "POST Check Plugin Statuses",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "suggested-plugins",
+      "slug": "install-plugin",
+      "operationId": "installPlugin",
+      "method": "POST",
+      "path": "/suggested-plugins/install-plugin",
+      "summary": "POST Install Plugin",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "suggested-plugins",
+      "slug": "activate-plugin",
+      "operationId": "activatePlugin",
+      "method": "POST",
+      "path": "/suggested-plugins/activate-plugin",
+      "summary": "POST Activate Plugin",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "mcp",
+      "slug": "get-mcp-status",
+      "operationId": "getMcpStatus",
+      "method": "GET",
+      "path": "/mcp/status",
+      "summary": "GET Get MCP Adapter Status",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "mcp",
+      "slug": "toggle-mcp",
+      "operationId": "toggleMcp",
+      "method": "POST",
+      "path": "/mcp/toggle",
+      "summary": "POST Toggle MCP Adapter",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "mcp",
+      "slug": "install-mcp-adapter",
+      "operationId": "installMcpAdapter",
+      "method": "POST",
+      "path": "/mcp/install-adapter",
+      "summary": "POST Install MCP Adapter",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "mcp",
+      "slug": "get-mcp-config-snippets",
+      "operationId": "getMcpConfigSnippets",
+      "method": "GET",
+      "path": "/mcp/config-snippets",
+      "summary": "GET Get MCP Config Snippets",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    }
+  ]
+}
