@@ -1,0 +1,85 @@
+{
+  "product": "fluentcommunity",
+  "toolPrefix": "community",
+  "tools": {
+    "community_spaces": {
+      "description": "Manage community spaces and space groups: membership, lock screens, links, paywalls, and each space's media gallery.",
+      "groups": [
+        "spaces"
+      ]
+    },
+    "community_feeds": {
+      "description": "Posts and the activity feed: create and edit posts, comments, reactions, bookmarks, surveys, uploaded documents and media, scheduled posts, and moderation reports.",
+      "groups": [
+        "feeds"
+      ]
+    },
+    "community_chat": {
+      "description": "Direct and group chat: threads, group membership, messages, reactions, and blocking.",
+      "groups": [
+        "chat"
+      ]
+    },
+    "community_courses": {
+      "description": "Courses end to end: course CRUD, sections, lessons, students and enrolment, quizzes, progress, and the member-facing course views.",
+      "groups": [
+        "courses"
+      ]
+    },
+    "community_profiles": {
+      "description": "Member profiles and directory: profile fields, follows and blocks, notification preferences, memberships, invitations, notifications, and the leaderboard.",
+      "groups": [
+        "profile"
+      ]
+    },
+    "community_analytics": {
+      "description": "Read-only community analytics: activity over time, popular spaces, and top members.",
+      "groups": [
+        "analytics"
+      ]
+    },
+    "community_settings": {
+      "description": "Portal settings and runtime options: colours, features, menus, privacy, snippets, follower and player settings, and CRM tagging.",
+      "groups": [
+        "settings"
+      ]
+    },
+    "community_admin": {
+      "description": "Site administration: licensing, managers, webhooks, topics, badges, onboarding, and the auth, email, push, PWA, storage and messaging settings.",
+      "groups": [
+        "admin"
+      ]
+    }
+  },
+  "operationOverrides": {
+    "feeds/batch-create-feeds": {
+      "destructive": true,
+      "summary": "Batch Create Feeds (mass post creation)"
+    },
+    "spaces/bulk-add-space-members": {
+      "destructive": true
+    },
+    "spaces/bulk-import-space-members": {
+      "destructive": true
+    },
+    "courses/bulk-add-course-students": {
+      "destructive": true
+    },
+    "courses/bulk-import-course-students": {
+      "destructive": true
+    },
+    "chat/promote-chat-group-member-to-admin": {
+      "destructive": true,
+      "summary": "Promote Chat Group Member to Admin (no demote endpoint exists)"
+    },
+    "settings/install-plugin": {
+      "destructive": true,
+      "summary": "Install a FluentCommunity Addon Plugin",
+      "bodyNote": "Body: {\"plugin\": \"<addon slug>\"}. Unlike Fluent Forms' installer this one is allowlisted — the slug must be one of FluentCommunity's own addons, so it cannot install arbitrary plugins."
+    },
+    "courses/list-all-space-courses": {
+      "toolName": "community_courses_list_all_space_courses",
+      "summary": "List Courses Across All Spaces"
+    }
+  }
+}
