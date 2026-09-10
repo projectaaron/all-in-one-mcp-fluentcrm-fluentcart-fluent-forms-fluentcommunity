@@ -3,14 +3,14 @@
 Let your AI assistant run your WordPress store and CRM.
 
 fluentMCP is an [MCP](https://modelcontextprotocol.io) server that connects
-Claude (or any MCP client) to **FluentCRM**, **FluentCart**, and
-**WP Social Ninja** by WPManageNinja. Once connected, you can ask your
-assistant to look things up, create and update them, and run your day-to-day
-operations — every one of the **826 documented REST endpoints** is its own
-**individualized tool** with a clear name (`crm_contacts_list`,
-`cart_orders_refund`, `social_reviews_list`, …), a built-in **`tool_map`**
-answers "which tool do I need?" in one call, and every risky operation is
-safety-gated.
+Claude (or any MCP client) to **FluentCRM**, **FluentCart**,
+**WP Social Ninja**, and **Fluent Forms** by WPManageNinja. Once connected,
+you can ask your assistant to look things up, create and update them, and run
+your day-to-day operations — every one of the **917 documented REST
+endpoints** is its own **individualized tool** with a clear name
+(`crm_contacts_list`, `cart_orders_refund`, `social_reviews_list`,
+`forms_submissions_list`, …), a built-in **`tool_map`** answers "which tool do
+I need?" in one call, and every risky operation is safety-gated.
 
 **Try asking things like:**
 
@@ -113,8 +113,9 @@ cp .env.example .env    # then fill in your site URL + credentials
 `claude_desktop_config.json` (Settings → Developer → Edit Config). Prefer
 explicit env over a `.env` file? Drop the `--env-file` arg and add an `"env"`
 object with `FLUENT_SITE_URL`, `FLUENT_API_USERNAME`, `FLUENT_API_PASSWORD`.
-(Per-product `FLUENTCRM_API_*` / `FLUENTCART_API_*` / `WPSOCIALNINJA_API_*`
-overrides are also honored if you want a different user per product.)
+(Per-product `FLUENTCRM_API_*` / `FLUENTCART_API_*` / `WPSOCIALNINJA_API_*` /
+`FLUENTFORMS_API_*` overrides are also honored if you want a different user
+per product.)
 
 Then restart your client and ask it to run **`verify_setup`**, or run the
 read-only smoke test yourself: `node --env-file=.env scripts/smoke-test.mjs`.
