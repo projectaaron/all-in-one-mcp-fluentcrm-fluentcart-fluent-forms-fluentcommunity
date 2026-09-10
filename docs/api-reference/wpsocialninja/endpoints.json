@@ -1,0 +1,1522 @@
+{
+  "product": "wpsocialninja",
+  "source": "live REST route index (GET /wp-json/wpsocialreviews/v2) — WP Social Ninja publishes no OpenAPI docs site",
+  "scraped": "2026-09-10",
+  "baseUrl": "https://{website}/wp-json/wpsocialreviews/v2",
+  "namespace": "wpsocialreviews/v2",
+  "count": 126,
+  "endpoints": [
+    {
+      "group": "reviews",
+      "slug": "list-reviews",
+      "operationId": "listReviews",
+      "method": "GET",
+      "path": "/reviews",
+      "summary": "GET List Reviews",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reviews",
+      "slug": "create-review",
+      "operationId": "createReview",
+      "method": "POST",
+      "path": "/reviews",
+      "summary": "POST Create Review",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reviews",
+      "slug": "delete-reviews",
+      "operationId": "deleteReviews",
+      "method": "DELETE",
+      "path": "/reviews",
+      "summary": "DELETE Delete Reviews",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reviews",
+      "slug": "update-review",
+      "operationId": "updateReview",
+      "method": "PUT",
+      "path": "/reviews/{id}",
+      "summary": "PUT Update Review",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reviews",
+      "slug": "duplicate-review",
+      "operationId": "duplicateReview",
+      "method": "POST",
+      "path": "/reviews/duplicate",
+      "summary": "POST Duplicate Review",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reviews",
+      "slug": "update-review-statuses",
+      "operationId": "updateReviewStatuses",
+      "method": "PUT",
+      "path": "/reviews/status-update",
+      "summary": "PUT Update Review Statuses",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reviews",
+      "slug": "mark-reviews-spam",
+      "operationId": "markReviewsSpam",
+      "method": "PUT",
+      "path": "/reviews/spam",
+      "summary": "PUT Mark Reviews as Spam",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reviews",
+      "slug": "bulk-assign-review-category",
+      "operationId": "bulkAssignReviewCategory",
+      "method": "PUT",
+      "path": "/reviews/bulk-category",
+      "summary": "PUT Bulk Assign Review Category",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reviews",
+      "slug": "list-review-categories",
+      "operationId": "listReviewCategories",
+      "method": "GET",
+      "path": "/reviews/categories",
+      "summary": "GET List Review Categories",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reviews",
+      "slug": "update-review-category",
+      "operationId": "updateReviewCategory",
+      "method": "PUT",
+      "path": "/reviews/categories/{id}",
+      "summary": "PUT Update Review Category",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reviews",
+      "slug": "delete-review-category",
+      "operationId": "deleteReviewCategory",
+      "method": "DELETE",
+      "path": "/reviews/categories/{id}",
+      "summary": "DELETE Delete Review Category",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "testimonials",
+      "slug": "list-testimonials",
+      "operationId": "listTestimonials",
+      "method": "GET",
+      "path": "/testimonials",
+      "summary": "GET List Testimonials",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "testimonials",
+      "slug": "create-testimonial",
+      "operationId": "createTestimonial",
+      "method": "POST",
+      "path": "/testimonials",
+      "summary": "POST Create Testimonial",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "testimonials",
+      "slug": "delete-testimonials",
+      "operationId": "deleteTestimonials",
+      "method": "DELETE",
+      "path": "/testimonials",
+      "summary": "DELETE Delete Testimonials",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "testimonials",
+      "slug": "update-testimonial",
+      "operationId": "updateTestimonial",
+      "method": "PUT",
+      "path": "/testimonials/{id}",
+      "summary": "PUT Update Testimonial",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "testimonials",
+      "slug": "duplicate-testimonial",
+      "operationId": "duplicateTestimonial",
+      "method": "POST",
+      "path": "/testimonials/duplicate",
+      "summary": "POST Duplicate Testimonial",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "testimonials",
+      "slug": "update-testimonial-statuses",
+      "operationId": "updateTestimonialStatuses",
+      "method": "PUT",
+      "path": "/testimonials/status-update",
+      "summary": "PUT Update Testimonial Statuses",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "testimonials",
+      "slug": "mark-testimonials-spam",
+      "operationId": "markTestimonialsSpam",
+      "method": "PUT",
+      "path": "/testimonials/spam",
+      "summary": "PUT Mark Testimonials as Spam",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "testimonials",
+      "slug": "bulk-assign-testimonial-category",
+      "operationId": "bulkAssignTestimonialCategory",
+      "method": "PUT",
+      "path": "/testimonials/bulk-category",
+      "summary": "PUT Bulk Assign Testimonial Category",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "testimonials",
+      "slug": "list-testimonial-categories",
+      "operationId": "listTestimonialCategories",
+      "method": "GET",
+      "path": "/testimonials/categories",
+      "summary": "GET List Testimonial Categories",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "testimonials",
+      "slug": "update-testimonial-category",
+      "operationId": "updateTestimonialCategory",
+      "method": "PUT",
+      "path": "/testimonials/categories/{id}",
+      "summary": "PUT Update Testimonial Category",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "testimonials",
+      "slug": "delete-testimonial-category",
+      "operationId": "deleteTestimonialCategory",
+      "method": "DELETE",
+      "path": "/testimonials/categories/{id}",
+      "summary": "DELETE Delete Testimonial Category",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "templates",
+      "slug": "list-templates",
+      "operationId": "listTemplates",
+      "method": "GET",
+      "path": "/templates",
+      "summary": "GET List Templates",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "templates",
+      "slug": "create-template",
+      "operationId": "createTemplate",
+      "method": "POST",
+      "path": "/templates",
+      "summary": "POST Create Template",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "templates",
+      "slug": "delete-templates",
+      "operationId": "deleteTemplates",
+      "method": "DELETE",
+      "path": "/templates",
+      "summary": "DELETE Delete Templates",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "templates",
+      "slug": "duplicate-template",
+      "operationId": "duplicateTemplate",
+      "method": "POST",
+      "path": "/templates/duplicate",
+      "summary": "POST Duplicate Template",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "templates",
+      "slug": "update-template-title",
+      "operationId": "updateTemplateTitle",
+      "method": "PUT",
+      "path": "/templates/title/{id}",
+      "summary": "PUT Update Template Title",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "templates",
+      "slug": "get-reviews-template",
+      "operationId": "getReviewsTemplate",
+      "method": "GET",
+      "path": "/templates/meta/reviews/{id}",
+      "summary": "GET Get Reviews Template Meta",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "templates",
+      "slug": "update-reviews-template",
+      "operationId": "updateReviewsTemplate",
+      "method": "PUT",
+      "path": "/templates/meta/reviews/{id}",
+      "summary": "PUT Update Reviews Template Meta",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "templates",
+      "slug": "edit-reviews-template",
+      "operationId": "editReviewsTemplate",
+      "method": "POST",
+      "path": "/templates/meta/reviews/{id}/edit",
+      "summary": "POST Edit Reviews Template",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "templates",
+      "slug": "load-more-template-reviews",
+      "operationId": "loadMoreTemplateReviews",
+      "method": "POST",
+      "path": "/templates/meta/reviews/{id}/load-more",
+      "summary": "POST Load More Template Reviews",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "templates",
+      "slug": "can-enable-ai-summary",
+      "operationId": "canEnableAiSummary",
+      "method": "GET",
+      "path": "/templates/meta/reviews/{id}/can-enable-ai-summary",
+      "summary": "GET Can Enable AI Summary",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "templates",
+      "slug": "get-reviews-template-first-round",
+      "operationId": "getReviewsTemplateFirstRound",
+      "method": "GET",
+      "path": "/templates/meta/reviews/{id}/first-round/{isFirstRound}",
+      "summary": "GET Get Reviews Template (First Round)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "templates",
+      "slug": "get-feed-template",
+      "operationId": "getFeedTemplate",
+      "method": "GET",
+      "path": "/templates/meta/feeds/{id}",
+      "summary": "GET Get Feed Template Meta",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "templates",
+      "slug": "update-feed-template",
+      "operationId": "updateFeedTemplate",
+      "method": "PUT",
+      "path": "/templates/meta/feeds/{id}",
+      "summary": "PUT Update Feed Template Meta",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "templates",
+      "slug": "edit-feed-template",
+      "operationId": "editFeedTemplate",
+      "method": "POST",
+      "path": "/templates/meta/feeds/{id}/edit",
+      "summary": "POST Edit Feed Template",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "platforms",
+      "slug": "list-platforms",
+      "operationId": "listPlatforms",
+      "method": "GET",
+      "path": "/platforms",
+      "summary": "GET List Platforms",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "platforms",
+      "slug": "list-enabled-platforms",
+      "operationId": "listEnabledPlatforms",
+      "method": "GET",
+      "path": "/platforms/enabled",
+      "summary": "GET List Enabled Platforms",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "platforms",
+      "slug": "get-platform-statuses",
+      "operationId": "getPlatformStatuses",
+      "method": "GET",
+      "path": "/platforms/get-statuses",
+      "summary": "GET Get Platform Statuses",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "platforms",
+      "slug": "update-platform-statuses",
+      "operationId": "updatePlatformStatuses",
+      "method": "POST",
+      "path": "/platforms/update-statuses",
+      "summary": "POST Update Platform Statuses",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "platforms",
+      "slug": "update-platform-addons",
+      "operationId": "updatePlatformAddons",
+      "method": "POST",
+      "path": "/platforms/addons",
+      "summary": "POST Update Platform Addons",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "platforms",
+      "slug": "subscribe-platform-updates",
+      "operationId": "subscribePlatformUpdates",
+      "method": "POST",
+      "path": "/platforms/subscribe",
+      "summary": "POST Subscribe to Platform Updates",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "platforms",
+      "slug": "get-dashboard-notices",
+      "operationId": "getDashboardNotices",
+      "method": "GET",
+      "path": "/platforms/dashboard-notices",
+      "summary": "GET Get Dashboard Notices",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "platforms",
+      "slug": "update-dashboard-notices",
+      "operationId": "updateDashboardNotices",
+      "method": "POST",
+      "path": "/platforms/dashboard-notices",
+      "summary": "POST Update Dashboard Notices",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "platforms",
+      "slug": "get-review-platform-configs",
+      "operationId": "getReviewPlatformConfigs",
+      "method": "GET",
+      "path": "/platforms/reviews/configs",
+      "summary": "GET Get Review Platform Configs",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "platforms",
+      "slug": "save-review-platform-config",
+      "operationId": "saveReviewPlatformConfig",
+      "method": "POST",
+      "path": "/platforms/reviews/configs",
+      "summary": "POST Save Review Platform Config",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "platforms",
+      "slug": "delete-review-platform-config",
+      "operationId": "deleteReviewPlatformConfig",
+      "method": "DELETE",
+      "path": "/platforms/reviews/configs",
+      "summary": "DELETE Delete Review Platform Config",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "platforms",
+      "slug": "prepare-review-platform-connect",
+      "operationId": "prepareReviewPlatformConnect",
+      "method": "POST",
+      "path": "/platforms/reviews/configs/prepare",
+      "summary": "POST Prepare Review Platform Connect",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "platforms",
+      "slug": "consume-review-platform-connect",
+      "operationId": "consumeReviewPlatformConnect",
+      "method": "POST",
+      "path": "/platforms/reviews/configs/consume",
+      "summary": "POST Consume Review Platform Connect",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "platforms",
+      "slug": "sync-platform-reviews",
+      "operationId": "syncPlatformReviews",
+      "method": "POST",
+      "path": "/platforms/reviews/configs/manually-sync-reviews",
+      "summary": "POST Manually Sync Platform Reviews",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "platforms",
+      "slug": "fetch-platform-reviews",
+      "operationId": "fetchPlatformReviews",
+      "method": "POST",
+      "path": "/platforms/reviews",
+      "summary": "POST Fetch Platform Reviews",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "platforms",
+      "slug": "get-feed-platform-configs",
+      "operationId": "getFeedPlatformConfigs",
+      "method": "GET",
+      "path": "/platforms/feeds/configs",
+      "summary": "GET Get Feed Platform Configs",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "platforms",
+      "slug": "save-feed-platform-config",
+      "operationId": "saveFeedPlatformConfig",
+      "method": "POST",
+      "path": "/platforms/feeds/configs",
+      "summary": "POST Save Feed Platform Config",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "platforms",
+      "slug": "delete-feed-platform-config",
+      "operationId": "deleteFeedPlatformConfig",
+      "method": "DELETE",
+      "path": "/platforms/feeds/configs",
+      "summary": "DELETE Delete Feed Platform Config",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "platforms",
+      "slug": "prepare-feed-platform-connect",
+      "operationId": "prepareFeedPlatformConnect",
+      "method": "POST",
+      "path": "/platforms/feeds/configs/prepare",
+      "summary": "POST Prepare Feed Platform Connect",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "platforms",
+      "slug": "consume-feed-platform-connect",
+      "operationId": "consumeFeedPlatformConnect",
+      "method": "POST",
+      "path": "/platforms/feeds/configs/consume",
+      "summary": "POST Consume Feed Platform Connect",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "chat-widgets",
+      "slug": "list-chat-widgets",
+      "operationId": "listChatWidgets",
+      "method": "GET",
+      "path": "/chat-widgets",
+      "summary": "GET List Chat Widgets",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "chat-widgets",
+      "slug": "create-chat-widget",
+      "operationId": "createChatWidget",
+      "method": "POST",
+      "path": "/chat-widgets",
+      "summary": "POST Create Chat Widget",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "chat-widgets",
+      "slug": "update-chat-widget-statuses",
+      "operationId": "updateChatWidgetStatuses",
+      "method": "PUT",
+      "path": "/chat-widgets",
+      "summary": "PUT Update Chat Widget Statuses",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "chat-widgets",
+      "slug": "delete-chat-widgets",
+      "operationId": "deleteChatWidgets",
+      "method": "DELETE",
+      "path": "/chat-widgets",
+      "summary": "DELETE Delete Chat Widgets",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "chat-widgets",
+      "slug": "duplicate-chat-widget",
+      "operationId": "duplicateChatWidget",
+      "method": "POST",
+      "path": "/chat-widgets/duplicate",
+      "summary": "POST Duplicate Chat Widget",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "chat-widgets",
+      "slug": "get-chat-widget",
+      "operationId": "getChatWidget",
+      "method": "GET",
+      "path": "/chat-widgets/meta/chats/{id}",
+      "summary": "GET Get Chat Widget Meta",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "chat-widgets",
+      "slug": "update-chat-widget",
+      "operationId": "updateChatWidget",
+      "method": "PUT",
+      "path": "/chat-widgets/meta/chats/{id}",
+      "summary": "PUT Update Chat Widget Meta",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "chat-widgets",
+      "slug": "reset-chat-widget",
+      "operationId": "resetChatWidget",
+      "method": "DELETE",
+      "path": "/chat-widgets/meta/chats/{id}/edit",
+      "summary": "DELETE Reset Chat Widget Meta",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "notifications",
+      "slug": "list-notifications",
+      "operationId": "listNotifications",
+      "method": "GET",
+      "path": "/notifications",
+      "summary": "GET List Notifications",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "notifications",
+      "slug": "create-notification",
+      "operationId": "createNotification",
+      "method": "POST",
+      "path": "/notifications",
+      "summary": "POST Create Notification",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "notifications",
+      "slug": "update-notification",
+      "operationId": "updateNotification",
+      "method": "PUT",
+      "path": "/notifications",
+      "summary": "PUT Update Notification",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "notifications",
+      "slug": "delete-notifications",
+      "operationId": "deleteNotifications",
+      "method": "DELETE",
+      "path": "/notifications",
+      "summary": "DELETE Delete Notifications",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "notifications",
+      "slug": "duplicate-notification",
+      "operationId": "duplicateNotification",
+      "method": "POST",
+      "path": "/notifications/duplicate",
+      "summary": "POST Duplicate Notification",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "shoppable",
+      "slug": "get-shoppable-feed",
+      "operationId": "getShoppableFeed",
+      "method": "GET",
+      "path": "/shoppable",
+      "summary": "GET Get Shoppable Feed",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "shoppable",
+      "slug": "update-shoppable-feed",
+      "operationId": "updateShoppableFeed",
+      "method": "PUT",
+      "path": "/shoppable",
+      "summary": "PUT Update Shoppable Feed",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "shoppable",
+      "slug": "delete-shoppable-feed",
+      "operationId": "deleteShoppableFeed",
+      "method": "DELETE",
+      "path": "/shoppable",
+      "summary": "DELETE Delete Shoppable Feed",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "shoppable",
+      "slug": "list-shoppable-posts",
+      "operationId": "listShoppablePosts",
+      "method": "GET",
+      "path": "/shoppable/posts",
+      "summary": "GET List Shoppable Posts",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "shoppable",
+      "slug": "update-shoppable-template-settings",
+      "operationId": "updateShoppableTemplateSettings",
+      "method": "PUT",
+      "path": "/shoppable/template-settings/{id}",
+      "summary": "PUT Update Shoppable Template Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-settings",
+      "operationId": "getSettings",
+      "method": "GET",
+      "path": "/settings",
+      "summary": "GET Get Global Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-settings",
+      "operationId": "saveSettings",
+      "method": "PUT",
+      "path": "/settings",
+      "summary": "PUT Save Global Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "delete-settings",
+      "operationId": "deleteSettings",
+      "method": "DELETE",
+      "path": "/settings",
+      "summary": "DELETE Delete Global Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-advanced-settings",
+      "operationId": "getAdvancedSettings",
+      "method": "GET",
+      "path": "/settings/advance-settings",
+      "summary": "GET Get Advanced Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-advanced-settings",
+      "operationId": "saveAdvancedSettings",
+      "method": "POST",
+      "path": "/settings/advance-settings",
+      "summary": "POST Save Advanced Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-translations",
+      "operationId": "getTranslations",
+      "method": "GET",
+      "path": "/settings/translations",
+      "summary": "GET Get Translations",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-translations",
+      "operationId": "saveTranslations",
+      "method": "POST",
+      "path": "/settings/translations",
+      "summary": "POST Save Translations",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-license",
+      "operationId": "getLicense",
+      "method": "GET",
+      "path": "/settings/license",
+      "summary": "GET Get License",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "activate-license",
+      "operationId": "activateLicense",
+      "method": "POST",
+      "path": "/settings/license",
+      "summary": "POST Activate License",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "deactivate-license",
+      "operationId": "deactivateLicense",
+      "method": "DELETE",
+      "path": "/settings/license",
+      "summary": "DELETE Deactivate License",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "delete-twitter-card",
+      "operationId": "deleteTwitterCard",
+      "method": "DELETE",
+      "path": "/settings/twitter-card",
+      "summary": "DELETE Delete Twitter Card Connection",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "reset-cached-images",
+      "operationId": "resetCachedImages",
+      "method": "DELETE",
+      "path": "/settings/reset-images",
+      "summary": "DELETE Reset Cached Images",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "reset-error-log",
+      "operationId": "resetErrorLog",
+      "method": "DELETE",
+      "path": "/settings/reset-error-log",
+      "summary": "DELETE Reset Error Log",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "delete-all-data",
+      "operationId": "deleteAllData",
+      "method": "DELETE",
+      "path": "/settings/delete-all-data",
+      "summary": "DELETE Delete All Plugin Data",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "search-pages",
+      "operationId": "searchPages",
+      "method": "GET",
+      "path": "/pages/search",
+      "summary": "GET Search Site Pages",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "list-managers",
+      "operationId": "listManagers",
+      "method": "GET",
+      "path": "/pro/settings/managers",
+      "summary": "GET List Managers",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "add-manager",
+      "operationId": "addManager",
+      "method": "POST",
+      "path": "/pro/settings/managers",
+      "summary": "POST Add Manager",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "update-manager",
+      "operationId": "updateManager",
+      "method": "PUT",
+      "path": "/pro/settings/managers",
+      "summary": "PUT Update Manager",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "delete-manager",
+      "operationId": "deleteManager",
+      "method": "DELETE",
+      "path": "/pro/settings/managers/{id}",
+      "summary": "DELETE Delete Manager",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "onboarding",
+      "slug": "get-onboarding",
+      "operationId": "getOnboarding",
+      "method": "GET",
+      "path": "/onboarding",
+      "summary": "GET Get Onboarding State",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "onboarding",
+      "slug": "save-onboarding",
+      "operationId": "saveOnboarding",
+      "method": "POST",
+      "path": "/onboarding",
+      "summary": "POST Save Onboarding Step",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "onboarding",
+      "slug": "get-onboarding-config",
+      "operationId": "getOnboardingConfig",
+      "method": "GET",
+      "path": "/onboarding/config",
+      "summary": "GET Get Onboarding Config",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "onboarding",
+      "slug": "skip-onboarding",
+      "operationId": "skipOnboarding",
+      "method": "POST",
+      "path": "/onboarding/skip",
+      "summary": "POST Skip Onboarding",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "collection",
+      "slug": "list-review-forms",
+      "operationId": "listReviewForms",
+      "method": "GET",
+      "path": "/pro/review-forms",
+      "summary": "GET List Review Forms",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "collection",
+      "slug": "create-review-form",
+      "operationId": "createReviewForm",
+      "method": "POST",
+      "path": "/pro/review-forms",
+      "summary": "POST Create Review Form",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "collection",
+      "slug": "delete-review-forms",
+      "operationId": "deleteReviewForms",
+      "method": "DELETE",
+      "path": "/pro/review-forms",
+      "summary": "DELETE Delete Review Forms",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "collection",
+      "slug": "get-review-form",
+      "operationId": "getReviewForm",
+      "method": "GET",
+      "path": "/pro/review-forms/{id}",
+      "summary": "GET Get Review Form",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "collection",
+      "slug": "update-review-form",
+      "operationId": "updateReviewForm",
+      "method": "PUT",
+      "path": "/pro/review-forms/{id}",
+      "summary": "PUT Update Review Form",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "collection",
+      "slug": "duplicate-review-form",
+      "operationId": "duplicateReviewForm",
+      "method": "POST",
+      "path": "/pro/review-forms/{id}/duplicate",
+      "summary": "POST Duplicate Review Form",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "collection",
+      "slug": "update-review-form-statuses",
+      "operationId": "updateReviewFormStatuses",
+      "method": "PUT",
+      "path": "/pro/review-forms/status-update",
+      "summary": "PUT Update Review Form Statuses",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "collection",
+      "slug": "list-custom-sources",
+      "operationId": "listCustomSources",
+      "method": "GET",
+      "path": "/pro/custom-sources",
+      "summary": "GET List Custom Sources",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "collection",
+      "slug": "create-custom-source",
+      "operationId": "createCustomSource",
+      "method": "POST",
+      "path": "/pro/custom-sources",
+      "summary": "POST Create Custom Source",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "collection",
+      "slug": "delete-custom-sources",
+      "operationId": "deleteCustomSources",
+      "method": "DELETE",
+      "path": "/pro/custom-sources",
+      "summary": "DELETE Delete Custom Sources",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "collection",
+      "slug": "get-custom-source",
+      "operationId": "getCustomSource",
+      "method": "GET",
+      "path": "/pro/custom-sources/{id}",
+      "summary": "GET Get Custom Source",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "collection",
+      "slug": "save-custom-source-settings",
+      "operationId": "saveCustomSourceSettings",
+      "method": "POST",
+      "path": "/pro/custom-sources/{id}/settings",
+      "summary": "POST Save Custom Source Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "collection",
+      "slug": "list-custom-source-form-templates",
+      "operationId": "listCustomSourceFormTemplates",
+      "method": "GET",
+      "path": "/pro/custom-sources/forms/templates",
+      "summary": "GET List Custom Source Form Templates",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "collection",
+      "slug": "list-qr-codes",
+      "operationId": "listQrCodes",
+      "method": "GET",
+      "path": "/pro/settings/get-reviews/qr-code",
+      "summary": "GET List Get-Reviews QR Codes",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "collection",
+      "slug": "create-qr-code",
+      "operationId": "createQrCode",
+      "method": "POST",
+      "path": "/pro/settings/get-reviews/qr-code",
+      "summary": "POST Create Get-Reviews QR Code",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "collection",
+      "slug": "update-qr-code",
+      "operationId": "updateQrCode",
+      "method": "PUT",
+      "path": "/pro/settings/get-reviews/qr-code/{id}",
+      "summary": "PUT Update Get-Reviews QR Code",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "collection",
+      "slug": "delete-qr-code",
+      "operationId": "deleteQrCode",
+      "method": "DELETE",
+      "path": "/pro/settings/get-reviews/qr-code/{id}",
+      "summary": "DELETE Delete Get-Reviews QR Code",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "collection",
+      "slug": "list-review-collection-platforms",
+      "operationId": "listReviewCollectionPlatforms",
+      "method": "GET",
+      "path": "/pro/settings/get-reviews/get-review-collection-platforms",
+      "summary": "GET List Review Collection Platforms",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "collection",
+      "slug": "get-review-form-captcha",
+      "operationId": "getReviewFormCaptcha",
+      "method": "GET",
+      "path": "/pro/settings/review-form-captcha",
+      "summary": "GET Get Review Form Captcha",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "collection",
+      "slug": "save-review-form-captcha",
+      "operationId": "saveReviewFormCaptcha",
+      "method": "POST",
+      "path": "/pro/settings/review-form-captcha",
+      "summary": "POST Save Review Form Captcha",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "collection",
+      "slug": "delete-review-form-captcha",
+      "operationId": "deleteReviewFormCaptcha",
+      "method": "DELETE",
+      "path": "/pro/settings/review-form-captcha",
+      "summary": "DELETE Delete Review Form Captcha",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "collection",
+      "slug": "get-fluentcrm-review-tag",
+      "operationId": "getFluentcrmReviewTag",
+      "method": "GET",
+      "path": "/pro/settings/fluentcrm-review-tag",
+      "summary": "GET Get FluentCRM Review Tag",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "collection",
+      "slug": "save-fluentcrm-review-tag",
+      "operationId": "saveFluentcrmReviewTag",
+      "method": "POST",
+      "path": "/pro/settings/fluentcrm-review-tag",
+      "summary": "POST Save FluentCRM Review Tag",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "collection",
+      "slug": "import-woocommerce-reviews",
+      "operationId": "importWoocommerceReviews",
+      "method": "POST",
+      "path": "/pro/settings/woocommerce/import-reviews",
+      "summary": "POST Import WooCommerce Reviews",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "collection",
+      "slug": "restart-woocommerce-import",
+      "operationId": "restartWoocommerceImport",
+      "method": "POST",
+      "path": "/pro/settings/woocommerce/restart-import-reviews",
+      "summary": "POST Restart WooCommerce Review Import",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "collection",
+      "slug": "get-woocommerce-import-progress",
+      "operationId": "getWoocommerceImportProgress",
+      "method": "GET",
+      "path": "/pro/settings/woocommerce/import-progress",
+      "summary": "GET Get WooCommerce Import Progress",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "collection",
+      "slug": "quick-setup-woocommerce",
+      "operationId": "quickSetupWoocommerce",
+      "method": "POST",
+      "path": "/pro/settings/woocommerce/quick-setup",
+      "summary": "POST Quick Setup WooCommerce Reviews",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "collection",
+      "slug": "quick-setup-fluent-cart",
+      "operationId": "quickSetupFluentCart",
+      "method": "POST",
+      "path": "/pro/settings/fluent-cart/quick-setup",
+      "summary": "POST Quick Setup FluentCart Reviews",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "collection",
+      "slug": "connect-fluent-cart-products",
+      "operationId": "connectFluentCartProducts",
+      "method": "POST",
+      "path": "/pro/settings/fluent-cart/connect-all-products",
+      "summary": "POST Connect All FluentCart Products",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    }
+  ]
+}
