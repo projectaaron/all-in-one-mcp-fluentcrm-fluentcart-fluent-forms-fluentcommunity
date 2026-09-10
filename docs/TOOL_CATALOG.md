@@ -116,6 +116,32 @@ Example calls:
 - `cart_roles`: `{"name":"cart_roles_list_managers","arguments":{"per_page":5}}`
 - `cart_order_bumps`: `{"name":"cart_order_bumps_list","arguments":{"per_page":5}}`
 
+## WP Social Ninja (`social_*`, 9 areas, 126 tools)
+
+| Area | Class | Tools | Description |
+|------|-------|-------|-------------|
+| `social_reviews` | read/write/delete | 11 | Manage the reviews collected from connected platforms: list, edit, duplicate, categorize, change status, or mark as spam. |
+| `social_testimonials` | read/write/delete | 11 | Manage hand-written testimonials, their statuses, spam flags, and categories. |
+| `social_templates` | read/write/delete | 14 | Manage the review and social-feed widget templates rendered on the site via shortcodes and blocks. |
+| `social_platforms` | read/write/delete | 20 | Connect review and feed platforms (Google, Facebook, Instagram, …), manage their configs, and sync their content. |
+| `social_chat_widgets` | read/write/delete | 8 | Manage floating chat widgets (WhatsApp, Messenger, Telegram, …) shown on the site. |
+| `social_notifications` | read/write/delete | 5 | Manage sales/social-proof notification popups. |
+| `social_shoppable` | read/write/delete | 5 | Manage the shoppable Instagram feed and its product-tagged posts. |
+| `social_settings` | read/write/delete | 23 | Global WP Social Ninja settings: general and advanced options, translations, licensing, managers, resets, and the onboarding wizard. |
+| `social_collection` | read/write/delete | 29 | Collect new reviews: review forms, custom sources, get-reviews QR codes, form captcha, FluentCRM tagging, and WooCommerce/FluentCart review imports. |
+
+Example calls:
+
+- `social_reviews`: `{"name":"social_reviews_list","arguments":{"per_page":5}}`
+- `social_testimonials`: `{"name":"social_testimonials_list","arguments":{"per_page":5}}`
+- `social_templates`: `{"name":"social_templates_list","arguments":{"per_page":5}}`
+- `social_platforms`: `{"name":"social_platforms_list","arguments":{"per_page":5}}`
+- `social_chat_widgets`: `{"name":"social_chat_widgets_list","arguments":{"per_page":5}}`
+- `social_notifications`: `{"name":"social_notifications_list","arguments":{"per_page":5}}`
+- `social_shoppable`: `{"name":"social_shoppable_list_posts","arguments":{"per_page":5}}`
+- `social_settings`: `{"name":"social_settings_list_managers","arguments":{"per_page":5}}`
+- `social_collection`: `{"name":"social_collection_list_review_forms","arguments":{"per_page":5}}`
+
 ## Server built-ins (5 tools)
 
 | Tool | Class | Description |
@@ -130,4 +156,4 @@ Examples: `{"name": "verify_setup", "arguments": {}}` ·
 `{"name": "tool_map", "arguments": {"search": "refund"}}` ·
 `{"name": "wp_media_upload_from_url", "arguments": {"source_url": "https://cdn.example.com/photo.jpg", "alt_text": "Product photo"}}`
 
-**Total: 708 tools** (`FLUENT_TOOL_MODE=grouped` serves 46 instead).
+**Total: 834 tools** (`FLUENT_TOOL_MODE=grouped` serves 55 instead).

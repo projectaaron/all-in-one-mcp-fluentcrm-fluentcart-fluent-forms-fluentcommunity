@@ -38,6 +38,7 @@ export const DEFAULT_LOCKED_TOOLS = [
   'crm_settings_test_delete_request',
   'cart_settings_disconnect_payment_method',
   'cart_licensing_regenerate_license_key',
+  'social_settings_delete_all_data',
 ] as const;
 
 export function parseLockedTools(raw: string | undefined): Set<string> {

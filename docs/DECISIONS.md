@@ -535,3 +535,48 @@ connector-side models of the Pro scheduler (its source is not
 redistributable), so they are labeled as computed and kept conservative:
 they flag configs the plugin provably mishandles (empty `sending_time`
 with `is_anytime: "no"`) rather than trying to emulate every branch.
+
+## 2026-09-10 — WP Social Ninja: a product with no docs site (126 endpoints)
+
+Third product on the server, first one outside the Fluent line — and the
+first without a developer docs site, which broke the assumption the whole
+docs pipeline was built on. What the playbook in EXTENDING.md calls "scrape
+the API reference" had no reference to scrape.
+
+**The live route index replaced the OpenAPI specs — with the same
+loud-on-drift contract.** WordPress serves an authoritative machine-readable
+inventory at `GET /wp-json/wpsocialreviews/v2` (every route, every method).
+What it cannot supply is editorial: group assignments, stable slugs, human
+summaries. `gen-wpsocialninja-docs.mjs` therefore carries a hand-curated
+126-row operation table and *checks* it against the live index on every run —
+an unmapped live route or a stale table entry fails the run with the exact
+routes named, which is the same failure mode `gen-api-docs.mjs` has when a
+Fluent product drifts. The table is the curation; the site is the truth.
+
+**What the route index cannot tell you is stated, not papered over.**
+Request/response body shapes are undocumented upstream (the index carries no
+schemas, and the plugin source isn't reachable from this repo). The generated
+reference says exactly that and prescribes the read-first workflow: fetch a
+record with `detail:"full"`, mirror its shape. Nine GET+PUT path pairs
+(settings, shoppable feed, review forms, managers, notifications, chat-widget
+and template meta) get merge-mode writes with post-write verification for
+free from the pairing rule — which matters *more* here than for the Fluent
+products, precisely because nobody documented which fields a partial PUT
+would clear.
+
+**Auth was verified live, not guessed:** anonymous calls to admin routes
+return WordPress's standard capability-check `rest_forbidden` 401, so
+Application Passwords work exactly as they do for FluentCRM/FluentCart, and
+the shared `FLUENT_API_*` pair enables the product with zero new
+configuration.
+
+**One new default lock:** `social_settings_delete_all_data` erases every
+review, testimonial, template, and setting the plugin owns — the same
+no-agent-use class as `crm_settings_reset_database`, so it ships locked.
+
+**Costs accepted.** The operation table is 126 rows of hand-maintained
+editorial that the Fluent products get from their spec scrapes; the weekly
+docs refresh does not cover it (refreshing requires a live site, so it stays
+a manual `node scripts/gen-wpsocialninja-docs.mjs` run). Summary-field lists
+are best-effort guesses that degrade to generic pruning when a field name is
+wrong, because no schema exists to check them against.

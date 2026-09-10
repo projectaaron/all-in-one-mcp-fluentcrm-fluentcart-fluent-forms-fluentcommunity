@@ -4,5 +4,6 @@
 import type { ProductModule } from '../core/types.js';
 import { fluentcrm } from './fluentcrm/index.js';
 import { fluentcart } from './fluentcart/index.js';
+import { wpsocialninja } from './wpsocialninja/index.js';
 
-export const PRODUCTS: ProductModule[] = [fluentcrm, fluentcart];
+export const PRODUCTS: ProductModule[] = [fluentcrm, fluentcart, wpsocialninja];

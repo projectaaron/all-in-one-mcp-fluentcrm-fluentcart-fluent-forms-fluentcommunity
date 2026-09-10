@@ -127,9 +127,10 @@ describe('tool_map tool', () => {
 describe('grouped-mode honesty', () => {
   it('instructions and overview count callable tools, not actions', () => {
     const areas = [...allAreas('grouped'), serverArea('grouped', true)];
-    // 43 area tools + product extras (standalone in both modes) + tool_map +
-    // verify_setup + wp_media.
-    const expected = `${43 + PRODUCT_EXTRA_TOOLS + 3} tools`;
+    // One tool per area + product extras (standalone in both modes) +
+    // tool_map + verify_setup + wp_media.
+    const areaCount = PRODUCTS.reduce((n, p) => n + p.tools.length, 0);
+    const expected = `${areaCount + PRODUCT_EXTRA_TOOLS + 3} tools`;
     const instructions = buildInstructions(areas, 'grouped');
     expect(instructions).toContain(expected);
     const overview = renderOverview(areas);

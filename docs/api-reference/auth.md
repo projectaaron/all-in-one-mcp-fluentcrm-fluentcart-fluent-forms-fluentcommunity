@@ -1,9 +1,10 @@
 # Authentication — confirmed models per product
 
-Verified against each product's official docs on 2026-07-16 (not guessed).
-Both products authenticate with **WordPress Application Passwords over HTTP
-Basic auth** — but the credentials are created in different places and carry
-different permission models.
+Verified against each product's official docs on 2026-07-16 (not guessed;
+WP Social Ninja verified against a live install on 2026-09-10 — it has no
+docs site). All products authenticate with **WordPress Application Passwords
+over HTTP Basic auth** — but the credentials are created in different places
+and carry different permission models.
 
 ## FluentCRM
 
@@ -38,6 +39,24 @@ different permission models.
 | **Admin** | most endpoints | WordPress **Application Passwords** (HTTP Basic), i.e. a WP user with FluentCart capabilities (`manage_options`-level admin, or a FluentCart Pro role) + an application password created under *WP Admin → Users → Profile → Application Passwords* |
 | **Customer portal** | `/customer-profile/*`, `/checkout/*`, `/user/login` | WordPress **cookie + nonce** (a logged-in browser session). **Not usable with Application Passwords** — this MCP server exposes these endpoints, but calls will be rejected by FluentCart unless the site accepts basic-auth'd users for them; treat them as customer-context only |
 | **Public** | `/public/*`, license query endpoints (`/?fluent-cart=...`) | None |
+
+## WP Social Ninja
+
+- **Source:** no developer docs site exists — verified live against a
+  production install (2026-09-10): anonymous calls to admin routes return the
+  standard WordPress `rest_forbidden` 401, i.e. permission callbacks are
+  capability checks evaluated against the authenticated user, exactly like
+  the Fluent products.
+- **Namespace:** `https://<site>/wp-json/wpsocialreviews/v2` (the plugin's
+  slug is `wp-social-reviews`; the Pro add-on registers its routes under the
+  same namespace at `/pro/…`).
+- **Model:** HTTP Basic `username:application_password` — standard WordPress
+  **Application Passwords** for a user with WP Social Ninja capabilities
+  (`manage_options`-level admin, or a WP Social Ninja Pro manager).
+- **Scoping:** WP Social Ninja Pro's Managers feature (Settings → Managers,
+  exposed here as `social_settings_list_managers` etc.) is the
+  least-privilege option — an Application Password for a manager user scopes
+  the API to their permissions.
 
 ## What this server does with it
 
