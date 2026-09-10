@@ -1,0 +1,45 @@
+{
+  "product": "wpsocialninja",
+  "toolPrefix": "social",
+  "tools": {
+    "social_reviews": {
+      "description": "Manage the reviews collected from connected platforms: list, edit, duplicate, categorize, change status, or mark as spam.",
+      "groups": ["reviews"]
+    },
+    "social_testimonials": {
+      "description": "Manage hand-written testimonials, their statuses, spam flags, and categories.",
+      "groups": ["testimonials"]
+    },
+    "social_templates": {
+      "description": "Manage the review and social-feed widget templates rendered on the site via shortcodes and blocks.",
+      "groups": ["templates"]
+    },
+    "social_platforms": {
+      "description": "Connect review and feed platforms (Google, Facebook, Instagram, …), manage their configs, and sync their content.",
+      "groups": ["platforms"]
+    },
+    "social_chat_widgets": {
+      "description": "Manage floating chat widgets (WhatsApp, Messenger, Telegram, …) shown on the site.",
+      "groups": ["chat-widgets"]
+    },
+    "social_notifications": {
+      "description": "Manage sales/social-proof notification popups.",
+      "groups": ["notifications"]
+    },
+    "social_shoppable": {
+      "description": "Manage the shoppable Instagram feed and its product-tagged posts.",
+      "groups": ["shoppable"]
+    },
+    "social_settings": {
+      "description": "Global WP Social Ninja settings: general and advanced options, translations, licensing, managers, resets, and the onboarding wizard.",
+      "groups": ["settings", "onboarding"],
+      "note": "The manager endpoints (/pro/settings/managers) require WP Social Ninja Pro."
+    },
+    "social_collection": {
+      "description": "Collect new reviews: review forms, custom sources, get-reviews QR codes, form captcha, FluentCRM tagging, and WooCommerce/FluentCart review imports.",
+      "groups": ["collection"],
+      "note": "Requires WP Social Ninja Pro (all endpoints live under /pro/)."
+    }
+  },
+  "operationOverrides": {}
+}
