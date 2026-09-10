@@ -53,6 +53,8 @@ fluentMCP/
 │       ├── fluentcart/           # Same layout
 │       ├── wpsocialninja/        # Same layout (inventory from the live route index —
 │       │                         #   no docs site; see scripts/gen-wpsocialninja-docs.mjs)
+│       ├── fluentforms/          # Same layout (docs publish routes but no OpenAPI —
+│       │                         #   see scripts/gen-fluentforms-docs.mjs)
 │       └── _template/            # Scaffold (.tpl files, ignored by tsc/generators)
 ├── tests/                        # Vitest, mocked HTTP, no network — 244 tests
 │   ├── helpers.ts                # mockFetch + client factory
@@ -66,6 +68,7 @@ fluentMCP/
 │   ├── gen-api-docs.mjs          # Multi-product API reference scraper (PRODUCTS config table)
 │   ├── gen-endpoint-maps.mjs     # endpoints.json + tool-map.json -> endpoints.gen.ts
 │   ├── gen-wpsocialninja-docs.mjs # WP Social Ninja inventory from the live REST route index
+│   ├── gen-fluentforms-docs.mjs  # Fluent Forms inventory (docs route reference + live check)
 │   ├── gen-tool-catalog.mjs      # dist registry -> docs/TOOL_MAP.md + TOOL_CATALOG.md + manifest sync
 │   ├── smoke-test.mjs            # Post-install READ-ONLY smoke test over stdio
 │   └── *-operations.txt          # Discovered operation lists (ordering + offline fallback)
@@ -82,8 +85,8 @@ fluentMCP/
 │       └── elementor-test.php    #   Tag registration + rendering, plugins stubbed
 ├── docs/
 │   ├── api-reference/            # GENERATED per-product references + endpoints.json
-│   │   ├── fluentcrm.md / fluentcart.md / wpsocialninja.md  # Overviews
-│   │   ├── fluentcrm/ fluentcart/ wpsocialninja/  # Per-endpoint docs + endpoints.json
+│   │   ├── fluentcrm.md / fluentcart.md / wpsocialninja.md / fluentforms.md  # Overviews
+│   │   ├── fluentcrm/ fluentcart/ wpsocialninja/ fluentforms/  # Per-endpoint docs + endpoints.json
 │   │   ├── auth.md               # Confirmed auth models (hand-written)
 │   │   └── MAINTAINING.md        # How scraping works + how to refresh (hand-written)
 │   ├── DECISIONS.md              # Append-only decision log

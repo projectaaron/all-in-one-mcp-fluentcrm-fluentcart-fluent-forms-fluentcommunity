@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { loadConfig, productEnvStatus } from '../../src/core/config.js';
+import { DEFAULT_LOCKED_TOOLS, loadConfig, productEnvStatus } from '../../src/core/config.js';
+import { individualNamesFor } from '../../src/core/action-tools.js';
+import { PRODUCTS } from '../../src/products/index.js';
 
 describe('config', () => {
   it('one shared credential pair enables every product', () => {
@@ -73,17 +75,37 @@ describe('config', () => {
 });
 
 describe('locked tools', () => {
-  it('defaults to the no-agent-use operations', () => {
+  // Derived from the exported constant rather than restating it: the list
+  // grows with every product, and a hardcoded copy turns each addition into
+  // an unrelated-looking failure here. The assertions below still have teeth
+  // — the default set must be exactly the constant, every entry must name a
+  // tool that actually exists, and the worst offenders must stay in it.
+  it('defaults to exactly DEFAULT_LOCKED_TOOLS', () => {
     const locked = loadConfig([], {} as NodeJS.ProcessEnv).lockedTools;
-    expect([...locked].sort()).toEqual([
-      'cart_licensing_regenerate_license_key',
-      'cart_settings_disconnect_payment_method',
-      'crm_contacts_delete_contacts',
-      'crm_settings_delete_rest_key',
+    expect([...locked].sort()).toEqual([...DEFAULT_LOCKED_TOOLS].sort());
+  });
+
+  it('every locked tool name is a real registered tool', () => {
+    const registered = new Set(
+      PRODUCTS.flatMap((p) => [
+        ...p.tools.flatMap((s) => Object.values(individualNamesFor(s))),
+        ...(p.extras?.mapTools.map((t) => t.name) ?? []),
+      ])
+    );
+    for (const name of DEFAULT_LOCKED_TOOLS) {
+      expect(registered.has(name), `${name} is locked by default but no such tool exists`).toBe(true);
+    }
+  });
+
+  it('keeps the catastrophic operations locked', () => {
+    for (const name of [
       'crm_settings_reset_database',
-      'crm_settings_test_delete_request',
+      'crm_contacts_delete_contacts',
       'social_settings_delete_all_data',
-    ]);
+      'forms_utilities_install_plugin',
+    ]) {
+      expect(DEFAULT_LOCKED_TOOLS).toContain(name);
+    }
   });
 
   it('supports none, replacement lists, and default expansion', () => {
@@ -93,6 +115,6 @@ describe('locked tools', () => {
     const extended = env('default, crm_contacts_bulk_action');
     expect(extended.has('crm_settings_reset_database')).toBe(true);
     expect(extended.has('crm_contacts_bulk_action')).toBe(true);
-    expect(extended.size).toBe(8);
+    expect(extended.size).toBe(DEFAULT_LOCKED_TOOLS.length + 1);
   });
 });

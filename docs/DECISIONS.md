@@ -580,3 +580,61 @@ docs refresh does not cover it (refreshing requires a live site, so it stays
 a manual `node scripts/gen-wpsocialninja-docs.mjs` run). Summary-field lists
 are best-effort guesses that degrade to generic pruning when a field name is
 wrong, because no schema exists to check them against.
+
+## 2026-09-10 — Fluent Forms: the docs said nonce, the source said capability
+
+Fourth product, 91 endpoints in 7 areas. Two things made it different from
+the three before it.
+
+**The docs claimed an auth model the plugin does not implement.** Every page
+of Fluent Forms' endpoint reference states `Auth: X-WP-Nonce header` and
+shows `curl -H 'X-WP-Nonce: <nonce>'`. Taken at face value that kills the
+integration outright — a server holding an Application Password cannot mint a
+WordPress nonce, so every one of the 91 tools would 401. Rather than trust it
+or guess around it, the claim was checked against the plugin source: routes
+attach policy classes, every policy resolves to `Acl::hasPermission()` →
+`current_user_can()`, and `Acl::verifyNonce()` opens with
+`if (!wp_doing_ajax()) return;`. No nonce is ever evaluated on a REST
+request. The docs are describing their own admin UI, which is
+cookie-authenticated and therefore *needs* a nonce — the same
+docs-describe-the-UI confusion that made FluentCRM's "create an API key" page
+look mandatory in July. `auth.md` now records the finding with the file
+references so the next reader doesn't re-derive it. The general rule this is
+the second instance of: **a docs page describing how the vendor's own
+JavaScript calls an API is not a statement about the API's auth model.**
+
+**Inventory came from two sources because neither alone is complete.** The
+docs site publishes an auto-extracted route reference (method, path,
+`Controller@action`) — real editorial the WP Social Ninja route index could
+not supply, and the source of every slug and summary here. But it is
+generated from a released tag: it lists 84 operations while the live site
+serves 91, the extra 7 being Pro licensing and the newer MCP-adapter routes.
+So the docs supply the names and the live index supplies the truth, and
+`gen-fluentforms-docs.mjs` fails loudly when they diverge from the committed
+table.
+
+**Two endpoints are locked, not merely gated.**
+`POST /suggested-plugins/install-plugin` reads `plugin_slug` straight from
+the request, passes it to `plugins_api()` and installs the result — an
+arbitrary plugin from wordpress.org, with no allowlist restricting it to the
+"suggested" set the name implies. With `activate-plugin` beside it, that is
+install-and-execute-new-code on the site, which belongs in the same
+no-agent-use tier as `crm_settings_reset_database` rather than behind a
+confirm an agent can satisfy on its own.
+
+**`POST /form-submit` is gated despite being neither a delete nor a reset.**
+It is the public front-end submission endpoint: calling it creates a genuine
+entry and fires notification emails, integration feeds and payment
+processing. "Hard to undo" is about consequences reaching the outside world,
+not about SQL, so it takes `confirm: true` like a refund does.
+
+**The area budget bound the design.** 53 areas existed; the coverage test
+caps the surface at 60. Seven areas for 91 endpoints was the constraint's
+answer, not a coincidence — `managers` and `roles` merged into
+`forms_admin` with global settings and licensing, and five small groups
+(logs, search, notices, plugin helpers, MCP settings) merged into
+`forms_utilities`. The cap is now exactly met, so product five forces a real
+decision: consolidate further, or raise a ceiling that was set when the
+server had two products. That decision was deliberately left to the session
+that actually needs it, with the reasoning recorded here rather than
+pre-empted by quietly widening the bound now.

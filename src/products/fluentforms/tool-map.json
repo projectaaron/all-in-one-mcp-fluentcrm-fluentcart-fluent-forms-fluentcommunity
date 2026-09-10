@@ -1,0 +1,65 @@
+{
+  "product": "fluentforms",
+  "toolPrefix": "forms",
+  "tools": {
+    "forms_forms": {
+      "description": "Create, read, update, duplicate, convert and delete forms, and inspect their fields, shortcodes, embedding pages and edit history.",
+      "groups": ["forms", "analytics"]
+    },
+    "forms_submissions": {
+      "description": "Read and manage form submissions (entries): filters, notes, logs, statuses, favorites, bulk actions, and the public submission endpoint.",
+      "groups": ["submissions", "form-submit"]
+    },
+    "forms_settings": {
+      "description": "Per-form settings: general options, confirmations, style customizer, entry columns, conversational design, and style presets.",
+      "groups": ["settings"]
+    },
+    "forms_integrations": {
+      "description": "Connect forms to third-party services: global integration credentials and per-form integration feeds.",
+      "groups": ["integrations"]
+    },
+    "forms_reports": {
+      "description": "Read-only analytics for forms: submission counts, completion rates, revenue, payment types, heatmaps and top-performing forms.",
+      "groups": ["report"]
+    },
+    "forms_admin": {
+      "description": "Site-level Fluent Forms administration: global settings, licensing, managers and role capabilities.",
+      "groups": ["global-settings", "license", "managers", "roles"],
+      "note": "The license endpoints require Fluent Forms Pro."
+    },
+    "forms_utilities": {
+      "description": "Maintenance and helper operations: system logs, global search, admin notices, plugin install helpers, and the MCP adapter settings.",
+      "groups": ["logs", "global-search", "notice", "suggested-plugins", "mcp"]
+    }
+  },
+  "operationOverrides": {
+    "report/query-submissions-report": {
+      "tool": "forms_submissions",
+      "summary": "Query Submissions Report (filtered read)"
+    },
+    "forms/clear-form-edit-history": { "destructive": true },
+    "forms/convert-form": {
+      "destructive": true,
+      "summary": "Convert Form Type (rewrites the form)"
+    },
+    "form-submit/submit-form": {
+      "destructive": true,
+      "summary": "Submit a Form Entry (public — fires notifications, integrations and payments)",
+      "bodyNote": "Public endpoint: this creates a REAL submission as an end user would, firing email notifications, integration feeds and payment processing. Body shape: {\"form_id\": <id>, \"data\": \"<url-encoded field=value pairs>\"} — the same payload the front-end form posts."
+    },
+    "suggested-plugins/install-plugin": {
+      "destructive": true,
+      "summary": "Install a WordPress Plugin",
+      "bodyNote": "Installs an ARBITRARY plugin from wordpress.org by slug ({\"plugin_slug\": \"...\"}) — the endpoint does not restrict the slug to Fluent Forms' suggestions."
+    },
+    "suggested-plugins/activate-plugin": {
+      "destructive": true,
+      "summary": "Activate a WordPress Plugin",
+      "bodyNote": "Activates any installed plugin by slug ({\"plugin_slug\": \"...\"}) — i.e. starts executing its code on the site."
+    },
+    "mcp/install-mcp-adapter": {
+      "destructive": true,
+      "summary": "Install the MCP Adapter Plugin"
+    }
+  }
+}
