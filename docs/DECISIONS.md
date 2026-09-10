@@ -638,3 +638,58 @@ decision: consolidate further, or raise a ceiling that was set when the
 server had two products. That decision was deliberately left to the session
 that actually needs it, with the reasoning recorded here rather than
 pre-empted by quietly widening the bound now.
+
+## 2026-09-10 — FluentCommunity (274 endpoints), and retiring the global area cap
+
+Fifth product, and the one that made the area budget's flaw concrete.
+
+**The cap measured the wrong thing.** `coverage.test.ts` capped the whole
+server at 60 areas. Four products landed on exactly 60, so FluentCommunity
+could not be added at any level of consolidation — even collapsing it into a
+single 274-endpoint area would have failed. That is a cap that fails on
+breadth rather than on sloppiness. Per TOOL_DESIGN principle 2 the budget
+exists so the `tool_map` overview stays scannable in one read, and the thing
+that actually threatens that is one product fragmenting into thin areas. A
+site also only ever sees areas for the products it has configured, so the
+global total was never what a session faced. The rule is now **per product
+(≤ 25 areas)** — the discipline that bites: FluentCart fits 381 endpoints
+into 22, FluentCommunity 274 into 8 — with the floor of 30 kept and a loose
+absolute ceiling of 100 as a smoke alarm. The previous session deliberately
+left this decision rather than widening the bound pre-emptively; this is that
+decision, made with the reasoning attached rather than as a number bump.
+
+**274 operations were named by derivation, not by hand.** Hand-writing 274
+slugs and summaries invites transcription errors, so the table was derived
+from the live route index with rules (tail tokens that are really verbs —
+`join`, `leave`, `react`, `duplicate`, `bulk-import` — become the verb;
+collection vs item decides list/get and create/save; item paths singularize
+the resource), then a review pass fixed the ~90 that still read badly
+(`create-auth-settings` → `save-auth-settings`, `save-chat-groups-delete` →
+`delete-chat-group`). Two names are pinned via `toolName` where the stemmer's
+output was unreadable. Zero collisions, and the generator's live check makes
+the whole table falsifiable.
+
+**Member-context writes are a category the other products don't have.**
+FluentCRM and FluentCart write *about* people; FluentCommunity writes *as*
+one. Creating a post, commenting, reacting, joining a space, sending a chat
+message and enrolling in a course all act as the authenticated user, so an
+admin application password does not merely grant permission — it lends the
+admin's persona to whatever the agent does, publicly. That is recorded in
+`auth.md` as part of the auth model rather than buried in tool descriptions,
+because it changes what a credential *means* here.
+
+**Gating followed precedent instead of instinct.** The instinct was to gate
+chat messages and invitations as outward-facing. The existing overrides say
+otherwise: FluentCRM gates campaign sends and mass resends but leaves
+`send_contact_custom_email` open. The consistent line is **mass** versus
+**individual**, so `batch_create_feeds` and the four bulk member/student
+imports gate, while a single post or DM does not. Checking the precedent
+changed the answer, which is the point of having one.
+
+**One safety difference from Fluent Forms worth naming.** Both products
+expose a plugin installer. Fluent Forms' takes an arbitrary wordpress.org
+slug and is therefore locked; FluentCommunity's validates the slug against
+its own addon allowlist (`if (!isset($addons[$pluginSlug]))`), so it is
+merely confirm-gated. Same-looking endpoint, different blast radius —
+verified in `SettingController::installPlugin` rather than assumed from the
+name.
