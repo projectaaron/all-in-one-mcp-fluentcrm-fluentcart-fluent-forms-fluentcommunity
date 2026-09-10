@@ -2,6 +2,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import type { Server } from 'node:http';
 import { loadConfig } from '../src/core/config.js';
 import { createRemoteServer, MIN_TOKEN_LENGTH } from '../src/remote-server.js';
+import { PRODUCTS } from '../src/products/index.js';
 import { INDIVIDUAL_TOOL_COUNT } from './helpers.js';
 
 const TOKEN = 'test-secret-token-0123456789abcdef';
@@ -15,7 +16,7 @@ let server: Server;
 let base: string;
 
 beforeAll(async () => {
-  server = createRemoteServer(loadConfig(['FLUENTCRM', 'FLUENTCART'], env), TOKEN);
+  server = createRemoteServer(loadConfig(PRODUCTS.map((p) => p.envPrefix), env), TOKEN);
   await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
   const addr = server.address();
   if (!addr || typeof addr === 'string') throw new Error('no address');

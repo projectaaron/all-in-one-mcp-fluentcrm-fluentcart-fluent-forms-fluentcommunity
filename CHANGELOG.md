@@ -2,6 +2,33 @@
 
 ## Unreleased
 
+**New product: WP Social Ninja — 126 endpoints, 9 areas, `social_*` tools.**
+The third WPManageNinja product on the server, covering platform reviews,
+testimonials, widget templates, platform connections and syncing, chat
+widgets, sales notifications, shoppable Instagram feeds, global settings, and
+the Pro review-collection surface (review forms, custom sources, QR codes,
+WooCommerce/FluentCart imports).
+
+- **Inventory from the live route index, not a docs site.** WP Social Ninja
+  publishes no OpenAPI reference, so `scripts/gen-wpsocialninja-docs.mjs`
+  captures `GET /wp-json/wpsocialreviews/v2` and checks it against a
+  hand-curated operation table (groups, slugs, summaries) — any live/table
+  drift fails the run with the routes named, mirroring the OpenAPI
+  pipeline's loud-on-drift behavior. Body shapes are undocumented upstream;
+  the reference says so and points at read-first workflows.
+- **Auth verified live:** standard capability-checked WordPress Application
+  Passwords, like the Fluent products (`docs/api-reference/auth.md` gains a
+  section). The shared `FLUENT_API_*` credentials enable it automatically;
+  `WPSOCIALNINJA_API_*` overrides are honored.
+- **Safety:** all 22 DELETE operations confirm-gate, and
+  `social_settings_delete_all_data` (drops every review, template, and
+  setting the plugin owns) joins the default `FLUENT_LOCKED_TOOLS` list.
+- Nine GET+PUT pairs (`/settings`, `/shoppable`, review forms, managers,
+  notifications, chat-widget and template meta) picked up merge-mode writes
+  with verification automatically — no per-product code.
+- Tool total: 700 → 826 endpoint tools (834 registered incl. extras and
+  built-ins), 44 → 53 areas.
+
 **Writes are now self-describing: merge by default, verified after, and
 previewable.** The Fluent update endpoints behave as full replaces — fields
 omitted from a PUT body are cleared, not preserved — while returning 200
