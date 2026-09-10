@@ -142,6 +142,28 @@ Example calls:
 - `social_settings`: `{"name":"social_settings_list_managers","arguments":{"per_page":5}}`
 - `social_collection`: `{"name":"social_collection_list_review_forms","arguments":{"per_page":5}}`
 
+## Fluent Forms (`forms_*`, 7 areas, 91 tools)
+
+| Area | Class | Tools | Description |
+|------|-------|-------|-------------|
+| `forms_forms` | read/write/delete | 17 | Create, read, update, duplicate, convert and delete forms, and inspect their fields, shortcodes, embedding pages and edit history. |
+| `forms_submissions` | read/write/delete | 17 | Read and manage form submissions (entries): filters, notes, logs, statuses, favorites, bulk actions, and the public submission endpoint. |
+| `forms_settings` | read/write/delete | 12 | Per-form settings: general options, confirmations, style customizer, entry columns, conversational design, and style presets. |
+| `forms_integrations` | read/write/delete | 8 | Connect forms to third-party services: global integration credentials and per-form integration feeds. |
+| `forms_reports` | read | 14 | Read-only analytics for forms: submission counts, completion rates, revenue, payment types, heatmaps and top-performing forms. |
+| `forms_admin` | read/write/delete | 11 | Site-level Fluent Forms administration: global settings, licensing, managers and role capabilities. |
+| `forms_utilities` | read/write/delete | 12 | Maintenance and helper operations: system logs, global search, admin notices, plugin install helpers, and the MCP adapter settings. |
+
+Example calls:
+
+- `forms_forms`: `{"name":"forms_forms_list","arguments":{"per_page":5}}`
+- `forms_submissions`: `{"name":"forms_submissions_list","arguments":{"per_page":5}}`
+- `forms_settings`: `{"name":"forms_settings_get","arguments":{"form_id":123}}`
+- `forms_integrations`: `{"name":"forms_integrations_list_global","arguments":{"per_page":5}}`
+- `forms_reports`: `{"name":"forms_reports_list","arguments":{"per_page":5}}`
+- `forms_admin`: `{"name":"forms_admin_list_managers","arguments":{"per_page":5}}`
+- `forms_utilities`: `{"name":"forms_utilities_list_logs","arguments":{"per_page":5}}`
+
 ## Server built-ins (5 tools)
 
 | Tool | Class | Description |
@@ -156,4 +178,4 @@ Examples: `{"name": "verify_setup", "arguments": {}}` ·
 `{"name": "tool_map", "arguments": {"search": "refund"}}` ·
 `{"name": "wp_media_upload_from_url", "arguments": {"source_url": "https://cdn.example.com/photo.jpg", "alt_text": "Product photo"}}`
 
-**Total: 834 tools** (`FLUENT_TOOL_MODE=grouped` serves 55 instead).
+**Total: 925 tools** (`FLUENT_TOOL_MODE=grouped` serves 62 instead).

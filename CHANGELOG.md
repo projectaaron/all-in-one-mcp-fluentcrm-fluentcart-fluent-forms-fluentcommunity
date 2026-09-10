@@ -2,6 +2,46 @@
 
 ## Unreleased
 
+**New product: Fluent Forms — 91 endpoints, 7 areas, `forms_*` tools.** The
+fourth WPManageNinja product: forms (CRUD, duplicate, convert, fields,
+shortcodes, embed pages, edit history), submissions/entries (notes, logs,
+statuses, favorites, bulk actions), per-form settings, integrations,
+read-only reports, site administration (global settings, licensing,
+managers, roles) and utilities (logs, global search, plugin helpers, the
+MCP-adapter settings).
+
+- **Inventory: docs reference + live reconciliation.** Fluent Forms publishes
+  an auto-extracted route reference (method, path, `Controller@action`) but
+  no OpenAPI specs, so `scripts/gen-fluentforms-docs.mjs` curates the
+  operation table from it and checks it against the live
+  `GET /wp-json/fluentform/v1` index on every run, failing loudly on drift.
+  The docs cover 84 operations; the live site serves 91 — the extra 7 are Pro
+  licensing and the newer MCP-adapter routes, now documented here.
+- **The docs' "Auth: X-WP-Nonce" is not a second auth model.** Every endpoint
+  page shows a nonce header, which would imply Application Passwords can't
+  work. Verified in the plugin source instead: the route policies are pure
+  capability checks (`Acl::hasPermission()` → `current_user_can()`), and
+  `Acl::verifyNonce()` returns early unless `wp_doing_ajax()`, so no nonce is
+  checked on REST requests. The nonce is simply what the cookie-authenticated
+  admin UI must send. `auth.md` records this so nobody re-derives it.
+- **Safety.** 16 confirm-gated operations. Three are gated on inspection, not
+  the slug heuristic: `forms_forms_clear_edit_history` (deletes history),
+  `forms_forms_convert` (rewrites the form), and `forms_submissions_submit` —
+  the public endpoint, which creates a **real** entry and fires notification
+  emails, integration feeds and payment processing. Two more ship
+  **admin-locked** by default: `forms_utilities_install_plugin` and
+  `forms_utilities_activate_plugin` take an arbitrary wordpress.org slug with
+  no allowlist, i.e. they install and run new code on the site.
+- **`forms_reports` is strictly read-only.** Its one POST
+  (`/report/submissions`, a filtered query) is registered under
+  `forms_submissions` so the reporting area keeps its read-only annotation.
+- The locked-tools test now derives from `DEFAULT_LOCKED_TOOLS` instead of
+  restating it, and additionally asserts every locked name is a real
+  registered tool — that hardcoded copy had broken on each of the last three
+  product/lock changes.
+- Tool total: 826 → 917 endpoint tools (925 registered incl. extras and
+  built-ins), 53 → 60 areas.
+
 **New product: WP Social Ninja — 126 endpoints, 9 areas, `social_*` tools.**
 The third WPManageNinja product on the server, covering platform reviews,
 testimonials, widget templates, platform connections and syncing, chat

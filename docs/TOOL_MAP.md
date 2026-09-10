@@ -1,7 +1,7 @@
 # Tool map
 
 The fast map of this server: **every tool, one line each, grouped by area** —
-834 tools in 53 areas. **Generated** by
+925 tools in 60 areas. **Generated** by
 `scripts/gen-tool-catalog.mjs` from the live registry; regenerate after any
 tool-surface change. Sessions get the same map at runtime from the
 `tool_map` tool (no args = area overview, `{"area": …}` /
@@ -69,6 +69,13 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 | `social_shoppable` | 5 | Manage the shoppable Instagram feed and its product-tagged posts. |
 | `social_settings` | 23 | Global WP Social Ninja settings: general and advanced options, translations, licensing, managers, resets, and the onboarding wizard. |
 | `social_collection` | 29 | Collect new reviews: review forms, custom sources, get-reviews QR codes, form captcha, FluentCRM tagging, and WooCommerce/FluentCart review imports. |
+| `forms_forms` | 17 | Create, read, update, duplicate, convert and delete forms, and inspect their fields, shortcodes, embedding pages and edit history. |
+| `forms_submissions` | 17 | Read and manage form submissions (entries): filters, notes, logs, statuses, favorites, bulk actions, and the public submission endpoint. |
+| `forms_settings` | 12 | Per-form settings: general options, confirmations, style customizer, entry columns, conversational design, and style presets. |
+| `forms_integrations` | 8 | Connect forms to third-party services: global integration credentials and per-form integration feeds. |
+| `forms_reports` | 14 | Read-only analytics for forms: submission counts, completion rates, revenue, payment types, heatmaps and top-performing forms. |
+| `forms_admin` | 11 | Site-level Fluent Forms administration: global settings, licensing, managers and role capabilities. |
+| `forms_utilities` | 12 | Maintenance and helper operations: system logs, global search, admin notices, plugin install helpers, and the MCP adapter settings. |
 | `server` | 5 | Built-in tools: this map, setup verification, and the WordPress media library. |
 
 ## FluentCRM (`crm_*`)
@@ -1061,6 +1068,120 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `social_collection_quick_setup_woocommerce` — Quick Setup WooCommerce Reviews
 - `social_collection_quick_setup_fluent_cart` — Quick Setup FluentCart Reviews
 - `social_collection_connect_fluent_cart_products` — Connect All FluentCart Products
+
+## Fluent Forms (`forms_*`)
+
+### forms_forms — Create, read, update, duplicate, convert and delete forms, and inspect their fields, shortcodes, embedding pages and edit history.
+
+- `forms_forms_list` — List Forms (paginated)
+- `forms_forms_create` — Create Form
+- `forms_forms_ping` — Ping Forms API
+- `forms_forms_list_templates` — List Form Templates (paginated)
+- `forms_forms_get(form_id)` — Get Form
+- `forms_forms_update(form_id)` — Update Form
+- `forms_forms_delete(form_id)` ⚠ — Delete Form
+- `forms_forms_duplicate(form_id)` — Duplicate Form
+- `forms_forms_convert(form_id)` ⚠ — Convert Form Type (rewrites the form)
+- `forms_forms_clear_edit_history(form_id)` ⚠ — Clear Form Edit History
+- `forms_forms_get_edit_history(form_id)` — Get Form Edit History
+- `forms_forms_get_fields(form_id)` — Get Form Fields
+- `forms_forms_find_shortcode_page(form_id)` — Find Form Shortcode Page
+- `forms_forms_list_pages(form_id)` — List Pages Embedding the Form (paginated)
+- `forms_forms_get_resources(form_id)` — Get Form Resources
+- `forms_forms_get_shortcodes(form_id)` — Get Form Shortcodes
+- `forms_forms_reset_analytics(form_id)` ⚠ — Reset Form Analytics
+
+### forms_submissions — Read and manage form submissions (entries): filters, notes, logs, statuses, favorites, bulk actions, and the public submission endpoint.
+
+- `forms_submissions_list` — List Submissions (paginated)
+- `forms_submissions_list_all` — List All Submissions (paginated)
+- `forms_submissions_bulk_action` ⚠ — Bulk Action Submissions
+- `forms_submissions_print` — Print Submissions
+- `forms_submissions_get_resources` — Get Submission Resources
+- `forms_submissions_get(entry_id)` — Get Submission
+- `forms_submissions_delete(entry_id)` ⚠ — Delete Submission
+- `forms_submissions_toggle_favorite(entry_id)` — Toggle Submission Favorite
+- `forms_submissions_get_logs(entry_id)` — Get Submission Logs
+- `forms_submissions_delete_logs(entry_id)` ⚠ — Delete Submission Logs
+- `forms_submissions_get_notes(entry_id)` — Get Submission Notes
+- `forms_submissions_create_note(entry_id)` — Create Submission Note
+- `forms_submissions_update_status(entry_id)` — Update Submission Status
+- `forms_submissions_get_users(entry_id)` — Get Submission Users
+- `forms_submissions_update_user(entry_id)` — Update Submission User
+- `forms_submissions_submit` ⚠ — Submit a Form Entry (public — fires notifications, integrations and payments)
+- `forms_submissions_query_report` — Query Submissions Report (filtered read)
+
+### forms_settings — Per-form settings: general options, confirmations, style customizer, entry columns, conversational design, and style presets.
+
+- `forms_settings_get(form_id)` — Get Form Settings
+- `forms_settings_save(form_id)` — Save Form Settings
+- `forms_settings_delete(form_id)` ⚠ — Delete Form Settings
+- `forms_settings_get_general(form_id)` — Get General Form Settings
+- `forms_settings_save_general(form_id)` — Save General Form Settings
+- `forms_settings_get_customizer(form_id)` — Get Form Customizer Settings
+- `forms_settings_save_customizer(form_id)` — Save Form Customizer Settings
+- `forms_settings_save_entry_columns(form_id)` — Save Entry Columns
+- `forms_settings_get_conversational_design(form_id)` — Get Conversational Form Design
+- `forms_settings_save_conversational_design(form_id)` — Save Conversational Form Design
+- `forms_settings_get_preset(form_id)` — Get Form Style Preset
+- `forms_settings_save_preset(form_id)` — Save Form Style Preset
+
+### forms_integrations — Connect forms to third-party services: global integration credentials and per-form integration feeds.
+
+- `forms_integrations_list_global` — List Global Integrations (paginated)
+- `forms_integrations_save_global` — Save Global Integration
+- `forms_integrations_update_module_status` — Update Integration Module Status
+- `forms_integrations_get(form_id)` — Get Form Integration
+- `forms_integrations_save(form_id)` — Save Form Integration
+- `forms_integrations_delete(form_id)` ⚠ — Delete Form Integration
+- `forms_integrations_list(form_id)` — List Form Integrations (paginated)
+- `forms_integrations_get_list_component(form_id)` — Get Integration List Component
+
+### forms_reports — Read-only analytics for forms: submission counts, completion rates, revenue, payment types, heatmaps and top-performing forms.
+
+- `forms_reports_get_api_logs` — Get API Logs Report
+- `forms_reports_get_completion_rate` — Get Form Completion Rate
+- `forms_reports_get_country_heatmap` — Get Country Heatmap
+- `forms_reports_get_stats` — Get Form Stats
+- `forms_reports_get(form_id)` — Get Form Report
+- `forms_reports_get_heatmap_data` — Get Heatmap Data
+- `forms_reports_get_net_revenue` — Get Net Revenue
+- `forms_reports_get_overview_chart` — Get Overview Chart
+- `forms_reports_get_payment_types` — Get Payment Types Report
+- `forms_reports_get_revenue_chart` — Get Revenue Chart
+- `forms_reports_list` — List Forms for Reports (paginated)
+- `forms_reports_get_submissions_analysis` — Get Submissions Analysis
+- `forms_reports_get_subscriptions` — Get Subscriptions Report
+- `forms_reports_get_top_performing` — Get Top Performing Forms
+
+### forms_admin — Site-level Fluent Forms administration: global settings, licensing, managers and role capabilities. The license endpoints require Fluent Forms Pro.
+
+- `forms_admin_get_global_settings` — Get Global Settings
+- `forms_admin_save_global_settings` — Save Global Settings
+- `forms_admin_get_license` — Get License Status
+- `forms_admin_activate_license` — Activate License
+- `forms_admin_deactivate_license` ⚠ — Deactivate License
+- `forms_admin_list_managers` — List Managers (paginated)
+- `forms_admin_add_manager` — Add Manager
+- `forms_admin_remove_manager` ⚠ — Remove Manager
+- `forms_admin_list_manager_users` — List Assignable Users (paginated)
+- `forms_admin_list_roles` — List Roles and Capabilities (paginated)
+- `forms_admin_add_role_capability` — Add Role Capability
+
+### forms_utilities — Maintenance and helper operations: system logs, global search, admin notices, plugin install helpers, and the MCP adapter settings.
+
+- `forms_utilities_list_logs` — List Logs (paginated)
+- `forms_utilities_delete_logs` ⚠ — Delete Logs
+- `forms_utilities_get_log_filters` — Get Log Filters
+- `forms_utilities_global_search` — Global Search
+- `forms_utilities_handle_admin_notice` — Handle Admin Notice Action
+- `forms_utilities_check_plugin_statuses` — Check Plugin Statuses
+- `forms_utilities_install_plugin` ⚠ 🔒 — Install a WordPress Plugin
+- `forms_utilities_activate_plugin` ⚠ 🔒 — Activate a WordPress Plugin
+- `forms_utilities_get_mcp_status` — Get MCP Adapter Status
+- `forms_utilities_toggle_mcp` — Toggle MCP Adapter
+- `forms_utilities_install_mcp_adapter` ⚠ — Install the MCP Adapter Plugin
+- `forms_utilities_get_mcp_config_snippets` — Get MCP Config Snippets
 
 ## Server built-ins
 
