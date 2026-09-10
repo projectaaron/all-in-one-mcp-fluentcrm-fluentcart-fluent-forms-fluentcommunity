@@ -17,6 +17,7 @@ if (!existsSync('dist/index.js')) {
 const READS = {
   fluentcrm: { tool: 'crm_tags_list', args: { per_page: 1 }, label: 'FluentCRM: list 1 tag' },
   fluentcart: { tool: 'cart_labels_attributes_list', args: { per_page: 1 }, label: 'FluentCart: list 1 label' },
+  wpsocialninja: { tool: 'social_platforms_list_enabled', args: {}, label: 'WP Social Ninja: list enabled platforms' },
 };
 
 // Pin the individual surface — the READS table uses individual tool names,
