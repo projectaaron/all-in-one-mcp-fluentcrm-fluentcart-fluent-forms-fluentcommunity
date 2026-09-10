@@ -237,9 +237,9 @@ describe('buildServer tool modes', () => {
     siteUrl: creds ? 'https://example.com' : undefined,
     timeoutMs: 1000,
     maxRetries: 0,
-    credentials: creds
-      ? { FLUENTCRM: { username: 'u', password: 'p' }, FLUENTCART: { username: 'u', password: 'p' } }
-      : { FLUENTCRM: undefined, FLUENTCART: undefined },
+    credentials: Object.fromEntries(
+      PRODUCTS.map((p) => [p.envPrefix, creds ? { username: 'u', password: 'p' } : undefined])
+    ),
     toolMode,
   });
 
@@ -247,8 +247,9 @@ describe('buildServer tool modes', () => {
     expect(buildServer(config('individual')).toolCount).toBe(INDIVIDUAL_TOOL_COUNT);
   });
 
-  it('grouped mode keeps the legacy surface (43 areas + extras + verify_setup, wp_media, tool_map)', () => {
-    expect(buildServer(config('grouped')).toolCount).toBe(46 + PRODUCT_EXTRA_TOOLS);
+  it('grouped mode keeps the legacy surface (one tool per area + extras + verify_setup, wp_media, tool_map)', () => {
+    const areaCount = PRODUCTS.reduce((n, p) => n + p.tools.length, 0);
+    expect(buildServer(config('grouped')).toolCount).toBe(areaCount + PRODUCT_EXTRA_TOOLS + 3);
   });
 
   it('with nothing configured only tool_map and verify_setup register', () => {

@@ -73,7 +73,7 @@ describe('config', () => {
 });
 
 describe('locked tools', () => {
-  it('defaults to the six no-agent-use operations', () => {
+  it('defaults to the no-agent-use operations', () => {
     const locked = loadConfig([], {} as NodeJS.ProcessEnv).lockedTools;
     expect([...locked].sort()).toEqual([
       'cart_licensing_regenerate_license_key',
@@ -82,6 +82,7 @@ describe('locked tools', () => {
       'crm_settings_delete_rest_key',
       'crm_settings_reset_database',
       'crm_settings_test_delete_request',
+      'social_settings_delete_all_data',
     ]);
   });
 
@@ -92,6 +93,6 @@ describe('locked tools', () => {
     const extended = env('default, crm_contacts_bulk_action');
     expect(extended.has('crm_settings_reset_database')).toBe(true);
     expect(extended.has('crm_contacts_bulk_action')).toBe(true);
-    expect(extended.size).toBe(7);
+    expect(extended.size).toBe(8);
   });
 });

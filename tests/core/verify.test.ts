@@ -33,7 +33,7 @@ describe('verify_setup', () => {
     const config = loadConfig(PRODUCTS.map((p) => p.envPrefix), env);
     const entries: ProductEntry[] = PRODUCTS.map((module) => ({ module, status: productEnvStatus(config, module.envPrefix) }));
     const res = await callVerify(entries, env);
-    expect(res.structuredContent.products).toHaveLength(2);
+    expect(res.structuredContent.products).toHaveLength(PRODUCTS.length);
     for (const p of res.structuredContent.products) {
       expect(p.status).toBe('not_configured');
       expect(String(p.detail)).toContain('_API_USERNAME');

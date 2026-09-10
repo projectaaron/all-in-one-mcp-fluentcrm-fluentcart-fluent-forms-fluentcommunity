@@ -1,7 +1,7 @@
 # Tool map
 
 The fast map of this server: **every tool, one line each, grouped by area** —
-708 tools in 44 areas. **Generated** by
+834 tools in 53 areas. **Generated** by
 `scripts/gen-tool-catalog.mjs` from the live registry; regenerate after any
 tool-surface change. Sessions get the same map at runtime from the
 `tool_map` tool (no args = area overview, `{"area": …}` /
@@ -60,6 +60,15 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 | `cart_licensing` | 27 | Manage software licenses: view, extend, regenerate keys, change limits, activate or deactivate sites, plus the public license verification endpoints (FluentCart Pro). |
 | `cart_roles` | 9 | Manage FluentCart shop roles, permissions, and user assignments (FluentCart Pro). |
 | `cart_order_bumps` | 5 | Manage checkout order bumps: list, create, update, and delete (FluentCart Pro). |
+| `social_reviews` | 11 | Manage the reviews collected from connected platforms: list, edit, duplicate, categorize, change status, or mark as spam. |
+| `social_testimonials` | 11 | Manage hand-written testimonials, their statuses, spam flags, and categories. |
+| `social_templates` | 14 | Manage the review and social-feed widget templates rendered on the site via shortcodes and blocks. |
+| `social_platforms` | 20 | Connect review and feed platforms (Google, Facebook, Instagram, …), manage their configs, and sync their content. |
+| `social_chat_widgets` | 8 | Manage floating chat widgets (WhatsApp, Messenger, Telegram, …) shown on the site. |
+| `social_notifications` | 5 | Manage sales/social-proof notification popups. |
+| `social_shoppable` | 5 | Manage the shoppable Instagram feed and its product-tagged posts. |
+| `social_settings` | 23 | Global WP Social Ninja settings: general and advanced options, translations, licensing, managers, resets, and the onboarding wizard. |
+| `social_collection` | 29 | Collect new reviews: review forms, custom sources, get-reviews QR codes, form captcha, FluentCRM tagging, and WooCommerce/FluentCart review imports. |
 | `server` | 5 | Built-in tools: this map, setup verification, and the WordPress media library. |
 
 ## FluentCRM (`crm_*`)
@@ -897,6 +906,161 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `cart_order_bumps_get(id)` — Get Order Bump
 - `cart_order_bumps_list` — List Order Bumps (paginated)
 - `cart_order_bumps_update(id)` — Update Order Bump
+
+## WP Social Ninja (`social_*`)
+
+### social_reviews — Manage the reviews collected from connected platforms: list, edit, duplicate, categorize, change status, or mark as spam.
+
+- `social_reviews_list` — List Reviews (paginated)
+- `social_reviews_create` — Create Review
+- `social_reviews_delete` ⚠ — Delete Reviews
+- `social_reviews_update(id)` — Update Review
+- `social_reviews_duplicate` — Duplicate Review
+- `social_reviews_update_statuses` — Update Review Statuses
+- `social_reviews_mark_spam` — Mark Reviews as Spam
+- `social_reviews_bulk_assign_category` — Bulk Assign Review Category
+- `social_reviews_list_categories` — List Review Categories (paginated)
+- `social_reviews_update_category(id)` — Update Review Category
+- `social_reviews_delete_category(id)` ⚠ — Delete Review Category
+
+### social_testimonials — Manage hand-written testimonials, their statuses, spam flags, and categories.
+
+- `social_testimonials_list` — List Testimonials (paginated)
+- `social_testimonials_create` — Create Testimonial
+- `social_testimonials_delete` ⚠ — Delete Testimonials
+- `social_testimonials_update(id)` — Update Testimonial
+- `social_testimonials_duplicate` — Duplicate Testimonial
+- `social_testimonials_update_statuses` — Update Testimonial Statuses
+- `social_testimonials_mark_spam` — Mark Testimonials as Spam
+- `social_testimonials_bulk_assign_category` — Bulk Assign Testimonial Category
+- `social_testimonials_list_categories` — List Testimonial Categories (paginated)
+- `social_testimonials_update_category(id)` — Update Testimonial Category
+- `social_testimonials_delete_category(id)` ⚠ — Delete Testimonial Category
+
+### social_templates — Manage the review and social-feed widget templates rendered on the site via shortcodes and blocks.
+
+- `social_templates_list` — List Templates (paginated)
+- `social_templates_create` — Create Template
+- `social_templates_delete` ⚠ — Delete Templates
+- `social_templates_duplicate` — Duplicate Template
+- `social_templates_update_title(id)` — Update Template Title
+- `social_templates_get_reviews(id)` — Get Reviews Template Meta
+- `social_templates_update_reviews(id)` — Update Reviews Template Meta
+- `social_templates_edit_reviews(id)` — Edit Reviews Template
+- `social_templates_load_more_reviews(id)` — Load More Template Reviews
+- `social_templates_can_enable_ai_summary(id)` — Can Enable AI Summary
+- `social_templates_get_reviews_first_round(id, isFirstRound)` — Get Reviews Template (First Round)
+- `social_templates_get_feed(id)` — Get Feed Template Meta
+- `social_templates_update_feed(id)` — Update Feed Template Meta
+- `social_templates_edit_feed(id)` — Edit Feed Template
+
+### social_platforms — Connect review and feed platforms (Google, Facebook, Instagram, …), manage their configs, and sync their content.
+
+- `social_platforms_list` — List Platforms (paginated)
+- `social_platforms_list_enabled` — List Enabled Platforms (paginated)
+- `social_platforms_get_statuses` — Get Platform Statuses
+- `social_platforms_update_statuses` — Update Platform Statuses
+- `social_platforms_update_addons` — Update Platform Addons
+- `social_platforms_subscribe_updates` — Subscribe to Platform Updates
+- `social_platforms_get_dashboard_notices` — Get Dashboard Notices
+- `social_platforms_update_dashboard_notices` — Update Dashboard Notices
+- `social_platforms_get_review_configs` — Get Review Platform Configs
+- `social_platforms_save_review_config` — Save Review Platform Config
+- `social_platforms_delete_review_config` ⚠ — Delete Review Platform Config
+- `social_platforms_prepare_review_connect` — Prepare Review Platform Connect
+- `social_platforms_consume_review_connect` — Consume Review Platform Connect
+- `social_platforms_sync_reviews` — Manually Sync Platform Reviews
+- `social_platforms_fetch_reviews` — Fetch Platform Reviews
+- `social_platforms_get_feed_configs` — Get Feed Platform Configs
+- `social_platforms_save_feed_config` — Save Feed Platform Config
+- `social_platforms_delete_feed_config` ⚠ — Delete Feed Platform Config
+- `social_platforms_prepare_feed_connect` — Prepare Feed Platform Connect
+- `social_platforms_consume_feed_connect` — Consume Feed Platform Connect
+
+### social_chat_widgets — Manage floating chat widgets (WhatsApp, Messenger, Telegram, …) shown on the site.
+
+- `social_chat_widgets_list` — List Chat Widgets (paginated)
+- `social_chat_widgets_create` — Create Chat Widget
+- `social_chat_widgets_update_statuses` — Update Chat Widget Statuses
+- `social_chat_widgets_delete` ⚠ — Delete Chat Widgets
+- `social_chat_widgets_duplicate` — Duplicate Chat Widget
+- `social_chat_widgets_get(id)` — Get Chat Widget Meta
+- `social_chat_widgets_update(id)` — Update Chat Widget Meta
+- `social_chat_widgets_reset(id)` ⚠ — Reset Chat Widget Meta
+
+### social_notifications — Manage sales/social-proof notification popups.
+
+- `social_notifications_list` — List Notifications (paginated)
+- `social_notifications_create` — Create Notification
+- `social_notifications_update` — Update Notification
+- `social_notifications_delete` ⚠ — Delete Notifications
+- `social_notifications_duplicate` — Duplicate Notification
+
+### social_shoppable — Manage the shoppable Instagram feed and its product-tagged posts.
+
+- `social_shoppable_get_feed` — Get Shoppable Feed
+- `social_shoppable_update_feed` — Update Shoppable Feed
+- `social_shoppable_delete_feed` ⚠ — Delete Shoppable Feed
+- `social_shoppable_list_posts` — List Shoppable Posts (paginated)
+- `social_shoppable_update_template_settings(id)` — Update Shoppable Template Settings
+
+### social_settings — Global WP Social Ninja settings: general and advanced options, translations, licensing, managers, resets, and the onboarding wizard. The manager endpoints (/pro/settings/managers) require WP Social Ninja Pro.
+
+- `social_settings_get` — Get Global Settings
+- `social_settings_save` — Save Global Settings
+- `social_settings_delete` ⚠ — Delete Global Settings
+- `social_settings_get_advanced` — Get Advanced Settings
+- `social_settings_save_advanced` — Save Advanced Settings
+- `social_settings_get_translations` — Get Translations
+- `social_settings_save_translations` — Save Translations
+- `social_settings_get_license` — Get License
+- `social_settings_activate_license` — Activate License
+- `social_settings_deactivate_license` ⚠ — Deactivate License
+- `social_settings_delete_twitter_card` ⚠ — Delete Twitter Card Connection
+- `social_settings_reset_cached_images` ⚠ — Reset Cached Images
+- `social_settings_reset_error_log` ⚠ — Reset Error Log
+- `social_settings_delete_all_data` ⚠ 🔒 — Delete All Plugin Data
+- `social_settings_search_pages` — Search Site Pages (paginated)
+- `social_settings_list_managers` — List Managers (paginated)
+- `social_settings_add_manager` — Add Manager
+- `social_settings_update_manager` — Update Manager
+- `social_settings_delete_manager(id)` ⚠ — Delete Manager
+- `social_settings_get_onboarding` — Get Onboarding State
+- `social_settings_save_onboarding` — Save Onboarding Step
+- `social_settings_get_onboarding_config` — Get Onboarding Config
+- `social_settings_skip_onboarding` — Skip Onboarding
+
+### social_collection — Collect new reviews: review forms, custom sources, get-reviews QR codes, form captcha, FluentCRM tagging, and WooCommerce/FluentCart review imports. Requires WP Social Ninja Pro (all endpoints live under /pro/).
+
+- `social_collection_list_review_forms` — List Review Forms (paginated)
+- `social_collection_create_review_form` — Create Review Form
+- `social_collection_delete_review_forms` ⚠ — Delete Review Forms
+- `social_collection_get_review_form(id)` — Get Review Form
+- `social_collection_update_review_form(id)` — Update Review Form
+- `social_collection_duplicate_review_form(id)` — Duplicate Review Form
+- `social_collection_update_review_form_statuses` — Update Review Form Statuses
+- `social_collection_list_custom_sources` — List Custom Sources (paginated)
+- `social_collection_create_custom_source` — Create Custom Source
+- `social_collection_delete_custom_sources` ⚠ — Delete Custom Sources
+- `social_collection_get_custom_source(id)` — Get Custom Source
+- `social_collection_save_custom_source_settings(id)` — Save Custom Source Settings
+- `social_collection_list_custom_source_form_templates` — List Custom Source Form Templates (paginated)
+- `social_collection_list_qr_codes` — List Get-Reviews QR Codes (paginated)
+- `social_collection_create_qr_code` — Create Get-Reviews QR Code
+- `social_collection_update_qr_code(id)` — Update Get-Reviews QR Code
+- `social_collection_delete_qr_code(id)` ⚠ — Delete Get-Reviews QR Code
+- `social_collection_list_review_platforms` — List Review Collection Platforms (paginated)
+- `social_collection_get_review_form_captcha` — Get Review Form Captcha
+- `social_collection_save_review_form_captcha` — Save Review Form Captcha
+- `social_collection_delete_review_form_captcha` ⚠ — Delete Review Form Captcha
+- `social_collection_get_fluentcrm_review_tag` — Get FluentCRM Review Tag
+- `social_collection_save_fluentcrm_review_tag` — Save FluentCRM Review Tag
+- `social_collection_import_woocommerce_reviews` — Import WooCommerce Reviews
+- `social_collection_restart_woocommerce_import` — Restart WooCommerce Review Import
+- `social_collection_get_woocommerce_import_progress` — Get WooCommerce Import Progress
+- `social_collection_quick_setup_woocommerce` — Quick Setup WooCommerce Reviews
+- `social_collection_quick_setup_fluent_cart` — Quick Setup FluentCart Reviews
+- `social_collection_connect_fluent_cart_products` — Connect All FluentCart Products
 
 ## Server built-ins
 
