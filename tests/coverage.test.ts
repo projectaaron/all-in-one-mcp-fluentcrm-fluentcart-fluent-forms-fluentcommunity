@@ -68,10 +68,23 @@ for (const product of PRODUCTS) {
 }
 
 describe('overall surface', () => {
-  it('stays within the 30-60 area budget (incl. verify_setup)', () => {
+  // The budget exists to keep the tool_map overview scannable in one read
+  // (TOOL_DESIGN principle 2), and what threatens that is a product sprawling
+  // into dozens of thin areas — not the number of products installed. A fixed
+  // global ceiling conflated the two: it was hit exactly at four products, so
+  // a fifth would have failed even though every product was well consolidated,
+  // and a site only ever sees areas for the products it has configured. The
+  // per-product cap is therefore the real discipline (FluentCart fits 381
+  // endpoints into 22 areas; FluentCommunity 274 into 8), with a global floor
+  // against accidental collapse and a loose absolute ceiling as a smoke alarm.
+  it('keeps each product consolidated (<= 25 areas) and the surface sane', () => {
+    for (const p of PRODUCTS) {
+      expect(p.tools.length, `${p.key} areas`).toBeGreaterThanOrEqual(1);
+      expect(p.tools.length, `${p.key} areas — consolidate before adding more`).toBeLessThanOrEqual(25);
+    }
     const total = PRODUCTS.reduce((n, p) => n + p.tools.length, 0) + 1;
     expect(total).toBeGreaterThanOrEqual(30);
-    expect(total).toBeLessThanOrEqual(60);
+    expect(total).toBeLessThanOrEqual(100);
   });
 
   it('tool names carry their product prefix and one-sentence descriptions', () => {

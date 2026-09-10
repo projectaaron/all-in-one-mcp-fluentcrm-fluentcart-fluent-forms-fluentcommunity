@@ -1,7 +1,7 @@
 # Tool map
 
 The fast map of this server: **every tool, one line each, grouped by area** —
-925 tools in 60 areas. **Generated** by
+1199 tools in 68 areas. **Generated** by
 `scripts/gen-tool-catalog.mjs` from the live registry; regenerate after any
 tool-surface change. Sessions get the same map at runtime from the
 `tool_map` tool (no args = area overview, `{"area": …}` /
@@ -76,6 +76,14 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 | `forms_reports` | 14 | Read-only analytics for forms: submission counts, completion rates, revenue, payment types, heatmaps and top-performing forms. |
 | `forms_admin` | 11 | Site-level Fluent Forms administration: global settings, licensing, managers and role capabilities. |
 | `forms_utilities` | 12 | Maintenance and helper operations: system logs, global search, admin notices, plugin install helpers, and the MCP adapter settings. |
+| `community_spaces` | 35 | Manage community spaces and space groups: membership, lock screens, links, paywalls, and each space's media gallery. |
+| `community_feeds` | 44 | Posts and the activity feed: create and edit posts, comments, reactions, bookmarks, surveys, uploaded documents and media, scheduled posts, and moderation reports. |
+| `community_chat` | 30 | Direct and group chat: threads, group membership, messages, reactions, and blocking. |
+| `community_courses` | 54 | Courses end to end: course CRUD, sections, lessons, students and enrolment, quizzes, progress, and the member-facing course views. |
+| `community_profiles` | 33 | Member profiles and directory: profile fields, follows and blocks, notification preferences, memberships, invitations, notifications, and the leaderboard. |
+| `community_analytics` | 12 | Read-only community analytics: activity over time, popular spaces, and top members. |
+| `community_settings` | 22 | Portal settings and runtime options: colours, features, menus, privacy, snippets, follower and player settings, and CRM tagging. |
+| `community_admin` | 44 | Site administration: licensing, managers, webhooks, topics, badges, onboarding, and the auth, email, push, PWA, storage and messaging settings. |
 | `server` | 5 | Built-in tools: this map, setup verification, and the WordPress media library. |
 
 ## FluentCRM (`crm_*`)
@@ -1182,6 +1190,306 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `forms_utilities_toggle_mcp` — Toggle MCP Adapter
 - `forms_utilities_install_mcp_adapter` ⚠ — Install the MCP Adapter Plugin
 - `forms_utilities_get_mcp_config_snippets` — Get MCP Config Snippets
+
+## FluentCommunity (`community_*`)
+
+### community_spaces — Manage community spaces and space groups: membership, lock screens, links, paywalls, and each space's media gallery.
+
+- `community_spaces_create_cart_product` — Create Cart Product
+- `community_spaces_search_cart_products` — Search Cart Products (paginated)
+- `community_spaces_delete_paywall(spaceId)` ⚠ — Delete Space Paywall
+- `community_spaces_list_paywalls(spaceId)` — List Space Paywalls (paginated)
+- `community_spaces_create_paywall(spaceId)` — Create Space Paywall
+- `community_spaces_get_media_gallery(spaceSlug)` — Get Space Media Gallery
+- `community_spaces_list` — List Spaces (paginated)
+- `community_spaces_create` — Create Space
+- `community_spaces_list_all` — List All Spaces (paginated)
+- `community_spaces_list_discoverable` — List Discoverable Spaces (paginated)
+- `community_spaces_list_groups` — List Space Groups (paginated)
+- `community_spaces_create_group` — Create Space Group
+- `community_spaces_move_to_group` — Move Space To Group
+- `community_spaces_reindex_groups` — Reindex Space Groups
+- `community_spaces_reindex_in_groups` — Reindex Spaces In Groups
+- `community_spaces_delete_group(id)` ⚠ — Delete Space Group
+- `community_spaces_update_group(id)` — Update Space Group
+- `community_spaces_search_users` — Search Space Users (paginated)
+- `community_spaces_delete_by_id(spaceId)` ⚠ — Delete Space By ID
+- `community_spaces_update_by_id(spaceId)` — Update Space By ID
+- `community_spaces_delete_by_slug(spaceSlug)` ⚠ — Delete Space By Slug
+- `community_spaces_get_by_slug(spaceSlug)` — Get Space By Slug
+- `community_spaces_update_by_slug(spaceSlug)` — Update Space By Slug
+- `community_spaces_join(spaceSlug)` — Join Space
+- `community_spaces_leave(spaceSlug)` — Leave Space
+- `community_spaces_create_link(spaceSlug)` — Create Space Link
+- `community_spaces_get_lockscreens(spaceSlug)` — Get Space Lockscreens
+- `community_spaces_update_lockscreens(spaceSlug)` — Update Space Lockscreens
+- `community_spaces_list_members(spaceSlug)` — List Space Members (paginated)
+- `community_spaces_add_member(spaceSlug)` — Add Space Member
+- `community_spaces_bulk_add_members(spaceSlug)` ⚠ — Bulk Add Space Members
+- `community_spaces_bulk_import_members(spaceSlug)` ⚠ — Bulk Import Space Members
+- `community_spaces_remove_member(spaceSlug)` ⚠ — Remove Space Member
+- `community_spaces_resolve_member_crm_tag(spaceSlug)` — Resolve Space Member CRM Tag
+- `community_spaces_get_meta_settings(spaceSlug)` — Get Space Meta Settings
+
+### community_feeds — Posts and the activity feed: create and edit posts, comments, reactions, bookmarks, surveys, uploaded documents and media, scheduled posts, and moderation reports.
+
+- `community_feeds_list_activities` — List Activities (paginated)
+- `community_feeds_list_comment_reactions(comment_id)` — List Comment Reactions (paginated)
+- `community_feeds_get_comment(id)` — Get Comment
+- `community_feeds_list_documents` — List Documents (paginated)
+- `community_feeds_delete_document` ⚠ — Delete Document
+- `community_feeds_update_document` — Update Document
+- `community_feeds_upload_document` — Upload Document
+- `community_feeds_list` — List Feeds (paginated)
+- `community_feeds_create` — Create Feed
+- `community_feeds_batch_create` ⚠ — Batch Create Feeds (mass post creation)
+- `community_feeds_list_bookmarked` — List Bookmarked Feeds (paginated)
+- `community_feeds_list_links` — List Feed Links (paginated)
+- `community_feeds_create_link` — Create Feed Link
+- `community_feeds_preview_markdown` — Preview Feed Markdown
+- `community_feeds_upload_media` — Upload Feed Media
+- `community_feeds_get_oembed` — Get Feed oEmbed
+- `community_feeds_get_ticker` — Get Feed Ticker
+- `community_feeds_get_ticker_updates` — Get Feed Ticker Updates
+- `community_feeds_get_welcome_banner` — Get Feed Welcome Banner
+- `community_feeds_delete(feed_id)` ⚠ — Delete Feed
+- `community_feeds_patch(feed_id)` — Patch Feed
+- `community_feeds_update(feed_id)` — Update Feed
+- `community_feeds_vote_in_survey(feed_id)` — Vote In Feed Survey
+- `community_feeds_list_survey_voters(feed_id, option_slug)` — List Feed Survey Voters (paginated)
+- `community_feeds_get_by_id(feed_id)` — Get Feed By ID
+- `community_feeds_list_comments(feed_id)` — List Feed Comments (paginated)
+- `community_feeds_create_comment(feed_id)` — Create Feed Comment
+- `community_feeds_delete_comment(feed_id, comment_id)` ⚠ — Delete Feed Comment
+- `community_feeds_patch_comment(feed_id, comment_id)` — Patch Feed Comment
+- `community_feeds_update_comment(feed_id, comment_id)` — Update Feed Comment
+- `community_feeds_react_to_comment(feed_id, comment_id)` — React To Feed Comment
+- `community_feeds_delete_media_preview(feed_id)` ⚠ — Delete Feed Media Preview
+- `community_feeds_react_to(feed_id)` — React To Feed
+- `community_feeds_list_reactions(feed_id)` — List Feed Reactions (paginated)
+- `community_feeds_toggle_reaction(feed_id)` — Toggle Feed Reaction
+- `community_feeds_get_by_slug(feed_slug)` — Get Feed By Slug
+- `community_feeds_save_player_audio_media(media_id)` — Save Player Audio Media
+- `community_feeds_get_player_video_content(media_id)` — Get Player Video Content
+- `community_feeds_upload_player_video` — Upload Player Video
+- `community_feeds_save_moderation_config` — Save Moderation Config
+- `community_feeds_report_content` — Report Content
+- `community_feeds_list_scheduled_posts` — List Scheduled Posts (paginated)
+- `community_feeds_publish_scheduled_post(feed_id)` — Publish Scheduled Post
+- `community_feeds_update_scheduled_post(feed_id)` — Update Scheduled Post
+
+### community_chat — Direct and group chat: threads, group membership, messages, reactions, and blocking.
+
+- `community_chat_get_broadcast_auth` — Get Chat Broadcast Auth
+- `community_chat_save_broadcast_auth` — Save Chat Broadcast Auth
+- `community_chat_create_group` — Create Chat Group
+- `community_chat_update_group(thread_id)` — Update Chat Group
+- `community_chat_delete_group(thread_id)` ⚠ — Delete Chat Group
+- `community_chat_leave_group(thread_id)` — Leave Chat Group
+- `community_chat_list_group_members(thread_id)` — List Chat Group Members (paginated)
+- `community_chat_add_group_members(thread_id)` — Add Chat Group Members
+- `community_chat_promote_group_member_to_admin(thread_id, member_id)` ⚠ — Promote Chat Group Member to Admin (no demote endpoint exists)
+- `community_chat_remove_group_member(thread_id, member_id)` ⚠ — Remove Chat Group Member
+- `community_chat_delete_message(message_id)` ⚠ — Delete Chat Message
+- `community_chat_react_to_message(message_id)` — React To Chat Message
+- `community_chat_list_messages(thread_id)` — List Chat Messages (paginated)
+- `community_chat_send_message(thread_id)` — Send Chat Message
+- `community_chat_upload_message_media(thread_id)` — Upload Chat Message Media
+- `community_chat_list_new_messages(thread_id)` — List New Chat Messages (paginated)
+- `community_chat_mark_threads_read` — Mark Chat Threads Read
+- `community_chat_list_threads` — List Chat Threads (paginated)
+- `community_chat_create_thread` — Create Chat Thread
+- `community_chat_block_thread(thread_id)` — Block Chat Thread
+- `community_chat_delete_thread(thread_id)` ⚠ — Delete Chat Thread
+- `community_chat_join_thread(thread_id)` — Join Chat Thread
+- `community_chat_leave_thread(thread_id)` — Leave Chat Thread
+- `community_chat_unblock_thread(thread_id)` — Unblock Chat Thread
+- `community_chat_get_thread(thread_id)` — Get Chat Thread
+- `community_chat_list_thread_members(thread_id)` — List Chat Thread Members (paginated)
+- `community_chat_block_thread_member(thread_id, member_id)` — Block Chat Thread Member
+- `community_chat_unblock_thread_member(thread_id, member_id)` — Unblock Chat Thread Member
+- `community_chat_list_unread_threads` — List Unread Chat Threads (paginated)
+- `community_chat_list_users` — List Chat Users (paginated)
+
+### community_courses — Courses end to end: course CRUD, sections, lessons, students and enrolment, quizzes, progress, and the member-facing course views.
+
+- `community_courses_list_all_space_courses` — List Courses Across All Spaces (paginated)
+- `community_courses_list_managed` — List Managed Courses (paginated)
+- `community_courses_create` — Create Course
+- `community_courses_delete(course_id)` ⚠ — Delete Course
+- `community_courses_get_managed(course_id)` — Get Managed Course
+- `community_courses_update(course_id)` — Update Course
+- `community_courses_list_comments(course_id)` — List Course Comments (paginated)
+- `community_courses_copy_section(course_id)` — Copy Course Section
+- `community_courses_duplicate(course_id)` — Duplicate Course
+- `community_courses_export_quiz_results(course_id)` — Export Course Quiz Results
+- `community_courses_export_students(course_id)` — Export Course Students
+- `community_courses_search_instructors(course_id)` — Search Course Instructors (paginated)
+- `community_courses_list_lessons(course_id)` — List Course Lessons (paginated)
+- `community_courses_create_lesson(course_id)` — Create Course Lesson
+- `community_courses_delete_lesson(course_id, lesson_id)` ⚠ — Delete Course Lesson
+- `community_courses_get_lesson(course_id, lesson_id)` — Get Course Lesson
+- `community_courses_patch_lesson(course_id, lesson_id)` — Patch Course Lesson
+- `community_courses_update_lesson(course_id, lesson_id)` — Update Course Lesson
+- `community_courses_duplicate_lesson(course_id, lesson_id)` — Duplicate Course Lesson
+- `community_courses_create_link(course_id)` — Create Course Link
+- `community_courses_update_lockscreen(course_id)` — Update Course Lockscreen
+- `community_courses_get_meta_settings(course_id)` — Get Course Meta Settings
+- `community_courses_move_lesson(course_id)` — Move Course Lesson
+- `community_courses_list_quiz_results(course_id)` — List Course Quiz Results (paginated)
+- `community_courses_save_quiz_result(course_id, quiz_id)` — Save Course Quiz Result
+- `community_courses_list_sections(course_id)` — List Course Sections (paginated)
+- `community_courses_create_section(course_id)` — Create Course Section
+- `community_courses_reorder_sections(course_id)` — Reorder Course Sections
+- `community_courses_delete_section(course_id, section_id)` ⚠ — Delete Course Section
+- `community_courses_get_section(course_id, section_id)` — Get Course Section
+- `community_courses_patch_section(course_id, section_id)` — Patch Course Section
+- `community_courses_update_section(course_id, section_id)` — Update Course Section
+- `community_courses_reorder_section_lessons(course_id, section_id)` — Reorder Course Section Lessons
+- `community_courses_list_students(course_id)` — List Course Students (paginated)
+- `community_courses_add_student(course_id)` — Add Course Student
+- `community_courses_bulk_add_students(course_id)` ⚠ — Bulk Add Course Students
+- `community_courses_bulk_import_students(course_id)` ⚠ — Bulk Import Course Students
+- `community_courses_resolve_student_crm_tag(course_id)` — Resolve Course Student CRM Tag
+- `community_courses_delete_student(course_id, student_id)` ⚠ — Delete Course Student
+- `community_courses_delete_student_progress(course_id, student_id)` ⚠ — Delete Student Course Progress
+- `community_courses_search_users(course_id)` — Search Course Users (paginated)
+- `community_courses_get_welcome_banner(course_id)` — Get Course Welcome Banner
+- `community_courses_save_welcome_banner(course_id)` — Save Course Welcome Banner
+- `community_courses_list` — List Courses (paginated)
+- `community_courses_list_all` — List All Courses (paginated)
+- `community_courses_get(course_id)` — Get Course
+- `community_courses_enroll_in(course_id)` — Enroll In Course
+- `community_courses_update_lesson_completion(course_id, lesson_id)` — Update Course Lesson Completion
+- `community_courses_get_lesson_quiz_result(course_id, lesson_id)` — Get Course Lesson Quiz Result
+- `community_courses_submit_lesson_quiz(course_id, lesson_id)` — Submit Course Lesson Quiz
+- `community_courses_mark_lesson_video_watched(course_id, lesson_id)` — Mark Course Lesson Video Watched
+- `community_courses_delete_my_progress(course_id)` ⚠ — Delete My Course Progress
+- `community_courses_get_by_slug(course_slug)` — Get Course By Slug
+- `community_courses_get_lesson_by_slug(course_slug, lesson_slug)` — Get Course Lesson By Slug
+
+### community_profiles — Member profiles and directory: profile fields, follows and blocks, notification preferences, memberships, invitations, notifications, and the leaderboard.
+
+- `community_profiles_list_invitations` — List Invitations (paginated)
+- `community_profiles_create_invitation` — Create Invitation
+- `community_profiles_create_invitation_link` — Create Invitation Link
+- `community_profiles_delete_invitation(invitation_id)` ⚠ — Delete Invitation
+- `community_profiles_resend_invitation(invitation_id)` — Resend Invitation
+- `community_profiles_get_leaderboard` — Get Leaderboard
+- `community_profiles_list_members` — List Members (paginated)
+- `community_profiles_patch_member(user_id)` — Patch Member
+- `community_profiles_list_notifications` — List Notifications (paginated)
+- `community_profiles_mark_all_notifications_read` — Mark All Notifications Read
+- `community_profiles_mark_notification_read_by_feed(feed_id)` — Mark Notification Read By Feed
+- `community_profiles_mark_notification_read(notification_id)` — Mark Notification Read
+- `community_profiles_get_unread_notification_count` — Get Unread Notification Count
+- `community_profiles_toggle_follow(userId)` — Toggle Profile Follow
+- `community_profiles_get(username)` — Get Profile
+- `community_profiles_save(username)` — Save Profile
+- `community_profiles_update(username)` — Update Profile
+- `community_profiles_block(username)` — Block Profile
+- `community_profiles_list_blocked_users(username)` — List Profile Blocked Users (paginated)
+- `community_profiles_change_password(username)` — Change Profile Password
+- `community_profiles_list_comments(username)` — List Profile Comments (paginated)
+- `community_profiles_list_courses(username)` — List Profile Courses (paginated)
+- `community_profiles_follow(username)` — Follow Profile
+- `community_profiles_list_followers(username)` — List Profile Followers (paginated)
+- `community_profiles_list_followings(username)` — List Profile Followings (paginated)
+- `community_profiles_list_memberships(username)` — List Profile Memberships (paginated)
+- `community_profiles_save_notification(username)` — Save Profile Notification
+- `community_profiles_get_notification_preferences(username)` — Get Profile Notification Preferences
+- `community_profiles_save_notification_preferences(username)` — Save Profile Notification Preferences
+- `community_profiles_reconfirm_email(username)` — Reconfirm Profile Email
+- `community_profiles_list_spaces(username)` — List Profile Spaces (paginated)
+- `community_profiles_unblock(username)` — Unblock Profile
+- `community_profiles_unfollow(username)` — Unfollow Profile
+
+### community_analytics — Read-only community analytics: activity over time, popular spaces, and top members.
+
+- `community_analytics_get_member_activity` — Get Analytics Member Activity
+- `community_analytics_list_top_commenters` — List Top Commenters (paginated)
+- `community_analytics_list_top_members` — List Top Members (paginated)
+- `community_analytics_list_top_post_starters` — List Top Post Starters (paginated)
+- `community_analytics_get_member_widget` — Get Analytics Member Widget
+- `community_analytics_get_overview_activity` — Get Analytics Overview Activity
+- `community_analytics_get_overview_popular_day_time` — Get Analytics Overview Popular Day Time
+- `community_analytics_get_overview_widget` — Get Analytics Overview Widget
+- `community_analytics_get_space_activity` — Get Analytics Space Activity
+- `community_analytics_get_space_popular` — Get Analytics Space Popular
+- `community_analytics_search_spaces` — Search Spaces Analytics (paginated)
+- `community_analytics_get_space_widget` — Get Analytics Space Widget
+
+### community_settings — Portal settings and runtime options: colours, features, menus, privacy, snippets, follower and player settings, and CRM tagging.
+
+- `community_settings_get_app_vars` — Get App Vars
+- `community_settings_list_menu_items` — List Menu Items (paginated)
+- `community_settings_get_sidebar_menu_html` — Get Sidebar Menu HTML
+- `community_settings_get_color_config` — Get Color Config
+- `community_settings_save_color_config` — Save Color Config
+- `community_settings_get_crm_tagging_config` — Get CRM Tagging Config
+- `community_settings_save_crm_tagging_config` — Save CRM Tagging Config
+- `community_settings_get_customization` — Get Customization Settings
+- `community_settings_save_customization` — Save Customization Settings
+- `community_settings_get_features` — Get Features
+- `community_settings_save_features` — Save Features
+- `community_settings_get_fluent_player` — Get Fluent Player Settings
+- `community_settings_save_fluent_player` — Save Fluent Player Settings
+- `community_settings_get_followers_config` — Get Followers Config
+- `community_settings_save_followers_config` — Save Followers Config
+- `community_settings_install_plugin` ⚠ — Install a FluentCommunity Addon Plugin
+- `community_settings_get_menu` — Get Menu Settings
+- `community_settings_save_menu` — Save Menu Settings
+- `community_settings_get_privacy` — Get Privacy Settings
+- `community_settings_save_privacy` — Save Privacy Settings
+- `community_settings_get_snippets` — Get Snippets Settings
+- `community_settings_save_snippets` — Save Snippets Settings
+
+### community_admin — Site administration: licensing, managers, webhooks, topics, badges, onboarding, and the auth, email, push, PWA, storage and messaging settings.
+
+- `community_admin_get_auth_settings` — Get Auth Settings
+- `community_admin_save_auth_settings` — Save Auth Settings
+- `community_admin_list_custom_profile_fields` — List Custom Profile Fields (paginated)
+- `community_admin_save_custom_profile_fields` — Save Custom Profile Fields
+- `community_admin_get_email_settings` — Get Email Settings
+- `community_admin_save_email_settings` — Save Email Settings
+- `community_admin_get_general_settings` — Get General Settings
+- `community_admin_save_general_settings` — Save General Settings
+- `community_admin_list_leaderboard_levels` — List Leaderboard Levels (paginated)
+- `community_admin_save_leaderboard_levels` — Save Leaderboard Levels
+- `community_admin_deactivate_license` ⚠ — Deactivate License
+- `community_admin_get_license` — Get License
+- `community_admin_activate_license` — Activate License
+- `community_admin_create_link` — Create Link
+- `community_admin_delete_link(id)` ⚠ — Delete Link
+- `community_admin_list_managers` — List Managers (paginated)
+- `community_admin_add_manager` — Add Manager
+- `community_admin_delete_manager(user_id)` ⚠ — Delete Manager
+- `community_admin_get_messaging_settings` — Get Messaging Settings
+- `community_admin_save_messaging_settings` — Save Messaging Settings
+- `community_admin_list_onboardings` — List Onboardings (paginated)
+- `community_admin_save_onboarding` — Save Onboarding
+- `community_admin_change_onboarding_slug` — Change Onboarding Slug
+- `community_admin_list_profile_link_providers` — List Profile Link Providers (paginated)
+- `community_admin_save_profile_link_providers` — Save Profile Link Providers
+- `community_admin_get_push_settings` — Get Push Settings
+- `community_admin_save_push_settings` — Save Push Settings
+- `community_admin_get_pwa_settings` — Get PWA Settings
+- `community_admin_save_pwa_settings` — Save PWA Settings
+- `community_admin_get_storage_settings` — Get Storage Settings
+- `community_admin_save_storage_settings` — Save Storage Settings
+- `community_admin_list_topics` — List Topics (paginated)
+- `community_admin_create_topic` — Create Topic
+- `community_admin_save_topics_config` — Save Topics Config
+- `community_admin_reorder_topics` — Reorder Topics
+- `community_admin_delete_topic(topic_id)` ⚠ — Delete Topic
+- `community_admin_list_user_badges` — List User Badges (paginated)
+- `community_admin_save_user_badges` — Save User Badges
+- `community_admin_list_users` — List Community Users (paginated)
+- `community_admin_list_webhooks` — List Webhooks (paginated)
+- `community_admin_create_webhook` — Create Webhook
+- `community_admin_delete_webhook(id)` ⚠ — Delete Webhook
+- `community_admin_get_welcome_banner` — Get Welcome Banner
+- `community_admin_save_welcome_banner` — Save Welcome Banner
 
 ## Server built-ins
 

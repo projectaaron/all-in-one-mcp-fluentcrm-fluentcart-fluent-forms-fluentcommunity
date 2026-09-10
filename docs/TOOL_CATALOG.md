@@ -164,6 +164,30 @@ Example calls:
 - `forms_admin`: `{"name":"forms_admin_list_managers","arguments":{"per_page":5}}`
 - `forms_utilities`: `{"name":"forms_utilities_list_logs","arguments":{"per_page":5}}`
 
+## FluentCommunity (`community_*`, 8 areas, 274 tools)
+
+| Area | Class | Tools | Description |
+|------|-------|-------|-------------|
+| `community_spaces` | read/write/delete | 35 | Manage community spaces and space groups: membership, lock screens, links, paywalls, and each space's media gallery. |
+| `community_feeds` | read/write/delete | 44 | Posts and the activity feed: create and edit posts, comments, reactions, bookmarks, surveys, uploaded documents and media, scheduled posts, and moderation reports. |
+| `community_chat` | read/write/delete | 30 | Direct and group chat: threads, group membership, messages, reactions, and blocking. |
+| `community_courses` | read/write/delete | 54 | Courses end to end: course CRUD, sections, lessons, students and enrolment, quizzes, progress, and the member-facing course views. |
+| `community_profiles` | read/write/delete | 33 | Member profiles and directory: profile fields, follows and blocks, notification preferences, memberships, invitations, notifications, and the leaderboard. |
+| `community_analytics` | read | 12 | Read-only community analytics: activity over time, popular spaces, and top members. |
+| `community_settings` | read/write/delete | 22 | Portal settings and runtime options: colours, features, menus, privacy, snippets, follower and player settings, and CRM tagging. |
+| `community_admin` | read/write/delete | 44 | Site administration: licensing, managers, webhooks, topics, badges, onboarding, and the auth, email, push, PWA, storage and messaging settings. |
+
+Example calls:
+
+- `community_spaces`: `{"name":"community_spaces_list_paywalls","arguments":{"spaceId":123,"per_page":5}}`
+- `community_feeds`: `{"name":"community_feeds_list_activities","arguments":{"per_page":5}}`
+- `community_chat`: `{"name":"community_chat_list_group_members","arguments":{"thread_id":123,"per_page":5}}`
+- `community_courses`: `{"name":"community_courses_list_all_space_courses","arguments":{"per_page":5}}`
+- `community_profiles`: `{"name":"community_profiles_list_invitations","arguments":{"per_page":5}}`
+- `community_analytics`: `{"name":"community_analytics_list_top_commenters","arguments":{"per_page":5}}`
+- `community_settings`: `{"name":"community_settings_list_menu_items","arguments":{"per_page":5}}`
+- `community_admin`: `{"name":"community_admin_list_custom_profile_fields","arguments":{"per_page":5}}`
+
 ## Server built-ins (5 tools)
 
 | Tool | Class | Description |
@@ -178,4 +202,4 @@ Examples: `{"name": "verify_setup", "arguments": {}}` ·
 `{"name": "tool_map", "arguments": {"search": "refund"}}` ·
 `{"name": "wp_media_upload_from_url", "arguments": {"source_url": "https://cdn.example.com/photo.jpg", "alt_text": "Product photo"}}`
 
-**Total: 925 tools** (`FLUENT_TOOL_MODE=grouped` serves 62 instead).
+**Total: 1199 tools** (`FLUENT_TOOL_MODE=grouped` serves 70 instead).
