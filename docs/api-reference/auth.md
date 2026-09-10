@@ -1,8 +1,8 @@
 # Authentication — confirmed models per product
 
 Verified against each product's official docs on 2026-07-16 (not guessed;
-WP Social Ninja and Fluent Forms verified against a live install and the
-plugin source on 2026-09-10). All products authenticate with **WordPress
+WP Social Ninja, Fluent Forms and FluentCommunity verified against a live
+install and the plugin source on 2026-09-10). All products authenticate with **WordPress
 Application Passwords over HTTP Basic auth** — but the credentials are
 created in different places and carry different permission models.
 
@@ -87,6 +87,28 @@ created in different places and carry different permission models.
 - **Exception:** `POST /form-submit` is public (`PublicPolicy` returns true) —
   it is the endpoint the front-end form posts to, and it creates a real
   submission plus all of its side effects.
+
+## FluentCommunity
+
+- **Source:** no REST API reference is published (docs.fluentcommunity.co is
+  end-user documentation); verified against a live install and the plugin
+  source. Generated index: [`fluentcommunity.md`](./fluentcommunity.md).
+- **Namespace:** `https://<site>/wp-json/fluent-community/v2`
+- **Model:** HTTP Basic `username:application_password` — standard WordPress
+  **Application Passwords**, capability-checked per route.
+- **Member context — the thing to know before writing.** Unlike the other
+  products, whose write endpoints are administrative, much of
+  FluentCommunity's surface acts *as the authenticated user*: creating a post
+  or comment, reacting, joining or leaving a space, sending a chat message,
+  enrolling in a course, following or blocking a member. Called with an admin
+  application password, those act as that admin's persona and are visible to
+  the community. Member-context writes are not "admin operations that happen
+  to touch member data" — they put words in a real account's mouth, so treat
+  the identity of the credential as part of the blast radius.
+- **Scoping:** FluentCommunity Managers (exposed as
+  `community_admin_list_managers` etc.) are the least-privilege option; an
+  Application Password for a manager user scopes the API to their
+  permissions.
 
 ## What this server does with it
 

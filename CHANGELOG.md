@@ -2,6 +2,49 @@
 
 ## Unreleased
 
+**New product: FluentCommunity — 274 endpoints, 8 areas, `community_*`
+tools.** The fifth WPManageNinja product and the largest single addition:
+spaces and space groups (membership, lock screens, paywalls, media
+galleries), the activity feed (posts, comments, reactions, bookmarks,
+surveys, documents, scheduled posts, moderation), chat (threads, groups,
+messages), courses end to end (sections, lessons, students, quizzes,
+progress), member profiles (follows, blocks, invitations, notifications,
+leaderboard), read-only analytics, portal settings, and site administration.
+
+- **Inventory from the live route index.** FluentCommunity publishes no REST
+  reference, so `scripts/gen-fluentcommunity-docs.mjs` curates the operation
+  table and checks it against `GET /wp-json/fluent-community/v2` on every
+  run, failing loudly on drift — the same contract as the other generators.
+- **Member-context writes are called out in `auth.md`.** Unlike the other
+  products, much of this surface acts *as the authenticated user* — posting,
+  commenting, reacting, joining spaces, sending chat messages, enrolling in
+  courses. Called with an admin application password those act as that
+  admin's persona and are visible to the community, so the identity of the
+  credential is part of the blast radius.
+- **Safety: 32 confirm-gated operations.** Beyond the deletes (including the
+  POST-based ones the slug heuristic catches), gating follows the precedent
+  the other products already set — **mass** outward-facing operations are
+  gated, individual ones are not: `batch_create_feeds` and the four
+  bulk-add/bulk-import member and student operations gate; posting a single
+  feed item or sending one chat message does not.
+  `promote_chat_group_member_to_admin` gates because the API has no demote
+  route. `install_plugin` gates but is **not** locked — unlike Fluent Forms'
+  installer it validates the slug against FluentCommunity's own addon
+  allowlist, so it cannot install arbitrary plugins.
+
+**The area budget is now per-product, not global.** The old rule capped the
+whole server at 60 areas and was hit exactly at four products, so a fifth
+would have failed even though every product was well consolidated. What the
+budget protects is a scannable `tool_map` overview, and what threatens that
+is one product sprawling into thin areas — not how many products a site
+installs (a site only ever sees areas for the products it configures). The
+test now caps **each product at 25 areas** (FluentCart: 381 endpoints in 22;
+FluentCommunity: 274 in 8), keeps the floor of 30, and holds a loose absolute
+ceiling of 100 as a smoke alarm.
+
+- Tool total: 917 → 1,191 endpoint tools (1,199 registered incl. extras and
+  built-ins), 60 → 68 areas.
+
 **New product: Fluent Forms — 91 endpoints, 7 areas, `forms_*` tools.** The
 fourth WPManageNinja product: forms (CRUD, duplicate, convert, fields,
 shortcodes, embed pages, edit history), submissions/entries (notes, logs,
