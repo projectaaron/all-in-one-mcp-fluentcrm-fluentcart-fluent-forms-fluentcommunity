@@ -1,0 +1,3298 @@
+{
+  "product": "fluentcommunity",
+  "source": "live REST route index (GET /wp-json/fluent-community/v2) — FluentCommunity publishes no REST API reference",
+  "scraped": "2026-09-10",
+  "baseUrl": "https://{website}/wp-json/fluent-community/v2",
+  "namespace": "fluent-community/v2",
+  "count": 274,
+  "endpoints": [
+    {
+      "group": "spaces",
+      "slug": "create-cart-product",
+      "operationId": "createCartProduct",
+      "method": "POST",
+      "path": "/cart/products/create",
+      "summary": "POST Create Cart Product",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "search-cart-products",
+      "operationId": "searchCartProducts",
+      "method": "GET",
+      "path": "/cart/products/search",
+      "summary": "GET Search Cart Products",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "delete-space-paywall",
+      "operationId": "deleteSpacePaywall",
+      "method": "DELETE",
+      "path": "/cart/spaces/{spaceId}/paywalls",
+      "summary": "DELETE Delete Space Paywall",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "list-space-paywalls",
+      "operationId": "listSpacePaywalls",
+      "method": "GET",
+      "path": "/cart/spaces/{spaceId}/paywalls",
+      "summary": "GET List Space Paywalls",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "create-space-paywall",
+      "operationId": "createSpacePaywall",
+      "method": "POST",
+      "path": "/cart/spaces/{spaceId}/paywalls",
+      "summary": "POST Create Space Paywall",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "get-space-media-gallery",
+      "operationId": "getSpaceMediaGallery",
+      "method": "GET",
+      "path": "/media-gallery/{spaceSlug}",
+      "summary": "GET Get Space Media Gallery",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "list-spaces",
+      "operationId": "listSpaces",
+      "method": "GET",
+      "path": "/spaces",
+      "summary": "GET List Spaces",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "create-space",
+      "operationId": "createSpace",
+      "method": "POST",
+      "path": "/spaces",
+      "summary": "POST Create Space",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "list-all-spaces",
+      "operationId": "listAllSpaces",
+      "method": "GET",
+      "path": "/spaces/all-spaces",
+      "summary": "GET List All Spaces",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "list-discoverable-spaces",
+      "operationId": "listDiscoverableSpaces",
+      "method": "GET",
+      "path": "/spaces/discover",
+      "summary": "GET List Discoverable Spaces",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "list-space-groups",
+      "operationId": "listSpaceGroups",
+      "method": "GET",
+      "path": "/spaces/space_groups",
+      "summary": "GET List Space Groups",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "create-space-group",
+      "operationId": "createSpaceGroup",
+      "method": "POST",
+      "path": "/spaces/space_groups",
+      "summary": "POST Create Space Group",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "move-space-to-group",
+      "operationId": "moveSpaceToGroup",
+      "method": "PATCH",
+      "path": "/spaces/space_groups/move-space",
+      "summary": "PATCH Move Space To Group",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "reindex-space-groups",
+      "operationId": "reindexSpaceGroups",
+      "method": "PATCH",
+      "path": "/spaces/space_groups/re-index",
+      "summary": "PATCH Reindex Space Groups",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "reindex-spaces-in-groups",
+      "operationId": "reindexSpacesInGroups",
+      "method": "PATCH",
+      "path": "/spaces/space_groups/re-index-spaces",
+      "summary": "PATCH Reindex Spaces In Groups",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "delete-space-group",
+      "operationId": "deleteSpaceGroup",
+      "method": "DELETE",
+      "path": "/spaces/space_groups/{id}",
+      "summary": "DELETE Delete Space Group",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "update-space-group",
+      "operationId": "updateSpaceGroup",
+      "method": "PUT",
+      "path": "/spaces/space_groups/{id}",
+      "summary": "PUT Update Space Group",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "search-space-users",
+      "operationId": "searchSpaceUsers",
+      "method": "GET",
+      "path": "/spaces/users/search",
+      "summary": "GET Search Space Users",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "delete-space-by-id",
+      "operationId": "deleteSpaceById",
+      "method": "DELETE",
+      "path": "/spaces/{spaceId}/by-id",
+      "summary": "DELETE Delete Space By ID",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "update-space-by-id",
+      "operationId": "updateSpaceById",
+      "method": "PUT",
+      "path": "/spaces/{spaceId}/by-id",
+      "summary": "PUT Update Space By ID",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "delete-space-by-slug",
+      "operationId": "deleteSpaceBySlug",
+      "method": "DELETE",
+      "path": "/spaces/{spaceSlug}",
+      "summary": "DELETE Delete Space By Slug",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "get-space-by-slug",
+      "operationId": "getSpaceBySlug",
+      "method": "GET",
+      "path": "/spaces/{spaceSlug}/by-slug",
+      "summary": "GET Get Space By Slug",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "update-space-by-slug",
+      "operationId": "updateSpaceBySlug",
+      "method": "PUT",
+      "path": "/spaces/{spaceSlug}/by-slug",
+      "summary": "PUT Update Space By Slug",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "join-space",
+      "operationId": "joinSpace",
+      "method": "POST",
+      "path": "/spaces/{spaceSlug}/join",
+      "summary": "POST Join Space",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "leave-space",
+      "operationId": "leaveSpace",
+      "method": "POST",
+      "path": "/spaces/{spaceSlug}/leave",
+      "summary": "POST Leave Space",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "create-space-link",
+      "operationId": "createSpaceLink",
+      "method": "POST",
+      "path": "/spaces/{spaceSlug}/links",
+      "summary": "POST Create Space Link",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "get-space-lockscreens",
+      "operationId": "getSpaceLockscreens",
+      "method": "GET",
+      "path": "/spaces/{spaceSlug}/lockscreens",
+      "summary": "GET Get Space Lockscreens",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "update-space-lockscreens",
+      "operationId": "updateSpaceLockscreens",
+      "method": "PUT",
+      "path": "/spaces/{spaceSlug}/lockscreens",
+      "summary": "PUT Update Space Lockscreens",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "list-space-members",
+      "operationId": "listSpaceMembers",
+      "method": "GET",
+      "path": "/spaces/{spaceSlug}/members",
+      "summary": "GET List Space Members",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "add-space-member",
+      "operationId": "addSpaceMember",
+      "method": "POST",
+      "path": "/spaces/{spaceSlug}/members",
+      "summary": "POST Add Space Member",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "bulk-add-space-members",
+      "operationId": "bulkAddSpaceMembers",
+      "method": "POST",
+      "path": "/spaces/{spaceSlug}/members/bulk-add",
+      "summary": "POST Bulk Add Space Members",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "bulk-import-space-members",
+      "operationId": "bulkImportSpaceMembers",
+      "method": "POST",
+      "path": "/spaces/{spaceSlug}/members/bulk-import",
+      "summary": "POST Bulk Import Space Members",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "remove-space-member",
+      "operationId": "removeSpaceMember",
+      "method": "POST",
+      "path": "/spaces/{spaceSlug}/members/remove",
+      "summary": "POST Remove Space Member",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "resolve-space-member-crm-tag",
+      "operationId": "resolveSpaceMemberCrmTag",
+      "method": "POST",
+      "path": "/spaces/{spaceSlug}/members/resolve-crm-tag",
+      "summary": "POST Resolve Space Member CRM Tag",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "get-space-meta-settings",
+      "operationId": "getSpaceMetaSettings",
+      "method": "GET",
+      "path": "/spaces/{spaceSlug}/meta-settings",
+      "summary": "GET Get Space Meta Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "list-activities",
+      "operationId": "listActivities",
+      "method": "GET",
+      "path": "/activities",
+      "summary": "GET List Activities",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "list-comment-reactions",
+      "operationId": "listCommentReactions",
+      "method": "GET",
+      "path": "/comments/{comment_id}/reactions",
+      "summary": "GET List Comment Reactions",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "get-comment",
+      "operationId": "getComment",
+      "method": "GET",
+      "path": "/comments/{id}",
+      "summary": "GET Get Comment",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "list-documents",
+      "operationId": "listDocuments",
+      "method": "GET",
+      "path": "/documents",
+      "summary": "GET List Documents",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "delete-document",
+      "operationId": "deleteDocument",
+      "method": "POST",
+      "path": "/documents/delete",
+      "summary": "POST Delete Document",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "update-document",
+      "operationId": "updateDocument",
+      "method": "POST",
+      "path": "/documents/update",
+      "summary": "POST Update Document",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "upload-document",
+      "operationId": "uploadDocument",
+      "method": "POST",
+      "path": "/documents/upload",
+      "summary": "POST Upload Document",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "list-feeds",
+      "operationId": "listFeeds",
+      "method": "GET",
+      "path": "/feeds",
+      "summary": "GET List Feeds",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "create-feed",
+      "operationId": "createFeed",
+      "method": "POST",
+      "path": "/feeds",
+      "summary": "POST Create Feed",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "batch-create-feeds",
+      "operationId": "batchCreateFeeds",
+      "method": "POST",
+      "path": "/feeds/batch",
+      "summary": "POST Batch Create Feeds",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "list-bookmarked-feeds",
+      "operationId": "listBookmarkedFeeds",
+      "method": "GET",
+      "path": "/feeds/bookmarks",
+      "summary": "GET List Bookmarked Feeds",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "list-feed-links",
+      "operationId": "listFeedLinks",
+      "method": "GET",
+      "path": "/feeds/links",
+      "summary": "GET List Feed Links",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "create-feed-link",
+      "operationId": "createFeedLink",
+      "method": "POST",
+      "path": "/feeds/links",
+      "summary": "POST Create Feed Link",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "preview-feed-markdown",
+      "operationId": "previewFeedMarkdown",
+      "method": "POST",
+      "path": "/feeds/markdown-preview",
+      "summary": "POST Preview Feed Markdown",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "upload-feed-media",
+      "operationId": "uploadFeedMedia",
+      "method": "POST",
+      "path": "/feeds/media-upload",
+      "summary": "POST Upload Feed Media",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "get-feed-oembed",
+      "operationId": "getFeedOembed",
+      "method": "GET",
+      "path": "/feeds/oembed",
+      "summary": "GET Get Feed oEmbed",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "get-feed-ticker",
+      "operationId": "getFeedTicker",
+      "method": "GET",
+      "path": "/feeds/ticker",
+      "summary": "GET Get Feed Ticker",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "get-feed-ticker-updates",
+      "operationId": "getFeedTickerUpdates",
+      "method": "GET",
+      "path": "/feeds/ticker-updates",
+      "summary": "GET Get Feed Ticker Updates",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "get-feed-welcome-banner",
+      "operationId": "getFeedWelcomeBanner",
+      "method": "GET",
+      "path": "/feeds/welcome-banner",
+      "summary": "GET Get Feed Welcome Banner",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "delete-feed",
+      "operationId": "deleteFeed",
+      "method": "DELETE",
+      "path": "/feeds/{feed_id}",
+      "summary": "DELETE Delete Feed",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "patch-feed",
+      "operationId": "patchFeed",
+      "method": "PATCH",
+      "path": "/feeds/{feed_id}",
+      "summary": "PATCH Patch Feed",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "update-feed",
+      "operationId": "updateFeed",
+      "method": "POST",
+      "path": "/feeds/{feed_id}",
+      "summary": "POST Update Feed",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "vote-in-feed-survey",
+      "operationId": "voteInFeedSurvey",
+      "method": "POST",
+      "path": "/feeds/{feed_id}/apps/survey-vote",
+      "summary": "POST Vote In Feed Survey",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "list-feed-survey-voters",
+      "operationId": "listFeedSurveyVoters",
+      "method": "GET",
+      "path": "/feeds/{feed_id}/apps/survey-voters/{option_slug}",
+      "summary": "GET List Feed Survey Voters",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "get-feed-by-id",
+      "operationId": "getFeedById",
+      "method": "GET",
+      "path": "/feeds/{feed_id}/by-id",
+      "summary": "GET Get Feed By ID",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "list-feed-comments",
+      "operationId": "listFeedComments",
+      "method": "GET",
+      "path": "/feeds/{feed_id}/comments",
+      "summary": "GET List Feed Comments",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "create-feed-comment",
+      "operationId": "createFeedComment",
+      "method": "POST",
+      "path": "/feeds/{feed_id}/comments",
+      "summary": "POST Create Feed Comment",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "delete-feed-comment",
+      "operationId": "deleteFeedComment",
+      "method": "DELETE",
+      "path": "/feeds/{feed_id}/comments/{comment_id}",
+      "summary": "DELETE Delete Feed Comment",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "patch-feed-comment",
+      "operationId": "patchFeedComment",
+      "method": "PATCH",
+      "path": "/feeds/{feed_id}/comments/{comment_id}",
+      "summary": "PATCH Patch Feed Comment",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "update-feed-comment",
+      "operationId": "updateFeedComment",
+      "method": "POST",
+      "path": "/feeds/{feed_id}/comments/{comment_id}",
+      "summary": "POST Update Feed Comment",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "react-to-feed-comment",
+      "operationId": "reactToFeedComment",
+      "method": "POST",
+      "path": "/feeds/{feed_id}/comments/{comment_id}/reactions",
+      "summary": "POST React To Feed Comment",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "delete-feed-media-preview",
+      "operationId": "deleteFeedMediaPreview",
+      "method": "DELETE",
+      "path": "/feeds/{feed_id}/media-preview",
+      "summary": "DELETE Delete Feed Media Preview",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "react-to-feed",
+      "operationId": "reactToFeed",
+      "method": "POST",
+      "path": "/feeds/{feed_id}/react",
+      "summary": "POST React To Feed",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "list-feed-reactions",
+      "operationId": "listFeedReactions",
+      "method": "GET",
+      "path": "/feeds/{feed_id}/reactions",
+      "summary": "GET List Feed Reactions",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "toggle-feed-reaction",
+      "operationId": "toggleFeedReaction",
+      "method": "POST",
+      "path": "/feeds/{feed_id}/reactions/toggle",
+      "summary": "POST Toggle Feed Reaction",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "get-feed-by-slug",
+      "operationId": "getFeedBySlug",
+      "method": "GET",
+      "path": "/feeds/{feed_slug}/by-slug",
+      "summary": "GET Get Feed By Slug",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "save-player-audio-media",
+      "operationId": "savePlayerAudioMedia",
+      "method": "POST",
+      "path": "/fluent-player/audio-media/{media_id}",
+      "summary": "POST Save Player Audio Media",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "get-player-video-content",
+      "operationId": "getPlayerVideoContent",
+      "method": "GET",
+      "path": "/fluent-player/video-content/{media_id}",
+      "summary": "GET Get Player Video Content",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "upload-player-video",
+      "operationId": "uploadPlayerVideo",
+      "method": "POST",
+      "path": "/fluent-player/video-upload",
+      "summary": "POST Upload Player Video",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "save-moderation-config",
+      "operationId": "saveModerationConfig",
+      "method": "POST",
+      "path": "/moderation/config",
+      "summary": "POST Save Moderation Config",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "report-content",
+      "operationId": "reportContent",
+      "method": "POST",
+      "path": "/moderation/report",
+      "summary": "POST Report Content",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "list-scheduled-posts",
+      "operationId": "listScheduledPosts",
+      "method": "GET",
+      "path": "/scheduled-posts",
+      "summary": "GET List Scheduled Posts",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "publish-scheduled-post",
+      "operationId": "publishScheduledPost",
+      "method": "POST",
+      "path": "/scheduled-posts/publish/{feed_id}",
+      "summary": "POST Publish Scheduled Post",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "feeds",
+      "slug": "update-scheduled-post",
+      "operationId": "updateScheduledPost",
+      "method": "PUT",
+      "path": "/scheduled-posts/{feed_id}",
+      "summary": "PUT Update Scheduled Post",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "chat",
+      "slug": "get-chat-broadcast-auth",
+      "operationId": "getChatBroadcastAuth",
+      "method": "GET",
+      "path": "/chat/broadcast/auth",
+      "summary": "GET Get Chat Broadcast Auth",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "chat",
+      "slug": "save-chat-broadcast-auth",
+      "operationId": "saveChatBroadcastAuth",
+      "method": "POST",
+      "path": "/chat/broadcast/auth",
+      "summary": "POST Save Chat Broadcast Auth",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "chat",
+      "slug": "create-chat-group",
+      "operationId": "createChatGroup",
+      "method": "POST",
+      "path": "/chat/groups",
+      "summary": "POST Create Chat Group",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "chat",
+      "slug": "update-chat-group",
+      "operationId": "updateChatGroup",
+      "method": "POST",
+      "path": "/chat/groups/{thread_id}",
+      "summary": "POST Update Chat Group",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "chat",
+      "slug": "delete-chat-group",
+      "operationId": "deleteChatGroup",
+      "method": "POST",
+      "path": "/chat/groups/{thread_id}/delete",
+      "summary": "POST Delete Chat Group",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "chat",
+      "slug": "leave-chat-group",
+      "operationId": "leaveChatGroup",
+      "method": "POST",
+      "path": "/chat/groups/{thread_id}/leave",
+      "summary": "POST Leave Chat Group",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "chat",
+      "slug": "list-chat-group-members",
+      "operationId": "listChatGroupMembers",
+      "method": "GET",
+      "path": "/chat/groups/{thread_id}/members",
+      "summary": "GET List Chat Group Members",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "chat",
+      "slug": "add-chat-group-members",
+      "operationId": "addChatGroupMembers",
+      "method": "POST",
+      "path": "/chat/groups/{thread_id}/members",
+      "summary": "POST Add Chat Group Members",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "chat",
+      "slug": "promote-chat-group-member-to-admin",
+      "operationId": "promoteChatGroupMemberToAdmin",
+      "method": "POST",
+      "path": "/chat/groups/{thread_id}/members/{member_id}/admin",
+      "summary": "POST Promote Chat Group Member To Admin",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "chat",
+      "slug": "remove-chat-group-member",
+      "operationId": "removeChatGroupMember",
+      "method": "POST",
+      "path": "/chat/groups/{thread_id}/members/{member_id}/remove",
+      "summary": "POST Remove Chat Group Member",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "chat",
+      "slug": "delete-chat-message",
+      "operationId": "deleteChatMessage",
+      "method": "POST",
+      "path": "/chat/messages/delete/{message_id}",
+      "summary": "POST Delete Chat Message",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "chat",
+      "slug": "react-to-chat-message",
+      "operationId": "reactToChatMessage",
+      "method": "POST",
+      "path": "/chat/messages/{message_id}/react",
+      "summary": "POST React To Chat Message",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "chat",
+      "slug": "list-chat-messages",
+      "operationId": "listChatMessages",
+      "method": "GET",
+      "path": "/chat/messages/{thread_id}",
+      "summary": "GET List Chat Messages",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "chat",
+      "slug": "send-chat-message",
+      "operationId": "sendChatMessage",
+      "method": "POST",
+      "path": "/chat/messages/{thread_id}",
+      "summary": "POST Send Chat Message",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "chat",
+      "slug": "upload-chat-message-media",
+      "operationId": "uploadChatMessageMedia",
+      "method": "POST",
+      "path": "/chat/messages/{thread_id}/media_upload",
+      "summary": "POST Upload Chat Message Media",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "chat",
+      "slug": "list-new-chat-messages",
+      "operationId": "listNewChatMessages",
+      "method": "GET",
+      "path": "/chat/messages/{thread_id}/new",
+      "summary": "GET List New Chat Messages",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "chat",
+      "slug": "mark-chat-threads-read",
+      "operationId": "markChatThreadsRead",
+      "method": "POST",
+      "path": "/chat/read-threads",
+      "summary": "POST Mark Chat Threads Read",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "chat",
+      "slug": "list-chat-threads",
+      "operationId": "listChatThreads",
+      "method": "GET",
+      "path": "/chat/threads",
+      "summary": "GET List Chat Threads",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "chat",
+      "slug": "create-chat-thread",
+      "operationId": "createChatThread",
+      "method": "POST",
+      "path": "/chat/threads",
+      "summary": "POST Create Chat Thread",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "chat",
+      "slug": "block-chat-thread",
+      "operationId": "blockChatThread",
+      "method": "POST",
+      "path": "/chat/threads/block/{thread_id}",
+      "summary": "POST Block Chat Thread",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "chat",
+      "slug": "delete-chat-thread",
+      "operationId": "deleteChatThread",
+      "method": "POST",
+      "path": "/chat/threads/delete/{thread_id}",
+      "summary": "POST Delete Chat Thread",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "chat",
+      "slug": "join-chat-thread",
+      "operationId": "joinChatThread",
+      "method": "POST",
+      "path": "/chat/threads/join/{thread_id}",
+      "summary": "POST Join Chat Thread",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "chat",
+      "slug": "leave-chat-thread",
+      "operationId": "leaveChatThread",
+      "method": "POST",
+      "path": "/chat/threads/leave/{thread_id}",
+      "summary": "POST Leave Chat Thread",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "chat",
+      "slug": "unblock-chat-thread",
+      "operationId": "unblockChatThread",
+      "method": "POST",
+      "path": "/chat/threads/unblock/{thread_id}",
+      "summary": "POST Unblock Chat Thread",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "chat",
+      "slug": "get-chat-thread",
+      "operationId": "getChatThread",
+      "method": "GET",
+      "path": "/chat/threads/{thread_id}",
+      "summary": "GET Get Chat Thread",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "chat",
+      "slug": "list-chat-thread-members",
+      "operationId": "listChatThreadMembers",
+      "method": "GET",
+      "path": "/chat/threads/{thread_id}/members",
+      "summary": "GET List Chat Thread Members",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "chat",
+      "slug": "block-chat-thread-member",
+      "operationId": "blockChatThreadMember",
+      "method": "POST",
+      "path": "/chat/threads/{thread_id}/members/{member_id}/block-chat",
+      "summary": "POST Block Chat Thread Member",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "chat",
+      "slug": "unblock-chat-thread-member",
+      "operationId": "unblockChatThreadMember",
+      "method": "POST",
+      "path": "/chat/threads/{thread_id}/members/{member_id}/unblock-chat",
+      "summary": "POST Unblock Chat Thread Member",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "chat",
+      "slug": "list-unread-chat-threads",
+      "operationId": "listUnreadChatThreads",
+      "method": "GET",
+      "path": "/chat/unread_threads",
+      "summary": "GET List Unread Chat Threads",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "chat",
+      "slug": "list-chat-users",
+      "operationId": "listChatUsers",
+      "method": "GET",
+      "path": "/chat/users",
+      "summary": "GET List Chat Users",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "list-all-space-courses",
+      "operationId": "listAllSpaceCourses",
+      "method": "GET",
+      "path": "/admin/all_space_courses",
+      "summary": "GET List All Space Courses",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "list-managed-courses",
+      "operationId": "listManagedCourses",
+      "method": "GET",
+      "path": "/admin/courses",
+      "summary": "GET List Managed Courses",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "create-course",
+      "operationId": "createCourse",
+      "method": "POST",
+      "path": "/admin/courses",
+      "summary": "POST Create Course",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "delete-course",
+      "operationId": "deleteCourse",
+      "method": "DELETE",
+      "path": "/admin/courses/{course_id}",
+      "summary": "DELETE Delete Course",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "get-managed-course",
+      "operationId": "getManagedCourse",
+      "method": "GET",
+      "path": "/admin/courses/{course_id}",
+      "summary": "GET Get Managed Course",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "update-course",
+      "operationId": "updateCourse",
+      "method": "PUT",
+      "path": "/admin/courses/{course_id}",
+      "summary": "PUT Update Course",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "list-course-comments",
+      "operationId": "listCourseComments",
+      "method": "GET",
+      "path": "/admin/courses/{course_id}/comments",
+      "summary": "GET List Course Comments",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "copy-course-section",
+      "operationId": "copyCourseSection",
+      "method": "PUT",
+      "path": "/admin/courses/{course_id}/copy-section",
+      "summary": "PUT Copy Course Section",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "duplicate-course",
+      "operationId": "duplicateCourse",
+      "method": "POST",
+      "path": "/admin/courses/{course_id}/duplicate",
+      "summary": "POST Duplicate Course",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "export-course-quiz-results",
+      "operationId": "exportCourseQuizResults",
+      "method": "GET",
+      "path": "/admin/courses/{course_id}/export/quiz-results",
+      "summary": "GET Export Course Quiz Results",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "export-course-students",
+      "operationId": "exportCourseStudents",
+      "method": "GET",
+      "path": "/admin/courses/{course_id}/export/students",
+      "summary": "GET Export Course Students",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "search-course-instructors",
+      "operationId": "searchCourseInstructors",
+      "method": "GET",
+      "path": "/admin/courses/{course_id}/instructors/search",
+      "summary": "GET Search Course Instructors",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "list-course-lessons",
+      "operationId": "listCourseLessons",
+      "method": "GET",
+      "path": "/admin/courses/{course_id}/lessons",
+      "summary": "GET List Course Lessons",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "create-course-lesson",
+      "operationId": "createCourseLesson",
+      "method": "POST",
+      "path": "/admin/courses/{course_id}/lessons",
+      "summary": "POST Create Course Lesson",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "delete-course-lesson",
+      "operationId": "deleteCourseLesson",
+      "method": "DELETE",
+      "path": "/admin/courses/{course_id}/lessons/{lesson_id}",
+      "summary": "DELETE Delete Course Lesson",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "get-course-lesson",
+      "operationId": "getCourseLesson",
+      "method": "GET",
+      "path": "/admin/courses/{course_id}/lessons/{lesson_id}",
+      "summary": "GET Get Course Lesson",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "patch-course-lesson",
+      "operationId": "patchCourseLesson",
+      "method": "PATCH",
+      "path": "/admin/courses/{course_id}/lessons/{lesson_id}",
+      "summary": "PATCH Patch Course Lesson",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "update-course-lesson",
+      "operationId": "updateCourseLesson",
+      "method": "PUT",
+      "path": "/admin/courses/{course_id}/lessons/{lesson_id}",
+      "summary": "PUT Update Course Lesson",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "duplicate-course-lesson",
+      "operationId": "duplicateCourseLesson",
+      "method": "POST",
+      "path": "/admin/courses/{course_id}/lessons/{lesson_id}/duplicate",
+      "summary": "POST Duplicate Course Lesson",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "create-course-link",
+      "operationId": "createCourseLink",
+      "method": "POST",
+      "path": "/admin/courses/{course_id}/links",
+      "summary": "POST Create Course Link",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "update-course-lockscreen",
+      "operationId": "updateCourseLockscreen",
+      "method": "PUT",
+      "path": "/admin/courses/{course_id}/lockscreens",
+      "summary": "PUT Update Course Lockscreen",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "get-course-meta-settings",
+      "operationId": "getCourseMetaSettings",
+      "method": "GET",
+      "path": "/admin/courses/{course_id}/meta-settings",
+      "summary": "GET Get Course Meta Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "move-course-lesson",
+      "operationId": "moveCourseLesson",
+      "method": "PUT",
+      "path": "/admin/courses/{course_id}/move-lesson",
+      "summary": "PUT Move Course Lesson",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "list-course-quiz-results",
+      "operationId": "listCourseQuizResults",
+      "method": "GET",
+      "path": "/admin/courses/{course_id}/quiz-results",
+      "summary": "GET List Course Quiz Results",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "save-course-quiz-result",
+      "operationId": "saveCourseQuizResult",
+      "method": "POST",
+      "path": "/admin/courses/{course_id}/quiz-results/{quiz_id}",
+      "summary": "POST Save Course Quiz Result",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "list-course-sections",
+      "operationId": "listCourseSections",
+      "method": "GET",
+      "path": "/admin/courses/{course_id}/sections",
+      "summary": "GET List Course Sections",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "create-course-section",
+      "operationId": "createCourseSection",
+      "method": "POST",
+      "path": "/admin/courses/{course_id}/sections",
+      "summary": "POST Create Course Section",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "reorder-course-sections",
+      "operationId": "reorderCourseSections",
+      "method": "PATCH",
+      "path": "/admin/courses/{course_id}/sections/indexes",
+      "summary": "PATCH Reorder Course Sections",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "delete-course-section",
+      "operationId": "deleteCourseSection",
+      "method": "DELETE",
+      "path": "/admin/courses/{course_id}/sections/{section_id}",
+      "summary": "DELETE Delete Course Section",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "get-course-section",
+      "operationId": "getCourseSection",
+      "method": "GET",
+      "path": "/admin/courses/{course_id}/sections/{section_id}",
+      "summary": "GET Get Course Section",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "patch-course-section",
+      "operationId": "patchCourseSection",
+      "method": "PATCH",
+      "path": "/admin/courses/{course_id}/sections/{section_id}",
+      "summary": "PATCH Patch Course Section",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "update-course-section",
+      "operationId": "updateCourseSection",
+      "method": "PUT",
+      "path": "/admin/courses/{course_id}/sections/{section_id}",
+      "summary": "PUT Update Course Section",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "reorder-course-section-lessons",
+      "operationId": "reorderCourseSectionLessons",
+      "method": "PATCH",
+      "path": "/admin/courses/{course_id}/sections/{section_id}/indexes",
+      "summary": "PATCH Reorder Course Section Lessons",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "list-course-students",
+      "operationId": "listCourseStudents",
+      "method": "GET",
+      "path": "/admin/courses/{course_id}/students",
+      "summary": "GET List Course Students",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "add-course-student",
+      "operationId": "addCourseStudent",
+      "method": "POST",
+      "path": "/admin/courses/{course_id}/students",
+      "summary": "POST Add Course Student",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "bulk-add-course-students",
+      "operationId": "bulkAddCourseStudents",
+      "method": "POST",
+      "path": "/admin/courses/{course_id}/students/bulk-add",
+      "summary": "POST Bulk Add Course Students",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "bulk-import-course-students",
+      "operationId": "bulkImportCourseStudents",
+      "method": "POST",
+      "path": "/admin/courses/{course_id}/students/bulk-import",
+      "summary": "POST Bulk Import Course Students",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "resolve-course-student-crm-tag",
+      "operationId": "resolveCourseStudentCrmTag",
+      "method": "POST",
+      "path": "/admin/courses/{course_id}/students/resolve-crm-tag",
+      "summary": "POST Resolve Course Student CRM Tag",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "delete-course-student",
+      "operationId": "deleteCourseStudent",
+      "method": "DELETE",
+      "path": "/admin/courses/{course_id}/students/{student_id}",
+      "summary": "DELETE Delete Course Student",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "delete-student-course-progress",
+      "operationId": "deleteStudentCourseProgress",
+      "method": "DELETE",
+      "path": "/admin/courses/{course_id}/students/{student_id}/progress",
+      "summary": "DELETE Delete Student Course Progress",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "search-course-users",
+      "operationId": "searchCourseUsers",
+      "method": "GET",
+      "path": "/admin/courses/{course_id}/users/search",
+      "summary": "GET Search Course Users",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "get-course-welcome-banner",
+      "operationId": "getCourseWelcomeBanner",
+      "method": "GET",
+      "path": "/admin/courses/{course_id}/welcome-banner",
+      "summary": "GET Get Course Welcome Banner",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "save-course-welcome-banner",
+      "operationId": "saveCourseWelcomeBanner",
+      "method": "POST",
+      "path": "/admin/courses/{course_id}/welcome-banner",
+      "summary": "POST Save Course Welcome Banner",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "list-courses",
+      "operationId": "listCourses",
+      "method": "GET",
+      "path": "/courses",
+      "summary": "GET List Courses",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "list-all-courses",
+      "operationId": "listAllCourses",
+      "method": "GET",
+      "path": "/courses/all-courses",
+      "summary": "GET List All Courses",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "get-course",
+      "operationId": "getCourse",
+      "method": "GET",
+      "path": "/courses/{course_id}",
+      "summary": "GET Get Course",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "enroll-in-course",
+      "operationId": "enrollInCourse",
+      "method": "POST",
+      "path": "/courses/{course_id}/enroll",
+      "summary": "POST Enroll In Course",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "update-course-lesson-completion",
+      "operationId": "updateCourseLessonCompletion",
+      "method": "PUT",
+      "path": "/courses/{course_id}/lessons/{lesson_id}/completion",
+      "summary": "PUT Update Course Lesson Completion",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "get-course-lesson-quiz-result",
+      "operationId": "getCourseLessonQuizResult",
+      "method": "GET",
+      "path": "/courses/{course_id}/lessons/{lesson_id}/quiz/result",
+      "summary": "GET Get Course Lesson Quiz Result",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "submit-course-lesson-quiz",
+      "operationId": "submitCourseLessonQuiz",
+      "method": "POST",
+      "path": "/courses/{course_id}/lessons/{lesson_id}/quiz/submit",
+      "summary": "POST Submit Course Lesson Quiz",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "mark-course-lesson-video-watched",
+      "operationId": "markCourseLessonVideoWatched",
+      "method": "POST",
+      "path": "/courses/{course_id}/lessons/{lesson_id}/video-watched",
+      "summary": "POST Mark Course Lesson Video Watched",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "delete-my-course-progress",
+      "operationId": "deleteMyCourseProgress",
+      "method": "DELETE",
+      "path": "/courses/{course_id}/progress",
+      "summary": "DELETE Delete My Course Progress",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "get-course-by-slug",
+      "operationId": "getCourseBySlug",
+      "method": "GET",
+      "path": "/courses/{course_slug}/by-slug",
+      "summary": "GET Get Course By Slug",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "courses",
+      "slug": "get-course-lesson-by-slug",
+      "operationId": "getCourseLessonBySlug",
+      "method": "GET",
+      "path": "/courses/{course_slug}/lessons/{lesson_slug}/by-slug",
+      "summary": "GET Get Course Lesson By Slug",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "profile",
+      "slug": "list-invitations",
+      "operationId": "listInvitations",
+      "method": "GET",
+      "path": "/invitations",
+      "summary": "GET List Invitations",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "profile",
+      "slug": "create-invitation",
+      "operationId": "createInvitation",
+      "method": "POST",
+      "path": "/invitations",
+      "summary": "POST Create Invitation",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "profile",
+      "slug": "create-invitation-link",
+      "operationId": "createInvitationLink",
+      "method": "POST",
+      "path": "/invitations/link",
+      "summary": "POST Create Invitation Link",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "profile",
+      "slug": "delete-invitation",
+      "operationId": "deleteInvitation",
+      "method": "DELETE",
+      "path": "/invitations/{invitation_id}",
+      "summary": "DELETE Delete Invitation",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "profile",
+      "slug": "resend-invitation",
+      "operationId": "resendInvitation",
+      "method": "POST",
+      "path": "/invitations/{invitation_id}/resend",
+      "summary": "POST Resend Invitation",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "profile",
+      "slug": "get-leaderboard",
+      "operationId": "getLeaderboard",
+      "method": "GET",
+      "path": "/leaderboard",
+      "summary": "GET Get Leaderboard",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "profile",
+      "slug": "list-members",
+      "operationId": "listMembers",
+      "method": "GET",
+      "path": "/members",
+      "summary": "GET List Members",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "profile",
+      "slug": "patch-member",
+      "operationId": "patchMember",
+      "method": "PATCH",
+      "path": "/members/{user_id}",
+      "summary": "PATCH Patch Member",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "profile",
+      "slug": "list-notifications",
+      "operationId": "listNotifications",
+      "method": "GET",
+      "path": "/notifications",
+      "summary": "GET List Notifications",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "profile",
+      "slug": "mark-all-notifications-read",
+      "operationId": "markAllNotificationsRead",
+      "method": "POST",
+      "path": "/notifications/mark-all-read",
+      "summary": "POST Mark All Notifications Read",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "profile",
+      "slug": "mark-notification-read-by-feed",
+      "operationId": "markNotificationReadByFeed",
+      "method": "POST",
+      "path": "/notifications/mark-read/{feed_id}/by-feed-id",
+      "summary": "POST Mark Notification Read By Feed",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "profile",
+      "slug": "mark-notification-read",
+      "operationId": "markNotificationRead",
+      "method": "POST",
+      "path": "/notifications/mark-read/{notification_id}",
+      "summary": "POST Mark Notification Read",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "profile",
+      "slug": "get-unread-notification-count",
+      "operationId": "getUnreadNotificationCount",
+      "method": "GET",
+      "path": "/notifications/unread",
+      "summary": "GET Get Unread Notification Count",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "profile",
+      "slug": "toggle-profile-follow",
+      "operationId": "toggleProfileFollow",
+      "method": "POST",
+      "path": "/profile/{userId}/toggle-follow",
+      "summary": "POST Toggle Profile Follow",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "profile",
+      "slug": "get-profile",
+      "operationId": "getProfile",
+      "method": "GET",
+      "path": "/profile/{username}",
+      "summary": "GET Get Profile",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "profile",
+      "slug": "save-profile",
+      "operationId": "saveProfile",
+      "method": "POST",
+      "path": "/profile/{username}",
+      "summary": "POST Save Profile",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "profile",
+      "slug": "update-profile",
+      "operationId": "updateProfile",
+      "method": "PUT",
+      "path": "/profile/{username}",
+      "summary": "PUT Update Profile",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "profile",
+      "slug": "block-profile",
+      "operationId": "blockProfile",
+      "method": "POST",
+      "path": "/profile/{username}/block",
+      "summary": "POST Block Profile",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "profile",
+      "slug": "list-profile-blocked-users",
+      "operationId": "listProfileBlockedUsers",
+      "method": "GET",
+      "path": "/profile/{username}/blocked-users",
+      "summary": "GET List Profile Blocked Users",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "profile",
+      "slug": "change-profile-password",
+      "operationId": "changeProfilePassword",
+      "method": "POST",
+      "path": "/profile/{username}/change-password",
+      "summary": "POST Change Profile Password",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "profile",
+      "slug": "list-profile-comments",
+      "operationId": "listProfileComments",
+      "method": "GET",
+      "path": "/profile/{username}/comments",
+      "summary": "GET List Profile Comments",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "profile",
+      "slug": "list-profile-courses",
+      "operationId": "listProfileCourses",
+      "method": "GET",
+      "path": "/profile/{username}/courses",
+      "summary": "GET List Profile Courses",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "profile",
+      "slug": "follow-profile",
+      "operationId": "followProfile",
+      "method": "POST",
+      "path": "/profile/{username}/follow",
+      "summary": "POST Follow Profile",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "profile",
+      "slug": "list-profile-followers",
+      "operationId": "listProfileFollowers",
+      "method": "GET",
+      "path": "/profile/{username}/followers",
+      "summary": "GET List Profile Followers",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "profile",
+      "slug": "list-profile-followings",
+      "operationId": "listProfileFollowings",
+      "method": "GET",
+      "path": "/profile/{username}/followings",
+      "summary": "GET List Profile Followings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "profile",
+      "slug": "list-profile-memberships",
+      "operationId": "listProfileMemberships",
+      "method": "GET",
+      "path": "/profile/{username}/memberships",
+      "summary": "GET List Profile Memberships",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "profile",
+      "slug": "save-profile-notification",
+      "operationId": "saveProfileNotification",
+      "method": "POST",
+      "path": "/profile/{username}/notification",
+      "summary": "POST Save Profile Notification",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "profile",
+      "slug": "get-profile-notification-preferences",
+      "operationId": "getProfileNotificationPreferences",
+      "method": "GET",
+      "path": "/profile/{username}/notification-preferences",
+      "summary": "GET Get Profile Notification Preferences",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "profile",
+      "slug": "save-profile-notification-preferences",
+      "operationId": "saveProfileNotificationPreferences",
+      "method": "POST",
+      "path": "/profile/{username}/notification-preferences",
+      "summary": "POST Save Profile Notification Preferences",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "profile",
+      "slug": "reconfirm-profile-email",
+      "operationId": "reconfirmProfileEmail",
+      "method": "POST",
+      "path": "/profile/{username}/reconfirm-email",
+      "summary": "POST Reconfirm Profile Email",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "profile",
+      "slug": "list-profile-spaces",
+      "operationId": "listProfileSpaces",
+      "method": "GET",
+      "path": "/profile/{username}/spaces",
+      "summary": "GET List Profile Spaces",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "profile",
+      "slug": "unblock-profile",
+      "operationId": "unblockProfile",
+      "method": "POST",
+      "path": "/profile/{username}/unblock",
+      "summary": "POST Unblock Profile",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "profile",
+      "slug": "unfollow-profile",
+      "operationId": "unfollowProfile",
+      "method": "POST",
+      "path": "/profile/{username}/unfollow",
+      "summary": "POST Unfollow Profile",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "analytics",
+      "slug": "get-analytics-member-activity",
+      "operationId": "getAnalyticsMemberActivity",
+      "method": "GET",
+      "path": "/analytics/members/activity",
+      "summary": "GET Get Analytics Member Activity",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "analytics",
+      "slug": "list-top-commenters",
+      "operationId": "listTopCommenters",
+      "method": "GET",
+      "path": "/analytics/members/top-commenters",
+      "summary": "GET List Top Commenters",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "analytics",
+      "slug": "list-top-members",
+      "operationId": "listTopMembers",
+      "method": "GET",
+      "path": "/analytics/members/top-members",
+      "summary": "GET List Top Members",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "analytics",
+      "slug": "list-top-post-starters",
+      "operationId": "listTopPostStarters",
+      "method": "GET",
+      "path": "/analytics/members/top-post-starters",
+      "summary": "GET List Top Post Starters",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "analytics",
+      "slug": "get-analytics-member-widget",
+      "operationId": "getAnalyticsMemberWidget",
+      "method": "GET",
+      "path": "/analytics/members/widget",
+      "summary": "GET Get Analytics Member Widget",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "analytics",
+      "slug": "get-analytics-overview-activity",
+      "operationId": "getAnalyticsOverviewActivity",
+      "method": "GET",
+      "path": "/analytics/overview/activity",
+      "summary": "GET Get Analytics Overview Activity",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "analytics",
+      "slug": "get-analytics-overview-popular-day-time",
+      "operationId": "getAnalyticsOverviewPopularDayTime",
+      "method": "GET",
+      "path": "/analytics/overview/popular-day-time",
+      "summary": "GET Get Analytics Overview Popular Day Time",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "analytics",
+      "slug": "get-analytics-overview-widget",
+      "operationId": "getAnalyticsOverviewWidget",
+      "method": "GET",
+      "path": "/analytics/overview/widget",
+      "summary": "GET Get Analytics Overview Widget",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "analytics",
+      "slug": "get-analytics-space-activity",
+      "operationId": "getAnalyticsSpaceActivity",
+      "method": "GET",
+      "path": "/analytics/spaces/activity",
+      "summary": "GET Get Analytics Space Activity",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "analytics",
+      "slug": "get-analytics-space-popular",
+      "operationId": "getAnalyticsSpacePopular",
+      "method": "GET",
+      "path": "/analytics/spaces/popular",
+      "summary": "GET Get Analytics Space Popular",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "analytics",
+      "slug": "search-spaces-analytics",
+      "operationId": "searchSpacesAnalytics",
+      "method": "GET",
+      "path": "/analytics/spaces/search",
+      "summary": "GET Search Spaces Analytics",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "analytics",
+      "slug": "get-analytics-space-widget",
+      "operationId": "getAnalyticsSpaceWidget",
+      "method": "GET",
+      "path": "/analytics/spaces/widget",
+      "summary": "GET Get Analytics Space Widget",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-app-vars",
+      "operationId": "getAppVars",
+      "method": "GET",
+      "path": "/options/app-vars",
+      "summary": "GET Get App Vars",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "list-menu-items",
+      "operationId": "listMenuItems",
+      "method": "GET",
+      "path": "/options/menu-items",
+      "summary": "GET List Menu Items",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-sidebar-menu-html",
+      "operationId": "getSidebarMenuHtml",
+      "method": "GET",
+      "path": "/options/sidebar-menu-html",
+      "summary": "GET Get Sidebar Menu HTML",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-color-config",
+      "operationId": "getColorConfig",
+      "method": "GET",
+      "path": "/settings/color-config",
+      "summary": "GET Get Color Config",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-color-config",
+      "operationId": "saveColorConfig",
+      "method": "POST",
+      "path": "/settings/color-config",
+      "summary": "POST Save Color Config",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-crm-tagging-config",
+      "operationId": "getCrmTaggingConfig",
+      "method": "GET",
+      "path": "/settings/crm-tagging-config",
+      "summary": "GET Get CRM Tagging Config",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-crm-tagging-config",
+      "operationId": "saveCrmTaggingConfig",
+      "method": "POST",
+      "path": "/settings/crm-tagging-config",
+      "summary": "POST Save CRM Tagging Config",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-customization-settings",
+      "operationId": "getCustomizationSettings",
+      "method": "GET",
+      "path": "/settings/customization-settings",
+      "summary": "GET Get Customization Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-customization-settings",
+      "operationId": "saveCustomizationSettings",
+      "method": "POST",
+      "path": "/settings/customization-settings",
+      "summary": "POST Save Customization Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-features",
+      "operationId": "getFeatures",
+      "method": "GET",
+      "path": "/settings/features",
+      "summary": "GET Get Features",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-features",
+      "operationId": "saveFeatures",
+      "method": "POST",
+      "path": "/settings/features",
+      "summary": "POST Save Features",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-fluent-player-settings",
+      "operationId": "getFluentPlayerSettings",
+      "method": "GET",
+      "path": "/settings/fluent-player-settings",
+      "summary": "GET Get Fluent Player Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-fluent-player-settings",
+      "operationId": "saveFluentPlayerSettings",
+      "method": "POST",
+      "path": "/settings/fluent-player-settings",
+      "summary": "POST Save Fluent Player Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-followers-config",
+      "operationId": "getFollowersConfig",
+      "method": "GET",
+      "path": "/settings/followers/config",
+      "summary": "GET Get Followers Config",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-followers-config",
+      "operationId": "saveFollowersConfig",
+      "method": "POST",
+      "path": "/settings/followers/config",
+      "summary": "POST Save Followers Config",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "install-plugin",
+      "operationId": "installPlugin",
+      "method": "POST",
+      "path": "/settings/install_plugin",
+      "summary": "POST Install Plugin",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-menu-settings",
+      "operationId": "getMenuSettings",
+      "method": "GET",
+      "path": "/settings/menu-settings",
+      "summary": "GET Get Menu Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-menu-settings",
+      "operationId": "saveMenuSettings",
+      "method": "POST",
+      "path": "/settings/menu-settings",
+      "summary": "POST Save Menu Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-privacy-settings",
+      "operationId": "getPrivacySettings",
+      "method": "GET",
+      "path": "/settings/privacy-settings",
+      "summary": "GET Get Privacy Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-privacy-settings",
+      "operationId": "savePrivacySettings",
+      "method": "POST",
+      "path": "/settings/privacy-settings",
+      "summary": "POST Save Privacy Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-snippets-settings",
+      "operationId": "getSnippetsSettings",
+      "method": "GET",
+      "path": "/settings/snippets-settings",
+      "summary": "GET Get Snippets Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-snippets-settings",
+      "operationId": "saveSnippetsSettings",
+      "method": "POST",
+      "path": "/settings/snippets-settings",
+      "summary": "POST Save Snippets Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "get-auth-settings",
+      "operationId": "getAuthSettings",
+      "method": "GET",
+      "path": "/admin/auth-settings",
+      "summary": "GET Get Auth Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "save-auth-settings",
+      "operationId": "saveAuthSettings",
+      "method": "POST",
+      "path": "/admin/auth-settings",
+      "summary": "POST Save Auth Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "list-custom-profile-fields",
+      "operationId": "listCustomProfileFields",
+      "method": "GET",
+      "path": "/admin/custom-profile-fields",
+      "summary": "GET List Custom Profile Fields",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "save-custom-profile-fields",
+      "operationId": "saveCustomProfileFields",
+      "method": "POST",
+      "path": "/admin/custom-profile-fields",
+      "summary": "POST Save Custom Profile Fields",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "get-email-settings",
+      "operationId": "getEmailSettings",
+      "method": "GET",
+      "path": "/admin/email-settings",
+      "summary": "GET Get Email Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "save-email-settings",
+      "operationId": "saveEmailSettings",
+      "method": "POST",
+      "path": "/admin/email-settings",
+      "summary": "POST Save Email Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "get-general-settings",
+      "operationId": "getGeneralSettings",
+      "method": "GET",
+      "path": "/admin/general",
+      "summary": "GET Get General Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "save-general-settings",
+      "operationId": "saveGeneralSettings",
+      "method": "POST",
+      "path": "/admin/general",
+      "summary": "POST Save General Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "list-leaderboard-levels",
+      "operationId": "listLeaderboardLevels",
+      "method": "GET",
+      "path": "/admin/leaderboards/levels",
+      "summary": "GET List Leaderboard Levels",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "save-leaderboard-levels",
+      "operationId": "saveLeaderboardLevels",
+      "method": "POST",
+      "path": "/admin/leaderboards/levels",
+      "summary": "POST Save Leaderboard Levels",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "deactivate-license",
+      "operationId": "deactivateLicense",
+      "method": "DELETE",
+      "path": "/admin/license",
+      "summary": "DELETE Deactivate License",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "get-license",
+      "operationId": "getLicense",
+      "method": "GET",
+      "path": "/admin/license",
+      "summary": "GET Get License",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "activate-license",
+      "operationId": "activateLicense",
+      "method": "POST",
+      "path": "/admin/license",
+      "summary": "POST Activate License",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "create-link",
+      "operationId": "createLink",
+      "method": "POST",
+      "path": "/admin/links",
+      "summary": "POST Create Link",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "delete-link",
+      "operationId": "deleteLink",
+      "method": "DELETE",
+      "path": "/admin/links/{id}",
+      "summary": "DELETE Delete Link",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "list-managers",
+      "operationId": "listManagers",
+      "method": "GET",
+      "path": "/admin/managers",
+      "summary": "GET List Managers",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "add-manager",
+      "operationId": "addManager",
+      "method": "POST",
+      "path": "/admin/managers",
+      "summary": "POST Add Manager",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "delete-manager",
+      "operationId": "deleteManager",
+      "method": "DELETE",
+      "path": "/admin/managers/{user_id}",
+      "summary": "DELETE Delete Manager",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "get-messaging-settings",
+      "operationId": "getMessagingSettings",
+      "method": "GET",
+      "path": "/admin/messaging-setting",
+      "summary": "GET Get Messaging Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "save-messaging-settings",
+      "operationId": "saveMessagingSettings",
+      "method": "POST",
+      "path": "/admin/messaging-setting",
+      "summary": "POST Save Messaging Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "list-onboardings",
+      "operationId": "listOnboardings",
+      "method": "GET",
+      "path": "/admin/on-boardings",
+      "summary": "GET List Onboardings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "save-onboarding",
+      "operationId": "saveOnboarding",
+      "method": "POST",
+      "path": "/admin/on-boardings",
+      "summary": "POST Save Onboarding",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "change-onboarding-slug",
+      "operationId": "changeOnboardingSlug",
+      "method": "POST",
+      "path": "/admin/on-boardings/change-slug",
+      "summary": "POST Change Onboarding Slug",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "list-profile-link-providers",
+      "operationId": "listProfileLinkProviders",
+      "method": "GET",
+      "path": "/admin/profile-link-providers",
+      "summary": "GET List Profile Link Providers",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "save-profile-link-providers",
+      "operationId": "saveProfileLinkProviders",
+      "method": "POST",
+      "path": "/admin/profile-link-providers",
+      "summary": "POST Save Profile Link Providers",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "get-push-settings",
+      "operationId": "getPushSettings",
+      "method": "GET",
+      "path": "/admin/push-settings",
+      "summary": "GET Get Push Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "save-push-settings",
+      "operationId": "savePushSettings",
+      "method": "POST",
+      "path": "/admin/push-settings",
+      "summary": "POST Save Push Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "get-pwa-settings",
+      "operationId": "getPwaSettings",
+      "method": "GET",
+      "path": "/admin/pwa-settings",
+      "summary": "GET Get PWA Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "save-pwa-settings",
+      "operationId": "savePwaSettings",
+      "method": "POST",
+      "path": "/admin/pwa-settings",
+      "summary": "POST Save PWA Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "get-storage-settings",
+      "operationId": "getStorageSettings",
+      "method": "GET",
+      "path": "/admin/storage-settings",
+      "summary": "GET Get Storage Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "save-storage-settings",
+      "operationId": "saveStorageSettings",
+      "method": "POST",
+      "path": "/admin/storage-settings",
+      "summary": "POST Save Storage Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "list-topics",
+      "operationId": "listTopics",
+      "method": "GET",
+      "path": "/admin/topics",
+      "summary": "GET List Topics",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "create-topic",
+      "operationId": "createTopic",
+      "method": "POST",
+      "path": "/admin/topics",
+      "summary": "POST Create Topic",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "save-topics-config",
+      "operationId": "saveTopicsConfig",
+      "method": "POST",
+      "path": "/admin/topics/config",
+      "summary": "POST Save Topics Config",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "reorder-topics",
+      "operationId": "reorderTopics",
+      "method": "POST",
+      "path": "/admin/topics/reorder",
+      "summary": "POST Reorder Topics",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "delete-topic",
+      "operationId": "deleteTopic",
+      "method": "DELETE",
+      "path": "/admin/topics/{topic_id}",
+      "summary": "DELETE Delete Topic",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "list-user-badges",
+      "operationId": "listUserBadges",
+      "method": "GET",
+      "path": "/admin/user-badges",
+      "summary": "GET List User Badges",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "save-user-badges",
+      "operationId": "saveUserBadges",
+      "method": "POST",
+      "path": "/admin/user-badges",
+      "summary": "POST Save User Badges",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "list-community-users",
+      "operationId": "listCommunityUsers",
+      "method": "GET",
+      "path": "/admin/users",
+      "summary": "GET List Community Users",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "list-webhooks",
+      "operationId": "listWebhooks",
+      "method": "GET",
+      "path": "/admin/webhooks",
+      "summary": "GET List Webhooks",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "create-webhook",
+      "operationId": "createWebhook",
+      "method": "POST",
+      "path": "/admin/webhooks",
+      "summary": "POST Create Webhook",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "delete-webhook",
+      "operationId": "deleteWebhook",
+      "method": "DELETE",
+      "path": "/admin/webhooks/{id}",
+      "summary": "DELETE Delete Webhook",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "get-welcome-banner",
+      "operationId": "getWelcomeBanner",
+      "method": "GET",
+      "path": "/admin/welcome-banner",
+      "summary": "GET Get Welcome Banner",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "save-welcome-banner",
+      "operationId": "saveWelcomeBanner",
+      "method": "POST",
+      "path": "/admin/welcome-banner",
+      "summary": "POST Save Welcome Banner",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    }
+  ]
+}
