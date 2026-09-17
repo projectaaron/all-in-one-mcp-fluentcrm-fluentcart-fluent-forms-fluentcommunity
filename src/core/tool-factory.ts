@@ -83,6 +83,10 @@ export const OUTPUT_SHAPE = {
     .array(z.string())
     .optional()
     .describe('Unintended-looking effects: fields that changed without being in your request body, or supplied fields that did not take effect'),
+  stored: z
+    .unknown()
+    .optional()
+    .describe('Read-back of the record as the plugin itself lists it after the write — proof the write landed where the plugin reads it'),
 };
 
 export interface ToolRuntime {
@@ -191,6 +195,17 @@ export function lockedRefusal(label: string) {
 
 const isPlainRecord = (v: unknown): v is Record<string, unknown> =>
   !!v && typeof v === 'object' && !Array.isArray(v);
+const isEmptyValue = (v: unknown) =>
+  v === undefined || v === null || v === '' || (isPlainRecord(v) && Object.keys(v).length === 0) || (Array.isArray(v) && v.length === 0);
+/** The registry a readback `allow` validates against: an object's keys, or an array of strings/{key|slug|name}. */
+function allowedKeys(registry: unknown): string[] {
+  if (Array.isArray(registry)) {
+    return registry
+      .map((r) => (typeof r === 'string' ? r : isPlainRecord(r) ? String(r.key ?? r.slug ?? r.name ?? '') : ''))
+      .filter(Boolean);
+  }
+  return isPlainRecord(registry) ? Object.keys(registry) : [];
+}
 
 /** Core execution shared by the grouped and individual registrations.
  *  `label` is the caller-facing name used in messages — `crm_contacts.list_contacts`
@@ -260,6 +275,40 @@ export async function executeAction(
         `Missing required body key${missingKeys.length > 1 ? 's' : ''} for ${label}: ${missingKeys.join(', ')} — nothing was sent. ` +
           `${def.bodyNote ?? ''} Endpoint: ${def.method} ${def.path}`.trimStart()
       );
+    }
+  }
+
+  // Read-back guard (def.readback): some plugin endpoints accept and store
+  // any body — e.g. a form-integration feed under an unregistered
+  // integration name — and return 200 for a record nothing will ever read.
+  // Validate the body against what the plugin advertises BEFORE writing, and
+  // read the stored record back AFTER, so the caller never trusts a bare 200.
+  let readbackPath: string | undefined;
+  if (def.readback && isWrite && !dryRun) {
+    readbackPath = def.readback.path;
+    for (const p of placeholders) readbackPath = readbackPath.replace(`{${p}}`, encodeURIComponent(String(supplied[p])));
+    const allow = def.readback.allow;
+    const body = isPlainRecord(args.body) ? args.body : {};
+    const gated = allow && (!allow.requiredWhen || !isEmptyValue(body[allow.requiredWhen]));
+    if (gated && allow) {
+      let advertised: unknown;
+      try {
+        advertised = (await runtime.client.request({ method: 'GET', path: readbackPath, siteRoot: def.siteRoot })).data;
+      } catch (e) {
+        return err(
+          `${label}: could not read the plugin's registry to validate ${allow.bodyField} — nothing was written. ` +
+            `Underlying read: ${e instanceof FluentApiError ? e.message : String(e)}`
+        );
+      }
+      const allowed = allowedKeys(isPlainRecord(advertised) ? advertised[allow.fromKey] : undefined);
+      const value = body[allow.bodyField];
+      if (typeof value !== 'string' || !allowed.includes(value)) {
+        return err(
+          `Refused (nothing was written): ${label} needs ${allow.bodyField} to be one of the integrations this site has registered — ` +
+            `${allowed.length ? allowed.map((a) => `"${a}"`).join(', ') : '(none found)'} — but got ${JSON.stringify(value)}. ` +
+            `The plugin would store the feed under "${String(value ?? '')}_feeds" and never run it. ${def.bodyNote ?? ''}`.trimEnd()
+        );
+      }
     }
   }
 
@@ -377,6 +426,27 @@ export async function executeAction(
         notes.push('post-write verification read failed — the write itself succeeded');
       }
     }
+    let stored: unknown;
+    if (readbackPath && def.readback?.stored) {
+      const { itemsKey, idFrom } = def.readback.stored;
+      const wroteId = isPlainRecord(response.data) ? response.data[idFrom] : undefined;
+      if (wroteId === undefined) {
+        notes.push(`response carried no ${idFrom} — read-back skipped; confirm with the list tool`);
+      } else try {
+        const listing = (await runtime.client.request({ method: 'GET', path: readbackPath, siteRoot: def.siteRoot })).data;
+        const items = isPlainRecord(listing) && Array.isArray(listing[itemsKey]) ? (listing[itemsKey] as unknown[]) : [];
+        stored = items.find((it) => isPlainRecord(it) && String(it.id) === String(wroteId));
+        if (stored === undefined) {
+          return err(
+            `${label} returned HTTP ${response.status} (${idFrom}=${String(wroteId)}), but the plugin does not list that record among its ${itemsKey} — ` +
+              `it was stored where nothing reads it and will never run. Re-read with the list tool and check the request body. ${def.bodyNote ?? ''}`.trimEnd()
+          );
+        }
+      } catch (e) {
+        if (e instanceof FluentApiError) notes.push(`post-write read-back failed (${e.message}) — the write itself returned ${response.status}`);
+        else throw e;
+      }
+    }
     if (verification?.rejected) {
       return err(
         `${label} returned HTTP ${response.status} but the record did not change — none of your supplied fields landed. ` +
@@ -398,6 +468,7 @@ export async function executeAction(
       ...(readDef && bodyIsMergeable ? { mode: wantReplace ? ('replace' as const) : ('merge' as const) } : {}),
       ...(verification ? { changed: verification.changed } : {}),
       ...(verification?.warnings.length ? { warnings: verification.warnings } : {}),
+      ...(stored !== undefined ? { stored } : {}),
       ...(shaped.pagination && Object.values(shaped.pagination).some((v) => v !== undefined)
         ? { pagination: shaped.pagination }
         : {}),
