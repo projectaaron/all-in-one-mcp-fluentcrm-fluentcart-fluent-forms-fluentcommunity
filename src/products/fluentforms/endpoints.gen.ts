@@ -358,27 +358,42 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "GET",
       "path": "/integrations/{form_id}",
       "summary": "Get Form Integration",
-      "destructive": false
+      "destructive": false,
+      "bodyNote": "Pass query: {\"integration_id\": <feed id>, \"integration_name\": \"<slug>\"} — both come from forms_integrations_list (feed id, and provider minus the \"_feeds\" suffix). Without integration_id it returns that integration's default settings template, which is the shape to send to forms_integrations_save."
     },
     "save_form_integration": {
       "op": "integrations/save-form-integration",
       "method": "POST",
       "path": "/integrations/{form_id}",
       "summary": "Save Form Integration",
-      "destructive": false
+      "destructive": false,
+      "bodyNote": "Body shape: {\"integration_name\": \"<registered slug>\", \"integration\": {\"name\": \"<feed name>\", \"enabled\": true, \"list_id\": …, \"merge_fields\"/other per-integration fields…, \"conditionals\": {\"status\": false, \"type\": \"all\", \"conditions\": []}}, \"integration_id\": <existing feed id to update, omit to create>}. integration_name MUST be one of the slugs in forms_integrations_list's available_integrations (e.g. \"fluentcrm\", \"fluent_support\", \"fluent_community\", \"wp_social_ninja\" — note the inconsistent underscores): Fluent Forms stores the feed under \"<integration_name>_feeds\" without checking the name, so a wrong slug saves a row the submission processor never runs. This tool refuses unregistered names before writing and returns the feed as Fluent Forms lists it (`stored`) after. Status-only toggle: {\"integration_id\": <id>, \"status\": false} with no \"integration\". Read an existing feed first with forms_integrations_get {query: {integration_id, integration_name}} and mirror its shape.",
+      "readback": {
+        "path": "/integrations/{form_id}/form-integrations",
+        "allow": {
+          "bodyField": "integration_name",
+          "fromKey": "available_integrations",
+          "requiredWhen": "integration"
+        },
+        "stored": {
+          "itemsKey": "feeds",
+          "idFrom": "integration_id"
+        }
+      }
     },
     "delete_form_integration": {
       "op": "integrations/delete-form-integration",
       "method": "DELETE",
       "path": "/integrations/{form_id}",
       "summary": "Delete Form Integration",
-      "destructive": true
+      "destructive": true,
+      "bodyNote": "Pass query: {\"integration_id\": <feed id>} (from forms_integrations_list). The delete is scoped to form_id."
     },
     "list_form_integrations": {
       "op": "integrations/list-form-integrations",
       "method": "GET",
       "path": "/integrations/{form_id}/form-integrations",
-      "summary": "List Form Integrations",
+      "summary": "List Form Integration Feeds (with available integration slugs)",
       "destructive": false
     },
     "get_integration_list_component": {

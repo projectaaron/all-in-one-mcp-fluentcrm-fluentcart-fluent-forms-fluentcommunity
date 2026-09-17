@@ -56,6 +56,7 @@ function generate(product) {
       ...(override.toolName ? { toolName: override.toolName } : {}),
       ...(override.requiredBody ? { requiredBody: override.requiredBody } : {}),
       ...(override.bodyNote ? { bodyNote: override.bodyNote } : {}),
+      ...(override.readback ? { readback: override.readback } : {}),
       ...(e.path.startsWith('/?') ? { siteRoot: true } : {}),
     };
   }
