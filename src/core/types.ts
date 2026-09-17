@@ -29,6 +29,25 @@ export interface EndpointDef {
   bodyNote?: string;
   /** Path lives at the site root (e.g. `/?fluent-cart=...`), not under wp-json. */
   siteRoot?: boolean;
+  /** Read-back guard for writes whose endpoint accepts a body the plugin will
+   *  store but never act on (e.g. a form-integration feed saved under an
+   *  unregistered integration name). A GET on `path` (same placeholders as
+   *  the write) is fetched before the write to validate `allow`, and after
+   *  it to return the stored record as `stored` — set via operationOverrides. */
+  readback?: EndpointReadback;
+}
+
+export interface EndpointReadback {
+  /** GET path template resolved with the write's own path parameters. */
+  path: string;
+  /** Preflight: `body[bodyField]` must be a key (or member) of the readback
+   *  response's `fromKey`. Enforced only when `requiredWhen` (a body field)
+   *  is present and non-empty, so status-only toggles pass through. */
+  allow?: { bodyField: string; fromKey: string; requiredWhen?: string };
+  /** Post-write: locate the stored item in readback[itemsKey] whose `id`
+   *  equals the write response's `idFrom` field; missing means the plugin
+   *  stored something it will never read. */
+  stored?: { itemsKey: string; idFrom: string };
 }
 
 /** A consolidated tool: one resource domain, many actions. */
