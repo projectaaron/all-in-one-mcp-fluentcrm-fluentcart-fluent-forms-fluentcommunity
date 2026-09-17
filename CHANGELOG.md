@@ -2,6 +2,35 @@
 
 ## Unreleased
 
+**`forms_integrations_save` can no longer save a feed Fluent Forms will
+never run.** Field report: an integration feed written through the connector
+returned 200 but never fired on submission — no row in `wp_fluentform_logs`,
+the feed invisible in the integrations list. The tool does go through Fluent
+Forms' own `FormIntegrationService::update()` (the connector has no database
+access), but that service derives the storage key as
+`<integration_name>_feeds` **without checking the name against registered
+integrations** — so `"FluentCRM"` or `"fluent-crm"` instead of `"fluentcrm"`
+stores a row the submission processor never reads, with a 200. The
+registered slugs are inconsistent (`fluentcrm`, `fluent_support`,
+`fluent_community`, `wp_social_ninja`), which is exactly what an agent
+guesses wrong.
+
+- **New core guard, `readback`** (an `operationOverrides` entry): a GET on
+  a sibling path is fetched *before* a write to validate a body field against
+  what the plugin advertises, and *after* it to return the stored record as
+  `stored`. Applied to `forms_integrations_save`: `integration_name` must be
+  a key of `available_integrations`, refused before writing otherwise (the
+  refusal lists the registered slugs); after writing, the feed is located in
+  the plugin's own `feeds` listing and returned — if the plugin doesn't list
+  it, the tool errors instead of reporting success. Status-only toggles
+  (`{integration_id, status}`) pass the allow check, since no name is
+  involved.
+- `bodyNote`s on save/get/delete document the body shape, the slug rule, the
+  read-first pattern (`forms_integrations_get` with `integration_id` +
+  `integration_name`), and that `forms_integrations_list` is the working
+  read counterpart — its `provider` field is the stored key, so a
+  misnamed feed's absence there is the diagnostic.
+
 **New product: FluentCommunity — 274 endpoints, 8 areas, `community_*`
 tools.** The fifth WPManageNinja product and the largest single addition:
 spaces and space groups (membership, lock screens, paywalls, media
