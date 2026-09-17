@@ -4,32 +4,55 @@
   "tools": {
     "forms_forms": {
       "description": "Create, read, update, duplicate, convert and delete forms, and inspect their fields, shortcodes, embedding pages and edit history.",
-      "groups": ["forms", "analytics"]
+      "groups": [
+        "forms",
+        "analytics"
+      ]
     },
     "forms_submissions": {
       "description": "Read and manage form submissions (entries): filters, notes, logs, statuses, favorites, bulk actions, and the public submission endpoint.",
-      "groups": ["submissions", "form-submit"]
+      "groups": [
+        "submissions",
+        "form-submit"
+      ]
     },
     "forms_settings": {
       "description": "Per-form settings: general options, confirmations, style customizer, entry columns, conversational design, and style presets.",
-      "groups": ["settings"]
+      "groups": [
+        "settings"
+      ]
     },
     "forms_integrations": {
       "description": "Connect forms to third-party services: global integration credentials and per-form integration feeds.",
-      "groups": ["integrations"]
+      "groups": [
+        "integrations"
+      ]
     },
     "forms_reports": {
       "description": "Read-only analytics for forms: submission counts, completion rates, revenue, payment types, heatmaps and top-performing forms.",
-      "groups": ["report"]
+      "groups": [
+        "report"
+      ]
     },
     "forms_admin": {
       "description": "Site-level Fluent Forms administration: global settings, licensing, managers and role capabilities.",
-      "groups": ["global-settings", "license", "managers", "roles"],
+      "groups": [
+        "global-settings",
+        "license",
+        "managers",
+        "roles"
+      ],
       "note": "The license endpoints require Fluent Forms Pro."
     },
     "forms_utilities": {
       "description": "Maintenance and helper operations: system logs, global search, admin notices, plugin install helpers, and the MCP adapter settings.",
-      "groups": ["logs", "global-search", "notice", "suggested-plugins", "mcp"]
+      "groups": [
+        "logs",
+        "global-search",
+        "notice",
+        "suggested-plugins",
+        "mcp"
+      ]
     }
   },
   "operationOverrides": {
@@ -37,7 +60,9 @@
       "tool": "forms_submissions",
       "summary": "Query Submissions Report (filtered read)"
     },
-    "forms/clear-form-edit-history": { "destructive": true },
+    "forms/clear-form-edit-history": {
+      "destructive": true
+    },
     "forms/convert-form": {
       "destructive": true,
       "summary": "Convert Form Type (rewrites the form)"
@@ -60,6 +85,30 @@
     "mcp/install-mcp-adapter": {
       "destructive": true,
       "summary": "Install the MCP Adapter Plugin"
+    },
+    "integrations/save-form-integration": {
+      "bodyNote": "Body shape: {\"integration_name\": \"<registered slug>\", \"integration\": {\"name\": \"<feed name>\", \"enabled\": true, \"list_id\": …, \"merge_fields\"/other per-integration fields…, \"conditionals\": {\"status\": false, \"type\": \"all\", \"conditions\": []}}, \"integration_id\": <existing feed id to update, omit to create>}. integration_name MUST be one of the slugs in forms_integrations_list's available_integrations (e.g. \"fluentcrm\", \"fluent_support\", \"fluent_community\", \"wp_social_ninja\" — note the inconsistent underscores): Fluent Forms stores the feed under \"<integration_name>_feeds\" without checking the name, so a wrong slug saves a row the submission processor never runs. This tool refuses unregistered names before writing and returns the feed as Fluent Forms lists it (`stored`) after. Status-only toggle: {\"integration_id\": <id>, \"status\": false} with no \"integration\". Read an existing feed first with forms_integrations_get {query: {integration_id, integration_name}} and mirror its shape.",
+      "readback": {
+        "path": "/integrations/{form_id}/form-integrations",
+        "allow": {
+          "bodyField": "integration_name",
+          "fromKey": "available_integrations",
+          "requiredWhen": "integration"
+        },
+        "stored": {
+          "itemsKey": "feeds",
+          "idFrom": "integration_id"
+        }
+      }
+    },
+    "integrations/get-form-integration": {
+      "bodyNote": "Pass query: {\"integration_id\": <feed id>, \"integration_name\": \"<slug>\"} — both come from forms_integrations_list (feed id, and provider minus the \"_feeds\" suffix). Without integration_id it returns that integration's default settings template, which is the shape to send to forms_integrations_save."
+    },
+    "integrations/delete-form-integration": {
+      "bodyNote": "Pass query: {\"integration_id\": <feed id>} (from forms_integrations_list). The delete is scoped to form_id."
+    },
+    "integrations/list-form-integrations": {
+      "summary": "List Form Integration Feeds (with available integration slugs)"
     }
   }
 }
