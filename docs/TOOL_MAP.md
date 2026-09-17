@@ -1142,7 +1142,7 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `forms_integrations_get(form_id)` — Get Form Integration
 - `forms_integrations_save(form_id)` — Save Form Integration
 - `forms_integrations_delete(form_id)` ⚠ — Delete Form Integration
-- `forms_integrations_list(form_id)` — List Form Integrations (paginated)
+- `forms_integrations_list(form_id)` — List Form Integration Feeds (with available integration slugs) (paginated)
 - `forms_integrations_get_list_component(form_id)` — Get Integration List Component
 
 ### forms_reports — Read-only analytics for forms: submission counts, completion rates, revenue, payment types, heatmaps and top-performing forms.
