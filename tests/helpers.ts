@@ -31,6 +31,7 @@ export interface CapturedRequest {
   headers: Record<string, string>;
   body?: string;
   signal?: AbortSignal | null;
+  redirect?: string;
 }
 
 /** A fetch mock that records requests and replays scripted responses. */
@@ -45,6 +46,7 @@ export function mockFetch(
       headers: (init.headers ?? {}) as Record<string, string>,
       body: typeof init.body === 'string' ? init.body : undefined,
       signal: init.signal,
+      redirect: init.redirect,
     };
     calls.push(req);
     const next = typeof responses === 'function' ? responses(req) : responses[Math.min(calls.length - 1, responses.length - 1)];

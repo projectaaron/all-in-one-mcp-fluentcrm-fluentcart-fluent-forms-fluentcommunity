@@ -4,12 +4,16 @@
   "tools": {
     "cart_orders": {
       "description": "Look up, create, update, refund, and manage store orders, including their statuses, transactions, addresses, and disputes.",
-      "groups": ["orders"],
+      "groups": [
+        "orders"
+      ],
       "note": "Order totals and amounts are integers in CENTS (e.g. 1200 = $12.00)."
     },
     "cart_products": {
       "description": "Look up, create, update, delete, and bulk-edit store products, including search, duplication, taxonomy terms, and shipping/tax classes.",
-      "groups": ["products"],
+      "groups": [
+        "products"
+      ],
       "note": "cart_products_update: despite its /pricing API path this is the FULL product update and the only action that writes the product gallery/featured image — gallery is [{id, url, title}] where id is a WP media attachment ID, gallery[0] becomes the featured image, and an empty gallery [] deletes the thumbnail. post_title and post_status are set unconditionally, so always send them (omitting them blanks the stored values). Omit variants entirely unless you mean to rewrite them: item_price there is multiplied by 100 on write, so round-tripping read values inflates every price 100×."
     },
     "cart_product_variants": {
@@ -23,117 +27,251 @@
     },
     "cart_customers": {
       "description": "Look up, create, update, and manage store customers, their addresses, purchase stats, and linked WordPress users.",
-      "groups": ["customers"]
+      "groups": [
+        "customers"
+      ]
     },
     "cart_coupons": {
       "description": "Manage discount coupons: create, update, delete, apply to or remove from orders, and check product eligibility.",
-      "groups": ["coupons"]
+      "groups": [
+        "coupons"
+      ]
     },
     "cart_subscriptions": {
       "description": "View and manage recurring subscriptions: cancel, re-sync from the payment gateway, switch payment methods, and handle early payments.",
-      "groups": ["subscriptions"]
+      "groups": [
+        "subscriptions"
+      ]
     },
     "cart_tax": {
       "description": "Manage tax classes, tax rates, per-country configuration, EU VAT/OSS overrides, and order tax records.",
-      "groups": ["tax"]
+      "groups": [
+        "tax"
+      ]
     },
     "cart_shipping": {
       "description": "Manage shipping zones, shipping methods, and shipping classes.",
-      "groups": ["shipping"]
+      "groups": [
+        "shipping"
+      ]
     },
     "cart_settings": {
       "description": "Read or update store settings: general store options, modules and addons, permissions, payment methods, storage drivers, and checkout fields.",
-      "groups": ["settings"]
+      "groups": [
+        "settings"
+      ]
     },
     "cart_email_notifications": {
       "description": "Manage the store's transactional email templates, global email settings, reminders, and previews.",
-      "groups": ["email-notification"]
+      "groups": [
+        "email-notification"
+      ]
     },
     "cart_reports": {
       "description": "Read-only store analytics: revenue, orders, products, customers, subscriptions, refunds, licenses, and dashboard summaries.",
-      "groups": ["reports"]
+      "groups": [
+        "reports"
+      ]
     },
     "cart_integrations": {
       "description": "Manage global integration feeds and provider settings, and install or activate integration addons.",
-      "groups": ["integration"]
+      "groups": [
+        "integration"
+      ]
     },
     "cart_files": {
       "description": "List, upload, and delete files in the store's configured storage drivers.",
-      "groups": ["files"]
+      "groups": [
+        "files"
+      ]
     },
     "cart_labels_attributes": {
       "description": "Manage store labels and product attribute groups and their terms.",
-      "groups": ["labels-attributes"]
+      "groups": [
+        "labels-attributes"
+      ]
     },
     "cart_utilities": {
       "description": "Store utilities: dashboard stats and onboarding, activity log, order notes, print templates, country data, filter options, and retention snapshots.",
-      "groups": ["dashboard"]
+      "groups": [
+        "dashboard"
+      ]
     },
     "cart_storefront": {
       "description": "Read-only public storefront data: published products, rendered product listings, and product search — no authentication required.",
-      "groups": ["public-shop"]
+      "groups": [
+        "public-shop"
+      ]
     },
     "cart_checkout": {
       "description": "Checkout-session operations: place an order, fetch payment and shipping info for the cart, and log a customer in.",
-      "groups": ["checkout"],
+      "groups": [
+        "checkout"
+      ],
       "note": "These endpoints expect a customer browser session (cookie + nonce); most will be rejected under Application Password auth — see docs/api-reference/auth.md."
     },
     "cart_customer_portal": {
       "description": "Customer-portal operations on the logged-in customer's own profile, orders, addresses, subscriptions, and downloads.",
-      "groups": ["customer-profile"],
+      "groups": [
+        "customer-profile"
+      ],
       "note": "These endpoints expect a customer browser session (cookie + nonce); most will be rejected under Application Password auth — see docs/api-reference/auth.md."
     },
     "cart_licensing": {
       "description": "Manage software licenses: view, extend, regenerate keys, change limits, activate or deactivate sites, plus the public license verification endpoints (FluentCart Pro).",
-      "groups": ["licensing"]
+      "groups": [
+        "licensing"
+      ]
     },
     "cart_roles": {
       "description": "Manage FluentCart shop roles, permissions, and user assignments (FluentCart Pro).",
-      "groups": ["roles-permissions"]
+      "groups": [
+        "roles-permissions"
+      ]
     },
     "cart_order_bumps": {
       "description": "Manage checkout order bumps: list, create, update, and delete (FluentCart Pro).",
-      "groups": ["order-bumps"]
+      "groups": [
+        "order-bumps"
+      ]
     }
   },
   "operationOverrides": {
-    "products/create-variation": { "tool": "cart_product_variants" },
-    "products/delete-variation": { "tool": "cart_product_variants" },
-    "products/delete-upgrade-path": { "tool": "cart_product_variants" },
-    "products/fetch-variations-by-ids": { "tool": "cart_product_variants" },
-    "products/find-subscription-variants": { "tool": "cart_product_variants" },
-    "products/get-bundle-info": { "tool": "cart_product_variants" },
-    "products/get-product-pricing": { "tool": "cart_product_variants" },
-    "products/get-upgrade-settings": { "tool": "cart_product_variants" },
-    "products/get-variation-upgrade-paths": { "tool": "cart_product_variants" },
-    "products/list-all-variants": { "tool": "cart_product_variants" },
-    "products/list-product-variations": { "tool": "cart_product_variants" },
-    "products/save-bundle-info": { "tool": "cart_product_variants" },
-    "products/save-upgrade-path": { "tool": "cart_product_variants" },
-    "products/search-product-variant-options": { "tool": "cart_product_variants" },
-    "products/search-variants-by-name": { "tool": "cart_product_variants" },
-    "products/set-variation-media": { "tool": "cart_product_variants" },
-    "products/update-inventory": { "tool": "cart_product_variants" },
-    "products/update-manage-stock": { "tool": "cart_product_variants" },
+    "products/create-variation": {
+      "tool": "cart_product_variants"
+    },
+    "products/delete-variation": {
+      "tool": "cart_product_variants"
+    },
+    "products/delete-upgrade-path": {
+      "tool": "cart_product_variants"
+    },
+    "products/fetch-variations-by-ids": {
+      "tool": "cart_product_variants"
+    },
+    "products/find-subscription-variants": {
+      "tool": "cart_product_variants"
+    },
+    "products/get-bundle-info": {
+      "tool": "cart_product_variants"
+    },
+    "products/get-product-pricing": {
+      "tool": "cart_product_variants"
+    },
+    "products/get-upgrade-settings": {
+      "tool": "cart_product_variants"
+    },
+    "products/get-variation-upgrade-paths": {
+      "tool": "cart_product_variants"
+    },
+    "products/list-all-variants": {
+      "tool": "cart_product_variants"
+    },
+    "products/list-product-variations": {
+      "tool": "cart_product_variants"
+    },
+    "products/save-bundle-info": {
+      "tool": "cart_product_variants"
+    },
+    "products/save-upgrade-path": {
+      "tool": "cart_product_variants"
+    },
+    "products/search-product-variant-options": {
+      "tool": "cart_product_variants"
+    },
+    "products/search-variants-by-name": {
+      "tool": "cart_product_variants"
+    },
+    "products/set-variation-media": {
+      "tool": "cart_product_variants"
+    },
+    "products/update-inventory": {
+      "tool": "cart_product_variants"
+    },
+    "products/update-manage-stock": {
+      "tool": "cart_product_variants"
+    },
     "products/update-product-pricing": {
       "tool": "cart_products",
       "action": "update_product",
       "summary": "Update Product (post fields, detail, variants, gallery/featured image)"
     },
-    "products/update-upgrade-path": { "tool": "cart_product_variants" },
-    "products/update-variant-option": { "tool": "cart_product_variants" },
-    "products/update-variation": { "tool": "cart_product_variants" },
-    "products/update-variation-pricing-table": { "tool": "cart_product_variants" },
-    "products/change-integration-status": { "tool": "cart_product_assets" },
-    "products/delete-downloadable-file": { "tool": "cart_product_assets" },
-    "products/delete-product-integration": { "tool": "cart_product_assets" },
-    "products/get-downloadable-url": { "tool": "cart_product_assets" },
-    "products/get-product-integration-feeds": { "tool": "cart_product_assets" },
-    "products/get-product-integration-settings": { "tool": "cart_product_assets" },
-    "products/save-product-integration": { "tool": "cart_product_assets" },
-    "products/sync-downloadable-files": { "tool": "cart_product_assets" },
-    "products/update-downloadable-file": { "tool": "cart_product_assets" },
-    "reports/generate-retention-snapshots": { "tool": "cart_utilities" },
-    "reports/retention-snapshots-status": { "tool": "cart_utilities" }
+    "products/update-upgrade-path": {
+      "tool": "cart_product_variants"
+    },
+    "products/update-variant-option": {
+      "tool": "cart_product_variants"
+    },
+    "products/update-variation": {
+      "tool": "cart_product_variants"
+    },
+    "products/update-variation-pricing-table": {
+      "tool": "cart_product_variants"
+    },
+    "products/change-integration-status": {
+      "tool": "cart_product_assets"
+    },
+    "products/delete-downloadable-file": {
+      "tool": "cart_product_assets"
+    },
+    "products/delete-product-integration": {
+      "tool": "cart_product_assets"
+    },
+    "products/get-downloadable-url": {
+      "tool": "cart_product_assets"
+    },
+    "products/get-product-integration-feeds": {
+      "tool": "cart_product_assets"
+    },
+    "products/get-product-integration-settings": {
+      "tool": "cart_product_assets"
+    },
+    "products/save-product-integration": {
+      "tool": "cart_product_assets"
+    },
+    "products/sync-downloadable-files": {
+      "tool": "cart_product_assets"
+    },
+    "products/update-downloadable-file": {
+      "tool": "cart_product_assets"
+    },
+    "reports/generate-retention-snapshots": {
+      "tool": "cart_utilities"
+    },
+    "reports/retention-snapshots-status": {
+      "tool": "cart_utilities"
+    },
+    "settings/install-plugin-addon": {
+      "destructive": true,
+      "bodyNote": "Privilege/code change: Installs new plugin code on the site. Requires confirm:true."
+    },
+    "settings/activate-plugin-addon": {
+      "destructive": true,
+      "bodyNote": "Privilege/code change: Activates plugin code on the site. Requires confirm:true."
+    },
+    "settings/install-payment-addon": {
+      "destructive": true,
+      "bodyNote": "Privilege/code change: Installs new plugin code on the site. Requires confirm:true."
+    },
+    "settings/activate-payment-addon": {
+      "destructive": true,
+      "bodyNote": "Privilege/code change: Activates plugin code on the site. Requires confirm:true."
+    },
+    "integration/install-addon-plugin": {
+      "destructive": true,
+      "bodyNote": "Privilege/code change: Installs and activates plugin code on the site. Requires confirm:true."
+    },
+    "settings/save-permissions": {
+      "destructive": true,
+      "bodyNote": "Privilege/code change: Rewrites who may manage the store. Requires confirm:true."
+    },
+    "roles-permissions/save-permissions": {
+      "destructive": true,
+      "bodyNote": "Privilege/code change: Rewrites who may manage the store. Requires confirm:true."
+    },
+    "customers/attach-user": {
+      "destructive": true,
+      "bodyNote": "Privilege/code change: Links a customer record to a WordPress login. Requires confirm:true."
+    }
   }
 }
