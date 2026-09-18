@@ -583,7 +583,8 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/customers/{customerId}/attachable-user",
       "summary": "Attach WordPress User",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Privilege/code change: Links a customer record to a WordPress login. Requires confirm:true."
     },
     "bulk_actions": {
       "op": "customers/bulk-actions",
@@ -1216,14 +1217,16 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/settings/payment-methods/activate-addon",
       "summary": "Activate Payment Addon",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Privilege/code change: Activates plugin code on the site. Requires confirm:true."
     },
     "activate_plugin_addon": {
       "op": "settings/activate-plugin-addon",
       "method": "POST",
       "path": "/settings/modules/plugin-addons/activate",
       "summary": "Activate Plugin Addon",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Privilege/code change: Activates plugin code on the site. Requires confirm:true."
     },
     "check_paypal_webhook": {
       "op": "settings/check-paypal-webhook",
@@ -1321,14 +1324,16 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/settings/payment-methods/install-addon",
       "summary": "Install Payment Addon",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Privilege/code change: Installs new plugin code on the site. Requires confirm:true."
     },
     "install_plugin_addon": {
       "op": "settings/install-plugin-addon",
       "method": "POST",
       "path": "/settings/modules/plugin-addons/install",
       "summary": "Install Plugin Addon",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Privilege/code change: Installs new plugin code on the site. Requires confirm:true."
     },
     "list_all_payment_methods": {
       "op": "settings/list-all-payment-methods",
@@ -1391,7 +1396,8 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/settings/permissions",
       "summary": "Save Permissions",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Privilege/code change: Rewrites who may manage the store. Requires confirm:true."
     },
     "save_storage_driver_settings": {
       "op": "settings/save-storage-driver-settings",
@@ -1873,7 +1879,8 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/integration/feed/install-plugin",
       "summary": "Install and Activate Add-on Plugin",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Privilege/code change: Installs and activates plugin code on the site. Requires confirm:true."
     },
     "list_addons": {
       "op": "integration/list-addons",
@@ -2664,7 +2671,8 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/settings/permissions",
       "summary": "Save Permissions",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Privilege/code change: Rewrites who may manage the store. Requires confirm:true."
     },
     "search_users": {
       "op": "roles-permissions/search-users",

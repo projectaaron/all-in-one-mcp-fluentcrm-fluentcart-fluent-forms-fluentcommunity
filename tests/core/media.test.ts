@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
-import { assertSafeSourceUrl, registerWpMediaTool } from '../../src/core/media.js';
+import { assertSafeSourceUrl, isBlockedIPv4, isBlockedIPv6, registerWpMediaTool } from '../../src/core/media.js';
 import { makeClient, mockFetch, type CapturedRequest } from '../helpers.js';
 
 const PNG = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 1, 2, 3, 4]);
@@ -35,10 +35,94 @@ describe('assertSafeSourceUrl', () => {
       'http://172.16.1.1/x.jpg',
       'http://192.168.1.10/x.jpg',
       'http://169.254.169.254/latest/meta-data',
+      'http://100.100.100.200/metadata', // CGNAT metadata (Alibaba)
+      'http://0.0.0.0/x.jpg',
+      'http://224.0.0.1/x.jpg',
+      'http://[::1]/x.jpg',
+      'http://[::]/x.jpg',
+      'http://[::ffff:127.0.0.1]/x.jpg', // IPv4-mapped loopback
+      'http://[::ffff:7f00:1]/x.jpg', // same, hex form
+      'http://[64:ff9b::7f00:1]/x.jpg', // NAT64 to loopback
+      'http://[fd00::1]/x.jpg', // ULA
+      'http://[fe80::1]/x.jpg', // link-local
+      'http://169.254.169.254.nip.io/x.jpg', // wildcard-DNS metadata alias
+      'http://metadata.google.internal/computeMetadata/v1/',
+      'http://user:pw@cdn.example.com/x.jpg',
       'not a url',
     ]) {
       expect(() => assertSafeSourceUrl(bad), bad).toThrow();
     }
+    // Public IPv6 and decimal IPv4 forms that normalise to private space
+    expect(assertSafeSourceUrl('http://[2606:4700::6810:84e5]/x.jpg').hostname).toBe('[2606:4700::6810:84e5]');
+    expect(() => assertSafeSourceUrl('http://2130706433/x.jpg')).toThrow(); // 127.0.0.1 as a decimal
+    expect(() => assertSafeSourceUrl('http://0x7f000001/x.jpg')).toThrow(); // hex
+  });
+
+  it('range helpers classify v4/v6 literals', () => {
+    expect(isBlockedIPv4('8.8.8.8')).toBe(false);
+    expect(isBlockedIPv4('100.63.255.255')).toBe(false);
+    expect(isBlockedIPv4('100.64.0.1')).toBe(true);
+    expect(isBlockedIPv4('198.18.0.1')).toBe(true);
+    expect(isBlockedIPv6('2001:4860:4860::8888')).toBe(false);
+    expect(isBlockedIPv6('[fc00::1]')).toBe(true);
+    expect(isBlockedIPv6('::ffff:8.8.8.8')).toBe(false);
+    expect(isBlockedIPv6('::ffff:10.0.0.1')).toBe(true);
+  });
+});
+
+describe('wp_media.upload_from_url redirect and size guards', () => {
+  it('re-validates every redirect hop and refuses a bounce to a private address', async () => {
+    const { calls, fetchImpl } = mockFetch((req: CapturedRequest) => {
+      if (req.url === 'https://cdn.example.com/a.png') {
+        return { status: 302, body: '', headers: { location: 'http://169.254.169.254/latest/meta-data' } };
+      }
+      return { status: 200, body: PNG.buffer, headers: { 'content-type': 'image/png' } };
+    });
+    const res = await callTool(fetchImpl, { action: 'upload_from_url', source_url: 'https://cdn.example.com/a.png' });
+    expect(res.isError).toBe(true);
+    expect(res.content[0].text).toMatch(/private, loopback or link-local/);
+    expect(calls.map((c) => c.url)).toEqual(['https://cdn.example.com/a.png']);
+    expect(calls[0].redirect).toBe('manual');
+  });
+
+  it('follows a public redirect and uploads the final image', async () => {
+    const { calls, fetchImpl } = mockFetch((req: CapturedRequest) => {
+      if (req.url === 'https://cdn.example.com/a.png') {
+        return { status: 301, body: '', headers: { location: '/b.png' } };
+      }
+      if (req.url === 'https://cdn.example.com/b.png') {
+        return { status: 200, body: PNG.buffer, headers: { 'content-type': 'image/png' } };
+      }
+      return { status: 201, body: { id: 5, source_url: 'https://example.com/wp-content/uploads/b.png' } };
+    });
+    const res = await callTool(fetchImpl, { action: 'upload_from_url', source_url: 'https://cdn.example.com/a.png' });
+    expect(res.isError).toBeFalsy();
+    expect(calls.map((c) => c.url)).toEqual([
+      'https://cdn.example.com/a.png',
+      'https://cdn.example.com/b.png',
+      expect.stringContaining('/wp-json/wp/v2/media'),
+    ]);
+  });
+
+  it('refuses an oversized image without buffering it (content-length precheck)', async () => {
+    const { calls, fetchImpl } = mockFetch(() => ({
+      status: 200,
+      body: PNG.buffer,
+      headers: { 'content-type': 'image/png', 'content-length': String(16 * 1024 * 1024) },
+    }));
+    const res = await callTool(fetchImpl, { action: 'upload_from_url', source_url: 'https://cdn.example.com/huge.png' });
+    expect(res.isError).toBe(true);
+    expect(res.content[0].text).toMatch(/upload cap/);
+    expect(calls).toHaveLength(1);
+  });
+
+  it('aborts a streamed body that exceeds the cap even without content-length', async () => {
+    const big = new Uint8Array(16 * 1024 * 1024);
+    const { calls, fetchImpl } = mockFetch(() => ({ status: 200, body: big.buffer, headers: { 'content-type': 'image/png' } }));
+    const res = await callTool(fetchImpl, { action: 'upload_from_url', source_url: 'https://cdn.example.com/huge.png' });
+    expect(res.isError).toBe(true);
+    expect(res.content[0].text).toMatch(/exceeds|cap/);
+    expect(calls).toHaveLength(1);
   });
 });
 

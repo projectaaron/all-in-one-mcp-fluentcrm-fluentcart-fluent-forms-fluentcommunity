@@ -1,8 +1,30 @@
 {
   "name": "fluentmcp",
-  "version": "0.9.0",
-  "description": "MCP server giving AI harnesses full CRUD control of WPManageNinja products (FluentCRM, FluentCart, WP Social Ninja, Fluent Forms, FluentCommunity) on a WordPress site",
+  "version": "1.0.0",
+  "description": "MCP server that gives AI assistants safe, complete control of WPManageNinja products (FluentCRM, FluentCart, Fluent Forms, FluentCommunity, WP Social Ninja) on a WordPress site",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/projectaaron/fluentMCP.git"
+  },
+  "homepage": "https://github.com/projectaaron/fluentMCP#readme",
+  "bugs": {
+    "url": "https://github.com/projectaaron/fluentMCP/issues"
+  },
+  "author": "projectaaron",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "wordpress",
+    "fluentcrm",
+    "fluentcart",
+    "fluent-forms",
+    "fluentcommunity",
+    "wp-social-ninja",
+    "wpmanageninja",
+    "claude",
+    "ai-agent"
+  ],
   "type": "module",
   "bin": {
     "fluentmcp": "dist/index.js",
