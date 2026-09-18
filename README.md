@@ -1,103 +1,100 @@
 # fluentMCP
 
-Let your AI assistant run your WordPress store and CRM.
+**Let your AI assistant run your WordPress business** — the CRM, the store,
+the forms, the community — through one safe, complete
+[MCP](https://modelcontextprotocol.io) server.
 
-fluentMCP is an [MCP](https://modelcontextprotocol.io) server that connects
-Claude (or any MCP client) to **FluentCRM**, **FluentCart**,
-**WP Social Ninja**, **Fluent Forms**, and **FluentCommunity** by
-WPManageNinja. Once connected, you can ask your assistant to look things up,
-create and update them, and run your day-to-day operations — every one of the
-**1,191 documented REST endpoints** is its own **individualized tool** with a
-clear name (`crm_contacts_list`, `cart_orders_refund`, `social_reviews_list`,
-`forms_submissions_list`, `community_spaces_list`, …), a built-in
-**`tool_map`** answers "which tool do I need?" in one call, and every risky
-operation is safety-gated.
+fluentMCP connects Claude (or any MCP client) to the WPManageNinja plugin
+suite on your WordPress site: **FluentCRM**, **FluentCart**, **Fluent Forms**,
+**FluentCommunity**, and **WP Social Ninja**. Every one of their **1,191
+documented REST endpoints** is its own clearly named tool
+(`crm_contacts_list`, `cart_orders_refund`, `forms_submissions_list`,
+`community_spaces_list`, …), a built-in `tool_map` answers "which tool do I
+need?" in one call, partial updates can't silently wipe data, and every risky
+operation is confirm-gated.
 
-**Try asking things like:**
+> "How did the store do this week versus last week?" ·
+> "Find jane@example.com — what has she bought, and is she on the newsletter?" ·
+> "Tag everyone who bought the spring course with `course-buyer`." ·
+> "Draft a campaign to the `vip` list from the welcome template — don't send it." ·
+> "Order #1042 shipped today, update its status." ·
+> "Preview when each email in sequence 12 will go out for someone who enrols
+> Monday at 9am."
 
-> - "How did the store do this week? Compare it to last week."
-> - "Find the customer jane@example.com — what has she bought, and is she on
->   the newsletter list?"
-> - "Tag everyone who bought the spring course with `course-buyer`."
-> - "Draft a campaign to the `vip` list using the spring template — don't
->   send it yet."
-> - "Order #1042 was shipped today — update its shipping status."
-> - "Which coupons are active, and how much discount have they given out?"
+Products you don't configure are simply switched off — run it with just
+FluentCRM, or all five.
 
-Products you don't configure are simply switched off — you can run this with
-just FluentCRM, just FluentCart, or both.
+**Not affiliated with WPManageNinja.** This is an independent, community
+project. WPManageNinja also ships its own first-party MCP via
+[FluentHub](https://wpmanageninja.com/fluenthub-mcp/); see
+[How this differs](#how-this-differs-from-fluenthubs-mcp).
+
+---
+
+## Contents
+
+- [Requirements](#requirements)
+- [Install](#install) — desktop extension · config file · remote connector
+- [Configuration](#configuration)
+- [How the tools work](#how-the-tools-work)
+- [Safety](#safety)
+- [The products and their tools](#the-products-and-their-tools)
+- [Troubleshooting](#troubleshooting)
+- [Security model](#security-model)
+- [Development](#development)
+- [License](#license)
+
+---
+
+## Requirements
+
+- A WordPress site running one or more of: FluentCRM, FluentCart, Fluent
+  Forms, FluentCommunity, WP Social Ninja (free or Pro — Pro-only endpoints
+  simply return 404 without the Pro plugin).
+- A WordPress user with admin (or the plugin's manager) capabilities, and an
+  **Application Password** for that user: *WP Admin → Users → your user →
+  Application Passwords → Add New*. One password covers every product.
+- For options B and C: **Node 20.6+**.
 
 ---
 
 ## Install
 
-Three ways to run it — pick by where you want to use Claude:
+Three ways to run it — pick by where you want to use your assistant:
 
 | | Works in | Setup |
 |---|----------|-------|
-| **A. Desktop extension** (`.mcpb`) | Claude **Desktop app** conversations only | Drag & drop, fill a form |
-| **B. Local config file** | Claude Code / any local MCP client | JSON snippet + `.env` |
-| **C. Remote connector** | **Everywhere** — claude.ai web, mobile, desktop | Host it once, add the URL under Settings → Connectors ([guide](docs/REMOTE.md)) |
+| **A. Desktop extension** (`.mcpb`) | Claude **Desktop** conversations | Drag & drop, fill in a form |
+| **B. Config file** | Claude Code, Cursor, any local MCP client | JSON snippet + `.env` |
+| **C. Remote connector** | **Everywhere** — claude.ai web, mobile, desktop | Host it once (free on Cloudflare), add the URL under Settings → Connectors |
 
-### Option A — Claude Desktop extension
+### A — Claude Desktop extension
 
-No config files. Credentials are entered in a settings form and your
-passwords are stored as sensitive values by Claude Desktop.
-
-1. **Get the extension bundle** — `fluentmcp.mcpb`. Grab it from the
-   repository's releases, or build it yourself (run the commands **one at a
-   time**):
+1. Get `fluentmcp.mcpb` from the [Releases](../../releases) page, or build it:
 
    ```bash
-   gh repo clone projectaaron/fluentMCP      # private repo — use the GitHub CLI…
-   # …or SSH: git clone git@github.com:projectaaron/fluentMCP.git
+   git clone https://github.com/projectaaron/fluentMCP.git
    cd fluentMCP
    npm install
-   npm run pack:extension                    # produces fluentmcp.mcpb
+   npm run pack:extension      # produces fluentmcp.mcpb
    ```
 
-   > **Private-repo note:** a plain
-   > `git clone https://github.com/projectaaron/fluentMCP.git` will prompt
-   > for a username/password — and GitHub no longer accepts account
-   > passwords over HTTPS. Use the GitHub CLI (`brew install gh`,
-   > `gh auth login`) or SSH as shown above, or a
-   > [personal access token](https://github.com/settings/tokens) as the
-   > password.
+2. Claude Desktop → **Settings → Extensions** → drag `fluentmcp.mcpb` in.
+3. Fill in the form: site URL (the root, not `/wp-admin`), username,
+   Application Password. Claude Desktop stores the password as a sensitive
+   value.
+4. Ask Claude: *"Run verify_setup."*
 
-2. **Install it** — open Claude Desktop → **Settings → Extensions**, and drag
-   `fluentmcp.mcpb` into the window (or use "Install extension" and pick the
-   file).
-
-3. **Fill in the settings form** — one WordPress Application Password runs
-   both products:
-
-   | Field | What to enter |
-   |-------|---------------|
-   | **WordPress Site URL** | Your site root, e.g. `https://example.com` |
-   | **WordPress Username** | The admin user the server acts as |
-   | **Application Password** | Create under WP Admin → Users → your user → **Application Passwords** → *Add New* |
-
-   > Older FluentCRM docs mention a *FluentCRM → Settings → Rest API* page for
-   > API keys — newer FluentCRM versions removed it as redundant. A standard
-   > WordPress Application Password is all you need.
-
-4. **Verify** — ask Claude: *"Run verify_setup."* It checks the site
-   connection, each product's credentials and plugin, and does one harmless
-   read per configured product.
-
-### Option B — Any MCP client (config file)
-
-Requires **Node 20.6+**. Build once (see the private-repo note above for
-cloning):
+### B — Any MCP client (config file)
 
 ```bash
-gh repo clone projectaaron/fluentMCP
+git clone https://github.com/projectaaron/fluentMCP.git
 cd fluentMCP
 npm install && npm run build
-cp .env.example .env    # then fill in your site URL + credentials
+cp .env.example .env        # fill in FLUENT_SITE_URL, FLUENT_API_USERNAME, FLUENT_API_PASSWORD
 ```
 
-**Claude Code** — add to `.mcp.json` in your project (or `~/.claude.json`):
+**Claude Code** — `.mcp.json` in your project (or `~/.claude.json`):
 
 ```json
 {
@@ -110,276 +107,296 @@ cp .env.example .env    # then fill in your site URL + credentials
 }
 ```
 
-**Claude Desktop (manual)** — same block under `mcpServers` in
-`claude_desktop_config.json` (Settings → Developer → Edit Config). Prefer
-explicit env over a `.env` file? Drop the `--env-file` arg and add an `"env"`
-object with `FLUENT_SITE_URL`, `FLUENT_API_USERNAME`, `FLUENT_API_PASSWORD`.
-(Per-product `FLUENTCRM_API_*` / `FLUENTCART_API_*` / `WPSOCIALNINJA_API_*` /
-`FLUENTFORMS_API_*` / `FLUENTCOMMUNITY_API_*` overrides are also honored if
-you want a different user per product.)
+**Claude Desktop (manual), Cursor, others** — the same block in that client's
+MCP config. Prefer explicit env over a `.env` file? Drop the `--env-file`
+argument and add an `"env"` object with the three variables.
 
-Then restart your client and ask it to run **`verify_setup`**, or run the
-read-only smoke test yourself: `node --env-file=.env scripts/smoke-test.mjs`.
+Restart the client and ask it to run **`verify_setup`**, or run the read-only
+smoke test: `node --env-file=.env scripts/smoke-test.mjs`.
 
-### Option C — Remote connector (works on web, mobile, and desktop)
+### C — Remote connector (web, mobile, desktop)
 
-Host the server once and add it to your Claude account — every surface gets
-the tools. **Easiest host: Cloudflare Workers** (free tier, nothing to keep
-running):
+Host it once; every Claude surface gets the tools. The easiest host is
+**Cloudflare Workers** (free tier, nothing to keep running):
 
 ```bash
 npm install
-npx wrangler login                          # opens your browser once
+npx wrangler login
 npx wrangler secret put FLUENT_SITE_URL
 npx wrangler secret put FLUENT_API_USERNAME
 npx wrangler secret put FLUENT_API_PASSWORD
-npx wrangler secret put FLUENT_MCP_TOKEN    # paste output of: openssl rand -hex 32
+npx wrangler secret put FLUENT_MCP_TOKEN     # paste the output of: openssl rand -hex 32
 npm run deploy:cloudflare
 ```
 
-Then in claude.ai → **Settings → Connectors → Add custom connector**, paste
-`https://fluentmcp.<your-subdomain>.workers.dev/mcp/<token>`. Self-hosting
-alternatives (Cloudflare Tunnel, Docker, any Node PaaS via
-`npm run start:remote`), TLS, and security notes:
-**[docs/REMOTE.md](docs/REMOTE.md)**. The URL contains your secret — treat it
-like a password.
+Then claude.ai → **Settings → Connectors → Add custom connector** →
+`https://fluentmcp.<your-subdomain>.workers.dev/mcp/<token>`.
+**The URL contains your secret — treat it like a password.**
+
+Cloudflare Tunnel, Docker, any Node host, and a GitHub Actions deploy are
+covered in **[docs/REMOTE.md](docs/REMOTE.md)**.
+
+---
+
+## Configuration
+
+All settings are environment variables (`.env.example` documents every one).
+
+| Variable | Required | Meaning |
+|----------|----------|---------|
+| `FLUENT_SITE_URL` | yes | Your WordPress site root, e.g. `https://example.com` |
+| `FLUENT_API_USERNAME` / `FLUENT_API_PASSWORD` | yes | The WordPress user and its Application Password — enables every installed product |
+| `FLUENTCRM_API_*`, `FLUENTCART_API_*`, `FLUENTFORMS_API_*`, `FLUENTCOMMUNITY_API_*`, `WPSOCIALNINJA_API_*` | no | Per-product credential overrides (a different, more limited user per product) |
+| `FLUENT_TOOL_MODE` | no | `individual` (default, one tool per operation) or `grouped` (one tool per area with an `action` parameter — for clients that struggle with large tool lists) |
+| `FLUENT_LOCKED_TOOLS` | no | Admin-locked tools that refuse unconditionally: `default` (see [Safety](#safety)), a replacement list, `default,extra_tool`, or `none` |
+| `FLUENT_MCP_TOKEN` | remote only | Shared secret for remote mode, 16+ characters |
+| `PORT`, `FLUENT_MCP_HOST` | remote only | Listen port (3000) and bind address (0.0.0.0) |
+| `FLUENT_HTTP_TIMEOUT_MS`, `FLUENT_HTTP_MAX_RETRIES` | no | HTTP tuning (30000 ms, 3 retries with backoff; writes are never blindly retried) |
 
 ---
 
 ## How the tools work
 
-**One tool = one operation.** Every tool does exactly one thing and its name
-says what: `<area>_<operation>`, where the area is the part of your business
-it touches (`crm_contacts`, `cart_orders`, …):
+**One tool = one operation**, named `<area>_<operation>`. The area is the
+part of your business it touches (`crm_contacts`, `cart_orders`,
+`forms_submissions`, …); the operation says what it does. Each tool's schema
+contains only the parameters that operation needs — record IDs are named,
+required fields, so there is nothing to guess:
 
 ```json
-{ "name": "cart_orders_list", "arguments": { "per_page": 5 } }
-{ "name": "cart_orders_get", "arguments": { "order_id": 1042 } }
-{ "name": "crm_contacts_create", "arguments": { "body": { "email": "new@example.com" } } }
+{ "name": "cart_orders_list",   "arguments": { "per_page": 5 } }
+{ "name": "cart_orders_get",    "arguments": { "order_id": 1042 } }
+{ "name": "crm_contacts_create","arguments": { "body": { "email": "new@example.com" } } }
 { "name": "cart_orders_refund", "arguments": { "order_id": 1042, "confirm": true } }
 ```
 
-Each tool's schema contains only what that operation actually needs — the
-record IDs it takes are named, required parameters, so there's nothing to
-guess.
-
-**The fast map.** Not sure which tool you need? One call answers it:
+**The fast map.** Not sure which tool? One call answers it:
 
 | Call | Returns |
 |------|---------|
-| `tool_map` (no arguments) | The whole surface at a glance — one line per area with tool counts |
-| `tool_map {"area": "crm_contacts"}` | Every tool in that area, with its required parameters |
-| `tool_map {"search": "refund"}` | Every tool matching a keyword, across all areas |
+| `tool_map` | The whole surface at a glance — one line per area with tool counts |
+| `tool_map {"area": "crm_contacts"}` | Every tool in that area with its required parameters |
+| `tool_map {"search": "refund"}` | Every tool matching a keyword |
 
-The same map ships as [`docs/TOOL_MAP.md`](docs/TOOL_MAP.md) (one line per
-tool), and a summary reaches every session automatically through the MCP
-`instructions` field on connect.
+The same map ships as [`docs/TOOL_MAP.md`](docs/TOOL_MAP.md), and a summary
+reaches every session automatically through the MCP `instructions` field.
 
-Shared conventions, everywhere:
+**Shared parameters, everywhere:**
 
 | Parameter | What it does |
 |-----------|--------------|
-| `query` | Filters, search, sorting — e.g. `{"search": "jane"}`. |
-| `body` | The data for create/update tools. |
-| `page` / `per_page` | On list tools — 20 per page by default. |
-| `detail` / `fields` | Responses come back as **compact summaries by default**. Ask for `detail: "full"` for the complete record, or `fields: ["id", "status"]` for exactly the columns you want. |
-| `confirm` | Required (`true`) for destructive tools — see below. |
-
-**Locked tools: some things no agent should ever do.** Six operations are
-locked by default and refuse unconditionally — `confirm: true` cannot
-override them: `crm_settings_reset_database` (full CRM wipe),
-`crm_contacts_delete_contacts` (audience-wide delete),
-`crm_settings_delete_rest_key` (API self-lockout),
-`crm_settings_test_delete_request`, `cart_settings_disconnect_payment_method`
-(stops checkout revenue), and `cart_licensing_regenerate_license_key`
-(invalidates customers' keys). They stay visible (marked 🔒 in the map) so
-sessions get a clear refusal instead of a mystery. The set is admin-controlled
-via `FLUENT_LOCKED_TOOLS` (`default`, a replacement list,
-`default,extra_tool`, or `none`).
-
-**Safety: nothing irreversible runs by accident.** Deleting, refunding,
-canceling, bulk actions, resets, and sending a campaign to a whole audience
-are all classified destructive (97 of the 700 operations, marked ⚠ in the
-map). Called without `confirm: true`, the tool refuses, does nothing, and
-explains what would have happened. Annotations are now accurate per
-operation — every read-only tool really carries `readOnlyHint: true`, so
-your client knows exactly which tools only look.
-
-**Prefer fewer, bigger tools?** Set `FLUENT_TOOL_MODE=grouped` and the server
-exposes the legacy surface instead: one tool per area (~46 total) with an
-`action` parameter selecting the operation — useful for MCP clients that
-struggle with large tool lists.
+| `query` | Filters, search, sorting — `{"search": "jane"}` |
+| `body` | The data for create/update tools |
+| `page` / `per_page` | List pagination — 20 per page by default |
+| `detail` / `fields` | Responses are **compact summaries by default**. `detail: "full"` returns the complete record; `fields: ["id","status"]` returns exactly those columns |
+| `confirm` | `true` to execute a destructive (⚠) tool, or a `mode: "replace"` write |
+| `mode` | On updates with a paired read: `merge` (default) or `replace` — see below |
+| `dry_run` | Preview any write without touching data |
+| `if_unmodified_since` | Optimistic concurrency: refuse the write if the record changed since you read it |
 
 ---
 
-## The tools
+## Safety
 
-Tools are organized into **areas** — one per part of your business. The area
-is the tool-name prefix: the tables below say what lives where, and
-[`docs/TOOL_MAP.md`](docs/TOOL_MAP.md) (or the `tool_map` tool) lists every
-individual tool inside each area.
+This is the part that makes it usable for real operations rather than demos.
 
-### `tool_map` — the fast map
+**Writes describe what they did.** The Fluent plugins treat updates as full
+replaces — omit a field and it's cleared, with a 200 either way. fluentMCP
+closes that at the executor:
 
-One line per area (no arguments), every tool in an area
-(`{"area": "cart_orders"}`), or keyword lookup (`{"search": "refund"}`).
-When in doubt, call this first.
+- **Merge mode (default)** on every update that has a matching read
+  (`crm_contacts_update`, `cart_coupons_update`, `crm_sequences_update_email`,
+  27+ more): the current record is read, your partial body is deep-merged
+  onto it, and only then is it written. Omitted fields survive.
+  `mode: "replace"` restores full-replace semantics and requires `confirm`.
+- **Verification** after every such write: the record is re-read and diffed.
+  The response carries `changed` (every field that actually changed) and
+  `warnings` — fields that changed without being in your request, or fields
+  you sent that didn't take effect. A write the plugin silently ignored
+  returns an **error**, not `ok: true`.
+- **`dry_run: true`** on every write returns exactly what would be sent (and
+  the computed diff) without touching anything.
+- **Read-back guards** on endpoints that store anything and validate nothing
+  (Fluent Forms integration feeds): the body is checked against what the
+  plugin advertises *before* writing, and the stored record is returned
+  *after* — if the plugin doesn't list it, the tool errors.
 
-### `verify_setup` — start here
+**Nothing irreversible runs by accident.** 184 operations are classified
+destructive (⚠ in the map): deletes, refunds, cancels, bulk actions, resets,
+mass sends, plugin installs and activations, manager/permission grants,
+API-key minting, and the public form-submit that fires real notifications. Called without `confirm: true`, the tool refuses, does
+nothing, and explains what would have happened. Annotations are accurate per
+operation — every read-only tool really is `readOnlyHint: true`.
 
-Checks your site URL, each product's credentials and plugin presence, and
-runs one harmless read per configured product. Unconfigured products report
-`not configured` — that's normal, not an error.
+**Some things no agent should ever do.** Twelve operations are locked by
+default and refuse even with `confirm: true`: full CRM wipe
+(`crm_settings_reset_database`), audience-wide contact delete, REST-key
+creation and deletion, the test delete resolver, payment-method disconnect,
+license-key regeneration, WP Social Ninja's delete-all-data, and the plugin
+installers in Fluent Forms and FluentCart (they fetch and run new code on
+your site). They stay visible (🔒 in the map) so sessions get a clear refusal
+instead of a mystery. Adjust with `FLUENT_LOCKED_TOOLS`.
 
-### `wp_media_*` — the media library
+**Keep your client on "ask" for writes.** The server does its part; the
+human-in-the-loop is your MCP client's approval prompt.
 
-`wp_media_upload_from_url` sideloads an image into the WordPress media
-library **from a URL** (the server fetches it — perfect for migrating product
-photos from another platform's CDN) and returns the attachment ID you can
-wire to products/variants with the `cart_*` tools; `wp_media_get` and
-`wp_media_list` cover lookup.
+- **Claude Desktop:** choose "Allow once" rather than "Always allow" for
+  anything that isn't read-only.
+- **Claude Code:** don't allowlist `mcp__fluentmcp__*`; to force asking, add
+  `{ "permissions": { "ask": ["mcp__fluentmcp__*"] } }` to
+  `.claude/settings.json`.
 
-### FluentCRM (`crm_*`) — 21 areas, 319 tools
+---
 
-**People & audience**
+## The products and their tools
+
+68 areas. Every individual tool is one line in
+[`docs/TOOL_MAP.md`](docs/TOOL_MAP.md); area-level examples in
+[`docs/TOOL_CATALOG.md`](docs/TOOL_CATALOG.md); full request/response
+schemas in [`docs/api-reference/`](docs/api-reference/).
+
+### Built-in
+
+| Tool | What it does |
+|------|--------------|
+| `tool_map` | The fast map — call this first when unsure |
+| `verify_setup` | Checks site URL, each product's credentials and plugin, one harmless read per product |
+| `wp_media_upload_from_url` / `wp_media_get` / `wp_media_list` | The WordPress media library; sideload an image from a URL and get the attachment ID |
+
+### FluentCRM — `crm_*` (21 areas, 322 tools)
 
 | Area | What it manages |
 |------|-----------------|
-| `crm_contacts` | Your subscribers: find, create, update, delete; notes, tags, lists, email history |
-| `crm_companies` | Companies, their notes, and which contacts belong to them |
-| `crm_lists` | The lists that organize subscribers |
-| `crm_tags` | The tags that label contacts |
-| `crm_segments` | Dynamic segments and who currently matches them |
-| `crm_custom_fields` | Custom contact fields |
-| `crm_labels` | Labels for organizing CRM items |
-
-**Email, SMS & campaigns**
-
-| Area | What it manages |
-|------|-----------------|
+| `crm_contacts` | Subscribers: find, create, update, delete; notes, tags, lists, email history |
+| `crm_companies` | Companies, their notes, and member contacts |
+| `crm_lists` · `crm_tags` · `crm_segments` · `crm_custom_fields` · `crm_labels` | Audience organization |
 | `crm_campaigns` | One-off email campaigns: create, schedule⚠, send, pause, analyze, resend⚠ |
-| `crm_recurring_campaigns` | Automatically repeating campaigns (Pro) |
-| `crm_sequences` | Drip email sequences and their subscribers (Pro) |
-| `crm_templates` | Reusable email templates |
-| `crm_sms` | SMS campaigns and settings (Pro) |
+| `crm_recurring_campaigns` · `crm_sequences` · `crm_templates` · `crm_sms` | Recurring campaigns, drip sequences, templates, SMS (Pro) |
+| `crm_automations` · `crm_forms` · `crm_webhooks` · `crm_smart_links` | Funnels, opt-in forms, incoming webhooks, smart links |
+| `crm_reports` · `crm_abandoned_carts` | Read-only analytics |
+| `crm_settings` · `crm_settings_pro` · `crm_utilities` | Settings, license, imports, migrations |
 
-**Automation & capture**
+**Extras beyond the API:** `crm_sequences_preview_schedule` computes when
+every email in a sequence will send for a hypothetical enrolment (delays are
+absolute from enrolment, a common surprise); `crm_sequences_validate` lints
+timing configuration; `crm_sequences_bulk_update_emails` updates many emails
+in one call with per-row verification.
 
-| Area | What it manages |
-|------|-----------------|
-| `crm_automations` | Marketing automation funnels and their subscribers |
-| `crm_forms` | Opt-in forms connected to the CRM |
-| `crm_webhooks` | Incoming webhooks that create/update contacts |
-| `crm_smart_links` | Links that tag + redirect contacts when clicked (Pro) |
-
-**Insights & admin**
+### FluentCart — `cart_*` (22 areas, 381 tools)
 
 | Area | What it manages |
 |------|-----------------|
-| `crm_reports` | Read-only analytics: growth, email performance, revenue, global search |
-| `crm_abandoned_carts` | Abandoned-cart records and reports (Pro) |
-| `crm_settings` | CRM settings: double opt-in, business info, email preferences, compliance |
-| `crm_settings_pro` | Pro settings and plugin license |
-| `crm_utilities` | CSV/WordPress-user imports, migrations from other tools, WP users & roles |
+| `cart_products` · `cart_product_variants` · `cart_product_assets` · `cart_labels_attributes` · `cart_files` | Catalog, variations, stock, downloadable files |
+| `cart_orders` · `cart_subscriptions` · `cart_coupons` · `cart_customers` | Sales: orders, refunds⚠, subscriptions, coupons, customers |
+| `cart_tax` · `cart_shipping` · `cart_settings` · `cart_email_notifications` · `cart_integrations` | Configuration |
+| `cart_order_bumps` · `cart_roles` · `cart_licensing` | Pro: order bumps, shop roles, software licensing |
+| `cart_reports` · `cart_utilities` · `cart_storefront` | Analytics, dashboard, public storefront |
+| `cart_checkout` · `cart_customer_portal` | Customer-session endpoints — need a browser cookie, mostly rejected under admin credentials ([why](docs/api-reference/auth.md)) |
 
-### FluentCart (`cart_*`) — 22 areas, 380 tools
-
-**Catalog**
-
-| Area | What it manages |
-|------|-----------------|
-| `cart_products` | Products: find, create, update, delete, bulk-edit, categories, classes |
-| `cart_product_variants` | Variations: pricing, stock & inventory, bundles, upgrade paths |
-| `cart_product_assets` | Downloadable files and per-product integration feeds |
-| `cart_labels_attributes` | Store labels and product attributes (Color, Size, …) |
-| `cart_files` | Files in the store's storage drivers |
-
-**Sales**
+### Fluent Forms — `forms_*` (7 areas, 91 tools)
 
 | Area | What it manages |
 |------|-----------------|
-| `cart_orders` | Orders: find, create, update, statuses, refunds⚠, transactions, disputes |
-| `cart_subscriptions` | Recurring subscriptions: view, cancel⚠, re-sync, payment methods |
-| `cart_coupons` | Discount coupons and their eligibility rules |
-| `cart_customers` | Store customers, addresses, purchase stats, linked WP users |
+| `forms_forms` | Forms: CRUD, duplicate, convert, fields, shortcodes, embed pages, edit history |
+| `forms_submissions` | Entries: list, notes, logs, statuses, favorites, bulk actions⚠, the public submit⚠ |
+| `forms_settings` | Per-form settings: confirmations, notifications (`meta_key`), restrictions, customizer |
+| `forms_integrations` | Global and per-form integration feeds — with a read-back guard against misnamed feeds |
+| `forms_reports` | Read-only analytics |
+| `forms_admin` · `forms_utilities` | Global settings, licensing, managers, roles, logs, search |
 
-**Configuration**
-
-| Area | What it manages |
-|------|-----------------|
-| `cart_tax` | Tax classes, rates, per-country config, EU VAT/OSS |
-| `cart_shipping` | Shipping zones, methods, and classes |
-| `cart_settings` | Store settings, payment methods, permissions, storage, checkout fields |
-| `cart_email_notifications` | Transactional email templates and reminders |
-| `cart_integrations` | Integration feeds and provider settings |
-| `cart_order_bumps` | Checkout order bumps (Pro) |
-| `cart_roles` | Shop roles and user assignments (Pro) |
-| `cart_licensing` | Software licenses: keys, activations, sites (Pro) |
-
-**Insights & customer-facing**
+### FluentCommunity — `community_*` (8 areas, 274 tools)
 
 | Area | What it manages |
 |------|-----------------|
-| `cart_reports` | Read-only analytics: revenue, orders, products, customers, refunds |
-| `cart_utilities` | Dashboard stats, activity log, order notes, print templates, onboarding |
-| `cart_storefront` | Public storefront data (published products & search) — no auth needed |
-| `cart_checkout` | Checkout-session operations — *needs a customer browser session, see note* |
-| `cart_customer_portal` | The logged-in customer's own profile/orders — *needs a customer browser session, see note* |
+| `community_spaces` | Spaces, space groups, membership, lock screens, paywalls |
+| `community_feeds` | Posts, comments, reactions, bookmarks, surveys, documents, scheduled posts, moderation |
+| `community_chat` | Threads, groups, messages |
+| `community_courses` | Courses, sections, lessons, students, quizzes, progress |
+| `community_profiles` | Profiles, follows, blocks, invitations, notifications, leaderboard |
+| `community_analytics` | Read-only analytics |
+| `community_settings` · `community_admin` | Portal settings, licensing, managers, webhooks, topics, badges |
 
-> **Note:** the `cart_checkout_*` and `cart_customer_portal_*` tools cover
-> FluentCart's customer-facing endpoints, which authenticate with a browser
-> cookie rather than API credentials. They're included for completeness, but
-> most calls will be rejected under admin credentials —
-> [details](docs/api-reference/auth.md).
+> Many FluentCommunity tools act **as the configured user** — posting,
+> commenting, joining, messaging. Under an admin credential that is the
+> admin's own persona, publicly. See [auth.md](docs/api-reference/auth.md).
 
-**Want more detail?** Every individual tool is one line in
-[`docs/TOOL_MAP.md`](docs/TOOL_MAP.md); area-level classes and example calls
-are in [`docs/TOOL_CATALOG.md`](docs/TOOL_CATALOG.md); every endpoint's full
-request/response schema is in [`docs/api-reference/`](docs/api-reference/);
-the design rationale is in [`docs/TOOL_DESIGN.md`](docs/TOOL_DESIGN.md).
+### WP Social Ninja — `social_*` (9 areas, 126 tools)
+
+| Area | What it manages |
+|------|-----------------|
+| `social_reviews` · `social_testimonials` | Collected reviews and hand-written testimonials, statuses, categories |
+| `social_templates` | Review and feed widget templates |
+| `social_platforms` | Platform connections (Google, Facebook, Instagram, …) and syncing |
+| `social_chat_widgets` · `social_notifications` · `social_shoppable` | Chat widgets, sales notifications, shoppable Instagram |
+| `social_settings` · `social_collection` | Settings, managers, and the Pro review-collection surface |
 
 ---
 
-## Keeping every tool ask-first (recommended)
+## How this differs from FluentHub's MCP
 
-Approval settings live in your MCP client, and you should keep them on "ask":
+WPManageNinja's own [FluentHub MCP](https://wpmanageninja.com/fluenthub-mcp/)
+is a WordPress plugin exposing a curated set of tools (around 20 per
+product). fluentMCP runs outside WordPress and covers the **entire** REST
+surface of each product — 1,191 operations — with the write-safety machinery
+above. Use FluentHub if you want the vendor-supported basics with no extra
+install; use fluentMCP if you want everything the admin UI can do, with
+merge/verify/dry-run guarantees and a per-operation safety policy you
+control.
 
-- **Claude Desktop**: when the tool-approval dialog appears, choose
-  **"Allow once"** rather than "Always allow" — at minimum for every tool
-  that isn't read-only (writes and ⚠ tools in [`docs/TOOL_MAP.md`](docs/TOOL_MAP.md)).
-- **Claude Code**: don't add `mcp__fluentmcp__*` to your allowlist. To force
-  asking even if something was allowed before, add to `.claude/settings.json`:
-
-  ```json
-  { "permissions": { "ask": ["mcp__fluentmcp__*"] } }
-  ```
-
-The server does its part — honest annotations plus the `confirm: true` gate —
-but the human-in-the-loop is your client's approval prompt.
+---
 
 ## Troubleshooting
 
 | Symptom | Likely cause / fix |
 |---------|--------------------|
-| `verify_setup` says `not configured` | `FLUENT_API_USERNAME` / `FLUENT_API_PASSWORD` (or the extension's username/password fields) are blank |
-| 401 errors | Wrong or revoked credentials — generate a fresh Application Password under WP Admin → Users → your user → Application Passwords |
-| 403 errors | The user behind the credentials lacks permission — or you're calling a customer-session tool (`cart_checkout_*`, `cart_customer_portal_*`) |
-| 404 errors | Plugin not installed/active, wrong Site URL (use the site root, not `/wp-admin`), or a Pro endpoint without the Pro plugin |
-| 429 / rate limiting | The server retries with backoff automatically; persistent 429s mean the site's limits need raising |
-| Extension won't start | Claude Desktop needs the bundle rebuilt after changes: `npm run pack:extension`, then remove + re-add the extension |
+| `verify_setup` says `not configured` | Credentials blank for that product |
+| 401 | Wrong or revoked credentials — create a fresh Application Password |
+| 403 | The user lacks the plugin capability — or it's a customer-session tool (`cart_checkout_*`, `cart_customer_portal_*`) |
+| 404 | Plugin not active, wrong site URL (use the root), or a Pro endpoint without Pro |
+| 429 | The server retries with backoff; persistent 429s mean the site's limits need raising |
+| A write returned an error saying the record "did not change" | The plugin ignored the body — read the tool's description for the expected shape (`bodyNote`), read the record first, and mirror it |
+| Extension won't start | Rebuild after changes: `npm run pack:extension`, remove and re-add |
+
+---
+
+## Security model
+
+- The server is a stateless proxy; it stores nothing and holds one secret —
+  your Application Password (plus the token in remote mode). Every request
+  is authorized by WordPress and the plugin's own capability checks as that
+  user.
+- **Use a dedicated WordPress user** with the minimum capabilities and
+  revoke its password if anything leaks.
+- Remote mode: HTTPS only, constant-time token comparison, 16-character
+  minimum, `/healthz` reveals nothing.
+- Media sideloading refuses private, loopback, link-local and cloud-metadata
+  addresses and never forwards your site credentials to the fetched URL.
+- Credentials never appear in logs, errors, or tool results.
+
+Full notes and how to report a vulnerability: [SECURITY.md](SECURITY.md).
+
+---
 
 ## Development
 
 ```bash
-npm test                 # 230 unit tests, mocked HTTP — no network needed
-npm run gen:docs         # re-scrape both products' API references
-npm run gen:maps         # regenerate tool action maps from endpoints.json
-npm run build && npm run gen:catalog   # regenerate TOOL_MAP.md + TOOL_CATALOG.md + manifest
-npm run pack:extension   # build fluentmcp.mcpb for Claude Desktop
-npx @modelcontextprotocol/inspector node dist/index.js   # poke it interactively
+npm test                       # 380+ unit tests, mocked HTTP — no site needed
+npm run build
+npm run gen:catalog            # regenerate TOOL_MAP.md / TOOL_CATALOG.md / manifest sync
+npm run gen:docs               # re-scrape the FluentCRM/FluentCart OpenAPI references
+node scripts/gen-<product>-docs.mjs --site https://your-site   # products without OpenAPI: live route check
+npm run pack:extension         # build fluentmcp.mcpb
+npx @modelcontextprotocol/inspector node dist/index.js
 ```
 
 Project layout: [`docs/PROJECT_MAP.md`](docs/PROJECT_MAP.md) ·
+Design rationale: [`docs/TOOL_DESIGN.md`](docs/TOOL_DESIGN.md) ·
 Decision log: [`docs/DECISIONS.md`](docs/DECISIONS.md) ·
-Adding another Fluent product (Forms, Booking, Support, …):
-[`docs/EXTENDING.md`](docs/EXTENDING.md)
+Adding a product: [`docs/EXTENDING.md`](docs/EXTENDING.md) ·
+Contributing: [`CONTRIBUTING.md`](CONTRIBUTING.md)
+
+## License
+
+[MIT](LICENSE). FluentCRM, FluentCart, Fluent Forms, FluentCommunity, WP
+Social Ninja and FluentHub are trademarks of their respective owners; this
+project is not affiliated with or endorsed by WPManageNinja.

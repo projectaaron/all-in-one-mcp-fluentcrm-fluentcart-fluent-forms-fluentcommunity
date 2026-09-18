@@ -552,7 +552,8 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/managers",
       "summary": "Add Manager",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Privilege/code change: Grants a WordPress user Fluent Forms manager access. Requires confirm:true."
     },
     "remove_manager": {
       "op": "managers/remove-manager",
@@ -580,7 +581,8 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/roles",
       "summary": "Add Role Capability",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Privilege/code change: Grants a WordPress role Fluent Forms capabilities. Requires confirm:true."
     }
   },
   "forms_utilities": {
@@ -654,7 +656,8 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/mcp/toggle",
       "summary": "Toggle MCP Adapter",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Privilege/code change: Enables/disables the site-side MCP adapter (a second AI control surface). Requires confirm:true."
     },
     "install_mcp_adapter": {
       "op": "mcp/install-mcp-adapter",

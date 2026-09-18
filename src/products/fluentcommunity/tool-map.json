@@ -80,6 +80,10 @@
     "courses/list-all-space-courses": {
       "toolName": "community_courses_list_all_space_courses",
       "summary": "List Courses Across All Spaces"
+    },
+    "admin/add-manager": {
+      "destructive": true,
+      "bodyNote": "Privilege/code change: Grants a WordPress user FluentCommunity manager access. Requires confirm:true."
     }
   }
 }

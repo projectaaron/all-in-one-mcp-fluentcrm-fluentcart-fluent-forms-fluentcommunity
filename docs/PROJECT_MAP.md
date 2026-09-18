@@ -102,7 +102,6 @@ fluentMCP/
 ├── .github/workflows/
 │   ├── refresh-api-docs.yml      # Weekly reference refresh, PRs on change
 │   └── deploy-cloudflare.yml     # Manual-dispatch Worker deploy (needs CLOUDFLARE_API_TOKEN secret)
-├── FLUENTCART_DEV_KIT.md         # Upstream dev kit (WP-side gotchas) — kept verbatim
 ├── .env.example                  # All env vars, commented, no real values
 ├── wrangler.jsonc                # Cloudflare Workers deploy config (src/worker.ts entry)
 ├── Dockerfile                    # Container image for the Node remote server

@@ -43,16 +43,24 @@ export const DEFAULT_LOCKED_TOOLS = [
   // and runs new code on the site. No agent has business doing that.
   'forms_utilities_install_plugin',
   'forms_utilities_activate_plugin',
+  // Same reason: FluentCart's addon installers fetch and install plugin code.
+  'cart_settings_install_plugin_addon',
+  'cart_settings_install_payment_addon',
+  // Mints a standing REST API key — a persistent credential a compromised
+  // session could hand to someone else. Create keys in wp-admin instead.
+  'crm_settings_create_rest_key',
 ] as const;
 
 export function parseLockedTools(raw: string | undefined): Set<string> {
   if (raw === undefined || raw.trim() === '') return new Set(DEFAULT_LOCKED_TOOLS);
   const tokens = raw.split(',').map((t) => t.trim().toLowerCase()).filter(Boolean);
-  if (tokens.includes('none')) return new Set();
+  // `none` disables locking only as the sole value — "default,none" or a
+  // typo'd list must never silently unlock everything.
+  if (tokens.length === 1 && tokens[0] === 'none') return new Set();
   const out = new Set<string>();
   for (const t of tokens) {
     if (t === 'default') for (const d of DEFAULT_LOCKED_TOOLS) out.add(d);
-    else out.add(t);
+    else if (t !== 'none') out.add(t);
   }
   return out;
 }

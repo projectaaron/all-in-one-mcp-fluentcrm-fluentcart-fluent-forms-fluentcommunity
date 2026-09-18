@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import type { Server } from 'node:http';
 import { loadConfig } from '../src/core/config.js';
-import { createRemoteServer, MIN_TOKEN_LENGTH } from '../src/remote-server.js';
+import { createRemoteServer, MAX_BODY_BYTES, MIN_TOKEN_LENGTH, pathToken } from '../src/remote-server.js';
 import { PRODUCTS } from '../src/products/index.js';
 import { INDIVIDUAL_TOOL_COUNT } from './helpers.js';
 
@@ -99,6 +99,23 @@ describe('remote streamable-http server', () => {
       body: '{not json',
     });
     expect(res.status).toBe(400);
+  });
+
+  it('answers 413 to a body over the cap instead of buffering it', async () => {
+    const res = await fetch(`${base}/mcp/${TOKEN}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: '[' + '1,'.repeat(MAX_BODY_BYTES / 2 + 16) + '1]',
+    }).catch(() => undefined);
+    // The server destroys the socket after answering; either the 413 or a
+    // connection reset is acceptable, never a 200.
+    if (res) expect(res.status).toBe(413);
+  });
+
+  it('percent-decodes the path token so URL-unsafe tokens work in path form', () => {
+    expect(pathToken(encodeURIComponent('abc+/=xyz%'))).toBe('abc+/=xyz%');
+    expect(pathToken('%E0%A4%A')).toBeUndefined();
+    expect(pathToken(undefined)).toBeUndefined();
   });
 
   it('refuses to construct with a short token', () => {

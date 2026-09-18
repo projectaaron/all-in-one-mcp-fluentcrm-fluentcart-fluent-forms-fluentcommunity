@@ -4,112 +4,199 @@
   "tools": {
     "crm_contacts": {
       "description": "Look up, create, update, delete, and manage CRM contacts (subscribers), including their notes, tags, lists, and email history.",
-      "groups": ["contacts"]
+      "groups": [
+        "contacts"
+      ]
     },
     "crm_lists": {
       "description": "View, create, update, or delete the contact lists used to organize CRM subscribers.",
-      "groups": ["lists"]
+      "groups": [
+        "lists"
+      ]
     },
     "crm_tags": {
       "description": "View, create, update, or delete the tags used to label CRM contacts.",
-      "groups": ["tags"]
+      "groups": [
+        "tags"
+      ]
     },
     "crm_segments": {
       "description": "View, create, update, or delete dynamic contact segments and see which contacts match them.",
-      "groups": ["dynamic-segments"]
+      "groups": [
+        "dynamic-segments"
+      ]
     },
     "crm_custom_fields": {
       "description": "View or update the custom contact fields configured in the CRM.",
-      "groups": ["custom-fields"],
+      "groups": [
+        "custom-fields"
+      ],
       "idempotent": true
     },
     "crm_labels": {
       "description": "View, create, update, or delete the labels used to organize items in the CRM.",
-      "groups": ["labels"]
+      "groups": [
+        "labels"
+      ]
     },
     "crm_companies": {
       "description": "Look up, create, update, delete, and manage CRM companies, their notes, and their associated contacts.",
-      "groups": ["companies"]
+      "groups": [
+        "companies"
+      ]
     },
     "crm_campaigns": {
       "description": "Create, schedule, send, pause, duplicate, delete, and analyze one-off email campaigns, including resending failed or unopened emails.",
-      "groups": ["campaigns", "campaigns-pro"]
+      "groups": [
+        "campaigns",
+        "campaigns-pro"
+      ]
     },
     "crm_recurring_campaigns": {
       "description": "Manage recurring (automatically repeating) email campaigns from creation through scheduling and deletion (FluentCRM Pro).",
-      "groups": ["recurring-campaigns"]
+      "groups": [
+        "recurring-campaigns"
+      ]
     },
     "crm_sequences": {
       "description": "Manage email sequence (drip) automations, their emails, and their subscribers (FluentCRM Pro).",
-      "groups": ["sequences"]
+      "groups": [
+        "sequences"
+      ]
     },
     "crm_automations": {
       "description": "Manage marketing automation funnels and their subscribers, from creation and editing to import, export, and deletion.",
-      "groups": ["funnels"]
+      "groups": [
+        "funnels"
+      ]
     },
     "crm_templates": {
       "description": "Manage reusable email templates, including creating, duplicating, updating, and deleting them.",
-      "groups": ["templates"]
+      "groups": [
+        "templates"
+      ]
     },
     "crm_forms": {
       "description": "View and manage the opt-in forms connected to the CRM.",
-      "groups": ["forms"]
+      "groups": [
+        "forms"
+      ]
     },
     "crm_webhooks": {
       "description": "Manage incoming webhooks that create or update CRM contacts from external services.",
-      "groups": ["webhooks"]
+      "groups": [
+        "webhooks"
+      ]
     },
     "crm_smart_links": {
       "description": "Manage Smart Links that tag and redirect contacts when clicked (FluentCRM Pro).",
-      "groups": ["smart-links"]
+      "groups": [
+        "smart-links"
+      ]
     },
     "crm_sms": {
       "description": "Manage SMS campaigns, templates, contacts' phone data, and SMS settings (FluentCRM Pro).",
-      "groups": ["sms"]
+      "groups": [
+        "sms"
+      ]
     },
     "crm_reports": {
       "description": "Read-only CRM analytics: dashboard stats, subscriber growth, email and revenue reports, commerce reports, and global search.",
-      "groups": ["reports", "commerce-reports", "global-search"]
+      "groups": [
+        "reports",
+        "commerce-reports",
+        "global-search"
+      ]
     },
     "crm_abandoned_carts": {
       "description": "View abandoned-cart records and their report summary, and delete records in bulk (FluentCRM Pro commerce feature).",
-      "groups": ["abandon-carts"]
+      "groups": [
+        "abandon-carts"
+      ]
     },
     "crm_settings": {
       "description": "Read or update FluentCRM settings such as double opt-in, business info, email preferences, compliance, and experimental features.",
-      "groups": ["settings"]
+      "groups": [
+        "settings"
+      ]
     },
     "crm_settings_pro": {
       "description": "Read or update FluentCRM Pro settings such as the plugin license and Pro-only features.",
-      "groups": ["pro-settings"]
+      "groups": [
+        "pro-settings"
+      ]
     },
     "crm_utilities": {
       "description": "Administrative utilities: import contacts from CSV or WordPress users, migrate from other tools, list WordPress users and roles, browse in-app docs, and receive bounce webhooks.",
-      "groups": ["import", "migrators", "users", "docs", "public-bounce"],
+      "groups": [
+        "import",
+        "migrators",
+        "users",
+        "docs",
+        "public-bounce"
+      ],
       "note": "The two handle_bounce actions are webhook receivers meant to be called by email services, not by API clients."
     }
   },
   "operationOverrides": {
-    "reports/delete-report-emails": { "tool": "crm_settings" },
-    "settings/reset-system-logs": { "destructive": true },
-    "campaigns/schedule-campaign": { "destructive": true },
-    "campaigns/resume-campaign": { "destructive": true },
-    "campaigns-pro/resend-campaign-emails": { "destructive": true },
-    "campaigns-pro/resend-failed-emails": { "destructive": true },
-    "campaigns-pro/resend-unopened-emails": { "destructive": true },
-    "sms/schedule-sms-campaign": { "destructive": true },
-    "sms/resume-sms-campaign": { "destructive": true },
+    "reports/delete-report-emails": {
+      "tool": "crm_settings"
+    },
+    "settings/reset-system-logs": {
+      "destructive": true
+    },
+    "campaigns/schedule-campaign": {
+      "destructive": true
+    },
+    "campaigns/resume-campaign": {
+      "destructive": true
+    },
+    "campaigns-pro/resend-campaign-emails": {
+      "destructive": true
+    },
+    "campaigns-pro/resend-failed-emails": {
+      "destructive": true
+    },
+    "campaigns-pro/resend-unopened-emails": {
+      "destructive": true
+    },
+    "sms/schedule-sms-campaign": {
+      "destructive": true
+    },
+    "sms/resume-sms-campaign": {
+      "destructive": true
+    },
     "sequences/create-sequence-email": {
-      "requiredBody": ["email"],
+      "requiredBody": [
+        "email"
+      ],
       "bodyNote": "Body shape: {\"email\": {\"email_subject\", \"email_body\", \"email_pre_header\"?, \"design_template\"?, \"template_id\"?, \"settings\": {\"timings\": {\"delay\", \"delay_unit\", \"is_anytime\"}}}} — every field nests under the top-level \"email\" object (the plugin silently ignores flat body fields and the insert fails). The row title is set from email_subject. TIMING SEMANTICS: settings.timings.delay × delay_unit is recomputed into the row's delay column (seconds) on save, and that delay is an ABSOLUTE offset from the contact's enrollment — NOT relative to the previous email. delay 172800 sends 2 days after enrollment regardless of what comes before; emails sharing the same delay send together as one group. sending_time (with is_anytime:\"no\") is a [start,end] time-of-day window applied on the target day; it is silently ignored while is_anytime is \"yes\"."
     },
     "sequences/update-sequence-email": {
-      "requiredBody": ["email"],
+      "requiredBody": [
+        "email"
+      ],
       "bodyNote": "Body shape: {\"email\": {\"email_subject\", \"email_body\", \"email_pre_header\"?, \"design_template\"?, \"template_id\"?, \"settings\": {\"timings\": {\"delay\", \"delay_unit\", \"is_anytime\"}}}} — every field nests under the top-level \"email\" object (the plugin silently ignores flat body fields). The row title is set from email_subject. TIMING SEMANTICS: settings.timings.delay × delay_unit is recomputed into the row's delay column (seconds) on save, and that delay is an ABSOLUTE offset from the contact's enrollment — NOT relative to the previous email. delay 172800 sends 2 days after enrollment regardless of what comes before; emails sharing the same delay send together as one group. sending_time (with is_anytime:\"no\") is a [start,end] time-of-day window applied on the target day; it is silently ignored while is_anytime is \"yes\". Preview the computed timetable with crm_sequences_preview_schedule and sanity-check with crm_sequences_validate."
     },
     "sequences/create-or-update-sequence-email": {
-      "requiredBody": ["route_method", "sequence_id", "email"],
+      "requiredBody": [
+        "route_method",
+        "sequence_id",
+        "email"
+      ],
       "bodyNote": "Body shape: {\"route_method\": \"create\"|\"update\", \"sequence_id\": <sequence id>, \"mail_id\": <sequence email id — update only>, \"email\": {...}} — the \"email\" object uses the same nested shape as crm_sequences_create_email (including its absolute-from-enrollment delay semantics); without route_method the endpoint returns 422 \"Invalid route_method\"."
+    },
+    "settings/create-rest-key": {
+      "destructive": true,
+      "bodyNote": "Privilege/code change: Mints a standing REST API key — a persistent credential. Requires confirm:true."
+    },
+    "pro-settings/add-manager": {
+      "destructive": true,
+      "bodyNote": "Privilege/code change: Grants a WordPress user FluentCRM manager access. Requires confirm:true."
+    },
+    "pro-settings/update-manager": {
+      "destructive": true,
+      "bodyNote": "Privilege/code change: Changes a manager's permissions. Requires confirm:true."
     }
   }
 }

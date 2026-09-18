@@ -1746,7 +1746,8 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/admin/managers",
       "summary": "Add Manager",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Privilege/code change: Grants a WordPress user FluentCommunity manager access. Requires confirm:true."
     },
     "delete_manager": {
       "op": "admin/delete-manager",
