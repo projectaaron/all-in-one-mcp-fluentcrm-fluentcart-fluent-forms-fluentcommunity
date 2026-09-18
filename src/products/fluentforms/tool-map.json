@@ -109,6 +109,18 @@
     },
     "integrations/list-form-integrations": {
       "summary": "List Form Integration Feeds (with available integration slugs)"
+    },
+    "managers/add-manager": {
+      "destructive": true,
+      "bodyNote": "Privilege/code change: Grants a WordPress user Fluent Forms manager access. Requires confirm:true."
+    },
+    "roles/add-role-capability": {
+      "destructive": true,
+      "bodyNote": "Privilege/code change: Grants a WordPress role Fluent Forms capabilities. Requires confirm:true."
+    },
+    "mcp/toggle-mcp": {
+      "destructive": true,
+      "bodyNote": "Privilege/code change: Enables/disables the site-side MCP adapter (a second AI control surface). Requires confirm:true."
     }
   }
 }

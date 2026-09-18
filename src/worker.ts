@@ -38,6 +38,21 @@ function safeEqual(a: string, b: string): boolean {
 
 const isResponse = (m: JSONRPCMessage): boolean => 'id' in m && ('result' in m || 'error' in m);
 const isRequest = (m: JSONRPCMessage): boolean => 'id' in m && 'method' in m;
+/** A message carrying an id that is neither a request (has `method`) nor a
+ *  response (has `result`/`error`). The SDK silently drops these, so the
+ *  worker answers them with -32600 itself instead of returning an empty 202. */
+const isMalformed = (m: unknown): boolean =>
+  !m || typeof m !== 'object' || ('id' in m && !('method' in m) && !('result' in m) && !('error' in m));
+
+/** Percent-decode the `/mcp/<token>` path segment; undecodable → ''. */
+function pathToken(segment: string | undefined): string {
+  if (segment === undefined) return '';
+  try {
+    return decodeURIComponent(segment);
+  } catch {
+    return '';
+  }
+}
 
 /** One HTTP exchange = one transport: dispatch client message(s), await the
  *  matching response(s). Server-initiated requests/notifications have nowhere
@@ -111,7 +126,7 @@ export default {
       return json(500, rpcError(-32000, `Server misconfigured: set the FLUENT_MCP_TOKEN secret (${MIN_TOKEN_LENGTH}+ chars) — npx wrangler secret put FLUENT_MCP_TOKEN`));
     }
     const auth = request.headers.get('authorization');
-    const presented = match[1] ?? (auth?.startsWith('Bearer ') ? auth.slice(7).trim() : '');
+    const presented = match[1] !== undefined ? pathToken(match[1]) : auth?.startsWith('Bearer ') ? auth.slice(7).trim() : '';
     if (!presented || !safeEqual(presented, token)) {
       return json(401, rpcError(-32000, 'Unauthorized: present FLUENT_MCP_TOKEN as "Authorization: Bearer <token>" or in the URL path /mcp/<token>'));
     }
@@ -125,18 +140,25 @@ export default {
     } catch {
       return json(400, rpcError(-32700, 'Parse error: invalid JSON'));
     }
-    const messages = (Array.isArray(body) ? body : [body]) as JSONRPCMessage[];
+    const incoming = Array.isArray(body) ? body : [body];
+    const invalid = incoming.filter(isMalformed).map((m) => ({
+      jsonrpc: '2.0',
+      error: { code: -32600, message: 'Invalid Request: a message with an id needs a method (request) or result/error (response)' },
+      id: m && typeof m === 'object' && 'id' in m ? (m as { id: string | number }).id : null,
+    })) as JSONRPCMessage[];
+    const messages = incoming.filter((m) => !isMalformed(m)) as JSONRPCMessage[];
 
     const config = loadConfig(PRODUCTS.map((p) => p.envPrefix), env as NodeJS.ProcessEnv);
     const built = buildServer(config);
     const transport = new SingleExchangeTransport();
     try {
       await built.server.connect(transport);
-      const responses = await transport.exchange(messages, RESPONSE_TIMEOUT_MS);
+      const responses = [...invalid, ...(messages.length ? await transport.exchange(messages, RESPONSE_TIMEOUT_MS) : [])];
       if (responses.length === 0) return new Response(null, { status: 202, headers: CORS_HEADERS });
       return json(200, Array.isArray(body) ? responses : responses[0]);
     } catch (err) {
-      return json(500, rpcError(-32603, err instanceof Error ? err.message : 'Internal server error'));
+      console.error('fluentmcp worker: request failed:', err instanceof Error ? err.message : err);
+      return json(500, rpcError(-32603, 'Internal server error'));
     } finally {
       void built.server.close();
     }

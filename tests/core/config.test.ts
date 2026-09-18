@@ -111,6 +111,9 @@ describe('locked tools', () => {
   it('supports none, replacement lists, and default expansion', () => {
     const env = (v: string) => loadConfig([], { FLUENT_LOCKED_TOOLS: v } as NodeJS.ProcessEnv).lockedTools;
     expect(env('none').size).toBe(0);
+    // `none` only disables locking as the sole value — never inside a list.
+    expect(env('default,none').size).toBe(DEFAULT_LOCKED_TOOLS.length);
+    expect(env('none,crm_contacts_bulk_action')).toEqual(new Set(['crm_contacts_bulk_action']));
     expect([...env('crm_tags_delete')]).toEqual(['crm_tags_delete']);
     const extended = env('default, crm_contacts_bulk_action');
     expect(extended.has('crm_settings_reset_database')).toBe(true);

@@ -1,6 +1,54 @@
 # Changelog
 
-## Unreleased
+## 1.0.0 — 2026-09-18
+
+**First public release.** Five WPManageNinja products (FluentCRM, FluentCart,
+Fluent Forms, FluentCommunity, WP Social Ninja), 1,191 endpoint tools in 68
+areas, self-describing writes (merge mode, post-write verification,
+`dry_run`, read-back guards), confirm gates on 184 destructive operations and
+12 admin-locked catastrophes. Release prep: personal-data and secrets audit of
+the tree and full history, dependency audit (0 known vulnerabilities),
+security review of the auth, sideloading and input paths, and a rewritten
+README. Everything below this heading landed between 0.9.0 and 1.0.0.
+
+**Security hardening from the release audit.**
+
+- `wp_media_upload_from_url` SSRF guard: IPv6 literals (loopback,
+  unspecified, ULA, link-local, multicast, IPv4-mapped and NAT64 forms) and
+  the IPv4 CGNAT/benchmark/protocol-assignment/multicast ranges are now
+  refused alongside the RFC1918/loopback/link-local set; `localhost`-style
+  names, `.arpa`, `metadata.google.internal` and wildcard-DNS aliases
+  (`nip.io`, `sslip.io`) are refused; URLs with embedded credentials are
+  refused. Redirects are no longer followed by `fetch` — the tool follows up
+  to 5 hops by hand and re-validates each `Location`, so a public URL can't
+  bounce the server onto a private address. The body is streamed with a
+  running byte count and aborted above the 15 MB cap (previously buffered in
+  full first); a `Content-Length` over the cap is refused before download.
+  The remaining known gap (no DNS pre-resolution) is documented in
+  SECURITY.md with the lock-it-down mitigation.
+- Privilege and code-installing operations are now confirm-gated: FluentCart
+  plugin/payment addon install + activate and integration addon install,
+  every product's add/update-manager, Fluent Forms add-role-capability and
+  MCP-adapter toggle, FluentCart save-permissions and customer→WP-user
+  attach, FluentCRM create-rest-key. Destructive count 167 → 184.
+- Locked by default (12, was 9): `cart_settings_install_plugin_addon`,
+  `cart_settings_install_payment_addon` (install arbitrary plugin code) and
+  `crm_settings_create_rest_key` (mints a standing credential).
+- `FLUENT_LOCKED_TOOLS=none` disables locking only as the sole value;
+  `default,none` or `none,foo` no longer silently unlock everything.
+- Remote Node server: request bodies capped at 4 MB (413), the `/mcp/<token>`
+  path segment is percent-decoded so URL-unsafe tokens work in path form.
+- Cloudflare Worker: same token decoding; 500 responses no longer echo
+  internal error text; a message with an `id` but no `method` gets a JSON-RPC
+  `-32600` instead of an empty 202. `wrangler.jsonc` turns Workers invocation
+  logs off so the path token never lands in the log store.
+- `deepMerge` (merge-mode writes) uses own-key lookup and skips
+  `__proto__`/`constructor`/`prototype` keys from a JSON body.
+- Query serialization handles arrays of objects and nested objects at any
+  depth (`filters[0][field]=…`) instead of emitting `[object Object]`.
+- Path templates that repeat a placeholder are fully substituted.
+- `.wrangler/` local state is untracked and ignored; the deploy workflow runs
+  with `permissions: contents: read`.
 
 **`forms_integrations_save` can no longer save a feed Fluent Forms will
 never run.** Field report: an integration feed written through the connector
