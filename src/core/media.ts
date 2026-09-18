@@ -13,6 +13,37 @@ import type { FluentClient } from './http.js';
 import { OUTPUT_SHAPE } from './tool-factory.js';
 
 const MAX_BYTES = 15 * 1024 * 1024;
+const MAX_REDIRECTS = 5;
+
+/** Read a response body up to `cap` bytes; returns undefined (and cancels
+ *  the stream) the moment the cap is exceeded, so a hostile URL cannot make
+ *  the server buffer an unbounded body. */
+async function readCapped(res: Response, cap: number): Promise<Uint8Array | undefined> {
+  if (!res.body) {
+    const buf = new Uint8Array(await res.arrayBuffer());
+    return buf.byteLength > cap ? undefined : buf;
+  }
+  const reader = res.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let total = 0;
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    total += value.byteLength;
+    if (total > cap) {
+      await reader.cancel().catch(() => undefined);
+      return undefined;
+    }
+    chunks.push(value);
+  }
+  const out = new Uint8Array(total);
+  let offset = 0;
+  for (const c of chunks) {
+    out.set(c, offset);
+    offset += c.byteLength;
+  }
+  return out;
+}
 
 const SUMMARY_KEYS = ['id', 'date', 'slug', 'source_url', 'mime_type', 'alt_text', 'media_type'] as const;
 
@@ -28,8 +59,62 @@ function summarizeAttachment(raw: unknown): Rec {
   return out;
 }
 
-/** http(s) only; refuse loopback/private/link-local targets (the fetch runs
- *  server-side with network access the caller may not have). */
+/** True when a dotted-quad IPv4 address is loopback, private, link-local,
+ *  CGNAT, cloud-metadata, multicast, reserved or unspecified. */
+export function isBlockedIPv4(host: string): boolean {
+  const m = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/.exec(host);
+  if (!m) return false;
+  const [a, b] = [Number(m[1]), Number(m[2])];
+  return (
+    a === 0 || // 0.0.0.0/8 "this network"
+    a === 10 || // 10/8 private
+    a === 127 || // loopback
+    (a === 100 && b >= 64 && b <= 127) || // 100.64/10 CGNAT (cloud metadata on some providers)
+    (a === 169 && b === 254) || // link-local incl. 169.254.169.254 metadata
+    (a === 172 && b >= 16 && b <= 31) || // 172.16/12 private
+    (a === 192 && b === 0) || // 192.0.0/24 IETF protocol assignments
+    (a === 192 && b === 168) || // 192.168/16 private
+    (a === 198 && (b === 18 || b === 19)) || // 198.18/15 benchmarking
+    a >= 224 // multicast + reserved + broadcast
+  );
+}
+
+/** True when an IPv6 literal (with or without brackets) is loopback,
+ *  unspecified, ULA, link-local, IPv4-mapped/NAT64 to a blocked v4, or
+ *  otherwise not a public unicast address. */
+export function isBlockedIPv6(host: string): boolean {
+  const h = host.replace(/^\[|\]$/g, '').toLowerCase();
+  if (!h.includes(':')) return false;
+  if (h === '::' || h === '::1') return true;
+  // Embedded IPv4 in the last 32 bits: ::ffff:a.b.c.d, ::ffff:xxxx:xxxx, 64:ff9b::/96 (NAT64)
+  const mapped = /^(?:::ffff:|64:ff9b::)(.+)$/.exec(h);
+  if (mapped) {
+    const tail = mapped[1];
+    const dotted = /^\d{1,3}(?:\.\d{1,3}){3}$/.test(tail)
+      ? tail
+      : (() => {
+          const parts = tail.split(':');
+          if (parts.length !== 2) return undefined;
+          const [hi, lo] = parts.map((x) => Number.parseInt(x, 16));
+          if (!Number.isFinite(hi) || !Number.isFinite(lo)) return undefined;
+          return `${hi >> 8}.${hi & 255}.${lo >> 8}.${lo & 255}`;
+        })();
+    return !dotted || isBlockedIPv4(dotted);
+  }
+  const first = Number.parseInt(h.split(':')[0] || '0', 16);
+  if (!Number.isFinite(first)) return true;
+  if ((first & 0xfe00) === 0xfc00) return true; // fc00::/7 unique local
+  if ((first & 0xffc0) === 0xfe80) return true; // fe80::/10 link-local
+  if ((first & 0xff00) === 0xff00) return true; // ff00::/8 multicast
+  if (first === 0x2001 && h.startsWith('2001:db8')) return true; // documentation
+  return (first & 0xe000) !== 0x2000; // anything outside 2000::/3 global unicast
+}
+
+/** http(s) only; refuse loopback/private/link-local/metadata targets by
+ *  hostname or IP literal (the fetch runs server-side with network access the
+ *  caller may not have). Applied to the initial URL and to every redirect
+ *  hop. Hostnames are not DNS-resolved here, so a public name that resolves
+ *  to a private address is not caught — see SECURITY.md. */
 export function assertSafeSourceUrl(raw: string): URL {
   let url: URL;
   try {
@@ -40,18 +125,24 @@ export function assertSafeSourceUrl(raw: string): URL {
   if (url.protocol !== 'https:' && url.protocol !== 'http:') {
     throw new Error(`source_url must be http(s), got ${url.protocol}`);
   }
+  if (url.username || url.password) throw new Error('source_url may not embed credentials');
   const host = url.hostname.toLowerCase();
-  if (host === 'localhost' || host.endsWith('.localhost') || host.endsWith('.local') || host.endsWith('.internal')) {
-    throw new Error('source_url may not point at local hosts');
+  if (!host) throw new Error('source_url has no host');
+  if (
+    host === 'localhost' ||
+    host.endsWith('.localhost') ||
+    host.endsWith('.local') ||
+    host.endsWith('.internal') ||
+    host.endsWith('.arpa') ||
+    host === 'metadata' ||
+    host === 'metadata.google.internal' ||
+    host.endsWith('.nip.io') ||
+    host.endsWith('.sslip.io')
+  ) {
+    throw new Error('source_url may not point at local or internal hosts');
   }
-  if (host === '::1' || host === '[::1]') throw new Error('source_url may not point at loopback addresses');
-  const v4 = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/.exec(host);
-  if (v4) {
-    const [a, b] = [Number(v4[1]), Number(v4[2])];
-    if (a === 0 || a === 10 || a === 127 || (a === 172 && b >= 16 && b <= 31) || (a === 192 && b === 168) || (a === 169 && b === 254)) {
-      throw new Error('source_url may not point at private or loopback addresses');
-    }
-  }
+  if (isBlockedIPv6(host)) throw new Error('source_url may not point at private, loopback or link-local addresses');
+  if (isBlockedIPv4(host)) throw new Error('source_url may not point at private, loopback or link-local addresses');
   return url;
 }
 
@@ -122,17 +213,28 @@ async function runUploadFromUrl(
   label: string,
   args: { source_url: string; filename?: string; title?: string; alt_text?: string } & Shaping
 ) {
-  const source = assertSafeSourceUrl(args.source_url);
-  const fetched = await client.fetchUrl(source.toString());
+  let source = assertSafeSourceUrl(args.source_url);
+  let fetched = await client.fetchUrl(source.toString());
+  // Follow redirects by hand so every hop is re-validated — a public URL
+  // must not be allowed to bounce the server onto a private address.
+  for (let hop = 0; hop < MAX_REDIRECTS && fetched.status >= 300 && fetched.status < 400; hop++) {
+    const location = fetched.headers.get('location');
+    if (!location) break;
+    source = assertSafeSourceUrl(new URL(location, source).toString());
+    fetched = await client.fetchUrl(source.toString());
+  }
+  if (fetched.status >= 300 && fetched.status < 400) return err('source_url redirected too many times');
   if (!fetched.ok) return err(`Fetching source_url failed: HTTP ${fetched.status} from ${source.hostname}`);
   const contentType = (fetched.headers.get('content-type') ?? '').split(';')[0].trim().toLowerCase();
   if (!contentType.startsWith('image/')) {
     return err(`source_url returned "${contentType || 'unknown'}" — only image/* content can be uploaded with this tool.`);
   }
-  const bytes = new Uint8Array(await fetched.arrayBuffer());
-  if (bytes.byteLength > MAX_BYTES) {
-    return err(`Image is ${(bytes.byteLength / 1048576).toFixed(1)} MB — the upload cap is ${MAX_BYTES / 1048576} MB.`);
+  const declared = Number(fetched.headers.get('content-length') ?? '');
+  if (Number.isFinite(declared) && declared > MAX_BYTES) {
+    return err(`Image is ${(declared / 1048576).toFixed(1)} MB — the upload cap is ${MAX_BYTES / 1048576} MB.`);
   }
+  const bytes = await readCapped(fetched, MAX_BYTES);
+  if (!bytes) return err(`Image exceeds the ${MAX_BYTES / 1048576} MB upload cap — download aborted.`);
   const filename = filenameFor(source, args.filename, contentType);
   const uploaded = await client.wpRequest({
     method: 'POST',

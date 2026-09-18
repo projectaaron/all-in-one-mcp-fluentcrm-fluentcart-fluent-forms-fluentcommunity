@@ -47,17 +47,7 @@ export class FluentClient {
     if (query) {
       for (const [key, value] of Object.entries(query)) {
         if (value === undefined || value === null) continue;
-        if (Array.isArray(value)) {
-          const k = key.endsWith('[]') ? key : `${key}[]`;
-          for (const v of value) url.searchParams.append(k, String(v));
-        } else if (typeof value === 'object') {
-          // nested objects -> key[sub]=v (WP style)
-          for (const [sub, v] of Object.entries(value as Record<string, unknown>)) {
-            if (v !== undefined && v !== null) url.searchParams.append(`${key}[${sub}]`, String(v));
-          }
-        } else {
-          url.searchParams.set(key, String(value));
-        }
+        appendQuery(url.searchParams, key, value);
       }
     }
     return url.toString();
@@ -190,12 +180,13 @@ export class FluentClient {
   }
 
   /** Plain fetch of an external URL (no auth header) through the injected
-   *  fetch, with the configured timeout — used to sideload media. */
+   *  fetch, with the configured timeout — used to sideload media. Redirects
+   *  are NOT followed: the caller re-validates each Location hop. */
   async fetchUrl(url: string): Promise<Response> {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), this.opts.timeoutMs);
     try {
-      return await this.fetchImpl(url, { method: 'GET', signal: controller.signal });
+      return await this.fetchImpl(url, { method: 'GET', signal: controller.signal, redirect: 'manual' });
     } finally {
       clearTimeout(timer);
     }
@@ -204,6 +195,23 @@ export class FluentClient {
   private backoffMs(attempt: number): number {
     const base = 500 * 2 ** (attempt - 1);
     return base + Math.floor(Math.random() * 250);
+  }
+}
+
+/** PHP/WordPress bracket serialization at any depth: arrays -> k[]=v (or
+ *  k[i][sub]=v for arrays of objects), objects -> k[sub]=v, recursively. */
+function appendQuery(params: URLSearchParams, key: string, value: unknown): void {
+  if (value === undefined || value === null) return;
+  if (Array.isArray(value)) {
+    const base = key.endsWith('[]') ? key.slice(0, -2) : key;
+    value.forEach((v, i) => {
+      if (v !== null && typeof v === 'object') appendQuery(params, `${base}[${i}]`, v);
+      else params.append(`${base}[]`, String(v));
+    });
+  } else if (typeof value === 'object') {
+    for (const [sub, v] of Object.entries(value as Record<string, unknown>)) appendQuery(params, `${key}[${sub}]`, v);
+  } else {
+    params.append(key, String(value));
   }
 }
 

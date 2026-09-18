@@ -17,14 +17,14 @@ const INIT = {
   params: { protocolVersion: '2025-06-18', capabilities: {}, clientInfo: { name: 't', version: '0' } },
 };
 
-const post = (path: string, body: unknown, headers: Record<string, string> = {}) =>
+const post = (path: string, body: unknown, headers: Record<string, string> = {}, useEnv = env) =>
   worker.fetch(
     new Request(`https://worker.test${path}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', ...headers },
       body: typeof body === 'string' ? body : JSON.stringify(body),
     }),
-    env
+    useEnv
   );
 
 describe('cloudflare worker entry', () => {
@@ -75,6 +75,20 @@ describe('cloudflare worker entry', () => {
     expect(notif.status).toBe(202);
     const bad = await post(`/mcp/${TOKEN}`, '{not json');
     expect(bad.status).toBe(400);
+  });
+
+  it('answers a malformed request (id without method) with a JSON-RPC error, not an empty 202', async () => {
+    const res = await post(`/mcp/${TOKEN}`, { jsonrpc: '2.0', id: 7 });
+    expect(res.status).toBe(200);
+    const body = (await res.json()) as { id: number; error?: { code: number } };
+    expect(body.id).toBe(7);
+    expect(body.error).toBeDefined();
+  });
+
+  it('accepts a percent-encoded token in the path', async () => {
+    const odd = 'tok+en/with=odd%chars-0123456789';
+    const res = await post(`/mcp/${encodeURIComponent(odd)}`, INIT, {}, { ...env, FLUENT_MCP_TOKEN: odd });
+    expect(res.status).toBe(200);
   });
 
   it('rejects non-POST on the MCP endpoint (stateless)', async () => {

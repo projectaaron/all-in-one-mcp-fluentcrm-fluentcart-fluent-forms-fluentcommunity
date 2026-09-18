@@ -17,7 +17,11 @@
   // Never clobber dashboard-added plaintext vars on deploy. (True Secrets are
   // never touched by deploys anyway — prefer type "Secret" for credentials.)
   "keep_vars": true,
+  // Workers Logs would record every request URL — and claude.ai presents the
+  // token in the path (/mcp/<token>) — so invocation logs stay OFF. console
+  // errors are still captured.
   "observability": {
-    "enabled": true
+    "enabled": true,
+    "logs": { "enabled": true, "invocation_logs": false }
   }
 }

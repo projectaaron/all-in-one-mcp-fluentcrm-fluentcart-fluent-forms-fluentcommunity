@@ -261,7 +261,7 @@ export async function executeAction(
     );
   }
   let path = def.path;
-  for (const p of placeholders) path = path.replace(`{${p}}`, encodeURIComponent(String(supplied[p])));
+  for (const p of placeholders) path = path.replaceAll(`{${p}}`, encodeURIComponent(String(supplied[p])));
 
   // Wrapper-key endpoints: verify the required top-level body keys before
   // calling — the plugin silently ignores flat fields and then fails with an
@@ -286,7 +286,7 @@ export async function executeAction(
   let readbackPath: string | undefined;
   if (def.readback && isWrite && !dryRun) {
     readbackPath = def.readback.path;
-    for (const p of placeholders) readbackPath = readbackPath.replace(`{${p}}`, encodeURIComponent(String(supplied[p])));
+    for (const p of placeholders) readbackPath = readbackPath.replaceAll(`{${p}}`, encodeURIComponent(String(supplied[p])));
     const allow = def.readback.allow;
     const body = isPlainRecord(args.body) ? args.body : {};
     const gated = allow && (!allow.requiredWhen || !isEmptyValue(body[allow.requiredWhen]));

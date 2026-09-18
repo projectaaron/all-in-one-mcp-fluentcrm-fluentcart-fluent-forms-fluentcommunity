@@ -22,7 +22,8 @@ export function deepMerge(base: unknown, patch: unknown): unknown {
   if (!isRec(base) || !isRec(patch)) return patch;
   const out: Rec = { ...base };
   for (const [k, v] of Object.entries(patch)) {
-    out[k] = k in base ? deepMerge(base[k], v) : v;
+    if (k === '__proto__' || k === 'constructor' || k === 'prototype') continue;
+    out[k] = Object.hasOwn(base, k) ? deepMerge(base[k], v) : v;
   }
   return out;
 }
