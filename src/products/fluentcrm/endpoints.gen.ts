@@ -1829,7 +1829,8 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/setting/rest-keys",
       "summary": "Create REST API Key",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Privilege/code change: Mints a standing REST API key — a persistent credential. Requires confirm:true."
     },
     "delete_rest_key": {
       "op": "settings/delete-rest-key",
@@ -2090,7 +2091,8 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/campaign-pro-settings/managers",
       "summary": "Add Manager",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Privilege/code change: Grants a WordPress user FluentCRM manager access. Requires confirm:true."
     },
     "deactivate_license": {
       "op": "pro-settings/deactivate-license",
@@ -2160,7 +2162,8 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "PUT",
       "path": "/campaign-pro-settings/managers/{id}",
       "summary": "Update Manager",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Privilege/code change: Changes a manager's permissions. Requires confirm:true."
     }
   },
   "crm_utilities": {

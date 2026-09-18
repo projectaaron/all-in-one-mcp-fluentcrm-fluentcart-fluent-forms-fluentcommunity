@@ -129,7 +129,14 @@ docker run -d -p 3000:3000 --env-file .env --restart unless-stopped fluentmcp
   restarts are invisible to clients and horizontal scaling is trivial.
 - `GET /healthz` is unauthenticated and reveals nothing but `{ok: true}`.
 - All the same safety behavior applies remotely: honest tool annotations and
-  `confirm: true` gates on all 98 destructive actions.
+  `confirm: true` gates on all 184 destructive actions and the 12 locked tools
+  still refuse.
+- The token appears in the request path when clients use the `/mcp/<token>`
+  form. Workers invocation logs are disabled in `wrangler.jsonc` for that
+  reason; redact the path in any reverse-proxy access log in front of the
+  Node server, and prefer the Bearer header where the client allows it.
+- Request bodies over 4 MB are answered 413. Add a rate limit at the edge if
+  the endpoint is reachable from the open internet.
 - Your WordPress Application Password lives wherever the server runs — pick
   hosting you trust, and prefer a dedicated WP user so it's revocable in one
   click.

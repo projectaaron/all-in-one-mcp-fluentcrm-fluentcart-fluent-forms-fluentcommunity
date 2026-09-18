@@ -32,15 +32,37 @@ function json(res: ServerResponse, status: number, body: unknown): void {
 
 const rpcError = (code: number, message: string) => ({ jsonrpc: '2.0', error: { code, message }, id: null });
 
+/** Largest JSON-RPC body accepted (a tool call with a big email template
+ *  is well under 1 MB); bigger requests are answered 413 instead of buffered. */
+export const MAX_BODY_BYTES = 4 * 1024 * 1024;
+
+class BodyTooLarge extends Error {}
+
 async function readBody(req: IncomingMessage): Promise<unknown> {
   const chunks: Buffer[] = [];
-  for await (const chunk of req) chunks.push(chunk as Buffer);
+  let total = 0;
+  for await (const chunk of req) {
+    total += (chunk as Buffer).length;
+    if (total > MAX_BODY_BYTES) throw new BodyTooLarge();
+    chunks.push(chunk as Buffer);
+  }
   const text = Buffer.concat(chunks).toString('utf8');
   if (!text) return undefined;
   try {
     return JSON.parse(text);
   } catch {
     return null;
+  }
+}
+
+/** The `/mcp/<token>` path segment, percent-decoded so URL-unsafe tokens
+ *  (base64 `+`, `/`, `=`) work in path form too. Undecodable → undefined. */
+export function pathToken(segment: string | undefined): string | undefined {
+  if (segment === undefined) return undefined;
+  try {
+    return decodeURIComponent(segment);
+  } catch {
+    return undefined;
   }
 }
 
@@ -75,7 +97,7 @@ export function createRemoteServer(config: ServerConfig, token: string): Server 
         json(res, 404, rpcError(-32000, 'Not found — the MCP endpoint is /mcp'));
         return;
       }
-      if (!tokenOk(req, match[1], token)) {
+      if (!tokenOk(req, pathToken(match[1]), token)) {
         json(res, 401, rpcError(-32000, 'Unauthorized: present FLUENT_MCP_TOKEN as "Authorization: Bearer <token>" or in the URL path /mcp/<token>'));
         return;
       }
@@ -85,7 +107,17 @@ export function createRemoteServer(config: ServerConfig, token: string): Server 
         return;
       }
 
-      const body = await readBody(req);
+      let body: unknown;
+      try {
+        body = await readBody(req);
+      } catch (e) {
+        if (e instanceof BodyTooLarge) {
+          json(res, 413, rpcError(-32000, `Payload too large — requests are capped at ${MAX_BODY_BYTES / 1048576} MB`));
+          req.destroy();
+          return;
+        }
+        throw e;
+      }
       if (body === null) {
         json(res, 400, rpcError(-32700, 'Parse error: invalid JSON'));
         return;
