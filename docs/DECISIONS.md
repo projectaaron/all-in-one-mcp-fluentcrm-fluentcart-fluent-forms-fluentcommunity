@@ -22,7 +22,7 @@ no package.json — greenfield for the server itself.**
 | `scripts/gen-api-docs.mjs` | **Refactor** — generalize to multi-product | FluentCRM's docs site (developers.fluentcrm.com) runs the *same* VitePress + per-operation OpenAPI infrastructure; one parameterized generator covers both products and any future Fluent product |
 | `scripts/api-operations.txt` | **Reuse** — renamed per-product (`fluentcart-operations.txt`) | Operation inventory doubles as the coverage checklist for tool design |
 | `.github/workflows/refresh-api-docs.yml` | **Refactor** — regenerate all products' references | Same weekly-refresh value, now for every product module's docs |
-| `FLUENTCART_DEV_KIT.md` | **Keep as reference** | Its integration gotchas (status-update fragility, hook context arrays, list filtering params) directly inform tool implementations; its PHP snippets are WP-plugin-side and not used by the server |
+| `FLUENTCART_DEV_KIT.md` | **Keep as reference** (removed 2026-09-18 for the public release — an internal plugin-dev starter unrelated to the server; still in git history) | Its integration gotchas (status-update fragility, hook context arrays, list filtering params) directly inform tool implementations; its PHP snippets are WP-plugin-side and not used by the server |
 | `README.md`, `.gitattributes` | **Replace** | Written for a WordPress plugin repo; this is now an npm/MCP-server repo |
 | `docs/fluentcart-api-reference.md` | **Supersede** | Its hand-curated REST overview is regenerated mechanically into `docs/api-reference/fluentcart.md`; the architecture/hooks/models content stays available inside `FLUENTCART_DEV_KIT.md` |
 
@@ -693,3 +693,28 @@ its own addon allowlist (`if (!isset($addons[$pluginSlug]))`), so it is
 merely confirm-gated. Same-looking endpoint, different blast radius —
 verified in `SettingController::installPlugin` rather than assumed from the
 name.
+
+## 2026-09-18 — Release audit: privilege changes are destructive; installers are locked
+
+**Decision.** "Destructive" now also means *privilege- or code-changing*, not
+only *data-losing*. Every operation that installs or activates plugin code,
+grants a user manager rights or rewrites permissions, mints an API key, or
+attaches a customer record to a WordPress login is confirm-gated. The two
+FluentCart installers that fetch code by slug join the Fluent Forms ones in
+the default locked list, as does FluentCRM's REST-key creation.
+
+**Why.** The security audit's threat model is prompt injection: the content
+these tools read back (notes, descriptions, submissions, posts) is written by
+strangers and reaches the assistant's context. A silent "add me as manager"
+or "create a REST key" is a persistence foothold, which is worse than most
+deletes — a delete is visible, a standing credential is not. The confirm
+gate is the same lever the client's approval prompt hangs on, so gating is
+free; locking is reserved for what no session has a legitimate reason to do
+through an agent.
+
+**Also decided.** The `wp_media_upload_from_url` guard validates IP literals
+by range (v4 and v6, including mapped/NAT64 forms) and re-validates every
+redirect hop, but does *not* pre-resolve DNS — doing that portably across
+Node and the Worker would need a resolver hook and a pinned connection, and
+the honest mitigation (lock the tool or restrict egress) is documented in
+SECURITY.md instead of a half-measure that claims more than it checks.

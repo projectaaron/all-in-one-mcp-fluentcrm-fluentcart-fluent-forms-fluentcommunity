@@ -652,14 +652,16 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/pro/settings/managers",
       "summary": "Add Manager",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Privilege/code change: Grants a WordPress user WP Social Ninja manager access. Requires confirm:true."
     },
     "update_manager": {
       "op": "settings/update-manager",
       "method": "PUT",
       "path": "/pro/settings/managers",
       "summary": "Update Manager",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Privilege/code change: Changes a manager's permissions. Requires confirm:true."
     },
     "delete_manager": {
       "op": "settings/delete-manager",

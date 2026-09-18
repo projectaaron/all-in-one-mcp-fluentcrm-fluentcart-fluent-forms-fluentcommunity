@@ -1,10 +1,10 @@
 {
   "manifest_version": "0.3",
   "name": "fluentmcp",
-  "display_name": "FluentMCP — FluentCRM & FluentCart",
-  "version": "0.9.0",
+  "display_name": "fluentMCP — Fluent products for WordPress",
+  "version": "1.0.0",
   "description": "Full control of FluentCRM, FluentCart, WP Social Ninja, Fluent Forms, and FluentCommunity on your WordPress site: contacts, campaigns, orders, products, reviews, forms, spaces, courses, and more.",
-  "long_description": "Gives your AI assistant create/read/update/delete control over FluentCRM (email marketing & CRM), FluentCart (e-commerce), WP Social Ninja (reviews, social feeds, chat widgets) Fluent Forms (forms & submissions) and FluentCommunity (spaces, feeds, chat, courses) by WPManageNinja — 1,191 documented REST endpoints, each as its own individualized tool (crm_contacts_list, cart_orders_refund, social_reviews_list, forms_submissions_list, community_spaces_list, …), with a built-in tool_map index so the assistant finds the right tool in one call. Safe by default: every destructive tool (deletes, refunds, cancels, mass-sends, resets) is annotated and refuses to run without explicit confirmation. One WordPress Application Password runs everything; run the verify_setup tool after installing to check your connection. Prefer a small tool list? Set the Tool Surface option to \"grouped\".",
+  "long_description": "Gives your AI assistant create/read/update/delete control over FluentCRM (email marketing & CRM), FluentCart (e-commerce), WP Social Ninja (reviews, social feeds, chat widgets), Fluent Forms (forms & submissions) and FluentCommunity (spaces, feeds, chat, courses) by WPManageNinja — 1,191 documented REST endpoints, each as its own individualized tool (crm_contacts_list, cart_orders_refund, social_reviews_list, forms_submissions_list, community_spaces_list, …), with a built-in tool_map index so the assistant finds the right tool in one call. Safe by default: every destructive tool (deletes, refunds, cancels, mass-sends, resets) is annotated and refuses to run without explicit confirmation. One WordPress Application Password runs everything; run the verify_setup tool after installing to check your connection. Prefer a small tool list? Set the Tool Surface option to \"grouped\".",
   "author": {
     "name": "projectaaron",
     "url": "https://github.com/projectaaron"
@@ -21,6 +21,9 @@
     "wordpress",
     "fluentcrm",
     "fluentcart",
+    "fluent-forms",
+    "fluentcommunity",
+    "wp-social-ninja",
     "crm",
     "ecommerce",
     "wpmanageninja"
@@ -51,20 +54,20 @@
     "api_username": {
       "type": "string",
       "title": "WordPress Username",
-      "description": "The WordPress admin user the server acts as (needs FluentCRM/FluentCart permissions).",
+      "description": "The WordPress admin user the server acts as (needs manager permissions for the Fluent products you use).",
       "required": true
     },
     "api_password": {
       "type": "string",
       "title": "Application Password",
-      "description": "Create under WP Admin → Users → your user → Application Passwords → Add New. One password runs both FluentCRM and FluentCart tools.",
+      "description": "Create under WP Admin → Users → your user → Application Passwords → Add New. One password runs every product's tools.",
       "sensitive": true,
       "required": true
     },
     "tool_mode": {
       "type": "string",
       "title": "Tool Surface",
-      "description": "individual (default): one tool per operation, ~700 small tools plus a tool_map index. grouped: the legacy ~46-tool surface (one tool per area, an action parameter picks the operation) for clients that struggle with large tool lists.",
+      "description": "individual (default): one tool per operation, ~1,200 small tools plus a tool_map index. grouped: the legacy ~70-tool surface (one tool per area, an action parameter picks the operation) for clients that struggle with large tool lists.",
       "default": "individual",
       "required": false
     }
