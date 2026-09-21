@@ -1,6 +1,6 @@
 # FluentCRM API — Automations (Funnels)
 
-31 endpoints. Base URL: `https://{website}/wp-json/fluent-crm/v2`. See the [FluentCRM overview](../fluentcrm.md) for auth and the full group list.
+32 endpoints. Base URL: `https://{website}/wp-json/fluent-crm/v2`. See the [FluentCRM overview](../fluentcrm.md) for auth and the full group list.
 
 _Generated from the FluentCRM OpenAPI specs (developers.fluentcrm.com)._
 
@@ -11,6 +11,14 @@ _Generated from the FluentCRM OpenAPI specs (developers.fluentcrm.com)._
 **POST Bulk Action Funnels**
 
 Perform a bulk action on multiple funnels. Supported actions: `change_funnel_status` (change status of selected funnels), `delete_funnels` (permanently delete selected funnels and all associated data), and `apply_labels` (attach labels to selected funnels).
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_delete_funnels` or `fcrm_write_funnels` — which one applies depends on the action being performed.
+
+_Enforced by `FunnelPolicy::handleBulkAction()`._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -76,6 +84,14 @@ Example:
 **PUT Change Funnel Trigger**
 
 Change the trigger of an existing automation funnel. This resets the funnel's settings and conditions to empty values. Returns an error if the new trigger name is the same as the current one.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_write_funnels`
+
+_Enforced by `FunnelPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -166,6 +182,14 @@ Example:
 
 Create a duplicate of an existing automation funnel. The cloned funnel is created in `draft` status with `[Copy]` prefixed to the title. All sequences, conditions, settings, and labels are duplicated.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_write_funnels`
+
+_Enforced by `FunnelPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -231,6 +255,14 @@ Create a duplicate of an existing automation funnel. The cloned funnel is create
 **POST Create Funnel**
 
 Create a new automation funnel. The funnel is created in `draft` status. If no title is provided, a default title is generated from the trigger label and current date.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_write_funnels`
+
+_Enforced by `FunnelPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -312,6 +344,14 @@ Example:
 **POST Create Funnel from Template**
 
 Create a new automation funnel from a remote template. The template content URL is fetched, and the funnel is created in `draft` status with all sequences imported. Labels from the template are also imported or matched to existing labels.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_write_funnels`
+
+_Enforced by `FunnelPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -396,6 +436,14 @@ Example:
 
 Permanently delete an automation funnel by ID. This removes the funnel, all its sequences, subscribers, metrics, labels, and associated metadata. Also resets funnel indexes.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_delete_funnels`
+
+_Enforced by `FunnelPolicy::delete()`._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -435,6 +483,14 @@ Permanently delete an automation funnel by ID. This removes the funnel, all its 
 **DELETE Delete Funnel Subscribers**
 
 Remove one or more subscribers from a specific automation funnel by their subscriber/contact IDs. Deletes the funnel subscriber records and associated metrics.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_delete_funnels`
+
+_Enforced by `FunnelPolicy::deleteSubscribers()`._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -497,6 +553,14 @@ Remove one or more subscribers from a specific automation funnel by their subscr
 **POST Force Advance Funnel Subscriber**
 
 Force a subscriber to advance to a specific sequence step in the funnel. The subscriber must be in `active` or `waiting` status (not `completed`, `cancelled`, or `pending`). If the subscriber is currently waiting on a benchmark, the benchmark is marked as skipped. The subscriber is then advanced to the target sequence and processing continues.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_write_funnels`
+
+_Enforced by `FunnelPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -580,6 +644,14 @@ Example:
 
 Retrieve a single automation funnel by ID. Optionally includes blocks, block fields, funnel sequences, and composer context smart codes via the `with[]` parameter.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_funnels`
+
+_Enforced by `FunnelPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -603,11 +675,11 @@ Retrieve a single automation funnel by ID. Optionally includes blocks, block fie
   Schema (`application/json`):
 
   - `funnel` (any)
-  - `blocks` (object) — Available funnel action blocks. Only included when `with[]` contains `blocks`.
+  - `blocks` (object) — Available funnel action blocks. Only included when `with[]` contains `blocks`. Returned **only** when `with[]=blocks` is requested.
     - _(object)_
-  - `block_fields` (object) — Field configurations for funnel blocks. Only included when `with[]` contains `block_fields`.
+  - `block_fields` (object) — Field configurations for funnel blocks. Only included when `with[]` contains `block_fields`. Returned **only** when `with[]=blocks` is requested.
     - _(object)_
-  - `funnel_sequences` (array<object>) — Formatted funnel sequence tree. Only included when `with[]` contains `funnel_sequences`.
+  - `funnel_sequences` (array<object>) — Formatted funnel sequence tree. Only included when `with[]` contains `funnel_sequences`. Returned **only** when `with[]=funnel_sequences` is requested.
     - `id` (integer) — Sequence ID.
     - `funnel_id` (integer) — Associated funnel ID.
     - `action_name` (string) — Action identifier.
@@ -629,7 +701,7 @@ Retrieve a single automation funnel by ID. Optionally includes blocks, block fie
     - `created_by` (integer)
     - `created_at` (string) _(format: date-time)_
     - `updated_at` (string) _(format: date-time)_
-  - `composer_context_codes` (array<object>) — Smart codes available in the funnel context. Only included when `with[]` contains `block_fields`.
+  - `composer_context_codes` (array<object>) — Smart codes available in the funnel context. Only included when `with[]` contains `block_fields`. Returned **only** when `with[]=blocks` is requested. Populated by the `fluent_crm_funnel_context_smart_codes` filter.
     - _(object)_
 
   Example:
@@ -670,6 +742,14 @@ Retrieve a single automation funnel by ID. Optionally includes blocks, block fie
 **GET Get All Funnel Activities**
 
 Retrieve a paginated list of all funnel subscriber activities across all funnels. Each activity includes the subscriber, funnel, sequences, and metrics. Supports filtering by search and status.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_funnels`
+
+_Enforced by `FunnelPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -730,6 +810,14 @@ Retrieve a paginated list of all funnel subscriber activities across all funnels
 **GET Get Funnel Email Reports**
 
 Retrieve email performance reports for all email sequences within a specific funnel. Returns each email sequence with its associated campaign data including subject, stats, and tracking status.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_funnels`
+
+_Enforced by `FunnelPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -812,6 +900,14 @@ Retrieve email performance reports for all email sequences within a specific fun
 
 Retrieve statistical reporting data for a specific automation funnel. Returns aggregated stats generated by the Reporting service.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_funnels`
+
+_Enforced by `FunnelPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -847,6 +943,14 @@ Retrieve statistical reporting data for a specific automation funnel. Returns ag
 **GET Get Funnel Subscriber Reporting**
 
 Retrieve detailed reporting for a specific subscriber within a funnel. Returns the subscriber's funnel progress, metrics, and all funnel sequences.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_funnels`
+
+_Enforced by `FunnelPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -945,6 +1049,14 @@ Retrieve detailed reporting for a specific subscriber within a funnel. Returns t
 
 Retrieve a paginated list of subscribers enrolled in a specific automation funnel. Includes subscriber details, sequence progress, and metrics. Supports filtering by search, status, and sequence ID. Optionally includes the funnel object and sequence list.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_funnels`
+
+_Enforced by `FunnelPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -1007,7 +1119,7 @@ Retrieve a paginated list of subscribers enrolled in a specific automation funne
         - `description` (string,null) — Funnel description stored as meta.
         - `labels` (array<FunnelLabel>) — Labels assigned to the funnel.
       - `metrics` (array<FunnelMetric>) — Funnel metrics for this subscriber.
-  - `funnel` (object)
+  - `funnel` (object) — Returned **only** when the matching `with[]` value is requested.
     - `id` (integer) — Unique identifier for the funnel.
     - `title` (string) — Funnel title.
     - `trigger_name` (string) — The trigger event name that starts this funnel.
@@ -1022,7 +1134,7 @@ Retrieve a paginated list of subscribers enrolled in a specific automation funne
     - `subscribers_count` (integer) — Number of subscribers in this funnel.
     - `description` (string,null) — Funnel description stored as meta.
     - `labels` (array<FunnelLabel>) — Labels assigned to the funnel.
-  - `sequences` (array<object>) — List of funnel sequences ordered by position. Only included when `with[]` contains `sequences`.
+  - `sequences` (array<object>) — List of funnel sequences ordered by position. Only included when `with[]` contains `sequences`. Returned **only** when the matching `with[]` value is requested.
     - `id` (integer) — Sequence ID.
     - `funnel_id` (integer) — Associated funnel ID.
     - `action_name` (string) — Action identifier.
@@ -1074,6 +1186,14 @@ Retrieve a paginated list of subscribers enrolled in a specific automation funne
 
 Get the count of subscribers who completed the funnel but stopped before the latest action step. These subscribers can potentially be synced to new steps added to the funnel. Only counts subscribers with `completed` funnel status and `subscribed` contact status.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_funnels`
+
+_Enforced by `FunnelPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -1113,6 +1233,14 @@ Get the count of subscribers who completed the funnel but stopped before the lat
 **GET Get Funnel Templates**
 
 Retrieve available funnel templates from the remote template repository. Returns templates filtered by active plugin dependencies, all templates, and allowed dependency categories.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_funnels`
+
+_Enforced by `FunnelPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -1162,6 +1290,14 @@ Retrieve available funnel templates from the remote template repository. Returns
 
 Retrieve all available funnel trigger definitions. Returns a map of trigger names to their configuration objects including labels, categories, and descriptions.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_funnels`
+
+_Enforced by `FunnelPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Responses**
@@ -1201,6 +1337,14 @@ Retrieve all available funnel trigger definitions. Returns a map of trigger name
 **GET Get Subscriber Automations**
 
 Retrieve a paginated list of all automation funnels a specific subscriber/contact is enrolled in, including the associated funnel details and sequence progress.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_funnels`
+
+_Enforced by `FunnelPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -1294,6 +1438,14 @@ Retrieve a paginated list of all automation funnels a specific subscriber/contac
 
 Import an automation funnel from exported data. Creates a new funnel in `draft` status with all sequences and labels from the provided data.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_write_funnels`
+
+_Enforced by `FunnelPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`, required)
@@ -1376,6 +1528,14 @@ Example:
 
 Retrieve a paginated list of automation funnels. Supports sorting, searching by title, and filtering by label IDs. Optionally includes trigger definitions.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_funnels`
+
+_Enforced by `FunnelPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Query parameters**
@@ -1389,6 +1549,9 @@ Retrieve a paginated list of automation funnels. Supports sorting, searching by 
 | `with[]` | array<string> | no | Include additional related data. Supported values: `triggers`. |
 | `per_page` | integer | no | Number of funnels per page. |
 | `page` | integer | no | Page number for pagination. |
+| `tags[]` | array<integer> | no | Only automations whose contacts carry these tag ids. |
+| `lists[]` | array<integer> | no | Only automations whose contacts are on these list ids. |
+| `statuses[]` | array<string> | no | Filter automations by status, e.g. `published` or `draft`. |
 
 
 **Responses**
@@ -1407,7 +1570,7 @@ Retrieve a paginated list of automation funnels. Supports sorting, searching by 
     - `from` (integer) — Starting record index on this page.
     - `to` (integer) — Ending record index on this page.
     - `data` (array<Funnel>)
-  - `triggers` (object) — Map of trigger definitions keyed by trigger name. Only included when `with[]` contains `triggers`.
+  - `triggers` (object) — Map of trigger definitions keyed by trigger name. Only included when `with[]` contains `triggers`. Returned **only** when `with[]=triggers` is requested.
     - _(object)_
 
   Example:
@@ -1459,6 +1622,14 @@ Retrieve a paginated list of automation funnels. Supports sorting, searching by 
 **POST Remove Bulk Subscribers from Funnels**
 
 Remove multiple subscribers from their associated automation funnels by funnel subscriber IDs. Also deletes the related funnel metrics for each removed subscriber.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_delete_funnels`
+
+_Enforced by `FunnelPolicy::removeBulkSubscribers()`._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -1519,6 +1690,14 @@ Example:
 **POST Save Email Action (Fallback)**
 
 Fallback endpoint to save a funnel email action when the funnel ID is provided in the request body instead of the URL path. Creates or updates a funnel email campaign associated with the funnel.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_write_funnels`
+
+_Enforced by `FunnelPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -1586,6 +1765,14 @@ Example:
 **POST Save Funnel Email Action**
 
 Create or update a funnel email campaign associated with a specific funnel. If a campaign ID is provided and matches the funnel, it updates the existing campaign; otherwise, it creates a new one. Also handles visual builder design data.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_write_funnels`
+
+_Enforced by `FunnelPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -1662,6 +1849,14 @@ Example:
 **POST Save Funnel Sequences**
 
 Save or update the sequences (action steps) for a specific automation funnel. This replaces all existing sequences with the provided data and returns the formatted sequence tree with conditional branches.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_write_funnels`
+
+_Enforced by `FunnelPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -1767,6 +1962,14 @@ Example:
 
 Fallback endpoint to save funnel sequences when the funnel ID is provided in the request body instead of the URL path. Delegates to the same logic as the primary save sequences endpoint.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_write_funnels`
+
+_Enforced by `FunnelPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`, required)
@@ -1817,6 +2020,14 @@ Example:
 **POST Send Test Webhook**
 
 Send a test webhook request to a remote URL using sample subscriber data. Uses the current user's email to find a subscriber, or falls back to any subscribed contact. Supports GET and POST methods with custom headers and body data. Body data can be subscriber data or custom key-value pairs.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_write_funnels`
+
+_Enforced by `FunnelPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -1893,6 +2104,14 @@ Example:
 
 Sync completed subscribers to newly added steps in a funnel. Requires the funnel to be in `published` status and FluentCRM Pro to be active. Re-enrolls completed subscribers that stopped before the latest steps.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_write_funnels`
+
+_Enforced by `FunnelPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -1942,6 +2161,14 @@ Sync completed subscribers to newly added steps in a funnel. Requires the funnel
 **PUT Update Funnel Labels**
 
 Attach or detach labels from a specific automation funnel. Use the `action` parameter to specify whether to attach or detach the provided label IDs.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_write_funnels`
+
+_Enforced by `FunnelPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -2000,6 +2227,14 @@ Example:
 **PUT Update Funnel Property**
 
 Update the status of an automation funnel. Only allows changing between `draft` and `published` statuses. Returns an error if the funnel already has the requested status.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_write_funnels`
+
+_Enforced by `FunnelPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -2069,6 +2304,14 @@ Example:
 
 Update the status of a subscriber within a specific funnel. Cannot change status if the subscriber is already in `completed` state. Allowed target statuses are `active`, `completed`, and `cancelled`.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_write_funnels`
+
+_Enforced by `FunnelPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -2133,6 +2376,14 @@ Example:
 
 Update the title of an automation funnel. Returns an error if the new title is the same as the current title.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_write_funnels`
+
+_Enforced by `FunnelPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -2192,5 +2443,87 @@ Example:
 ```
 
 
+
+---
+
+## PUT `/funnels/{id}/sticky-note`
+
+**PUT Update Automation Sticky Note**
+
+Save or clear the automation's sticky note — the plain-text memo pinned to the top right of the automation canvas.
+
+There is no separate delete endpoint: sending empty or whitespace-only `content` **removes** the note and returns `sticky_note: null`. Content is plain text and is sanitised on the way in; it is stored in funnel meta, not on the funnel row.
+
+The note belongs to the automation as a whole. It is not attached to any step.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_write_funnels`
+
+_Enforced by `FunnelPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
+**Auth:** ApplicationPasswords
+
+**Path parameters**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `id` | integer | yes | Funnel (automation) id. |
+
+
+**Request body** (`application/json`, required)
+
+- `content` (string) — Plain-text note. Send an empty string to remove the note.
+
+Example:
+
+```json
+{
+  "content": "Waiting on legal sign-off before publishing."
+}
+```
+
+
+**Responses**
+
+- **200** — Note saved or removed.
+
+  Schema (`application/json`):
+
+  - `message` (string) — Confirmation message — differs for save versus removal.
+  - `sticky_note` (string,null) — The saved note, or null when it was removed.
+
+  Example:
+
+```json
+{
+  "message": "Sticky note has been saved",
+  "sticky_note": "Waiting on legal sign-off before publishing."
+}
+```
+
+
+- **401** — Not authenticated — missing or invalid credentials.
+
+  Schema (`application/json`):
+
+  - _$ref: Error_
+- **403** — Authenticated but the user lacks the capability this route requires.
+
+  Schema (`application/json`):
+
+  - _$ref: Error_
+- **404** — The requested resource does not exist.
+
+  Schema (`application/json`):
+
+  - _$ref: Error_
+- **422** — Validation failed — the response message names the offending field.
+
+  Schema (`application/json`):
+
+  - _$ref: Error_
 
 ---

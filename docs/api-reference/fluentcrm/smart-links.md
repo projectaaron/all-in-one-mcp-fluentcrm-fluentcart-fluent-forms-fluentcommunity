@@ -12,6 +12,16 @@ _Generated from the FluentCRM OpenAPI specs (developers.fluentcrm.com)._
 
 Activate the Smart Links module by running database migrations to create the `fc_smart_links` table. This must be called before using any other Smart Links endpoints if the module has not been activated yet. Requires FluentCampaign Pro.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contacts`
+
+_Enforced by `SmartLinksPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Responses**
@@ -40,11 +50,25 @@ Activate the Smart Links module by running database migrations to create the `fc
 
 Create a new smart link with a target URL and optional actions (add/remove tags, add/remove lists, auto-login). A unique short slug is generated automatically. Requires FluentCampaign Pro.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contacts`
+
+_Enforced by `SmartLinksPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`, required)
 
 - `link` (SmartLinkInput) **required**
+- `auto_login` (string) _(enum: `yes`, `no`; default: `no`)_ — Log the contact into WordPress when the link is followed. Stored under `actions.auto_login`.
+- `detach_actions` (object)
+  - `tags` (array<integer>) — Tag ids to REMOVE from the contact when the link is followed.
+  - `lists` (array<integer>) — List ids to REMOVE from the contact when the link is followed.
 
 Example:
 
@@ -162,6 +186,16 @@ Example:
 
 Permanently delete a smart link by its ID. The short URL will no longer redirect contacts. Requires FluentCampaign Pro.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contacts`
+
+_Enforced by `SmartLinksPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -196,6 +230,16 @@ Permanently delete a smart link by its ID. The short URL will no longer redirect
 **GET List Smart Links**
 
 Retrieve a paginated list of smart links. Smart links are trackable URLs that can automatically apply actions (add/remove tags, add/remove lists) when a contact clicks them. Supports search and sorting. Requires FluentCampaign Pro.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SmartLinksPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -271,6 +315,16 @@ Retrieve a paginated list of smart links. Smart links are trackable URLs that ca
 
 Update an existing smart link's title, target URL, actions, and notes. Requires FluentCampaign Pro.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contacts`
+
+_Enforced by `SmartLinksPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -293,6 +347,10 @@ Update an existing smart link's title, target URL, actions, and notes. Requires 
     - `lists` (array<integer>) — List IDs to remove.
   - `auto_login` (string) _(enum: `yes`, `no`)_ — Whether to auto-login the WordPress user.
   - `notes` (string,null) — Updated notes.
+- `auto_login` (string) _(enum: `yes`, `no`; default: `no`)_ — Log the contact into WordPress when the link is followed. Stored under `actions.auto_login`.
+- `detach_actions` (object)
+  - `tags` (array<integer>) — Tag ids to REMOVE from the contact when the link is followed.
+  - `lists` (array<integer>) — List ids to REMOVE from the contact when the link is followed.
 
 Example:
 

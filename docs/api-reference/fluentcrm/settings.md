@@ -1,6 +1,6 @@
 # FluentCRM API — Settings
 
-38 endpoints. Base URL: `https://{website}/wp-json/fluent-crm/v2`. See the [FluentCRM overview](../fluentcrm.md) for auth and the full group list.
+41 endpoints. Base URL: `https://{website}/wp-json/fluent-crm/v2`. See the [FluentCRM overview](../fluentcrm.md) for auth and the full group list.
 
 _Generated from the FluentCRM OpenAPI specs (developers.fluentcrm.com)._
 
@@ -11,6 +11,14 @@ _Generated from the FluentCRM OpenAPI specs (developers.fluentcrm.com)._
 **POST Complete Installation Wizard**
 
 Complete the initial FluentCRM setup wizard. Optionally installs Fluent Forms and FluentCart, shares an opt-in email, and enables essential data sharing.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -58,6 +66,16 @@ Example:
 **POST Create REST API Key**
 
 Create a new WordPress application password for REST API access. The target user must have FluentCRM access, and the requesting user must have the `manage_options` capability. The generated password is returned only once in the response.
+
+<!-- fc:access -->
+
+**Required capability:** `manage_options`
+
+The policy also re-asserts `verifyRequest()`, so the caller must additionally hold `fcrm_manage_settings`.
+
+_Enforced by `SettingsPolicy::createRestKey()`._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -129,6 +147,16 @@ Example:
 
 Delete a WordPress application password used for REST API access. Requires the `manage_options` capability. The target user must have FluentCRM access.
 
+<!-- fc:access -->
+
+**Required capability:** `manage_options`
+
+The policy also re-asserts `verifyRequest()`, so the caller must additionally hold `fcrm_manage_settings`.
+
+_Enforced by `SettingsPolicy::deleteRestKey()`._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Query parameters**
@@ -175,6 +203,14 @@ Delete a WordPress application password used for REST API access. Requires the `
 
 Retrieve abandoned cart feature settings, available e-commerce providers, and provider-specific options. Returns settings for configuring abandoned cart tracking and recovery automations.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Responses**
@@ -190,6 +226,8 @@ Retrieve abandoned cart feature settings, available e-commerce providers, and pr
     - `label` (string) — Human-readable provider name.
     - `settings_fields` (array<object>) — Provider-specific settings form fields.
       - _(object)_
+  - `fluent_cartOptions` (object)
+    - _(object)_
 
   Example:
 
@@ -218,6 +256,14 @@ Retrieve abandoned cart feature settings, available e-commerce providers, and pr
 
 Retrieve auto-subscribe settings for user registration, comments, user syncing, and role-based tagging. Optionally includes form field definitions. When WooCommerce is active, also returns checkout form subscribe settings.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Query parameters**
@@ -241,17 +287,23 @@ Retrieve auto-subscribe settings for user registration, comments, user syncing, 
     - _(object)_
   - `role_based_tagging_settings` (object) — Settings for applying tags based on WordPress user roles.
     - _(object)_
-  - `registration_fields` (object) — Form field definitions for registration settings (only when `with[]=fields`).
+  - `registration_fields` (object) — Form field definitions for registration settings (only when `with[]=fields`). Field definitions for the registration-form opt-in.
     - _(object)_
-  - `comment_fields` (object) — Form field definitions for comment settings (only when `with[]=fields`).
+  - `comment_fields` (object) — Form field definitions for comment settings (only when `with[]=fields`). Field definitions for the comment-form opt-in.
     - _(object)_
-  - `user_syncing_fields` (object) — Form field definitions for user syncing settings (only when `with[]=fields`).
+  - `user_syncing_fields` (object) — Form field definitions for user syncing settings (only when `with[]=fields`). Field definitions for WordPress user syncing.
     - _(object)_
-  - `role_based_tagging_settings_fields` (object) — Form field definitions for role-based tagging (only when `with[]=fields`).
+  - `role_based_tagging_settings_fields` (object) — Form field definitions for role-based tagging (only when `with[]=fields`). Field definitions for role-based tagging.
     - _(object)_
-  - `woo_checkout_fields` (object) — WooCommerce checkout subscribe form fields (only when WooCommerce is active).
+  - `woo_checkout_fields` (object) — WooCommerce checkout subscribe form fields (only when WooCommerce is active). Present **only** when WooCommerce is active.
     - _(object)_
-  - `woo_checkout_settings` (object) — WooCommerce checkout subscribe settings (only when WooCommerce is active).
+  - `woo_checkout_settings` (object) — WooCommerce checkout subscribe settings (only when WooCommerce is active). Present **only** when WooCommerce is active.
+    - _(object)_
+  - `date_time_settings` (object) — Date and time formatting options used by the opt-in screens.
+    - _(object)_
+  - `fluent_cart_checkout_settings` (object) — FluentCart checkout opt-in configuration. Present **only** when FluentCart is active.
+    - _(object)_
+  - `fluent_cart_checkout_fields` (object) — Field definitions for the FluentCart checkout opt-in form. Present **only** when FluentCart is active.
     - _(object)_
 
   Example:
@@ -284,6 +336,14 @@ Retrieve auto-subscribe settings for user registration, comments, user syncing, 
 **GET Bounce Handler Configurations**
 
 Retrieve bounce handler webhook URLs and configuration for all supported email service providers (Amazon SES, Mailgun, PostMark, SendGrid, SparkPost, Elastic Email, etc.). Also returns FluentSMTP configuration status if the plugin is installed.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -337,6 +397,14 @@ Retrieve bounce handler webhook URLs and configuration for all supported email s
 
 Retrieve GDPR and data compliance settings. Controls behaviors like anonymizing data on unsubscribe, deleting contacts when WordPress users are deleted, and other privacy-related configurations.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Responses**
@@ -369,6 +437,14 @@ Retrieve GDPR and data compliance settings. Controls behaviors like anonymizing 
 **GET Cron Status**
 
 Retrieve the status of FluentCRM scheduled cron events and server information. Shows the next run time, whether events are overdue, and server memory/execution limits.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -436,6 +512,14 @@ Retrieve the status of FluentCRM scheduled cron events and server information. S
 
 Retrieve the double opt-in email settings. Can return global settings or list-specific settings when a `list_id` is provided. Optionally includes form field definitions when `with[]=settings_fields` is specified.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Query parameters**
@@ -464,8 +548,8 @@ Retrieve the double opt-in email settings. Can return global settings or list-sp
     - `tag_redirects` (array<object>) — Tag-to-URL redirect mappings.
       - `field_key` (array<integer>) — Tag IDs to match.
       - `field_value` (string) — Redirect URL when tags match.
-  - `global_double_optin` (string) _(enum: `yes`, `no`)_ — Whether global double opt-in is enabled for this list (only returned when list_id is provided).
-  - `settings_fields` (object) — Form field definitions for the settings UI (only when `with[]=settings_fields`).
+  - `global_double_optin` (string) _(enum: `yes`, `no`)_ — Whether global double opt-in is enabled for this list (only returned when list_id is provided). Present when a list context is supplied; reflects that list's `global_double_optin` meta, defaulting to `yes`.
+  - `settings_fields` (object) — Form field definitions for the settings UI (only when `with[]=settings_fields`). Field definitions for rendering the settings form.
     - _(object)_
 
   Example:
@@ -500,6 +584,14 @@ Retrieve the double opt-in email settings. Can return global settings or list-sp
 **GET Experiment Campaigns**
 
 Retrieve all campaigns sorted by ID in descending order. Used in the experimental settings UI to allow selecting campaigns for experimental features.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -552,6 +644,14 @@ Retrieve all campaigns sorted by ID in descending order. Used in the experimenta
 
 Retrieve experimental feature flags and settings. These control optional features like the company module, event tracking, activity logging, and other features that may be in beta or require explicit opt-in.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Responses**
@@ -585,6 +685,14 @@ Retrieve experimental feature flags and settings. These control optional feature
 **GET Deep Integration Providers**
 
 Retrieve all available deep integration providers (e.g., WooCommerce, Easy Digital Downloads). Integration providers are registered via the `fluentcrm_deep_integration_providers` filter. Optionally includes field definitions for each provider's settings form.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -621,6 +729,14 @@ Retrieve all available deep integration providers (e.g., WooCommerce, Easy Digit
 **GET Old Log Details**
 
 Get counts of old log records that would be deleted. Previews the number of email history logs, email clicks, email opens, system logs, and activity logs older than the specified number of days.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -687,6 +803,14 @@ Get counts of old log records that would be deleted. Previews the number of emai
 
 Retrieve all REST API application passwords created through FluentCRM. Returns a list of FluentCRM managers (non-admin users with CRM access) and their associated API keys.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Responses**
@@ -750,6 +874,14 @@ Retrieve all REST API application passwords created through FluentCRM. Returns a
 
 Retrieve global FluentCRM settings by providing an array of setting keys. Returns only the requested setting groups (e.g., `email_settings`, `business_settings`).
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Query parameters**
@@ -793,6 +925,14 @@ Retrieve global FluentCRM settings by providing an array of setting keys. Return
 **GET System Logs**
 
 Retrieve a paginated list of system logs ordered by most recent first. Supports searching by title or description.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -865,6 +1005,16 @@ Retrieve a paginated list of system logs ordered by most recent first. Supports 
 
 Install and activate the Fluent Boards plugin from the WordPress plugin repository. If already installed but inactive, it will be activated.
 
+<!-- fc:access -->
+
+**Required capability:** `install_plugins`
+
+The policy also re-asserts `verifyRequest()`, so the caller must additionally hold `fcrm_manage_settings`.
+
+_Enforced by `SettingsPolicy::handleFluentBoardsInstall()`._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Responses**
@@ -894,6 +1044,16 @@ Install and activate the Fluent Boards plugin from the WordPress plugin reposito
 **POST Install Fluent Booking Plugin**
 
 Install and activate the Fluent Booking plugin from the WordPress plugin repository. If already installed but inactive, it will be activated.
+
+<!-- fc:access -->
+
+**Required capability:** `install_plugins`
+
+The policy also re-asserts `verifyRequest()`, so the caller must additionally hold `fcrm_manage_settings`.
+
+_Enforced by `SettingsPolicy::handleFluentBookingInstall()`._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -925,6 +1085,16 @@ Install and activate the Fluent Booking plugin from the WordPress plugin reposit
 
 Install and activate the FluentCart plugin from the WordPress plugin repository. If already installed but inactive, it will be activated.
 
+<!-- fc:access -->
+
+**Required capability:** `install_plugins`
+
+The policy also re-asserts `verifyRequest()`, so the caller must additionally hold `fcrm_manage_settings`.
+
+_Enforced by `SettingsPolicy::handleFluentCartInstall()`._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Responses**
@@ -955,6 +1125,16 @@ Install and activate the FluentCart plugin from the WordPress plugin repository.
 
 Install and activate the Fluent Community plugin from the WordPress plugin repository. If already installed but inactive, it will be activated.
 
+<!-- fc:access -->
+
+**Required capability:** `install_plugins`
+
+The policy also re-asserts `verifyRequest()`, so the caller must additionally hold `fcrm_manage_settings`.
+
+_Enforced by `SettingsPolicy::handleFluentCommunityInstall()`._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Responses**
@@ -984,6 +1164,16 @@ Install and activate the Fluent Community plugin from the WordPress plugin repos
 **POST Install Fluent Forms Plugin**
 
 Install and activate the Fluent Forms plugin from the WordPress plugin repository. If already installed but inactive, it will be activated.
+
+<!-- fc:access -->
+
+**Required capability:** `install_plugins`
+
+The policy also re-asserts `verifyRequest()`, so the caller must additionally hold `fcrm_manage_settings`.
+
+_Enforced by `SettingsPolicy::handleFluentFormInstall()`._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -1021,6 +1211,16 @@ Install and activate the Fluent Forms plugin from the WordPress plugin repositor
 **POST Install FluentSMTP Plugin**
 
 Install and activate the FluentSMTP plugin from the WordPress plugin repository. Requires the `install_plugins` capability. If already installed but inactive, it will be activated.
+
+<!-- fc:access -->
+
+**Required capability:** `install_plugins`
+
+The policy also re-asserts `verifyRequest()`, so the caller must additionally hold `fcrm_manage_settings`.
+
+_Enforced by `SettingsPolicy::handleFluentSmtpInstall()`._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -1069,6 +1269,16 @@ Install and activate the FluentSMTP plugin from the WordPress plugin repository.
 
 Install and activate the Fluent Support plugin from the WordPress plugin repository. Requires the `install_plugins` capability. If already installed but inactive, it will be activated.
 
+<!-- fc:access -->
+
+**Required capability:** `install_plugins`
+
+The policy also re-asserts `verifyRequest()`, so the caller must additionally hold `fcrm_manage_settings`.
+
+_Enforced by `SettingsPolicy::handleFluentSupportInstall()`._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Responses**
@@ -1114,6 +1324,14 @@ Install and activate the Fluent Support plugin from the WordPress plugin reposit
 
 Delete old log records older than the specified number of days. Deletes in chunks of 10,000 records per type. Returns a `has_more` flag indicating whether additional records remain and the operation should be repeated.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Query parameters**
@@ -1157,6 +1375,16 @@ Delete old log records older than the specified number of days. Deletes in chunk
 **POST Reset Database**
 
 Drop and recreate all FluentCRM database tables. This is a destructive operation that deletes all CRM data including contacts, campaigns, funnels, and logs. Requires the `manage_options` capability and the `FLUENTCRM_IS_DEV_FEATURES` constant to be defined as true in wp-config.php.
+
+<!-- fc:access -->
+
+**Required capability:** `manage_options`
+
+The policy also re-asserts `verifyRequest()`, so the caller must additionally hold `fcrm_manage_settings`.
+
+_Enforced by `SettingsPolicy::resetDB()`._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -1213,21 +1441,33 @@ Drop and recreate all FluentCRM database tables. This is a destructive operation
 
 ---
 
-## GET `/setting/system-logs/reset`
+## DELETE `/setting/system-logs/reset`
 
-**GET Reset System Logs**
+**DELETE Reset System Logs**
 
-Delete all system log entries. Despite using the GET method, this is a destructive operation that removes all records from the system logs table.
+Delete **every** system log row. There is no date filter and no confirmation step — the whole table is emptied.
+
+Only system logs are affected. Contact notes and email activity live in the same `fc_subscriber_notes` table but carry a different status discriminator, so they are untouched.
+
+Export first with `GET /setting/system-logs/export` if you need a copy.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
 **Responses**
 
-- **200** — All system logs deleted successfully.
+- **200** — All system logs deleted.
 
   Schema (`application/json`):
 
-  - `message` (string)
+  - `message` (string) — Confirmation message.
 
   Example:
 
@@ -1238,6 +1478,21 @@ Delete all system log entries. Despite using the GET method, this is a destructi
 ```
 
 
+- **401** — Not authenticated — missing or invalid credentials.
+
+  Schema (`application/json`):
+
+  - _$ref: Error_
+- **403** — Authenticated but the user lacks the capability this route requires.
+
+  Schema (`application/json`):
+
+  - _$ref: Error_
+- **422** — Validation failed — the response message names the offending field.
+
+  Schema (`application/json`):
+
+  - _$ref: Error_
 
 ---
 
@@ -1246,6 +1501,14 @@ Delete all system log entries. Despite using the GET method, this is a destructi
 **POST Run Cron Event**
 
 Manually trigger a specific FluentCRM cron event. Useful for debugging or when cron jobs are not running on schedule.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -1303,6 +1566,14 @@ Example:
 
 Save abandoned cart feature settings. When enabling the feature (`enabled: yes`), the abandoned cart database table is automatically created via migration. Also updates the experimental settings to reflect the abandoned cart status.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`, required)
@@ -1359,6 +1630,14 @@ Example:
 
 Save auto-subscribe settings for user registration, comments, and user syncing. Saves role-based tagging settings when FluentCRM Pro is active. Saves WooCommerce checkout settings when both WooCommerce and FluentCRM Pro are active.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`, required)
@@ -1372,6 +1651,10 @@ Save auto-subscribe settings for user registration, comments, and user syncing. 
 - `role_based_tagging_settings` (object) — Settings for applying tags based on WordPress user roles (requires FluentCRM Pro).
   - _(object)_
 - `woo_checkout_settings` (object) — WooCommerce checkout subscribe settings (requires WooCommerce and FluentCRM Pro).
+  - _(object)_
+- `date_time_settings` (object)
+  - _(object)_
+- `fluent_cart_checkout_settings` (object)
   - _(object)_
 
 Example:
@@ -1421,6 +1704,14 @@ Example:
 **PUT Save Double Opt-in Settings**
 
 Save the double opt-in email settings. Can save global settings or list-specific settings when a `list_id` is provided. The email body must contain an activation link (`#activate_link#` or `{{crm.activate_button}}`).
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -1489,6 +1780,14 @@ Example:
 
 Save settings for a deep integration provider or trigger a sync operation. The `action` field determines whether to save settings or trigger a data sync. Provider-specific processing is handled via the `fluentcrm_deep_integration_save_{provider}` or `fluentcrm_deep_integration_sync_{provider}` filters.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`, required)
@@ -1540,12 +1839,22 @@ Example:
 
 Save global FluentCRM settings. Merges the provided settings object with existing settings. When saving `email_settings`, the `email_footer` must contain `##crm.manage_subscription_url##` or `##crm.unsubscribe_url##` for compliance.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`, required)
 
 - `settings` (object) — Key-value pairs of settings to update. Each key represents a settings group (e.g., `email_settings`, `business_settings`).
   - _(object)_
+- `email_footer` (object)
+  - `footer_content` (string) — Markup appended to the bottom of every outgoing email.
 
 Example:
 
@@ -1603,6 +1912,14 @@ Example:
 
 Test endpoint to verify REST API connectivity and authentication via DELETE method. Returns a validation message and echoes back all request parameters.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Query parameters**
@@ -1640,6 +1957,14 @@ Test endpoint to verify REST API connectivity and authentication via DELETE meth
 **GET Test Request Resolver**
 
 Test endpoint to verify REST API connectivity and authentication. Returns a validation message and echoes back all request parameters. Useful for debugging API access.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -1681,6 +2006,14 @@ Test endpoint to verify REST API connectivity and authentication. Returns a vali
 
 Test endpoint to verify REST API connectivity and authentication via POST method. Returns a validation message and echoes back all request parameters.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`)
@@ -1716,6 +2049,14 @@ Test endpoint to verify REST API connectivity and authentication via POST method
 
 Test endpoint to verify REST API connectivity and authentication via PUT method. Returns a validation message and echoes back all request parameters.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`)
@@ -1750,6 +2091,14 @@ Test endpoint to verify REST API connectivity and authentication via PUT method.
 **POST Update Compliance Settings**
 
 Update GDPR and data compliance settings. Only accepts known compliance setting keys. Values must be `yes`, `no`, or `anonymous`; invalid values are cleared to empty strings.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -1801,6 +2150,14 @@ Example:
 
 Update experimental feature flags. Enabling certain features (company_module, event_tracking, activity_log) automatically runs their database migrations to create required tables. Only known setting keys are accepted.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`, required)
@@ -1809,6 +2166,7 @@ Update experimental feature flags. Enabling certain features (company_module, ev
 - `event_tracking` (string) _(enum: `yes`, `no`)_ — Enable subscriber event tracking. Runs event tracking table migration when enabled.
 - `activity_log` (string) _(enum: `yes`, `no`)_ — Enable activity logging. Runs activity log table migration when enabled.
 - `campaign_ids` (array<integer>) — Campaign IDs for experimental features.
+- `frontend_portal` (string) _(enum: `yes`, `no`)_ — Enable the front-end contact portal.
 
 Example:
 
@@ -1838,5 +2196,245 @@ Example:
 ```
 
 
+
+---
+
+## GET `/setting/system-logs/export`
+
+**GET Export System Logs (CSV)**
+
+Stream the system log as a CSV download.
+
+::: warning
+This endpoint does **not** return JSON. It sets CSV download headers, streams rows directly to the output buffer, and calls `exit` — so ordinary REST clients that expect a JSON envelope will not work. Treat it as a file download.
+:::
+
+Rows are streamed in chunks by descending id rather than buffered in memory, so the export works on log tables too large to load at once, and it stops early if the client disconnects.
+
+The file opens with a UTF-8 BOM for spreadsheet compatibility, and every cell is escaped so a value beginning with `=`, `+`, `-`, or `@` cannot execute as a formula.
+
+Columns are `ID`, `Date & Time`, `Title`, `Description`, with HTML stripped from the description. The filename encodes the range, e.g. `fluent-crm-system-logs-last-30-days-2026-08-04-113000.csv`.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
+**Auth:** ApplicationPasswords
+
+**Query parameters**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `range` | string | no | `all` for everything, or a number of days to look back. Unrecognised values fall back to `all`. |
+| `search` | string | no | Case-insensitive substring match against the log title or description. |
+
+
+**Responses**
+
+- **200** — A CSV file. Sent with download headers, not a JSON body.
+
+  Example:
+
+```json
+"ID,Date & Time,Title,Description\n282,2025-04-22 19:51:02,Running Scheduler -> cron,Handler::handle\n"
+```
+
+
+- **401** — Not authenticated — missing or invalid credentials.
+
+  Schema (`application/json`):
+
+  - _$ref: Error_
+- **403** — Authenticated but the user lacks the capability this route requires.
+
+  Schema (`application/json`):
+
+  - _$ref: Error_
+
+---
+
+## GET `/setting/db-index-health`
+
+**GET Database Index Health**
+
+Report whether each index FluentCRM considers critical is present on the database.
+
+Missing indexes do not break correctness, but they turn the sending queue and segmentation queries into table scans, so this is the first thing to check when a large site reports slow sending.
+
+By default the answer comes from a cached snapshot. Pass `fresh=1` to run `SHOW INDEX` against the live database instead — slower, but authoritative. The cache is also bypassed automatically when it predates a newly introduced critical index.
+
+Anything reporting `status: "no"` can be fixed with `POST /setting/db-index-health/repair`.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
+**Auth:** ApplicationPasswords
+
+**Query parameters**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `fresh` | string | no | Send `1` to bypass the cached snapshot and query the live database. |
+
+
+**Responses**
+
+- **200** — Index health for every critical index.
+
+  Schema (`application/json`):
+
+  - `indexes` (array<DbIndexHealth>)
+
+  Example:
+
+```json
+{
+  "indexes": [
+    {
+      "type": "unique",
+      "table": "fc_subscriber_pivot",
+      "title": "Subscriber Tags / Lists Relationship Uniqueness",
+      "columns": [
+        {
+          "name": "subscriber_id"
+        },
+        {
+          "name": "object_id"
+        },
+        {
+          "name": "object_type",
+          "sub_part": 50
+        }
+      ],
+      "cleanup": "subscriber_pivot",
+      "name": "subscriber_object_type_unique",
+      "status": "yes"
+    },
+    {
+      "type": "index",
+      "table": "fc_campaign_emails",
+      "title": "Campaign Emails Sending Index",
+      "columns": [
+        {
+          "name": "campaign_id"
+        },
+        {
+          "name": "status"
+        }
+      ],
+      "name": "fc_cam_cid_status",
+      "status": "yes"
+    }
+  ]
+}
+```
+
+
+- **401** — Not authenticated — missing or invalid credentials.
+
+  Schema (`application/json`):
+
+  - _$ref: Error_
+- **403** — Authenticated but the user lacks the capability this route requires.
+
+  Schema (`application/json`):
+
+  - _$ref: Error_
+
+---
+
+## POST `/setting/db-index-health/repair`
+
+**POST Repair Database Indexes**
+
+Add any missing critical indexes.
+
+The work runs **inline**, not in the background, so on a large site the request can take a while. The `ALTER`s are idempotent and prefer a non-blocking online build.
+
+Three of the outcomes are 200 responses and only one of them means work was done — check the flags before reporting success:
+
+| Condition | Response |
+|---|---|
+| Nothing was broken | 200, “All database indexes are healthy.” No `repaired` key. |
+| Another repair is in flight | 200 with `pending: true`. Deliberately **not** an error — a second tab is already doing the work. |
+| Repair succeeded | 200 with `repaired` listing the index names that were added. |
+| Repair failed | 422 with `failed`, usually insufficient database privileges. |
+
+A five-minute transient lock prevents concurrent admin tabs from stacking overlapping `ALTER` statements on the same tables.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
+**Auth:** ApplicationPasswords
+
+**Responses**
+
+- **200** — Repair finished, was unnecessary, or is already running.
+
+  Schema (`application/json`):
+
+  - `message` (string) — Outcome description.
+  - `pending` (boolean) — Present and true only when another repair already holds the lock.
+  - `repaired` (array<string>) — Index names that were added. Present only when a repair actually ran.
+  - `indexes` (array<DbIndexHealth>) — Index health after the attempt.
+
+  Example:
+
+```json
+{
+  "message": "Database indexes repaired successfully.",
+  "repaired": [
+    "fc_cam_cid_status"
+  ],
+  "indexes": [
+    {
+      "type": "index",
+      "table": "fc_campaign_emails",
+      "title": "Campaign Emails Sending Index",
+      "columns": [
+        {
+          "name": "campaign_id"
+        },
+        {
+          "name": "status"
+        }
+      ],
+      "name": "fc_cam_cid_status",
+      "status": "yes"
+    }
+  ]
+}
+```
+
+
+- **401** — Not authenticated — missing or invalid credentials.
+
+  Schema (`application/json`):
+
+  - _$ref: Error_
+- **403** — Authenticated but the user lacks the capability this route requires.
+
+  Schema (`application/json`):
+
+  - _$ref: Error_
+- **422** — One or more indexes could not be created. The response carries `failed` and the current `indexes` health.
+
+  Schema (`application/json`):
+
+  - _$ref: Error_
 
 ---

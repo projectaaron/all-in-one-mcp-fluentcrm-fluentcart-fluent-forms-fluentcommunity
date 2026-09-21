@@ -1,7 +1,7 @@
 # Tool map
 
 The fast map of this server: **every tool, one line each, grouped by area** —
-1199 tools in 68 areas. **Generated** by
+1298 tools in 73 areas. **Generated** by
 `scripts/gen-tool-catalog.mjs` from the live registry; regenerate after any
 tool-surface change. Sessions get the same map at runtime from the
 `tool_map` tool (no args = area overview, `{"area": …}` /
@@ -17,49 +17,54 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 
 | Area | Tools | What it covers |
 |------|-------|----------------|
-| `crm_contacts` | 31 | Look up, create, update, delete, and manage CRM contacts (subscribers), including their notes, tags, lists, and email history. |
+| `crm_contacts` | 32 | Look up, create, update, delete, and manage CRM contacts (subscribers), including their notes, tags, lists, and email history. |
 | `crm_lists` | 7 | View, create, update, or delete the contact lists used to organize CRM subscribers. |
 | `crm_tags` | 7 | View, create, update, or delete the tags used to label CRM contacts. |
 | `crm_segments` | 9 | View, create, update, or delete dynamic contact segments and see which contacts match them. |
 | `crm_custom_fields` | 3 | View or update the custom contact fields configured in the CRM. |
 | `crm_labels` | 4 | View, create, update, or delete the labels used to organize items in the CRM. |
-| `crm_companies` | 19 | Look up, create, update, delete, and manage CRM companies, their notes, and their associated contacts. |
+| `crm_companies` | 21 | Look up, create, update, delete, and manage CRM companies, their notes, and their associated contacts. |
 | `crm_campaigns` | 39 | Create, schedule, send, pause, duplicate, delete, and analyze one-off email campaigns, including resending failed or unopened emails. |
 | `crm_recurring_campaigns` | 14 | Manage recurring (automatically repeating) email campaigns from creation through scheduling and deletion (FluentCRM Pro). |
-| `crm_sequences` | 21 | Manage email sequence (drip) automations, their emails, and their subscribers (FluentCRM Pro). |
-| `crm_automations` | 31 | Manage marketing automation funnels and their subscribers, from creation and editing to import, export, and deletion. |
-| `crm_templates` | 11 | Manage reusable email templates, including creating, duplicating, updating, and deleting them. |
+| `crm_sequences` | 22 | Manage email sequence (drip) automations, their emails, and their subscribers (FluentCRM Pro). |
+| `crm_automations` | 32 | Manage marketing automation funnels and their subscribers, from creation and editing to import, export, and deletion. |
+| `crm_templates` | 12 | Manage reusable email templates, including creating, duplicating, updating, and deleting them. |
 | `crm_forms` | 5 | View and manage the opt-in forms connected to the CRM. |
-| `crm_webhooks` | 5 | Manage incoming webhooks that create or update CRM contacts from external services. |
+| `crm_webhooks` | 4 | Manage incoming webhooks that create or update CRM contacts from external services. |
 | `crm_smart_links` | 5 | Manage Smart Links that tag and redirect contacts when clicked (FluentCRM Pro). |
-| `crm_sms` | 24 | Manage SMS campaigns, templates, contacts' phone data, and SMS settings (FluentCRM Pro). |
-| `crm_reports` | 16 | Read-only CRM analytics: dashboard stats, subscriber growth, email and revenue reports, commerce reports, and global search. |
+| `crm_sms` | 25 | Manage SMS campaigns, templates, contacts' phone data, and SMS settings (FluentCRM Pro). |
+| `crm_reports` | 27 | Read-only CRM analytics: dashboard stats, subscriber growth, email and revenue reports, commerce reports, and global search. |
 | `crm_abandoned_carts` | 3 | View abandoned-cart records and their report summary, and delete records in bulk (FluentCRM Pro commerce feature). |
-| `crm_settings` | 39 | Read or update FluentCRM settings such as double opt-in, business info, email preferences, compliance, and experimental features. |
+| `crm_settings` | 46 | Read or update FluentCRM settings such as double opt-in, business info, email preferences, compliance, and experimental features. |
 | `crm_settings_pro` | 11 | Read or update FluentCRM Pro settings such as the plugin license and Pro-only features. |
-| `crm_utilities` | 18 | Administrative utilities: import contacts from CSV or WordPress users, migrate from other tools, list WordPress users and roles, browse in-app docs, and receive bounce webhooks. |
-| `cart_orders` | 22 | Look up, create, update, refund, and manage store orders, including their statuses, transactions, addresses, and disputes. |
-| `cart_products` | 28 | Look up, create, update, delete, and bulk-edit store products, including search, duplication, taxonomy terms, and shipping/tax classes. |
+| `crm_utilities` | 20 | Administrative utilities: import contacts from CSV or WordPress users, export contacts, migrate from other tools, list WordPress users and roles, browse in-app docs, and receive bounce webhooks. |
+| `crm_ai` | 7 | FluentCRM's AI assistant: generate or rewrite text and email bodies, summarize a contact, list provider models, and manage the AI provider settings and connection test. |
+| `crm_email_patterns` | 11 | Reusable email content patterns and their categories: list, create (incl. from wp_block payloads), update, delete, and bulk actions. |
+| `cart_orders` | 32 | Look up, create, update, refund, and manage store orders, including their statuses, transactions, addresses, and disputes. |
+| `cart_products` | 32 | Look up, create, update, delete, and bulk-edit store products, including search, duplication, taxonomy terms, and shipping/tax classes. |
 | `cart_product_variants` | 22 | Manage product variations: pricing, inventory and stock, bundles, upgrade paths, media, and variant search. |
 | `cart_product_assets` | 9 | Manage products' downloadable files and per-product integration feeds. |
 | `cart_customers` | 18 | Look up, create, update, and manage store customers, their addresses, purchase stats, and linked WordPress users. |
 | `cart_coupons` | 12 | Manage discount coupons: create, update, delete, apply to or remove from orders, and check product eligibility. |
-| `cart_subscriptions` | 17 | View and manage recurring subscriptions: cancel, re-sync from the payment gateway, switch payment methods, and handle early payments. |
+| `cart_subscriptions` | 19 | View and manage recurring subscriptions: cancel, re-sync from the payment gateway, switch payment methods, and handle early payments. |
 | `cart_tax` | 27 | Manage tax classes, tax rates, per-country configuration, EU VAT/OSS overrides, and order tax records. |
-| `cart_shipping` | 15 | Manage shipping zones, shipping methods, and shipping classes. |
-| `cart_settings` | 30 | Read or update store settings: general store options, modules and addons, permissions, payment methods, storage drivers, and checkout fields. |
-| `cart_email_notifications` | 11 | Manage the store's transactional email templates, global email settings, reminders, and previews. |
+| `cart_shipping` | 19 | Manage shipping zones, shipping methods, and shipping classes. |
+| `cart_settings` | 39 | Read or update store settings: general store options, modules and addons, permissions, payment methods, storage drivers, and checkout fields. |
+| `cart_email_notifications` | 15 | Manage the store's transactional email templates, global email settings, reminders, and previews. |
 | `cart_reports` | 41 | Read-only store analytics: revenue, orders, products, customers, subscriptions, refunds, licenses, and dashboard summaries. |
-| `cart_integrations` | 17 | Manage global integration feeds and provider settings, and install or activate integration addons. |
+| `cart_integrations` | 12 | Manage global integration feeds and provider settings, and install or activate integration addons. |
 | `cart_files` | 5 | List, upload, and delete files in the store's configured storage drivers. |
-| `cart_labels_attributes` | 13 | Manage store labels and product attribute groups and their terms. |
-| `cart_utilities` | 22 | Store utilities: dashboard stats and onboarding, activity log, order notes, print templates, country data, filter options, and retention snapshots. |
+| `cart_labels_attributes` | 15 | Manage store labels and product attribute groups and their terms. |
+| `cart_utilities` | 28 | Store utilities: dashboard stats and onboarding, activity log, order notes, print templates, country data, filter options, and retention snapshots; saved list views (filters) for the admin UI. |
 | `cart_storefront` | 3 | Read-only public storefront data: published products, rendered product listings, and product search — no authentication required. |
 | `cart_checkout` | 7 | Checkout-session operations: place an order, fetch payment and shipping info for the cart, and log a customer in. |
-| `cart_customer_portal` | 21 | Customer-portal operations on the logged-in customer's own profile, orders, addresses, subscriptions, and downloads. |
-| `cart_licensing` | 27 | Manage software licenses: view, extend, regenerate keys, change limits, activate or deactivate sites, plus the public license verification endpoints (FluentCart Pro). |
-| `cart_roles` | 9 | Manage FluentCart shop roles, permissions, and user assignments (FluentCart Pro). |
+| `cart_customer_portal` | 18 | Customer-portal operations on the logged-in customer's own profile, orders, addresses, subscriptions, and downloads. |
+| `cart_licensing` | 26 | Manage software licenses: view, extend, regenerate keys, change limits, activate or deactivate sites, plus the public license verification endpoints (FluentCart Pro). |
+| `cart_roles` | 7 | Manage FluentCart shop roles, permissions, and user assignments (FluentCart Pro). |
 | `cart_order_bumps` | 5 | Manage checkout order bumps: list, create, update, and delete (FluentCart Pro). |
+| `cart_inventory` | 6 | Stock across all products and variants: list and stats, single and bulk stock updates, adjustment history, and inventory export. |
+| `cart_data_export` | 8 | Batch data exports of customers, orders, subscriptions and licenses, plus the export schema (available columns) for each. |
+| `cart_pdf_templates` | 11 | PDF receipt/invoice templates: list, get, save and delete templates, factory defaults, PDF engine status, preview download, and the seller details printed on documents. |
 | `social_reviews` | 11 | Manage the reviews collected from connected platforms: list, edit, duplicate, categorize, change status, or mark as spam. |
 | `social_testimonials` | 11 | Manage hand-written testimonials, their statuses, spam flags, and categories. |
 | `social_templates` | 14 | Manage the review and social-feed widget templates rendered on the site via shortcodes and blocks. |
@@ -121,6 +126,7 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `crm_contacts_update(id)` — Update Contact
 - `crm_contacts_update_note(id, note_id)` — Update Contact Note
 - `crm_contacts_update_property` — Update Contacts Property
+- `crm_contacts_bulk_delete_notes(id)` ⚠ — Bulk Delete Contact Notes
 
 ### crm_lists — View, create, update, or delete the contact lists used to organize CRM subscribers.
 
@@ -188,6 +194,8 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `crm_companies_update_property` — Update Companies Property
 - `crm_companies_update(id)` — Update Company
 - `crm_companies_update_note(id, note_id)` — Update Company Note
+- `crm_companies_bulk_delete_notes(id)` ⚠ — Bulk Delete Company Notes
+- `crm_companies_update_custom_field_group_name` — Rename Company Custom Field Group
 
 ### crm_campaigns — Create, schedule, send, pause, duplicate, delete, and analyze one-off email campaigns, including resending failed or unopened emails.
 
@@ -268,6 +276,7 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `crm_sequences_remove_subscribers(id)` ⚠ — Remove Sequence Subscribers
 - `crm_sequences_update(id)` — Update Sequence
 - `crm_sequences_update_email(id, email_id)` — Update Sequence Email
+- `crm_sequences_update_email_delay(id, email_id)` — Update Sequence Email Delay
 - `crm_sequences_preview_schedule(id)` — Computed send timetable for a hypothetical enrollment (connector-side)
 - `crm_sequences_validate(id)` — Timing sanity checks: duplicate delays, broken sending_time, timings drift
 - `crm_sequences_bulk_update_emails(id)` — Merge-mode updates for many sequence emails in one call, with per-row verification
@@ -305,6 +314,7 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `crm_automations_update_funnel_property(id)` — Update Funnel Property
 - `crm_automations_update_funnel_subscription_status(id, subscriber_id)` — Update Funnel Subscription Status
 - `crm_automations_update_funnel_title(id)` — Update Funnel Title
+- `crm_automations_update_funnel_sticky_note(id)` — Update Automation Sticky Note
 
 ### crm_templates — Manage reusable email templates, including creating, duplicating, updating, and deleting them.
 
@@ -312,13 +322,14 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `crm_templates_create` — Create Template
 - `crm_templates_delete(id)` ⚠ — Delete Template
 - `crm_templates_duplicate(id)` — Duplicate Template
-- `crm_templates_get_built_in` — Get Built-In Templates
+- `crm_templates_get_built_in_templates` — Get Built-In Templates
 - `crm_templates_get_smart_codes` — Get Smart Codes
 - `crm_templates_get(id)` — Get Template
 - `crm_templates_list_all` — List All Templates (paginated)
 - `crm_templates_list` — List Templates (paginated)
 - `crm_templates_set_global_style` — Set Global Style
 - `crm_templates_update(id)` — Update Template
+- `crm_templates_get_built_in_template` — Fetch A Built-In Template
 
 ### crm_forms — View and manage the opt-in forms connected to the CRM.
 
@@ -332,7 +343,6 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 
 - `crm_webhooks_create` — Create Webhook
 - `crm_webhooks_delete(id)` ⚠ — Delete Webhook
-- `crm_webhooks_list_sms` — List SMS Webhooks (paginated)
 - `crm_webhooks_list` — List Webhooks (paginated)
 - `crm_webhooks_update(id)` — Update Webhook
 
@@ -370,6 +380,7 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `crm_sms_unschedule_campaign(id)` — Unschedule SMS Campaign
 - `crm_sms_update_campaign(id)` — Update SMS Campaign
 - `crm_sms_update_campaign_labels(id)` — Update SMS Campaign Labels
+- `crm_sms_unschedule_campaign_legacy(id)` — Unschedule SMS Campaign (Legacy Path)
 
 ### crm_reports — Read-only CRM analytics: dashboard stats, subscriber growth, email and revenue reports, commerce reports, and global search.
 
@@ -388,6 +399,17 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `crm_reports_get_options` — Report Options
 - `crm_reports_get_taxonomy_terms` — Taxonomy Terms
 - `crm_reports_ping` — Ping Report
+- `crm_reports_get_automation` — Automation Reports
+- `crm_reports_get_automation_step(id)` — Automation Step Report
+- `crm_reports_get_campaign_options` — Campaign Options
+- `crm_reports_get_campaigns_list` — Campaigns List Report
+- `crm_reports_get_contacts_by_country` — Contacts By Country
+- `crm_reports_get_contacts_by_lists` — Contacts By Lists
+- `crm_reports_get_contacts_by_status` — Contacts By Status
+- `crm_reports_get_contacts_by_tags` — Contacts By Tags
+- `crm_reports_get_email_unsub_stats` — Email Unsubscribe Stats
+- `crm_reports_get_recent_tags` — Recently Created Tags
+- `crm_reports_get_top_campaigns` — Top Campaigns
 - `crm_reports_global_search` — Global Search
 
 ### crm_abandoned_carts — View abandoned-cart records and their report summary, and delete records in bulk (FluentCRM Pro commerce feature).
@@ -400,7 +422,7 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 
 - `crm_settings_delete_report_emails` ⚠ — Report Emails
 - `crm_settings_complete_installation` — Complete Installation Wizard
-- `crm_settings_create_rest_key` — Create REST API Key
+- `crm_settings_create_rest_key` ⚠ 🔒 — Create REST API Key
 - `crm_settings_delete_rest_key` ⚠ 🔒 — REST API Key
 - `crm_settings_get_abandon_cart` — Abandon Cart Settings
 - `crm_settings_get_auto_subscribe` — Auto Subscribe Settings
@@ -437,10 +459,17 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `crm_settings_test_put_request` — Test Request Resolver
 - `crm_settings_update_compliance` — Update Compliance Settings
 - `crm_settings_update_experimental` — Update Experimental Settings
+- `crm_settings_export_system_logs` — Export System Logs (CSV)
+- `crm_settings_get_db_index_health` — Database Index Health
+- `crm_settings_repair_db_indexes` ⚠ — Repair Database Indexes
+- `crm_settings_get_mcp_config_snippet` — MCP Client Config Snippet
+- `crm_settings_get_mcp_status` — MCP Status
+- `crm_settings_install_mcp_adapter` ⚠ — Install MCP Adapter
+- `crm_settings_toggle_mcp` ⚠ — Toggle MCP Tools
 
 ### crm_settings_pro — Read or update FluentCRM Pro settings such as the plugin license and Pro-only features.
 
-- `crm_settings_pro_add_manager` — Add Manager
+- `crm_settings_pro_add_manager` ⚠ — Add Manager
 - `crm_settings_pro_deactivate_license` ⚠ — Deactivate License
 - `crm_settings_pro_delete_manager(id)` ⚠ — Remove Manager
 - `crm_settings_pro_disable_sms` — Disable SMS
@@ -450,9 +479,9 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `crm_settings_pro_import_funnel` — Import Funnel
 - `crm_settings_pro_save_license` — Save License
 - `crm_settings_pro_save_sms` — Save SMS Settings
-- `crm_settings_pro_update_manager(id)` — Update Manager
+- `crm_settings_pro_update_manager(id)` ⚠ — Update Manager
 
-### crm_utilities — Administrative utilities: import contacts from CSV or WordPress users, migrate from other tools, list WordPress users and roles, browse in-app docs, and receive bounce webhooks. The two handle_bounce actions are webhook receivers meant to be called by email services, not by API clients.
+### crm_utilities — Administrative utilities: import contacts from CSV or WordPress users, export contacts, migrate from other tools, list WordPress users and roles, browse in-app docs, and receive bounce webhooks. The two handle_bounce actions are webhook receivers meant to be called by email services, not by API clients.
 
 - `crm_utilities_get_import_driver(driver)` — Import Driver Details
 - `crm_utilities_get_import_drivers` — Import Drivers
@@ -470,8 +499,34 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `crm_utilities_get_doc(doc_id)` — Get Doc
 - `crm_utilities_get_doc_addons` — Get Addons
 - `crm_utilities_list_docs` — List Docs (paginated)
-- `crm_utilities_handle_bounce(service_name, security_code)` — Handle Bounce
-- `crm_utilities_handle_bounce_with_handle(service_name, security_code)` — Handle Bounce (with /handle/ path)
+- `crm_utilities_handle_bounce(service_name, security_code)` — Handle Bounce Webhook
+- `crm_utilities_handle_bounce_with_handle(service_name, security_code)` — Handle Bounce Webhook
+- `crm_utilities_export_contacts` — Fetch Contact Export Page
+- `crm_utilities_export_contacts_get` — Fetch Contact Export Page
+
+### crm_ai — FluentCRM's AI assistant: generate or rewrite text and email bodies, summarize a contact, list provider models, and manage the AI provider settings and connection test. Generation calls are billed by your configured AI provider. save_settings stores the provider API key on the site.
+
+- `crm_ai_generate_content` — Rewrite Or Generate Text
+- `crm_ai_generate_email_body` — Generate Email Body
+- `crm_ai_get_contact_summary` — Get Or Generate Contact Summary
+- `crm_ai_get_models` — List Models For Provider
+- `crm_ai_get_settings` — AI Settings
+- `crm_ai_save_settings` — Save AI Settings
+- `crm_ai_test_connection` — Test AI Connection
+
+### crm_email_patterns — Reusable email content patterns and their categories: list, create (incl. from wp_block payloads), update, delete, and bulk actions.
+
+- `crm_email_patterns_bulk_action` ⚠ — Bulk Delete Email Patterns
+- `crm_email_patterns_create` — Create Email Pattern
+- `crm_email_patterns_create_category` — Create Pattern Category
+- `crm_email_patterns_create_wp_format` — Create Pattern From wp_block Payload
+- `crm_email_patterns_delete(id)` ⚠ — Delete Email Pattern
+- `crm_email_patterns_delete_category(id)` ⚠ — Delete Pattern Category
+- `crm_email_patterns_get(id)` — Single Email Pattern
+- `crm_email_patterns_list_categories` — List Pattern Categories (paginated)
+- `crm_email_patterns_list` — List Email Patterns (paginated)
+- `crm_email_patterns_list_wp_format` — List Patterns In wp_block Format (paginated)
+- `crm_email_patterns_update(id)` — Update Email Pattern
 
 ## FluentCart (`cart_*`)
 
@@ -499,6 +554,16 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `cart_orders_update_address_id(order_id)` — Update Order Address ID
 - `cart_orders_update_statuses(order)` — Update Statuses
 - `cart_orders_update_transaction_status(order, transaction)` — Update Transaction Status
+- `cart_orders_calculate_tax` — Calculate Order Tax
+- `cart_orders_charge_now(order, subscription)` ⚠ — Charge Subscription Now
+- `cart_orders_create_renewal_now(order, subscription)` ⚠ — Create Renewal Now
+- `cart_orders_get_renewal(id)` — Get Renewal Invoice Details
+- `cart_orders_list_renewals` — List Renewal Invoices (paginated)
+- `cart_orders_resend_renewal_invoice(order)` — Resend Renewal Invoice Email
+- `cart_orders_skip_renewal(order, subscription)` ⚠ — Skip Next Renewal Period
+- `cart_orders_sync_pending_transaction(order, transaction)` — Sync Pending Transaction
+- `cart_orders_update_subscription_details(order, subscription)` — Update Subscription
+- `cart_orders_void_renewal(order)` ⚠ — Void Renewal Invoice
 
 ### cart_products — Look up, create, update, delete, and bulk-edit store products, including search, duplication, taxonomy terms, and shipping/tax classes. cart_products_update: despite its /pricing API path this is the FULL product update and the only action that writes the product gallery/featured image — gallery is [{id, url, title}] where id is a WP media attachment ID, gallery[0] becomes the featured image, and an empty gallery [] deletes the thumbnail. post_title and post_status are set unconditionally, so always send them (omitting them blanks the stored values). Omit variants entirely unless you mean to rewrite them: item_price there is multiplied by 100 on write, so round-tripping read values inflates every price 100×.
 
@@ -530,6 +595,10 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `cart_products_update(postId)` — Update Product (post fields, detail, variants, gallery/featured image)
 - `cart_products_update_shipping_class(postId)` — Update Shipping Class
 - `cart_products_update_tax_class(postId)` — Update Tax Class
+- `cart_products_bulk_update_variants` ⚠ — Bulk Update Product Variants
+- `cart_products_group_bulk_update_variants` ⚠ — Group Bulk Update Variants
+- `cart_products_toggle_tax_exemption(postId)` — Toggle Product Tax Exempt
+- `cart_products_update_variant_tax_exemption(variantId)` — Update Variant Tax Settings
 
 ### cart_product_variants — Manage product variations: pricing, inventory and stock, bundles, upgrade paths, media, and variant search. PRICE UNITS: despite the API docs' blanket 'cents' claim, variation create/update prices (item_price, compare_price) are plain DOLLARS — sending cents stores a 100× price; read back after writing to confirm. Stock updates expect a variants wrapper with total_stock/available (422 errors name the missing fields).
 
@@ -570,7 +639,7 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 
 ### cart_customers — Look up, create, update, and manage store customers, their addresses, purchase stats, and linked WordPress users.
 
-- `cart_customers_attach_user(customerId)` — Attach WordPress User
+- `cart_customers_attach_user(customerId)` ⚠ — Attach WordPress User
 - `cart_customers_bulk_actions` ⚠ — Bulk Actions
 - `cart_customers_create_address(customerId)` — Create Address
 - `cart_customers_create` — Create Customer
@@ -623,6 +692,8 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `cart_subscriptions_resume(order, subscription)` — Resume Subscription
 - `cart_subscriptions_switch_payment_method(subscription_uuid)` — Switch Payment Method
 - `cart_subscriptions_update_payment_method(subscription_uuid)` — Update Payment Method
+- `cart_subscriptions_update_vendor_ids(order, subscription)` — Update Vendor IDs
+- `cart_subscriptions_verify_vendor_ids(order, subscription)` — Verify Vendor IDs
 
 ### cart_tax — Manage tax classes, tax rates, per-country configuration, EU VAT/OSS overrides, and order tax records.
 
@@ -671,11 +742,15 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `cart_shipping_update_method` — Update Shipping Method
 - `cart_shipping_update_zone(id)` — Update Shipping Zone
 - `cart_shipping_update_zone_order` — Update Zone Order
+- `cart_shipping_get_class_profile(id)` — Get Shipping Class Profile
+- `cart_shipping_get_packages` — Get Shipping Packages
+- `cart_shipping_get_zone_countries` — Get Countries By Continent
+- `cart_shipping_save_packages` — Save Shipping Packages
 
 ### cart_settings — Read or update store settings: general store options, modules and addons, permissions, payment methods, storage drivers, and checkout fields.
 
-- `cart_settings_activate_payment_addon` — Activate Payment Addon
-- `cart_settings_activate_plugin_addon` — Activate Plugin Addon
+- `cart_settings_activate_payment_addon` ⚠ — Activate Payment Addon
+- `cart_settings_activate_plugin_addon` ⚠ — Activate Plugin Addon
 - `cart_settings_check_paypal_webhook` — Check PayPal Webhook
 - `cart_settings_disconnect_payment_method` ⚠ 🔒 — Disconnect Payment Method
 - `cart_settings_exchange_paypal_seller_auth_token` — Exchange PayPal Seller Auth Token
@@ -689,8 +764,8 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `cart_settings_get_plugin_addons` — Get Plugin Addons
 - `cart_settings_get_storage_driver(driver)` — Get Storage Driver Settings
 - `cart_settings_get_store` — Get Store Settings
-- `cart_settings_install_payment_addon` — Install Payment Addon
-- `cart_settings_install_plugin_addon` — Install Plugin Addon
+- `cart_settings_install_payment_addon` ⚠ 🔒 — Install Payment Addon
+- `cart_settings_install_plugin_addon` ⚠ 🔒 — Install Plugin Addon
 - `cart_settings_list_all_payment_methods` — List All Payment Methods (paginated)
 - `cart_settings_list_all_storage_drivers` — List All Storage Drivers (paginated)
 - `cart_settings_reorder_payment_methods` — Reorder Payment Methods
@@ -699,11 +774,20 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `cart_settings_save_module` — Save Module Settings
 - `cart_settings_save_payment_method_design` — Save Payment Method Design
 - `cart_settings_save_payment_method` — Save Payment Method Settings
-- `cart_settings_save_permissions` — Save Permissions
+- `cart_settings_save_permissions` ⚠ — Save Permissions
 - `cart_settings_save_storage_driver` — Save Storage Driver Settings
 - `cart_settings_save_store` — Save Store Settings
 - `cart_settings_setup_paypal_webhook` — Setup PayPal Webhook
 - `cart_settings_verify_storage_driver_connection` — Verify Storage Driver Connection
+- `cart_settings_change_storage_driver_status` — Change Storage Driver Status
+- `cart_settings_create_storage_bucket` — Create Storage Bucket
+- `cart_settings_get_mcp_config_snippets` — Get MCP Config Snippets
+- `cart_settings_get_mcp_status` — Get MCP Status
+- `cart_settings_install_mcp_adapter` ⚠ — Install MCP Adapter
+- `cart_settings_list_storage_buckets` — List Storage Buckets
+- `cart_settings_reset_storage_driver` ⚠ — Reset Storage Driver Settings
+- `cart_settings_toggle_mcp` ⚠ — Toggle MCP
+- `cart_settings_verify_turnstile_keys` — Verify Turnstile Keys
 
 ### cart_email_notifications — Manage the store's transactional email templates, global email settings, reminders, and previews.
 
@@ -718,6 +802,10 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `cart_email_notifications_save_reminders` — Save Scheduling Settings
 - `cart_email_notifications_save_settings` — Save Global Email Settings
 - `cart_email_notifications_update(notification)` — Update Notification
+- `cart_email_notifications_get_digest_settings` — Get Store Digest Settings
+- `cart_email_notifications_save_digest_settings` — Save Store Digest Settings
+- `cart_email_notifications_send_digest_test` — Send Test Digest Email
+- `cart_email_notifications_send_manual_reminder` — Send Manual Reminder
 
 ### cart_reports — Read-only store analytics: revenue, orders, products, customers, subscriptions, refunds, licenses, and dashboard summaries.
 
@@ -767,20 +855,15 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 
 - `cart_integrations_chained_data_request` — Chained Data Request
 - `cart_integrations_change_feed_status(integration_id)` — Change Feed Status
-- `cart_integrations_change_product_feed_status(product_id)` — Change Product Feed Status
 - `cart_integrations_delete_feed(integration_id)` ⚠ — Feed
-- `cart_integrations_delete_product(product_id, integration_id)` ⚠ — Product Integration Feed
 - `cart_integrations_get_dynamic_options` — Dynamic Options
 - `cart_integrations_get_feed_lists` — Feed Merge Fields (Lists)
 - `cart_integrations_get_feed_settings` — Feed Settings
 - `cart_integrations_get_global_feeds` — List Global Integration Feeds
 - `cart_integrations_get_global_settings` — Global Integration Settings
-- `cart_integrations_get_product_settings(product_id, integration_name)` — Product Integration Settings
-- `cart_integrations_install_addon_plugin` — Install and Activate Add-on Plugin
+- `cart_integrations_install_addon_plugin` ⚠ — Install and Activate Add-on Plugin
 - `cart_integrations_list_addons` — List Available Add-ons (paginated)
-- `cart_integrations_list_product_feeds(productId)` — List Product Integration Feeds (paginated)
 - `cart_integrations_save_feed_settings` — Save Feed Settings
-- `cart_integrations_save_product(product_id)` — Save Product Integration Feed
 - `cart_integrations_set_global_settings` — Save Global Integration Settings
 
 ### cart_files — List, upload, and delete files in the store's configured storage drivers.
@@ -793,9 +876,7 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 
 ### cart_labels_attributes — Manage store labels and product attribute groups and their terms.
 
-- `cart_labels_attributes_change_term_sort_order(group_id, term_id)` — Change Term Sort Order
 - `cart_labels_attributes_create_group` — Create Attribute Group
-- `cart_labels_attributes_create_term(group_id)` — Create Attribute Term
 - `cart_labels_attributes_create` — Create Label
 - `cart_labels_attributes_delete_group(group_id)` ⚠ — Delete Attribute Group
 - `cart_labels_attributes_delete_term(group_id, term_id)` ⚠ — Delete Attribute Term
@@ -806,8 +887,12 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `cart_labels_attributes_update_group(group_id)` — Update Attribute Group
 - `cart_labels_attributes_update_term(group_id, term_id)` — Update Attribute Term
 - `cart_labels_attributes_update_selections` — Update Label Selections
+- `cart_labels_attributes_create_terms(group_id)` — Create Attribute Terms
+- `cart_labels_attributes_get_library` — Get Attribute Groups Library
+- `cart_labels_attributes_reorder_groups` — Reorder Attribute Groups
+- `cart_labels_attributes_reorder_terms(group_id)` — Reorder Attribute Terms
 
-### cart_utilities — Store utilities: dashboard stats and onboarding, activity log, order notes, print templates, country data, filter options, and retention snapshots.
+### cart_utilities — Store utilities: dashboard stats and onboarding, activity log, order notes, print templates, country data, filter options, and retention snapshots; saved list views (filters) for the admin UI.
 
 - `cart_utilities_generate_retention_snapshots` — Generate Retention Snapshots
 - `cart_utilities_retention_snapshots_status` — Check Retention Snapshot Status
@@ -831,6 +916,12 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `cart_utilities_save_onboarding_settings` — Save Onboarding Settings
 - `cart_utilities_save_print_templates` — Save Print Templates
 - `cart_utilities_upload_attachment` — Upload Attachment
+- `cart_utilities_run_data_backfills` ⚠ — Run Pending Data Backfills
+- `cart_utilities_save_onboarding_tax_settings` — Save Onboarding Tax Settings
+- `cart_utilities_create_saved_view` — Create Saved View
+- `cart_utilities_delete_saved_view(id)` ⚠ — Delete Saved View
+- `cart_utilities_list_saved_views` — List Saved Views (paginated)
+- `cart_utilities_update_saved_view(id)` — Update Saved View
 
 ### cart_storefront — Read-only public storefront data: published products, rendered product listings, and product search — no authentication required.
 
@@ -853,10 +944,7 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `cart_customer_portal_create_address_checkout` — Create Address (Checkout)
 - `cart_customer_portal_create_profile_address` — Create Profile Address
 - `cart_customer_portal_dashboard_overview` — Dashboard Overview
-- `cart_customer_portal_delete_address_checkout(customerId)` ⚠ — Delete Address (Checkout)
 - `cart_customer_portal_delete_profile_address` ⚠ — Delete Profile Address
-- `cart_customer_portal_get_details(customerId)` — Get Customer Details
-- `cart_customer_portal_get_orders(customerId)` — Get Customer Orders
 - `cart_customer_portal_get_order_details(order_uuid)` — Get Order Details
 - `cart_customer_portal_get_profile_details` — Get Profile Details
 - `cart_customer_portal_get_transaction_billing_address(transaction_uuid)` — Get Transaction Billing Address
@@ -866,11 +954,11 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `cart_customer_portal_make_profile_address_primary` — Make Profile Address Primary
 - `cart_customer_portal_save_transaction_billing_address(transaction_uuid)` — Save Transaction Billing Address
 - `cart_customer_portal_select_address_for_checkout(customerAddressId)` — Select Address for Checkout
-- `cart_customer_portal_set_address_as_primary(customerId)` — Set Address as Primary
-- `cart_customer_portal_update_address_checkout(customerId)` — Update Address (Checkout)
-- `cart_customer_portal_update_details(customerId)` — Update Customer Details
 - `cart_customer_portal_update_profile_address` — Update Profile Address
 - `cart_customer_portal_update_profile_details` — Update Profile Details
+- `cart_customer_portal_get_sections` — Get Portal Sections
+- `cart_customer_portal_pause_subscription(subscription_uuid)` ⚠ — Pause Subscription
+- `cart_customer_portal_resume_subscription(subscription_uuid)` — Resume Subscription
 
 ### cart_licensing — Manage software licenses: view, extend, regenerate keys, change limits, activate or deactivate sites, plus the public license verification endpoints (FluentCart Pro).
 
@@ -884,10 +972,7 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `cart_licensing_get_customer_license_details(license_key)` — Get Customer License Details
 - `cart_licensing_get_customer_licenses_admin(id)` — Get Customer Licenses (Admin)
 - `cart_licensing_get_license_activations(license_key)` — Get License Activations
-- `cart_licensing_get_license_chart` — Get License Line Chart
 - `cart_licensing_get_license_details(id)` — Get License Details
-- `cart_licensing_get_license_pie_chart` — Get License Pie Chart
-- `cart_licensing_get_license_summary` — Get License Summary
 - `cart_licensing_get_plugin_license_status` — Get Plugin License Status
 - `cart_licensing_get_product_license_settings(id)` — Get Product License Settings
 - `cart_licensing_list_customer_licenses` — List Customer Licenses (paginated)
@@ -901,16 +986,16 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `cart_licensing_save_product_license_settings(id)` — Save Product License Settings
 - `cart_licensing_update_license_activation_limit(id)` — Update License Activation Limit
 - `cart_licensing_update_license_status(id)` — Update License Status
+- `cart_licensing_get_license_site(id)` — Get License Site
+- `cart_licensing_list_license_sites` — List License Sites (paginated)
 
 ### cart_roles — Manage FluentCart shop roles, permissions, and user assignments (FluentCart Pro).
 
 - `cart_roles_assign` — Assign Role
 - `cart_roles_delete_assignment(key)` ⚠ — Delete Role Assignment
-- `cart_roles_get_permissions` — Get Permissions
 - `cart_roles_get(key)` — Get Role
 - `cart_roles_list_managers` — List Managers (paginated)
 - `cart_roles_list` — List Roles (paginated)
-- `cart_roles_save_permissions` — Save Permissions
 - `cart_roles_search_users` — Search Users (paginated)
 - `cart_roles_update(key)` — Update Role
 
@@ -921,6 +1006,40 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `cart_order_bumps_get(id)` — Get Order Bump
 - `cart_order_bumps_list` — List Order Bumps (paginated)
 - `cart_order_bumps_update(id)` — Update Order Bump
+
+### cart_inventory — Stock across all products and variants: list and stats, single and bulk stock updates, adjustment history, and inventory export. bulk_update_stock rewrites stock levels for many variants in one call and is confirm-gated; update_stock changes one.
+
+- `cart_inventory_bulk_update_stock` ⚠ — Bulk Update Stock
+- `cart_inventory_export` — Export Inventory
+- `cart_inventory_get_adjustment_history` — Get Adjustment History
+- `cart_inventory_get_stats` — Get Inventory Stats
+- `cart_inventory_list` — List Inventory (paginated)
+- `cart_inventory_update_stock` — Update Stock
+
+### cart_data_export — Batch data exports of customers, orders, subscriptions and licenses, plus the export schema (available columns) for each. Exports are paged batches: read the schema first, then call the batch export repeatedly with the offset it returns.
+
+- `cart_data_export_customers_batch` — Export Customers Batch
+- `cart_data_export_licenses_batch` — Export Licenses Batch
+- `cart_data_export_orders_batch` — Export Orders Batch
+- `cart_data_export_subscriptions_batch` — Export Subscriptions Batch
+- `cart_data_export_get_customers_schema` — Get Customers Export Schema
+- `cart_data_export_get_licenses_schema` — Get Licenses Export Schema
+- `cart_data_export_get_orders_schema` — Get Orders Export Schema
+- `cart_data_export_get_subscriptions_schema` — Get Subscriptions Export Schema
+
+### cart_pdf_templates — PDF receipt/invoice templates: list, get, save and delete templates, factory defaults, PDF engine status, preview download, and the seller details printed on documents.
+
+- `cart_pdf_templates_create` — Create PDF Template
+- `cart_pdf_templates_delete(template_id)` ⚠ — Delete PDF Template
+- `cart_pdf_templates_download_preview` — Download PDF Preview
+- `cart_pdf_templates_get_factory_default` — Get Factory Default Templates
+- `cart_pdf_templates_get_status` — Get PDF Status
+- `cart_pdf_templates_get(template_id)` — Get PDF Template
+- `cart_pdf_templates_get_saved` — Get Saved Templates
+- `cart_pdf_templates_get_seller_details` — Get Seller Details
+- `cart_pdf_templates_list` — List PDF Templates (paginated)
+- `cart_pdf_templates_save(template_id)` — Save PDF Template
+- `cart_pdf_templates_save_seller_details` — Save Seller Details
 
 ## WP Social Ninja (`social_*`)
 
@@ -1037,8 +1156,8 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `social_settings_delete_all_data` ⚠ 🔒 — Delete All Plugin Data
 - `social_settings_search_pages` — Search Site Pages (paginated)
 - `social_settings_list_managers` — List Managers (paginated)
-- `social_settings_add_manager` — Add Manager
-- `social_settings_update_manager` — Update Manager
+- `social_settings_add_manager` ⚠ — Add Manager
+- `social_settings_update_manager` ⚠ — Update Manager
 - `social_settings_delete_manager(id)` ⚠ — Delete Manager
 - `social_settings_get_onboarding` — Get Onboarding State
 - `social_settings_save_onboarding` — Save Onboarding Step
@@ -1170,11 +1289,11 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `forms_admin_activate_license` — Activate License
 - `forms_admin_deactivate_license` ⚠ — Deactivate License
 - `forms_admin_list_managers` — List Managers (paginated)
-- `forms_admin_add_manager` — Add Manager
+- `forms_admin_add_manager` ⚠ — Add Manager
 - `forms_admin_remove_manager` ⚠ — Remove Manager
 - `forms_admin_list_manager_users` — List Assignable Users (paginated)
 - `forms_admin_list_roles` — List Roles and Capabilities (paginated)
-- `forms_admin_add_role_capability` — Add Role Capability
+- `forms_admin_add_role_capability` ⚠ — Add Role Capability
 
 ### forms_utilities — Maintenance and helper operations: system logs, global search, admin notices, plugin install helpers, and the MCP adapter settings.
 
@@ -1187,7 +1306,7 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `forms_utilities_install_plugin` ⚠ 🔒 — Install a WordPress Plugin
 - `forms_utilities_activate_plugin` ⚠ 🔒 — Activate a WordPress Plugin
 - `forms_utilities_get_mcp_status` — Get MCP Adapter Status
-- `forms_utilities_toggle_mcp` — Toggle MCP Adapter
+- `forms_utilities_toggle_mcp` ⚠ — Toggle MCP Adapter
 - `forms_utilities_install_mcp_adapter` ⚠ — Install the MCP Adapter Plugin
 - `forms_utilities_get_mcp_config_snippets` — Get MCP Config Snippets
 
@@ -1462,7 +1581,7 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `community_admin_create_link` — Create Link
 - `community_admin_delete_link(id)` ⚠ — Delete Link
 - `community_admin_list_managers` — List Managers (paginated)
-- `community_admin_add_manager` — Add Manager
+- `community_admin_add_manager` ⚠ — Add Manager
 - `community_admin_delete_manager(user_id)` ⚠ — Delete Manager
 - `community_admin_get_messaging_settings` — Get Messaging Settings
 - `community_admin_save_messaging_settings` — Save Messaging Settings

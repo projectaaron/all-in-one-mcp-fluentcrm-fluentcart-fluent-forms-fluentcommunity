@@ -92,9 +92,10 @@
       ]
     },
     "cart_utilities": {
-      "description": "Store utilities: dashboard stats and onboarding, activity log, order notes, print templates, country data, filter options, and retention snapshots.",
+      "description": "Store utilities: dashboard stats and onboarding, activity log, order notes, print templates, country data, filter options, and retention snapshots; saved list views (filters) for the admin UI.",
       "groups": [
-        "dashboard"
+        "dashboard",
+        "saved-views"
       ]
     },
     "cart_storefront": {
@@ -133,6 +134,26 @@
       "description": "Manage checkout order bumps: list, create, update, and delete (FluentCart Pro).",
       "groups": [
         "order-bumps"
+      ]
+    },
+    "cart_inventory": {
+      "description": "Stock across all products and variants: list and stats, single and bulk stock updates, adjustment history, and inventory export.",
+      "groups": [
+        "inventory"
+      ],
+      "note": "bulk_update_stock rewrites stock levels for many variants in one call and is confirm-gated; update_stock changes one."
+    },
+    "cart_data_export": {
+      "description": "Batch data exports of customers, orders, subscriptions and licenses, plus the export schema (available columns) for each.",
+      "groups": [
+        "data-export"
+      ],
+      "note": "Exports are paged batches: read the schema first, then call the batch export repeatedly with the offset it returns."
+    },
+    "cart_pdf_templates": {
+      "description": "PDF receipt/invoice templates: list, get, save and delete templates, factory defaults, PDF engine status, preview download, and the seller details printed on documents.",
+      "groups": [
+        "pdf-templates"
       ]
     }
   },
@@ -265,13 +286,53 @@
       "destructive": true,
       "bodyNote": "Privilege/code change: Rewrites who may manage the store. Requires confirm:true."
     },
-    "roles-permissions/save-permissions": {
-      "destructive": true,
-      "bodyNote": "Privilege/code change: Rewrites who may manage the store. Requires confirm:true."
-    },
     "customers/attach-user": {
       "destructive": true,
       "bodyNote": "Privilege/code change: Links a customer record to a WordPress login. Requires confirm:true."
+    },
+    "orders/charge-now": {
+      "destructive": true,
+      "bodyNote": "Charges the subscription's stored payment method immediately and creates a renewal order. Real money moves. Requires confirm:true."
+    },
+    "orders/create-renewal-now": {
+      "destructive": true,
+      "bodyNote": "Creates the next renewal order/invoice now (and charges it where the gateway supports it). Requires confirm:true."
+    },
+    "orders/skip-renewal": {
+      "destructive": true,
+      "bodyNote": "Skips the subscription's next billing period — changes what the customer is charged. Requires confirm:true."
+    },
+    "orders/void-renewal": {
+      "destructive": true,
+      "bodyNote": "Voids a renewal invoice so it will not be collected. Requires confirm:true."
+    },
+    "products/bulk-update-variants": {
+      "destructive": true,
+      "bodyNote": "Rewrites fields on many variants at once. Prices are plain DOLLARS here (see cart_product_variants note). Requires confirm:true."
+    },
+    "products/group-bulk-update-variants": {
+      "destructive": true,
+      "bodyNote": "Rewrites fields on every variant in the selected groups. Requires confirm:true."
+    },
+    "inventory/bulk-update-stock": {
+      "destructive": true,
+      "bodyNote": "Rewrites stock levels for many variants in one call. Read cart_inventory_list first. Requires confirm:true."
+    },
+    "dashboard/run-data-backfills": {
+      "destructive": true,
+      "bodyNote": "Runs pending data migrations/backfills over the store's tables. Take a backup first. Requires confirm:true."
+    },
+    "settings/install-mcp-adapter": {
+      "destructive": true,
+      "bodyNote": "Installs and activates the WordPress MCP Adapter plugin on the site (adds and runs new code). Requires confirm:true."
+    },
+    "settings/toggle-mcp": {
+      "destructive": true,
+      "bodyNote": "Enables/disables FluentCart's own MCP tools on the site — a second AI control surface. Requires confirm:true."
+    },
+    "customer-profile/pause-subscription": {
+      "destructive": true,
+      "bodyNote": "Pauses the customer's subscription (stops renewals until resumed). Acts as the configured user's customer profile. Requires confirm:true."
     }
   }
 }

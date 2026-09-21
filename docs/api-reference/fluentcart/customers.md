@@ -12,6 +12,8 @@ _Generated from the FluentCart OpenAPI specs (dev.fluentcart.com)._
 
 Link a WordPress user to an existing customer record. The customer must not already have a linked user, and the target user must not already be linked to another customer.
 
+**Required permission:** `customers/manage`
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -65,6 +67,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`customers/manage`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -73,6 +121,8 @@ Example:
 **POST Bulk Actions**
 
 Perform bulk operations on multiple customers such as deletion or status change.
+
+**Required permission:** `customers/manage`
 
 **Auth:** ApplicationPasswords
 
@@ -117,6 +167,21 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
 - **403** — Missing customer selection.
 
   Example:
@@ -130,6 +195,22 @@ Example:
 ```
 
 
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -138,6 +219,8 @@ Example:
 **POST Create Address**
 
 Create a new address for a customer. If no primary address exists for the given type, this address is automatically set as primary. Optionally syncs with an associated order address.
+
+**Required permission:** `customers/manage`
 
 **Auth:** ApplicationPasswords
 
@@ -224,6 +307,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`customers/manage`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -232,6 +361,8 @@ Example:
 **POST Create Customer**
 
 Create a new customer record. Automatically links to an existing WordPress user if a matching email is found.
+
+**Required permission:** `customers/manage`
 
 **Auth:** ApplicationPasswords
 
@@ -319,6 +450,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`customers/manage`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -327,6 +504,10 @@ Example:
 **DELETE Delete Address**
 
 Delete a customer address. Primary addresses and the last remaining address cannot be deleted.
+
+**Also used by the customer portal UI.** Delete an existing address for the authenticated customer. The address ID is passed in the request body.
+
+**Required permission:** `customers/delete`
 
 **Auth:** ApplicationPasswords
 
@@ -342,6 +523,22 @@ Delete a customer address. Primary addresses and the last remaining address cann
 | Name | Type | Required | Description |
 |------|------|----------|-------------|
 | `address[id]` | integer | yes | The address record ID to delete |
+
+
+**Request body** (`application/json`, required)
+
+- `address` (object) **required**
+  - `id` (integer) **required** — The address record ID to delete
+
+Example:
+
+```json
+{
+  "address": {
+    "id": 5
+  }
+}
+```
 
 
 **Responses**
@@ -363,6 +560,21 @@ Delete a customer address. Primary addresses and the last remaining address cann
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
 - **403** — Cannot delete primary or last address.
 
   Example:
@@ -377,6 +589,22 @@ Delete a customer address. Primary addresses and the last remaining address cann
 ```
 
 
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -385,6 +613,8 @@ Delete a customer address. Primary addresses and the last remaining address cann
 **POST Detach WordPress User**
 
 Remove the WordPress user association from a customer record. The customer record itself is preserved; only the user_id link is cleared.
+
+**Required permission:** `customers/manage`
 
 **Auth:** ApplicationPasswords
 
@@ -412,6 +642,36 @@ Remove the WordPress user association from a customer record. The customer recor
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`customers/manage`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 - **404** — Customer not found.
 
   Example:
@@ -419,6 +679,22 @@ Remove the WordPress user association from a customer record. The customer recor
 ```json
 {
   "message": "Customer not found."
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
 }
 ```
 
@@ -431,6 +707,8 @@ Remove the WordPress user association from a customer record. The customer recor
 **GET Find Customer Order**
 
 Retrieve all orders for a customer with their filtered order items (line items) eager-loaded.
+
+**Required permission:** `customers/view`
 
 **Auth:** ApplicationPasswords
 
@@ -508,6 +786,52 @@ Retrieve all orders for a customer with their filtered order items (line items) 
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`customers/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -516,6 +840,8 @@ Retrieve all orders for a customer with their filtered order items (line items) 
 **GET Get Attachable Users**
 
 Retrieve a list of WordPress users that are not yet associated with any FluentCart customer. Useful for linking existing WP users to customer records.
+
+**Required permission:** `customers/manage`
 
 **Auth:** ApplicationPasswords
 
@@ -537,17 +863,45 @@ Retrieve a list of WordPress users that are not yet associated with any FluentCa
   "users": [
     {
       "ID": 8,
-      "user_login": "mike.chen",
       "user_email": "mike.chen@example.com",
       "display_name": "Mike Chen"
     },
     {
       "ID": 14,
-      "user_login": "lisa.park",
       "user_email": "lisa.park@example.com",
       "display_name": "Lisa Park"
     }
   ]
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`customers/manage`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
 }
 ```
 
@@ -560,6 +914,10 @@ Retrieve a list of WordPress users that are not yet associated with any FluentCa
 **GET Get Customer**
 
 Retrieve a single customer by ID with optional eager-loaded relationships.
+
+**Also used by the customer portal UI.** Retrieve the details of the currently authenticated customer. The customerId must match the logged-in customer's record.
+
+**Required permission:** `customers/view`
 
 **Auth:** ApplicationPasswords
 
@@ -639,6 +997,32 @@ Retrieve a single customer by ID with optional eager-loaded relationships.
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Forbidden. The authenticated user does not own this customer record.
+
+  Example:
+
+```json
+{
+  "message": "You are not authorized to view this customer"
+}
+```
+
+
 - **404** — Customer not found.
 
   Example:
@@ -652,6 +1036,22 @@ Retrieve a single customer by ID with optional eager-loaded relationships.
 ```
 
 
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -660,6 +1060,8 @@ Retrieve a single customer by ID with optional eager-loaded relationships.
 **GET Get Customer Addresses**
 
 Retrieve addresses for a customer, optionally filtered by address type. Results are sorted with the primary address first.
+
+**Required permission:** `customers/view`
 
 **Auth:** ApplicationPasswords
 
@@ -720,13 +1122,63 @@ Retrieve addresses for a customer, optionally filtered by address type. Results 
         "type": "billing",
         "name": "Sarah Johnson",
         "company_name": "TechStart Inc.",
+        "vat_number": "",
+        "legal_registration_id": "",
         "label": "Office",
         "phone": "+1-415-555-0142",
         "full_address": "TechStart Inc., 456 Market Street, Suite 300, San Francisco, California, United States"
       },
-      "company_name": "TechStart Inc."
+      "company_name": "TechStart Inc.",
+      "vat_number": "",
+      "legal_registration_id": ""
     }
   ]
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`customers/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
 }
 ```
 
@@ -739,6 +1191,10 @@ Retrieve addresses for a customer, optionally filtered by address type. Results 
 **GET Get Customer Orders**
 
 Retrieve a paginated list of orders belonging to a specific customer. Supports the same filtering and sorting parameters as the main Orders list.
+
+**Also used by the customer portal UI.** Retrieve a paginated list of orders for the specified customer. The customerId must match the logged-in user.
+
+**Required permission:** `customers/view`
 
 **Auth:** ApplicationPasswords
 
@@ -826,6 +1282,52 @@ Retrieve a paginated list of orders belonging to a specific customer. Supports t
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`customers/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -834,6 +1336,8 @@ Retrieve a paginated list of orders belonging to a specific customer. Supports t
 **GET Get Customer Stats**
 
 Retrieve widget/stats data for a specific customer. Results are extensible via the fluent_cart/widgets/single_customer filter.
+
+**Required permission:** `customers/view`
 
 **Auth:** ApplicationPasswords
 
@@ -895,6 +1399,52 @@ Retrieve widget/stats data for a specific customer. Results are extensible via t
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`customers/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -903,6 +1453,8 @@ Retrieve widget/stats data for a specific customer. Results are extensible via t
 **GET List Customers**
 
 Retrieve a paginated list of customers with support for searching, sorting, and advanced filtering.
+
+**Required permission:** `customers/view`
 
 **Auth:** ApplicationPasswords
 
@@ -935,6 +1487,17 @@ Retrieve a paginated list of customers with support for searching, sorting, and 
     - `per_page` (integer)
     - `current_page` (integer)
     - `last_page` (integer)
+    - `first_page_url` (string) — URL of the first page.
+    - `from` (integer) — Index of the first item on this page.
+    - `last_page_url` (string) — URL of the last page.
+    - `links` (array<object>) — Pagination links (previous, numbered pages, next).
+      - `url` (string)
+      - `label` (string)
+      - `active` (boolean)
+    - `next_page_url` (string) — URL of the next page.
+    - `path` (string) — Base URL without the query string.
+    - `prev_page_url` (string) — URL of the previous page.
+    - `to` (integer) — Index of the last item on this page.
     - `data` (array<object>)
       - _(object)_
 
@@ -947,6 +1510,35 @@ Retrieve a paginated list of customers with support for searching, sorting, and 
     "per_page": 10,
     "current_page": 1,
     "last_page": 15,
+    "first_page_url": "https://yoursite.com/wp-json/fluent-cart/v2/customers/?page=1",
+    "from": 1,
+    "last_page_url": "https://yoursite.com/wp-json/fluent-cart/v2/customers/?page=15",
+    "links": [
+      {
+        "url": null,
+        "label": "pagination.previous",
+        "active": false
+      },
+      {
+        "url": "https://yoursite.com/wp-json/fluent-cart/v2/customers/?page=1",
+        "label": "1",
+        "active": true
+      },
+      {
+        "url": "https://yoursite.com/wp-json/fluent-cart/v2/customers/?page=2",
+        "label": "2",
+        "active": false
+      },
+      {
+        "url": "https://yoursite.com/wp-json/fluent-cart/v2/customers/?page=2",
+        "label": "pagination.next",
+        "active": false
+      }
+    ],
+    "next_page_url": "https://yoursite.com/wp-json/fluent-cart/v2/customers/?page=2",
+    "path": "https://yoursite.com/wp-json/fluent-cart/v2/customers/",
+    "prev_page_url": null,
+    "to": 10,
     "data": [
       {
         "id": 12,
@@ -982,6 +1574,36 @@ Retrieve a paginated list of customers with support for searching, sorting, and 
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`customers/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -990,6 +1612,8 @@ Retrieve a paginated list of customers with support for searching, sorting, and 
 **POST Recalculate Lifetime Value**
 
 Recalculate a customer's lifetime value (LTV) by summing net payments from all successful orders. Also updates purchase_count, first_purchase_date, last_purchase_date, and aov (average order value).
+
+**Required permission:** `customers/manage`
 
 **Auth:** ApplicationPasswords
 
@@ -1041,6 +1665,36 @@ Recalculate a customer's lifetime value (LTV) by summing net payments from all s
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`customers/manage`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 - **404** — Customer not found.
 
   Example:
@@ -1048,6 +1702,22 @@ Recalculate a customer's lifetime value (LTV) by summing net payments from all s
 ```json
 {
   "message": "Customer not found."
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
 }
 ```
 
@@ -1061,6 +1731,10 @@ Recalculate a customer's lifetime value (LTV) by summing net payments from all s
 
 Set a specific address as the primary address for its type. The previous primary address of the same type is automatically demoted.
 
+**Also used by the customer portal UI.** Mark a specific address as the primary address for its type (billing or shipping). All other addresses of the same type are demoted.
+
+**Required permission:** `customers/manage`
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -1072,15 +1746,18 @@ Set a specific address as the primary address for its type. The previous primary
 
 **Request body** (`application/json`, required)
 
-- `addressId` (integer) **required** — The address record ID to make primary
-- `type` (string) **required** _(enum: `billing`, `shipping`)_ — Address type: billing or shipping
+- `address` (object) **required**
+  - `id` (integer) **required** — The address record ID to set as primary
+  - `type` (string) **required** _(enum: `billing`, `shipping`)_ — Address type: `billing` or `shipping`
 
 Example:
 
 ```json
 {
-  "addressId": 25,
-  "type": "billing"
+  "address": {
+    "id": 5,
+    "type": "billing"
+  }
 }
 ```
 
@@ -1117,6 +1794,48 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Forbidden. The authenticated user does not own this address.
+
+  Example:
+
+```json
+{
+  "message": "You are not authorized to update this address"
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -1125,6 +1844,8 @@ Example:
 **PUT Update Additional Info (Labels)**
 
 Update a customer's labels/tags. Manages the label relationships for a customer by syncing provided label IDs with existing ones.
+
+**Required permission:** `customers/manage`
 
 **Auth:** ApplicationPasswords
 
@@ -1191,6 +1912,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`customers/manage`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -1199,6 +1966,10 @@ Example:
 **PUT Update Address**
 
 Update an existing customer address by its address record ID. Optionally syncs changes to an associated order address.
+
+**Also used by the customer portal UI.** Update an existing address for the authenticated customer. The address ID is passed in the request body.
+
+**Required permission:** `customers/manage`
 
 **Auth:** ApplicationPasswords
 
@@ -1211,39 +1982,41 @@ Update an existing customer address by its address record ID. Optionally syncs c
 
 **Request body** (`application/json`, required)
 
-- `id` (integer) **required** — The address record ID to update
-- `name` (string) **required** _(maxLength: 255)_ — Full name for the address.
-- `email` (string) **required** _(format: email; maxLength: 255)_ — Email for the address.
-- `address_1` (string) **required** — Primary street address
-- `address_2` (string) — Secondary address line
-- `city` (string) **required** _(maxLength: 255)_ — City.
-- `state` (string) — State/province code. May be required depending on store localization settings.
-- `postcode` (string) — Postal/zip code. May be required depending on store localization settings.
-- `country` (string) **required** — Country code
-- `phone` (string) — Phone number
-- `type` (string) **required** _(enum: `billing`, `shipping`)_ — Address type: billing or shipping
-- `label` (string) _(maxLength: 15)_ — Custom label.
-- `status` (string) — Address status
-- `is_primary` (integer) _(enum: `0`, `1`)_ — Set to 1 for primary address
-- `company_name` (string) _(maxLength: 255)_ — Company name.
-- `order_id` (integer) — Order ID to sync address changes with
+- `address` (object)
+  - `id` (integer) **required** — The address record ID to update
+- `type` (string) **required** _(enum: `billing`, `shipping`)_ — Address type: `billing` or `shipping`
+- `billing_label` (string) _(maxLength: 15)_ — Short label (max 15 characters, for billing type)
+- `billing_name` (string) — Contact name (for billing type)
+- `billing_address_1` (string) — Primary street address (for billing type)
+- `billing_address_2` (string) — Secondary address line (for billing type)
+- `billing_city` (string) — City (for billing type)
+- `billing_state` (string) — State/province code (for billing type)
+- `billing_postcode` (string) — Postal/zip code (for billing type)
+- `billing_country` (string) — Country code (for billing type)
+- `shipping_label` (string) _(maxLength: 15)_ — Short label (max 15 characters, for shipping type)
+- `shipping_name` (string) — Contact name (for shipping type)
+- `shipping_address_1` (string) — Primary street address (for shipping type)
+- `shipping_address_2` (string) — Secondary address line (for shipping type)
+- `shipping_city` (string) — City (for shipping type)
+- `shipping_state` (string) — State/province code (for shipping type)
+- `shipping_postcode` (string) — Postal/zip code (for shipping type)
+- `shipping_country` (string) — Country code (for shipping type)
 
 Example:
 
 ```json
 {
-  "id": 25,
-  "name": "Sarah Johnson",
-  "email": "sarah.johnson@example.com",
-  "address_1": "456 Market Street",
-  "address_2": "Suite 500",
-  "city": "San Francisco",
-  "state": "CA",
-  "postcode": "94102",
-  "country": "US",
-  "phone": "+1-415-555-0142",
   "type": "billing",
-  "company_name": "TechStart Inc."
+  "address": {
+    "id": 5
+  },
+  "billing_name": "John Doe",
+  "billing_address_1": "456 Oak Ave",
+  "billing_city": "Boston",
+  "billing_state": "MA",
+  "billing_postcode": "02101",
+  "billing_country": "US",
+  "billing_label": "Work"
 }
 ```
 
@@ -1284,6 +2057,32 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Forbidden. The authenticated user does not own this address.
+
+  Example:
+
+```json
+{
+  "message": "You are not authorized to update this address"
+}
+```
+
+
 - **404** — Address not found.
 
   Example:
@@ -1297,6 +2096,22 @@ Example:
 ```
 
 
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -1305,6 +2120,10 @@ Example:
 **PUT Update Customer**
 
 Update an existing customer. If the customer is linked to a WordPress user, the corresponding WP user profile is also updated.
+
+**Also used by the customer portal UI.** Update the authenticated customer's profile details. The customerId must match the logged-in customer's record.
+
+**Required permission:** `customers/manage`
 
 **Auth:** ApplicationPasswords
 
@@ -1386,6 +2205,48 @@ Example:
     "uuid": "cust_a1b2c3d4",
     "created_at": "2025-06-10 09:15:00",
     "updated_at": "2025-09-20 14:30:00"
+  }
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Forbidden. The authenticated user does not own this customer record.
+
+  Example:
+
+```json
+{
+  "message": "You are not authorized to update this customer"
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
   }
 }
 ```

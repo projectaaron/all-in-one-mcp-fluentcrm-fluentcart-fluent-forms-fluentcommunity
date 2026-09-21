@@ -1,6 +1,6 @@
 # FluentCart API — Shipping
 
-15 endpoints. Base URL: `https://{website}/wp-json/fluent-cart/v2`. See the [FluentCart overview](../fluentcart.md) for auth and the full group list.
+19 endpoints. Base URL: `https://{website}/wp-json/fluent-cart/v2`. See the [FluentCart overview](../fluentcart.md) for auth and the full group list.
 
 _Generated from the FluentCart OpenAPI specs (dev.fluentcart.com)._
 
@@ -11,6 +11,10 @@ _Generated from the FluentCart OpenAPI specs (dev.fluentcart.com)._
 **POST Create Shipping Class**
 
 Create a new shipping class.
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Access policy:** `StoreSensitivePolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -60,6 +64,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -68,6 +118,10 @@ Example:
 **POST Create Shipping Method**
 
 Create a new shipping method within a shipping zone.
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Access policy:** `StoreSensitivePolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -123,6 +177,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -131,6 +231,10 @@ Example:
 **POST Create Shipping Zone**
 
 Create a new shipping zone.
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Access policy:** `StoreSensitivePolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -178,6 +282,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -186,6 +336,10 @@ Example:
 **DELETE Delete Shipping Class**
 
 Delete a shipping class by ID.
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Access policy:** `StoreSensitivePolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -213,6 +367,52 @@ Delete a shipping class by ID.
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -221,6 +421,10 @@ Delete a shipping class by ID.
 **DELETE Delete Shipping Method**
 
 Delete a shipping method by ID.
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Access policy:** `StoreSensitivePolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -248,6 +452,52 @@ Delete a shipping method by ID.
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -256,6 +506,10 @@ Delete a shipping method by ID.
 **DELETE Delete Shipping Zone**
 
 Delete a shipping zone and all its associated shipping methods.
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Access policy:** `StoreSensitivePolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -283,6 +537,52 @@ Delete a shipping zone and all its associated shipping methods.
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -291,6 +591,10 @@ Delete a shipping zone and all its associated shipping methods.
 **GET Get Shipping Class**
 
 Retrieve a single shipping class by ID.
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Access policy:** `StoreSensitivePolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -326,6 +630,52 @@ Retrieve a single shipping class by ID.
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -334,6 +684,8 @@ Retrieve a single shipping class by ID.
 **GET Get Shipping Zone**
 
 Retrieve a single shipping zone by ID, including its associated shipping methods.
+
+**Access policy:** `StoreSensitivePolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -358,8 +710,10 @@ Retrieve a single shipping zone by ID, including its associated shipping methods
 {
   "shipping_zone": {
     "id": 1,
+    "shipping_class_id": null,
     "name": "Domestic",
     "region": "US",
+    "meta": [],
     "order": 0,
     "formatted_region": "United States",
     "created_at": "2025-01-15 12:00:00",
@@ -401,6 +755,52 @@ Retrieve a single shipping zone by ID, including its associated shipping methods
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -409,6 +809,10 @@ Retrieve a single shipping zone by ID, including its associated shipping methods
 **GET Get Zone States**
 
 Retrieve state/province options and address locale configuration for a given country. Useful for populating state selectors when configuring shipping methods within a zone.
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Access policy:** `StoreSensitivePolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -458,6 +862,36 @@ Retrieve state/province options and address locale configuration for a given cou
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -466,6 +900,8 @@ Retrieve state/province options and address locale configuration for a given cou
 **GET List Shipping Classes**
 
 Retrieve a paginated list of shipping classes with filtering and sorting capabilities.
+
+**Access policy:** `StoreSensitivePolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -492,6 +928,17 @@ Retrieve a paginated list of shipping classes with filtering and sorting capabil
     - `per_page` (integer)
     - `current_page` (integer)
     - `last_page` (integer)
+    - `first_page_url` (string) — URL to the first page of results
+    - `from` (integer) — Index of the first item on this page
+    - `last_page_url` (string) — URL to the last page of results
+    - `links` (array<object>) — Pagination links for previous, numbered pages, and next
+      - `url` (string)
+      - `label` (string)
+      - `active` (boolean)
+    - `next_page_url` (string) — URL to the next page of results
+    - `path` (string) — Base URL without query string
+    - `prev_page_url` (string) — URL to the previous page of results
+    - `to` (integer) — Index of the last item on this page
     - `data` (array<ShippingClass>)
 
   Example:
@@ -503,6 +950,30 @@ Retrieve a paginated list of shipping classes with filtering and sorting capabil
     "per_page": 10,
     "current_page": 1,
     "last_page": 1,
+    "first_page_url": "https://yoursite.com/wp-json/fluent-cart/v2/shipping/classes/?page=1",
+    "from": 1,
+    "last_page_url": "https://yoursite.com/wp-json/fluent-cart/v2/shipping/classes/?page=1",
+    "links": [
+      {
+        "url": null,
+        "label": "pagination.previous",
+        "active": false
+      },
+      {
+        "url": "https://yoursite.com/wp-json/fluent-cart/v2/shipping/classes/?page=1",
+        "label": "1",
+        "active": true
+      },
+      {
+        "url": null,
+        "label": "pagination.next",
+        "active": false
+      }
+    ],
+    "next_page_url": null,
+    "path": "https://yoursite.com/wp-json/fluent-cart/v2/shipping/classes",
+    "prev_page_url": null,
+    "to": 2,
     "data": [
       {
         "id": 1,
@@ -528,6 +999,36 @@ Retrieve a paginated list of shipping classes with filtering and sorting capabil
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -536,6 +1037,8 @@ Retrieve a paginated list of shipping classes with filtering and sorting capabil
 **GET List Shipping Zones**
 
 Retrieve a paginated list of shipping zones with filtering and sorting capabilities.
+
+**Access policy:** `StoreSensitivePolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -561,6 +1064,17 @@ Retrieve a paginated list of shipping zones with filtering and sorting capabilit
     - `total` (integer)
     - `per_page` (integer)
     - `current_page` (integer)
+    - `first_page_url` (string) — URL of the first page
+    - `from` (integer) — Index of first item on this page
+    - `last_page_url` (string) — URL of the last page
+    - `links` (array<object>) — Pagination links (previous, page numbers, next)
+      - `url` (string)
+      - `label` (string)
+      - `active` (boolean)
+    - `next_page_url` (string) — URL of the next page
+    - `path` (string) — Base URL without query string
+    - `prev_page_url` (string) — URL of the previous page
+    - `to` (integer) — Index of last item on this page
     - `last_page` (integer)
     - `data` (array<ShippingZone>)
 
@@ -572,6 +1086,25 @@ Retrieve a paginated list of shipping zones with filtering and sorting capabilit
     "total": 3,
     "per_page": 10,
     "current_page": 1,
+    "first_page_url": "https://yoursite.com/wp-json/fluent-cart/v2/shipping/zones/?page=1",
+    "from": 1,
+    "last_page_url": "https://yoursite.com/wp-json/fluent-cart/v2/shipping/zones/?page=1",
+    "links": [
+      {
+        "url": null,
+        "label": "pagination.previous",
+        "active": false
+      },
+      {
+        "url": "https://yoursite.com/wp-json/fluent-cart/v2/shipping/zones/?page=1",
+        "label": "1",
+        "active": true
+      }
+    ],
+    "next_page_url": null,
+    "path": "https://yoursite.com/wp-json/fluent-cart/v2/shipping/zones",
+    "prev_page_url": null,
+    "to": 2,
     "last_page": 1,
     "data": [
       {
@@ -598,6 +1131,36 @@ Retrieve a paginated list of shipping zones with filtering and sorting capabilit
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -606,6 +1169,10 @@ Retrieve a paginated list of shipping zones with filtering and sorting capabilit
 **PUT Update Shipping Class**
 
 Update an existing shipping class.
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Access policy:** `StoreSensitivePolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -662,6 +1229,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -670,6 +1283,10 @@ Example:
 **PUT Update Shipping Method**
 
 Update an existing shipping method. The method ID is passed in the request body.
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Access policy:** `StoreSensitivePolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -725,6 +1342,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -733,6 +1396,10 @@ Example:
 **PUT Update Shipping Zone**
 
 Update an existing shipping zone. If the region changes, all associated shipping method states are reset to empty.
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Access policy:** `StoreSensitivePolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -787,6 +1454,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -795,6 +1508,10 @@ Example:
 **POST Update Zone Order**
 
 Reorder shipping zones by providing an array of zone IDs in the desired order. Each zone's order field is updated to match its index position.
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Access policy:** `StoreSensitivePolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -832,6 +1549,36 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 - **422** — Invalid data provided.
 
   Schema (`application/json`):
@@ -843,6 +1590,433 @@ Example:
 ```json
 {
   "message": "Invalid data provided"
+}
+```
+
+
+
+---
+
+## GET `/shipping/classes/{id}/profile`
+
+**GET Get Shipping Class Profile**
+
+Retrieve a shipping class together with every shipping zone it is assigned to, each zone including its shipping methods. Used to show the full reach of a class across all zones in one call.
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Auth:** ApplicationPasswords
+
+**Path parameters**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `id` | integer | yes | The shipping class ID |
+
+
+**Responses**
+
+- **200** — Successful response. Returns the shipping class with its zones and each zone's methods.
+
+  Schema (`application/json`):
+
+  - `shipping_class` (ShippingClassProfile)
+
+  Example:
+
+```json
+{
+  "shipping_class": {
+    "id": 1,
+    "name": "Heavy Items",
+    "cost": 15,
+    "type": "fixed",
+    "per_item": 1,
+    "created_at": "2025-01-20 09:00:00",
+    "updated_at": "2025-01-20 09:00:00",
+    "zones": [
+      {
+        "id": 1,
+        "name": "Domestic",
+        "region": "US",
+        "shipping_class_id": 1,
+        "order": 0,
+        "formatted_region": "United States",
+        "created_at": "2025-01-15 12:00:00",
+        "updated_at": "2025-01-15 12:00:00",
+        "methods": [
+          {
+            "id": 10,
+            "zone_id": 1,
+            "title": "Standard Shipping",
+            "type": "flat_rate",
+            "amount": 500,
+            "is_enabled": true,
+            "created_at": "2025-01-15 12:30:00",
+            "updated_at": "2025-01-15 12:30:00"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **404** — No shipping class exists with the given ID. Thrown by `ShippingClass::findOrFail()`, not an explicit controller check, so the message is generic and names the model class and ID.
+
+  Example:
+
+```json
+{
+  "message": "No query results for model [FluentCart\\App\\Models\\ShippingClass] 42"
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
+
+---
+
+## GET `/shipping/packages`
+
+**GET Get Shipping Packages**
+
+List the store's configured shipping packages (boxes, envelopes, and soft packages used for rate calculation).
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Auth:** ApplicationPasswords
+
+**Responses**
+
+- **200** — Successful response. Returns the configured shipping packages.
+
+  Schema (`application/json`):
+
+  - `packages` (array<ShippingPackage>)
+
+  Example:
+
+```json
+{
+  "packages": [
+    {
+      "slug": "small-box",
+      "name": "Small Box",
+      "type": "box",
+      "length": 20,
+      "width": 15,
+      "height": 10,
+      "dimension_unit": "cm",
+      "weight": 0.5,
+      "weight_unit": "kg",
+      "is_default": true
+    }
+  ]
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+
+---
+
+## GET `/shipping/zone/countries`
+
+**GET Get Countries By Continent**
+
+List every country FluentCart recognizes, grouped by continent. Used to populate the region picker when creating or editing a shipping zone.
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Auth:** ApplicationPasswords
+
+**Responses**
+
+- **200** — Successful response. Returns countries grouped by continent.
+
+  Schema (`application/json`):
+
+  - `continents` (array<object>)
+    - `code` (string) — Continent code.
+    - `name` (string) — Continent display name.
+    - `countries` (array<object>)
+      - `code` (string) — ISO 3166-1 alpha-2 country code.
+      - `name` (string) — Country display name.
+
+  Example:
+
+```json
+{
+  "continents": [
+    {
+      "code": "AF",
+      "name": "Africa",
+      "countries": [
+        {
+          "code": "AO",
+          "name": "Angola"
+        },
+        {
+          "code": "BF",
+          "name": "Burkina Faso"
+        }
+      ]
+    },
+    {
+      "code": "AN",
+      "name": "Antarctica",
+      "countries": [
+        {
+          "code": "AQ",
+          "name": "Antarctica"
+        },
+        {
+          "code": "BV",
+          "name": "Bouvet Island"
+        }
+      ]
+    }
+  ]
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+
+---
+
+## POST `/shipping/packages`
+
+**POST Save Shipping Packages**
+
+Replace the store's full list of shipping packages. The list is capped at 50 entries; each entry is sanitized server-side (unknown `type`/unit values fall back to defaults, `height` is forced to null for `envelope` packages, and duplicate slugs are automatically suffixed).
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Auth:** ApplicationPasswords
+
+**Request body** (`application/json`, required)
+
+- `packages` (array<object>) **required** — Full replacement list of packages (max 50). Non-array values are treated as an empty list.
+  - `slug` (string) — Optional; derived from name if omitted.
+  - `name` (string)
+  - `type` (string) _(enum: `box`, `envelope`, `soft_package`)_
+  - `length` (number)
+  - `width` (number)
+  - `height` (number) — Ignored (forced to null) for `envelope` type.
+  - `dimension_unit` (string) _(enum: `cm`, `mm`, `in`, `m`)_
+  - `weight` (number)
+  - `weight_unit` (string) _(enum: `kg`, `g`, `lbs`, `oz`)_
+  - `is_default` (boolean)
+
+Example:
+
+```json
+{
+  "packages": [
+    {
+      "name": "Small Box",
+      "type": "box",
+      "length": 20,
+      "width": 15,
+      "height": 10,
+      "dimension_unit": "cm",
+      "weight": 0.5,
+      "weight_unit": "kg",
+      "is_default": true
+    }
+  ]
+}
+```
+
+
+**Responses**
+
+- **200** — Successful response. Returns the sanitized, persisted package list.
+
+  Schema (`application/json`):
+
+  - `packages` (array<ShippingPackage>)
+  - `message` (string)
+
+  Example:
+
+```json
+{
+  "packages": [
+    {
+      "slug": "small-box",
+      "name": "Small Box",
+      "type": "box",
+      "length": 20,
+      "width": 15,
+      "height": 10,
+      "dimension_unit": "cm",
+      "weight": 0.5,
+      "weight_unit": "kg",
+      "is_default": true
+    }
+  ],
+  "message": "Packages have been saved successfully"
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
 }
 ```
 

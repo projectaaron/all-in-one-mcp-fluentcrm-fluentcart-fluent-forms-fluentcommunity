@@ -1,6 +1,6 @@
 # FluentCart API — Settings
 
-30 endpoints. Base URL: `https://{website}/wp-json/fluent-cart/v2`. See the [FluentCart overview](../fluentcart.md) for auth and the full group list.
+39 endpoints. Base URL: `https://{website}/wp-json/fluent-cart/v2`. See the [FluentCart overview](../fluentcart.md) for auth and the full group list.
 
 _Generated from the FluentCart OpenAPI specs (dev.fluentcart.com)._
 
@@ -11,6 +11,8 @@ _Generated from the FluentCart OpenAPI specs (dev.fluentcart.com)._
 **POST Activate Payment Addon**
 
 Activate an already-installed payment gateway addon plugin.
+
+**Required permission:** `is_super_admin`
 
 **Auth:** ApplicationPasswords
 
@@ -44,6 +46,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`is_super_admin`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -52,6 +100,8 @@ Example:
 **POST Activate Plugin Addon**
 
 Activate an already-installed plugin addon.
+
+**Required permission:** `is_super_admin`
 
 **Auth:** ApplicationPasswords
 
@@ -85,6 +135,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`is_super_admin`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -92,7 +188,9 @@ Example:
 
 **GET Check PayPal Webhook**
 
-Verify the current PayPal webhook registration status and set up the webhook if it is missing.
+Verify the current PayPal webhook registration status and set up the webhook if it is missing. If no PayPal API key has been connected yet for the given `mode`, returns `status`/`message` explaining that PayPal must be connected first. Otherwise it looks up (or registers) the webhook and returns the raw PayPal webhook object (`id`, `url`, `event_types`, `status`) verbatim.
+
+**Required permission:** `super_admin`
 
 **Auth:** ApplicationPasswords
 
@@ -105,7 +203,7 @@ Verify the current PayPal webhook registration status and set up the webhook if 
 
 **Responses**
 
-- **200** — Successful response. Returns the webhook status and configuration details from PayPal.
+- **200** — Successful response. Returns either a not-connected status message, or the webhook configuration details from PayPal.
 
   Schema (`application/json`):
 
@@ -115,31 +213,38 @@ Verify the current PayPal webhook registration status and set up the webhook if 
 
 ```json
 {
-  "id": "WH-LIVE-80021663MN711374V",
-  "url": "https://example.com/wp-json/fluent-cart/v2/webhook/paypal",
-  "event_types": [
-    {
-      "name": "PAYMENT.CAPTURE.COMPLETED",
-      "description": "Payment capture completed"
-    },
-    {
-      "name": "PAYMENT.CAPTURE.REFUNDED",
-      "description": "Payment capture refunded"
-    },
-    {
-      "name": "BILLING.SUBSCRIPTION.ACTIVATED",
-      "description": "Subscription activated"
-    },
-    {
-      "name": "BILLING.SUBSCRIPTION.CANCELLED",
-      "description": "Subscription cancelled"
-    },
-    {
-      "name": "BILLING.SUBSCRIPTION.PAYMENT.FAILED",
-      "description": "Subscription payment failed"
-    }
-  ],
-  "status": "ACTIVE"
+  "status": "false",
+  "message": "No API key found for webhook setup. Please connect your PayPal account first."
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`super_admin`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
 }
 ```
 
@@ -152,6 +257,8 @@ Verify the current PayPal webhook registration status and set up the webhook if 
 **POST Disconnect Payment Method**
 
 Disconnect a payment gateway account (e.g., revoke Stripe or PayPal connection).
+
+**Required permission:** `is_super_admin`
 
 **Auth:** ApplicationPasswords
 
@@ -197,6 +304,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`is_super_admin`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -205,6 +358,8 @@ Example:
 **POST Exchange PayPal Seller Auth Token**
 
 Exchange the PayPal authorization code for a seller access token during the PayPal Connect onboarding flow. This retrieves merchant credentials and saves them to the gateway settings.
+
+**Required permission:** `super_admin`
 
 **Auth:** ApplicationPasswords
 
@@ -245,6 +400,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`super_admin`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -254,6 +455,8 @@ Example:
 
 Retrieve only the currently active/enabled file storage drivers.
 
+**Required permission:** `is_super_admin`
+
 **Auth:** ApplicationPasswords
 
 **Responses**
@@ -262,22 +465,55 @@ Retrieve only the currently active/enabled file storage drivers.
 
   Schema (`application/json`):
 
-  - `drivers` (array<object>)
-    - `key` (string)
-    - `title` (string)
-    - `is_active` (boolean)
+  - `drivers` (object) — Currently active/enabled storage drivers, keyed by driver slug.
+    - _(object)_
 
   Example:
 
 ```json
 {
-  "drivers": [
-    {
-      "key": "local",
-      "title": "Local Storage",
-      "is_active": true
+  "drivers": {
+    "local": {
+      "title": "Local",
+      "route": "local",
+      "description": "Local allows to upload file in local file storage",
+      "logo": "https://example.com/wp-content/plugins/fluent-cart/assets/images/storage-drivers/local.svg",
+      "dark_logo": null,
+      "status": true,
+      "brand_color": "#136196",
+      "has_bucket": false
     }
-  ]
+  }
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`is_super_admin`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
 }
 ```
 
@@ -290,6 +526,10 @@ Retrieve only the currently active/enabled file storage drivers.
 **GET Get Checkout Fields**
 
 Retrieve the checkout field configuration including the schema definition and current settings.
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Access policy:** `StoreSensitivePolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -496,6 +736,36 @@ Retrieve the checkout field configuration including the schema definition and cu
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -505,6 +775,8 @@ Retrieve the checkout field configuration including the schema definition and cu
 
 Retrieve available shortcodes/merge tags that can be used in email notification templates and confirmation messages.
 
+**Required permission:** `is_super_admin`
+
 **Auth:** ApplicationPasswords
 
 **Responses**
@@ -513,18 +785,36 @@ Retrieve available shortcodes/merge tags that can be used in email notification 
 
   Schema (`application/json`):
 
-  - `data` (object) — Shortcode categories with available merge tags
+  - `data` (object) — Shortcode categories with available merge tags, keyed by group name.
     - `order` (object)
       - `title` (string)
-      - `shortcodes` (object)
+      - `key` (string) — Internal group key used to namespace the shortcodes.
+      - `shortcodes` (object) — Map of shortcode tag to human-readable label.
+        - _(object)_
+    - `general` (object)
+      - `title` (string)
+      - `key` (string) — Internal group key used to namespace the shortcodes.
+      - `shortcodes` (object) — Map of shortcode tag to human-readable label.
         - _(object)_
     - `customer` (object)
       - `title` (string)
-      - `shortcodes` (object)
+      - `key` (string) — Internal group key used to namespace the shortcodes.
+      - `shortcodes` (object) — Map of shortcode tag to human-readable label.
         - _(object)_
-    - `store` (object)
+    - `transaction` (object)
       - `title` (string)
-      - `shortcodes` (object)
+      - `key` (string) — Internal group key used to namespace the shortcodes.
+      - `shortcodes` (object) — Map of shortcode tag to human-readable label.
+        - _(object)_
+    - `settings` (object)
+      - `title` (string)
+      - `key` (string) — Internal group key used to namespace the shortcodes.
+      - `shortcodes` (object) — Map of shortcode tag to human-readable label.
+        - _(object)_
+      - `group` (string)
+    - `license` (object)
+      - `title` (string)
+      - `shortcodes` (object) — Map of shortcode tag to human-readable label.
         - _(object)_
 
   Example:
@@ -534,35 +824,125 @@ Retrieve available shortcodes/merge tags that can be used in email notification 
   "data": {
     "order": {
       "title": "Order",
+      "key": "order",
       "shortcodes": {
         "{{order.id}}": "Order ID",
-        "{{order.invoice_no}}": "Invoice Number",
-        "{{order.total_amount_formatted}}": "Total Amount (Formatted)",
+        "{{order.customer_dashboard_link}}": "Customer Dashboard Link",
+        "{{order.payment_link}}": "Order Payment Link",
         "{{order.status}}": "Order Status",
-        "{{order.payment_method_title}}": "Payment Method",
-        "{{order.receipt_url}}": "Receipt URL",
-        "{{order.created_at}}": "Order Date",
-        "{{order.customer_dashboard_link}}": "Customer Dashboard Link"
+        "{{order.invoice_no}}": "Order Number",
+        "{{order.total_amount_formatted}}": "Order Total Amount (Formatted)",
+        "{{order.payment_method_title}}": "Order Payment Method Title",
+        "{{order.created_at}}": "Order Create Date",
+        "{{order.downloads}}": "Order Downloads",
+        "{{order.item_count}}": "Order Item Count"
+      }
+    },
+    "general": {
+      "title": "General",
+      "key": "wp",
+      "shortcodes": {
+        "{{wp.admin_email}}": "Admin Email",
+        "{{wp.site_url}}": "Site URL",
+        "{{wp.site_title}}": "Site Title",
+        "{{user.ID}}": "User ID",
+        "{{user.display_name}}": "User Display Name",
+        "{{user.first_name}}": "User First Name",
+        "{{user.last_name}}": "User Last Name",
+        "{{user.user_email}}": "User Email",
+        "{{user.user_login}}": "User Username"
       }
     },
     "customer": {
+      "key": "customer",
       "title": "Customer",
       "shortcodes": {
-        "{{customer.first_name}}": "First Name",
-        "{{customer.last_name}}": "Last Name",
-        "{{customer.email}}": "Email",
-        "{{customer.full_name}}": "Full Name"
+        "{{order.billing.full_name}}": "Full Name",
+        "{{order.billing.email}}": "Email",
+        "{{order.billing.city}}": "City",
+        "{{order.billing.state}}": "State",
+        "{{order.billing.postcode}}": "Postcode",
+        "{{order.billing.country}}": "Country",
+        "{{order.billing.address_1}}": "Address Line 1",
+        "{{order.billing.address_2}}": "Address Line 2",
+        "{{order.shipping.city}}": "City",
+        "{{order.shipping.state}}": "State",
+        "{{order.shipping.postcode}}": "Postcode",
+        "{{order.shipping.country}}": "Country",
+        "{{order.shipping.address_1}}": "Address Line 1",
+        "{{order.shipping.address_2}}": "Address Line 2"
       }
     },
-    "store": {
-      "title": "Store",
+    "transaction": {
+      "title": "transaction",
+      "key": "settings",
       "shortcodes": {
-        "{{store.name}}": "Store Name",
-        "{{store.logo}}": "Store Logo",
-        "{{store.address}}": "Store Address",
-        "{{store.url}}": "Store URL"
+        "{{transaction.total}}": "Total Amount",
+        "{{transaction.total_formatted}}": "Total Amount (Formatted)",
+        "{{transaction.refund_amount}}": "Refund Amount",
+        "{{transaction.refund_amount_formatted}}": "Refund Amount (Formatted)",
+        "{{transaction.payment_method}}": "Payment Method",
+        "{{transaction.card_last_4}}": "Card Last 4",
+        "{{transaction.card_brand}}": "Card Brand",
+        "{{transaction.status}}": "Status",
+        "{{transaction.currency}}": "Currency"
+      }
+    },
+    "settings": {
+      "title": "Settings",
+      "key": "settings",
+      "shortcodes": {
+        "{{settings.store_name}}": "Store Name",
+        "{{settings.store_logo}}": "Store Logo",
+        "{{settings.store_address}}": "Store Address Line 1",
+        "{{settings.store_address2}}": "Store Address Line 2",
+        "{{settings.store_country}}": "Store Country",
+        "{{settings.store_state}}": "Store State",
+        "{{settings.store_city}}": "Store City",
+        "{{settings.store_postcode}}": "Store Postcode",
+        "{{settings.company_name}}": "Company Name",
+        "{{settings.legal_registration_id}}": "Legal Registration ID",
+        "{{settings.seller_vat_id}}": "Seller VAT ID",
+        "{{settings.seller_tax_id}}": "Seller Tax ID"
+      },
+      "group": "settings"
+    },
+    "license": {
+      "title": "License",
+      "shortcodes": {
+        "{{order.licenses}}": "Order Licenses"
       }
     }
+  }
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`is_super_admin`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
   }
 }
 ```
@@ -576,6 +956,8 @@ Retrieve available shortcodes/merge tags that can be used in email notification 
 **GET Get Module Settings**
 
 Retrieve all module (feature toggle) settings and their field definitions.
+
+**Required permission:** `is_super_admin`
 
 **Auth:** ApplicationPasswords
 
@@ -662,6 +1044,36 @@ Retrieve all module (feature toggle) settings and their field definitions.
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`is_super_admin`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -670,6 +1082,8 @@ Retrieve all module (feature toggle) settings and their field definitions.
 **GET Get Payment Method Connection Info**
 
 Retrieve connection information (OAuth URLs, account status) for a connectable payment gateway.
+
+**Required permission:** `is_super_admin`
 
 **Auth:** ApplicationPasswords
 
@@ -714,7 +1128,7 @@ Retrieve connection information (OAuth URLs, account status) for a connectable p
   },
   "live_account": {
     "merchant_id": "LIVEMERCHANT456",
-    "email": "payments@techstore.com",
+    "email": "payments@example.com",
     "connected": true,
     "webhook_id": "WH-LIVE-0987654321"
   },
@@ -728,6 +1142,36 @@ Retrieve connection information (OAuth URLs, account status) for a connectable p
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`is_super_admin`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -736,6 +1180,8 @@ Retrieve connection information (OAuth URLs, account status) for a connectable p
 **GET Get Payment Method Settings**
 
 Retrieve the configuration and settings for a specific payment method gateway (e.g., Stripe, PayPal).
+
+**Required permission:** `is_super_admin`
 
 **Auth:** ApplicationPasswords
 
@@ -820,6 +1266,36 @@ Retrieve the configuration and settings for a specific payment method gateway (e
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`is_super_admin`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -828,6 +1304,10 @@ Retrieve the configuration and settings for a specific payment method gateway (e
 **GET Get Permissions**
 
 Retrieve the current role-to-capability permission mappings for FluentCart.
+
+**Also used by the roles & permissions UI.** Retrieve a list of available WordPress roles and the currently configured capability permissions.
+
+**Required permission:** `is_super_admin`
 
 **Auth:** ApplicationPasswords
 
@@ -885,6 +1365,36 @@ Retrieve the current role-to-capability permission mappings for FluentCart.
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`is_super_admin`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -893,6 +1403,8 @@ Retrieve the current role-to-capability permission mappings for FluentCart.
 **GET Get Plugin Addons**
 
 List all registered plugin addons (e.g., Elementor Blocks) with their installation and activation status.
+
+**Required permission:** `is_super_admin`
 
 **Auth:** ApplicationPasswords
 
@@ -913,31 +1425,141 @@ List all registered plugin addons (e.g., Elementor Blocks) with their installati
     "elementor-block": {
       "title": "Elementor Blocks",
       "description": "Enable to get Elementor Blocks for FluentCart. Minimum Requirement: Elementor V3.34",
-      "logo": "https://example.com/wp-content/plugins/fluent-cart/assets/images/elementor.svg",
-      "dark_logo": "https://example.com/wp-content/plugins/fluent-cart/assets/images/elementor-dark.svg",
+      "logo": "https://example.com/wp-content/plugins/fluent-cart/assets/images/elementor/black.svg",
+      "dark_logo": "https://example.com/wp-content/plugins/fluent-cart/assets/images/elementor/white.svg",
       "plugin_slug": "fluent-cart-elementor-blocks",
       "plugin_file": "fluent-cart-elementor-blocks/fluent-cart-elementor-blocks.php",
       "source_type": "cdn",
       "source_link": "https://addons-cdn.fluentcart.com/fluent-cart-elementor-blocks.zip",
       "upcoming": false,
-      "repo_link": "https://fluentcart.com/fluentcart-addons",
+      "repo_link": "https://fluentcart.com/fluentcart-addons/",
       "is_installed": true,
       "is_active": true
     },
-    "fluent-cart-pro": {
-      "title": "FluentCart Pro",
-      "description": "Pro features including licensing, advanced roles, order bumps, and more",
-      "logo": "https://example.com/wp-content/plugins/fluent-cart/assets/images/pro.svg",
-      "dark_logo": "https://example.com/wp-content/plugins/fluent-cart/assets/images/pro-dark.svg",
-      "plugin_slug": "fluent-cart-pro",
-      "plugin_file": "fluent-cart-pro/fluent-cart-pro.php",
+    "fluent-cart-bricks-blocks": {
+      "title": "FluentCart Bricks Blocks",
+      "description": "Enable to get Bricks Builder elements for FluentCart. Requires the Bricks theme.",
+      "logo": "https://example.com/wp-content/plugins/fluent-cart/assets/images/bricks/logo.png",
+      "plugin_slug": "fluent-cart-bricks-blocks",
+      "plugin_file": "fluent-cart-bricks-blocks/fluent-cart-bricks-blocks.php",
       "source_type": "cdn",
-      "source_link": "https://addons-cdn.fluentcart.com/fluent-cart-pro.zip",
+      "source_link": "https://addons-cdn.fluentcart.com/fluent-cart-bricks-blocks.zip",
+      "license_required": {
+        "enabled": false,
+        "parent_product_id": 10
+      },
       "upcoming": false,
-      "repo_link": "https://fluentcart.com/pricing",
+      "repo_link": "https://fluentcart.com/fluentcart-addons/",
+      "is_installed": false,
+      "is_active": false
+    },
+    "fluent-cart-divi-modules": {
+      "title": "FluentCart Divi Modules",
+      "description": "Native Divi 5 modules for FluentCart products, cart, and checkout. Requires Divi 5.0+ and FluentCart 1.3.4+.",
+      "logo": "https://example.com/wp-content/plugins/fluent-cart/assets/images/divi/black.svg",
+      "dark_logo": "https://example.com/wp-content/plugins/fluent-cart/assets/images/divi/white.svg",
+      "plugin_slug": "fluent-cart-divi-modules",
+      "plugin_file": "fluent-cart-divi-modules/fluent-cart-divi-modules.php",
+      "source_type": "cdn",
+      "source_link": "https://addons-cdn.fluentcart.com/fluent-cart-divi-modules.zip",
+      "license_required": {
+        "enabled": false,
+        "parent_product_id": 10
+      },
+      "upcoming": false,
+      "repo_link": "https://fluentcart.com/fluentcart-addons/",
+      "is_installed": false,
+      "is_active": false
+    },
+    "fluent-pdf": {
+      "title": "Fluent PDF",
+      "description": "Generate PDF receipts and attach them to email notifications.",
+      "logo": "https://example.com/wp-content/plugins/fluent-cart/assets/images/fluent-pdf/black.svg",
+      "dark_logo": "https://example.com/wp-content/plugins/fluent-cart/assets/images/fluent-pdf/white.svg",
+      "plugin_slug": "fluentforms-pdf",
+      "plugin_file": "fluentforms-pdf/fluentforms-pdf.php",
+      "source_type": "wordpress",
+      "upcoming": false,
+      "is_installed": false,
+      "is_active": false
+    },
+    "fluent-cart-migrator": {
+      "title": "FluentCart Migrator",
+      "description": "Migrate your store data to FluentCart from other eCommerce platforms.",
+      "logo": "https://example.com/wp-content/plugins/fluent-cart/assets/images/logo.svg",
+      "plugin_slug": "fluent-cart-migrator",
+      "plugin_file": "fluent-cart-migrator/fluent-cart-migrator.php",
+      "source_type": "cdn",
+      "source_link": "https://addons-cdn.fluentcart.com/fluent-cart-migrator.zip",
+      "upcoming": false,
+      "repo_link": "https://fluentcart.com/fluentcart-addons/?3181_search=Migrator",
+      "is_installed": false,
+      "is_active": false
+    },
+    "fluent-cart-customer-rights": {
+      "title": "FluentCart Customer Rights",
+      "description": "Manage customer withdrawal, refund, return, and cancellation requests with dedicated forms, workflows, notifications, and admin tools.",
+      "logo": "https://example.com/wp-content/plugins/fluent-cart/assets/images/fluent-cart-resolution/logo.svg",
+      "plugin_slug": "fluent-cart-customer-rights",
+      "plugin_file": "fluent-cart-customer-rights/fluent-cart-customer-rights.php",
+      "source_type": "cdn",
+      "source_link": "https://addons-cdn.fluentcart.com/fluent-cart-customer-rights.zip",
+      "license_required": {
+        "enabled": false,
+        "parent_product_id": 10
+      },
+      "upcoming": false,
+      "repo_link": "https://fluentcart.com/fluentcart-addons/",
+      "is_installed": false,
+      "is_active": false
+    },
+    "fluent-cart-page-history": {
+      "title": "FluentCart Page History",
+      "description": "Track customer browsing journeys before checkout and view page history on order details.",
+      "logo": "https://example.com/wp-content/plugins/fluent-cart/assets/images/cart.svg",
+      "plugin_slug": "fluent-cart-page-history",
+      "plugin_file": "fluent-cart-page-history/fluent-cart-page-history.php",
+      "source_type": "cdn",
+      "source_link": "https://fluentcart.com/?fluent-cart=get_license_version",
+      "license_required": {
+        "enabled": true,
+        "parent_product_id": 10
+      },
+      "upcoming": false,
+      "repo_link": "https://fluentcart.com/fluentcart-addons/",
       "is_installed": true,
       "is_active": true
     }
+  }
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`is_super_admin`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
   }
 }
 ```
@@ -951,6 +1573,8 @@ List all registered plugin addons (e.g., Elementor Blocks) with their installati
 **GET Get Storage Driver Settings**
 
 Retrieve the configuration settings and field schema for a specific storage driver.
+
+**Required permission:** `is_super_admin`
 
 **Auth:** ApplicationPasswords
 
@@ -979,10 +1603,10 @@ Retrieve the configuration settings and field schema for a specific storage driv
   "settings": {
     "access_key": "AKIAIOSFODNN7EXAMPLE",
     "secret_key": "****",
-    "bucket": "techstore-downloads",
+    "bucket": "example-store-downloads",
     "region": "us-east-1",
     "is_active": true,
-    "base_url": "https://techstore-downloads.s3.amazonaws.com"
+    "base_url": "https://example-store-downloads.s3.amazonaws.com"
   },
   "fields": {
     "s3_config": {
@@ -1016,6 +1640,52 @@ Retrieve the configuration settings and field schema for a specific storage driv
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`is_super_admin`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -1024,6 +1694,8 @@ Retrieve the configuration settings and field schema for a specific storage driv
 **GET Get Store Settings**
 
 Retrieve all store configuration settings along with the field schema for a given settings tab.
+
+**Required permission:** `store/settings`
 
 **Auth:** ApplicationPasswords
 
@@ -1141,6 +1813,36 @@ Retrieve all store configuration settings along with the field schema for a give
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`store/settings`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -1149,6 +1851,8 @@ Retrieve all store configuration settings along with the field schema for a give
 **POST Install Payment Addon**
 
 Install a payment gateway addon plugin from a remote source (WordPress.org or GitHub).
+
+**Required permission:** `is_super_admin`
 
 **Auth:** ApplicationPasswords
 
@@ -1187,6 +1891,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`is_super_admin`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -1195,6 +1945,8 @@ Example:
 **POST Install Plugin Addon**
 
 Install a registered plugin addon from its configured source (WordPress.org, GitHub, or CDN).
+
+**Required permission:** `is_super_admin`
 
 **Auth:** ApplicationPasswords
 
@@ -1233,6 +1985,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`is_super_admin`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -1241,6 +2039,8 @@ Example:
 **GET List All Payment Methods**
 
 Retrieve all registered payment method gateways categorized by availability status.
+
+**Required permission:** `is_super_admin`
 
 **Auth:** ApplicationPasswords
 
@@ -1251,13 +2051,20 @@ Retrieve all registered payment method gateways categorized by availability stat
   Schema (`application/json`):
 
   - `gateways` (array<object>)
-    - `method_key` (string)
-    - `title` (string)
-    - `is_active` (string)
+    - `title` (string) — Payment type label (e.g. the card brand group)
+    - `route` (string) — Gateway route/handler slug
+    - `slug` (string) — Gateway slug identifier
+    - `label` (string) — Gateway display label
+    - `admin_title` (string) — Admin-facing title for the gateway. Only present for gateways that define one.
     - `description` (string)
     - `logo` (string)
+    - `icon` (string) — Small gateway icon URL
+    - `status` (boolean) — Whether the gateway is currently enabled/connected
+    - `brand_color` (string) — Gateway brand color as a hex code
     - `upcoming` (boolean)
-    - `requires_pro` (boolean)
+    - `requires_pro` (boolean) — Present and set to `true` only for gateways that require FluentCart Pro to activate.
+    - `supported_features` (object) — Feature flags supported by this gateway. Encoded as a mixed array: numeric keys list supported feature names (e.g. `payment`, `refund`, `webhook`, `subscriptions`), and `switch_payment_method` is an object listing gateways this one can switch to/from.
+      - _(object)_
 
   Example:
 
@@ -1265,42 +2072,99 @@ Retrieve all registered payment method gateways categorized by availability stat
 {
   "gateways": [
     {
-      "method_key": "stripe",
-      "title": "Stripe",
-      "is_active": "yes",
-      "description": "Accept credit and debit card payments via Stripe",
-      "logo": "https://example.com/wp-content/plugins/fluent-cart/assets/images/stripe.svg",
+      "title": "Card",
+      "route": "stripe",
+      "slug": "stripe",
+      "label": "Stripe",
+      "admin_title": "Stripe",
+      "description": "Stripe's payments platform lets you accept credit cards, debit cards, and popular payment methods around the world all with a single integration.",
+      "logo": "https://example.com/wp-content/plugins/fluent-cart/assets/images/payment-methods/card.svg",
+      "icon": "https://example.com/wp-content/plugins/fluent-cart/assets/images/payment-methods/stripe-icon.svg",
+      "status": true,
+      "brand_color": "#635bff",
       "upcoming": false,
-      "requires_pro": false
+      "supported_features": {
+        "0": "payment",
+        "1": "refund",
+        "2": "webhook",
+        "3": "custom_payment",
+        "4": "card_update",
+        "5": "dispute_handler",
+        "6": "subscriptions",
+        "switch_payment_method": {
+          "supported_gateways": [
+            "stripe",
+            "paypal"
+          ]
+        }
+      }
     },
     {
-      "method_key": "paypal",
       "title": "PayPal",
-      "is_active": "yes",
-      "description": "Accept payments via PayPal",
-      "logo": "https://example.com/wp-content/plugins/fluent-cart/assets/images/paypal.svg",
+      "route": "paypal",
+      "slug": "paypal",
+      "label": "PayPal",
+      "description": "PayPal is the faster, safer way to send and receive money or make an online payment. Get started or create a merchant account to accept payments.",
+      "logo": "https://example.com/wp-content/plugins/fluent-cart/assets/images/payment-methods/paypal-icon.svg",
+      "icon": "https://example.com/wp-content/plugins/fluent-cart/assets/images/payment-methods/paypal-icon.svg",
+      "brand_color": "#60cdff",
+      "status": true,
       "upcoming": false,
-      "requires_pro": true
+      "supported_features": {
+        "0": "payment",
+        "1": "refund",
+        "2": "webhook",
+        "3": "subscriptions"
+      }
     },
     {
-      "method_key": "cod",
-      "title": "Cash on Delivery",
-      "is_active": "no",
-      "description": "Accept cash payment upon delivery",
-      "logo": "https://example.com/wp-content/plugins/fluent-cart/assets/images/cod.svg",
-      "upcoming": false,
-      "requires_pro": false
-    },
-    {
-      "method_key": "square",
       "title": "Square",
-      "is_active": "no",
-      "description": "Accept payments via Square",
-      "logo": "https://example.com/wp-content/plugins/fluent-cart/assets/images/square.svg",
+      "route": "square",
+      "slug": "square",
+      "label": "Square",
+      "description": "Accept payments via Square.",
+      "logo": "https://example.com/wp-content/plugins/fluent-cart/assets/images/payment-methods/square.svg",
+      "icon": "https://example.com/wp-content/plugins/fluent-cart/assets/images/payment-methods/square-icon.svg",
+      "brand_color": "#000000",
+      "status": false,
       "upcoming": false,
-      "requires_pro": true
+      "requires_pro": true,
+      "supported_features": {
+        "0": "payment",
+        "1": "refund"
+      }
     }
   ]
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`is_super_admin`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
 }
 ```
 
@@ -1314,6 +2178,8 @@ Retrieve all registered payment method gateways categorized by availability stat
 
 Retrieve all registered file storage drivers and their current status.
 
+**Required permission:** `is_super_admin`
+
 **Auth:** ApplicationPasswords
 
 **Responses**
@@ -1322,40 +2188,94 @@ Retrieve all registered file storage drivers and their current status.
 
   Schema (`application/json`):
 
-  - `drivers` (array<object>)
-    - `key` (string)
-    - `title` (string)
-    - `description` (string)
-    - `is_active` (boolean)
-    - `logo` (string)
+  - `drivers` (object) — Registered storage drivers keyed by driver slug (e.g. `local`, `s3`, `r2`).
+    - _(object)_
 
   Example:
 
 ```json
 {
-  "drivers": [
-    {
-      "key": "local",
-      "title": "Local Storage",
-      "description": "Store files on your server",
-      "is_active": true,
-      "logo": "https://example.com/wp-content/plugins/fluent-cart/assets/images/local-storage.svg"
+  "drivers": {
+    "local": {
+      "title": "Local",
+      "route": "local",
+      "description": "Local allows to upload file in local file storage",
+      "logo": "https://example.com/wp-content/plugins/fluent-cart/assets/images/storage-drivers/local.svg",
+      "dark_logo": null,
+      "status": true,
+      "brand_color": "#136196",
+      "has_bucket": false,
+      "instance": {
+        "slug": "local",
+        "title": "Local",
+        "brandColor": "#136196"
+      }
     },
-    {
-      "key": "s3",
-      "title": "Amazon S3",
-      "description": "Store files on Amazon S3 cloud storage",
-      "is_active": false,
-      "logo": "https://example.com/wp-content/plugins/fluent-cart/assets/images/s3.svg"
+    "s3": {
+      "title": "S3",
+      "route": "s3",
+      "description": "S3 bucket allows to configure storage options and others for efficient and secure cloud-based file storage",
+      "logo": "https://example.com/wp-content/plugins/fluent-cart/assets/images/storage-drivers/s3.svg",
+      "dark_logo": "https://example.com/wp-content/plugins/fluent-cart/assets/images/storage-drivers/s3-dark.svg",
+      "status": false,
+      "brand_color": "#4f94d4",
+      "has_bucket": true,
+      "instance": {
+        "slug": "s3",
+        "title": "S3",
+        "brandColor": "#4f94d4"
+      },
+      "need_reconfigure": false,
+      "buckets": []
     },
-    {
-      "key": "bunny",
-      "title": "Bunny CDN",
-      "description": "Store files on Bunny CDN storage",
-      "is_active": false,
-      "logo": "https://example.com/wp-content/plugins/fluent-cart/assets/images/bunny.svg"
+    "r2": {
+      "title": "Cloudflare R2",
+      "route": "r2",
+      "description": "Cloudflare R2 allows you to store downloadable product files in Cloudflare object storage.",
+      "logo": "https://example.com/wp-content/plugins/fluent-cart-pro/assets/images/storage-drivers/r2.svg",
+      "dark_logo": "https://example.com/wp-content/plugins/fluent-cart-pro/assets/images/storage-drivers/r2-dark.svg",
+      "status": false,
+      "brand_color": "#f38020",
+      "has_bucket": true,
+      "instance": {
+        "slug": "r2",
+        "title": "Cloudflare R2",
+        "brandColor": "#f38020"
+      },
+      "need_reconfigure": false,
+      "buckets": []
     }
-  ]
+  }
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`is_super_admin`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
 }
 ```
 
@@ -1368,6 +2288,8 @@ Retrieve all registered file storage drivers and their current status.
 **POST Reorder Payment Methods**
 
 Set the display order of payment methods on the checkout page.
+
+**Required permission:** `is_super_admin`
 
 **Auth:** ApplicationPasswords
 
@@ -1411,6 +2333,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`is_super_admin`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -1419,6 +2387,10 @@ Example:
 **POST Save Checkout Fields**
 
 Update the checkout field visibility and required settings. The endpoint enforces name field logic automatically: if `first_name` or `last_name` is enabled, `full_name` is automatically disabled; if neither is enabled, `full_name` is automatically enabled and marked as required.
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Access policy:** `StoreSensitivePolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -1473,6 +2445,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -1481,6 +2499,8 @@ Example:
 **POST Save Confirmation Settings**
 
 Update the order confirmation/receipt page settings, including the confirmation type, message content, and the receipt page assignment.
+
+**Required permission:** `is_super_admin`
 
 **Auth:** ApplicationPasswords
 
@@ -1523,6 +2543,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`is_super_admin`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -1531,6 +2597,8 @@ Example:
 **POST Save Module Settings**
 
 Enable or disable modules (features) and update their configuration. Fires `fluent_cart/module/activated/{key}` or `fluent_cart/module/deactivated/{key}` hooks when a module's active status changes.
+
+**Required permission:** `is_super_admin`
 
 **Auth:** ApplicationPasswords
 
@@ -1581,6 +2649,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`is_super_admin`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -1589,6 +2703,8 @@ Example:
 **POST Save Payment Method Design**
 
 Customize the checkout appearance for a specific payment method, including its label, logo, and instructions.
+
+**Required permission:** `is_super_admin`
 
 **Auth:** ApplicationPasswords
 
@@ -1639,6 +2755,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`is_super_admin`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -1647,6 +2809,8 @@ Example:
 **POST Save Payment Method Settings**
 
 Create or update the configuration for a specific payment method gateway.
+
+**Required permission:** `is_super_admin`
 
 **Auth:** ApplicationPasswords
 
@@ -1696,6 +2860,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`is_super_admin`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -1704,6 +2914,10 @@ Example:
 **POST Save Permissions**
 
 Update the role-to-capability permission mappings for FluentCart.
+
+**Also used by the roles & permissions UI.** Update which WordPress roles have access to FluentCart.
+
+**Required permission:** `is_super_admin`
 
 **Auth:** ApplicationPasswords
 
@@ -1755,6 +2969,57 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Forbidden - User doesn't have manage_options capability
+
+  Schema (`application/json`):
+
+  - `success` (boolean)
+  - `data` (object)
+    - `message` (string)
+
+  Example:
+
+```json
+{
+  "success": false,
+  "data": {
+    "message": "Sorry, You can not update permissions. Only administrators can update permissions"
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -1763,6 +3028,8 @@ Example:
 **POST Save Storage Driver Settings**
 
 Create or update settings for a specific file storage driver.
+
+**Required permission:** `is_super_admin`
 
 **Auth:** ApplicationPasswords
 
@@ -1805,10 +3072,56 @@ Example:
   "data": {
     "access_key": "AKIAIOSFODNN7EXAMPLE",
     "secret_key": "****",
-    "bucket": "techstore-downloads",
+    "bucket": "example-store-downloads",
     "region": "us-east-1",
     "is_active": true,
-    "base_url": "https://techstore-downloads.s3.amazonaws.com"
+    "base_url": "https://example-store-downloads.s3.amazonaws.com"
+  }
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`is_super_admin`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
   }
 }
 ```
@@ -1822,6 +3135,8 @@ Example:
 **POST Save Store Settings**
 
 Update store configuration settings. Submitted values are merged with existing settings.
+
+**Required permission:** `store/settings`
 
 **Auth:** ApplicationPasswords
 
@@ -1917,6 +3232,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`store/settings`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -1925,6 +3286,8 @@ Example:
 **POST Setup PayPal Webhook**
 
 Register a webhook endpoint with PayPal to receive payment event notifications.
+
+**Required permission:** `super_admin`
 
 **Auth:** ApplicationPasswords
 
@@ -1958,6 +3321,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`super_admin`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -1966,6 +3375,8 @@ Example:
 **POST Verify Storage Driver Connection**
 
 Test the connection to a storage driver using the provided credentials without saving them.
+
+**Required permission:** `is_super_admin`
 
 **Auth:** ApplicationPasswords
 
@@ -2003,6 +3414,918 @@ Example:
 ```json
 {
   "message": "Connection verified successfully"
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`is_super_admin`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
+
+---
+
+## POST `/settings/storage-drivers/change-status`
+
+**POST Change Storage Driver Status**
+
+Enable or disable a storage driver that does not manage its own bucket (bucket-backed drivers such as S3 must instead be configured from their own settings page). Only flips the driver's `is_active` flag.
+
+**Required permission:** `is_super_admin`
+
+**Auth:** ApplicationPasswords
+
+**Request body** (`application/json`, required)
+
+- `driver` (string) **required** — The storage driver key (e.g., `local`).
+- `status` (string) **required** _(enum: `yes`, `no`)_ — New active status for the driver.
+
+Example:
+
+```json
+{
+  "driver": "local",
+  "status": "yes"
+}
+```
+
+
+**Responses**
+
+- **200** — Successful response. Returns the updated driver settings.
+
+  Schema (`application/json`):
+
+  - `message` (string)
+  - `data` (object) — The driver's persisted settings, including the new is_active value.
+    - _(object)_
+
+  Example:
+
+```json
+{
+  "message": "Status updated successfully",
+  "data": {
+    "is_active": "yes"
+  }
+}
+```
+
+
+- **400** — The driver manages its own bucket and must be configured from its settings page, or saving the new status failed.
+
+  Example:
+
+```json
+{
+  "message": "This storage driver must be managed from its settings page."
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`is_super_admin`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **404** — The named driver does not exist.
+
+  Example:
+
+```json
+{
+  "message": "Invalid driver"
+}
+```
+
+
+- **422** — `status` was not `yes` or `no`.
+
+  Example:
+
+```json
+{
+  "message": "Invalid status value"
+}
+```
+
+
+
+---
+
+## POST `/settings/storage-drivers/create-bucket`
+
+**POST Create Storage Bucket**
+
+Create a new bucket on a storage driver using the supplied credentials. Used by the settings UI when a store wants to provision a bucket instead of using an existing one.
+
+**Required permission:** `is_super_admin`
+
+**Auth:** ApplicationPasswords
+
+**Request body** (`application/json`, required)
+
+- `driver` (string) **required** — The storage driver key (e.g., `s3`, `bunny`).
+- `settings` (object) **required** — Driver-specific credentials and the new bucket name/configuration. Fields vary by driver.
+  - _(object)_
+
+Example:
+
+```json
+{
+  "driver": "s3",
+  "settings": {
+    "access_key": "AKIAEXAMPLE1234",
+    "secret_key": "your-secret-key-here",
+    "region": "us-east-1",
+    "bucket": "my-store-files"
+  }
+}
+```
+
+
+**Responses**
+
+- **200** — Successful response. The bucket was created.
+
+  Schema (`application/json`):
+
+  - `message` (string)
+  - `data` (object) — Driver-specific result of the create-bucket call.
+    - _(object)_
+
+  Example:
+
+```json
+{
+  "message": "Bucket created successfully",
+  "data": {
+    "bucket": "my-store-files"
+  }
+}
+```
+
+
+- **400** — The driver could not be resolved, or bucket creation was rejected by the storage provider.
+
+  Example:
+
+```json
+{
+  "message": "A bucket with that name already exists.",
+  "error_data": null
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`is_super_admin`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
+
+---
+
+## GET `/settings/mcp/config-snippets`
+
+**GET Get MCP Config Snippets**
+
+Return ready-to-paste MCP connection snippets for every supported client (Claude Code, Claude Desktop, Cursor, Codex, and a generic HTTP snippet), built server-side in one response. No credentials are ever included — each snippet carries a placeholder for the WordPress username and Application Password that the caller fills in themselves.
+
+**Required permission:** `is_super_admin`
+
+**Auth:** ApplicationPasswords
+
+**Query parameters**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `local_dev` | string | no | Overrides TLS-verification guidance in the Claude Desktop snippet. Truthy values (yes, true, 1, on) are treated as a local/dev environment. When omitted, the server auto-detects. |
+
+
+**Responses**
+
+- **200** — Successful response. Returns connection snippets for every supported MCP client.
+
+  Schema (`application/json`):
+
+  - `snippets` (object) — Keyed by client id: claude-code, claude-desktop, cursor, codex, generic
+    - _(object)_
+  - `endpoint` (string)
+  - `app_passwords_url` (string)
+  - `is_local_dev` (boolean)
+
+  Example:
+
+```json
+{
+  "snippets": {
+    "claude-code": {
+      "client": "claude-code",
+      "snippet": "claude mcp add --transport http fluent-cart https://example.com/wp-json/fluent-cart/mcp --header \"Authorization: Basic <base64(your-username:application-password)>\"",
+      "instructions": "Run this in your terminal where Claude Code is installed, with base64 of \"username:application-password\"."
+    }
+  },
+  "endpoint": "https://example.com/wp-json/fluent-cart/mcp",
+  "app_passwords_url": "https://example.com/wp-admin/profile.php#application-passwords-section",
+  "is_local_dev": false
+}
+```
+
+
+- **401** — Authentication required.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — The current user is not a super admin.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+
+---
+
+## GET `/settings/mcp`
+
+**GET Get MCP Status**
+
+Return the status payload used by the MCP settings card in the admin: whether the MCP endpoint is enabled, whether the FluentHub adapter plugin is installed/available, the endpoint URL, tool count, and helper links (Application Passwords page, plugins page).
+
+**Required permission:** `is_super_admin`
+
+**Auth:** ApplicationPasswords
+
+**Responses**
+
+- **200** — Successful response. Returns the current MCP status.
+
+  Schema (`application/json`):
+
+  - `mcp_enabled` (boolean)
+  - `adapter_available` (boolean)
+  - `toolkit_installed` (boolean)
+  - `can_auto_install` (boolean)
+  - `toolkit_download_url` (string)
+  - `endpoint_url` (string)
+  - `tools_count` (integer)
+  - `app_passwords_url` (string)
+  - `plugins_url` (string)
+  - `current_user_login` (string)
+  - `is_local_dev` (boolean)
+
+  Example:
+
+```json
+{
+  "mcp_enabled": true,
+  "adapter_available": true,
+  "toolkit_installed": true,
+  "can_auto_install": true,
+  "toolkit_download_url": "https://github.com/WPManageNinja/fluent-toolkit",
+  "endpoint_url": "https://example.com/wp-json/fluent-cart/mcp",
+  "tools_count": 35,
+  "app_passwords_url": "https://example.com/wp-admin/profile.php#application-passwords-section",
+  "plugins_url": "https://example.com/wp-admin/plugins.php",
+  "current_user_login": "admin",
+  "is_local_dev": false
+}
+```
+
+
+- **401** — Authentication required.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — The current user is not a super admin.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+
+---
+
+## POST `/settings/mcp/install-adapter`
+
+**POST Install MCP Adapter**
+
+Trigger a one-click install of the FluentHub adapter plugin, which is required for the MCP endpoint to work. The free FluentCart plugin can only detect and trigger this install — the actual installer logic lives in a Fluent Pro plugin (FluentCart Pro, or any other Fluent product) that hooks the `fluent_toolkit/*` contract. If no Pro plugin is active, this returns the manual download link instead of installing anything.
+
+**Required permission:** `is_super_admin`
+
+**Auth:** ApplicationPasswords
+
+**Responses**
+
+- **200** — FluentHub installed and activated, or a manual-install link was returned.
+
+  Schema (`application/json`):
+
+  - `adapter_available` (boolean)
+  - `toolkit_installed` (boolean)
+  - `message` (string)
+
+  Example:
+
+```json
+{
+  "adapter_available": true,
+  "toolkit_installed": true,
+  "message": "FluentHub installed and activated. The MCP endpoint is ready."
+}
+```
+
+
+- **401** — Authentication required.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — The current user is not a super admin.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Either the current WordPress user lacks the `install_plugins` capability (regardless of the `is_super_admin` route policy — the controller re-checks independently), or no Pro plugin supports automatic install and a manual download link is returned instead. Both cases use the framework's default `sendError()` status of 422; distinguish them by the presence of `toolkit_download_url`.
+
+  Example:
+
+```json
+{
+  "message": "Automatic install needs FluentCart Pro (or another Fluent Pro plugin). Install FluentHub manually, then reload this page to connect FluentCart with AI agents.",
+  "toolkit_download_url": "https://github.com/WPManageNinja/fluent-toolkit"
+}
+```
+
+
+
+---
+
+## POST `/settings/storage-drivers/bucket-list`
+
+**POST List Storage Buckets**
+
+List the buckets available to a storage driver's credentials, without saving them. Used by the settings UI to populate a bucket picker while a driver is being configured.
+
+**Required permission:** `is_super_admin`
+
+**Auth:** ApplicationPasswords
+
+**Request body** (`application/json`, required)
+
+- `driver` (string) **required** — The storage driver key (e.g., `s3`, `bunny`).
+- `settings` (object) **required** — Driver-specific credentials used to authenticate and list buckets. Fields vary by driver.
+  - _(object)_
+- `query` (string) — Optional search string to filter the bucket list by name.
+
+Example:
+
+```json
+{
+  "driver": "s3",
+  "settings": {
+    "access_key": "AKIAEXAMPLE1234",
+    "secret_key": "your-secret-key-here",
+    "region": "us-east-1"
+  },
+  "query": "store"
+}
+```
+
+
+**Responses**
+
+- **200** — Successful response. Returns the matching buckets as select-style options.
+
+  Schema (`application/json`):
+
+  - `options` (array<object>)
+    - `id` (string)
+    - `title` (string)
+
+  Example:
+
+```json
+{
+  "options": [
+    {
+      "id": "my-store-files",
+      "title": "my-store-files"
+    },
+    {
+      "id": "my-store-backups",
+      "title": "my-store-backups"
+    }
+  ]
+}
+```
+
+
+- **400** — The driver could not be resolved, or the driver's credentials were rejected while listing buckets.
+
+  Example:
+
+```json
+{
+  "message": "Could not connect to the storage provider with the supplied credentials.",
+  "error_data": null
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`is_super_admin`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
+
+---
+
+## POST `/settings/storage-drivers/reset`
+
+**POST Reset Storage Driver Settings**
+
+Reset a storage driver's saved settings (including any stored credentials) back to its defaults. The returned settings omit the driver's hidden/secret keys.
+
+**Required permission:** `is_super_admin`
+
+**Auth:** ApplicationPasswords
+
+**Request body** (`application/json`, required)
+
+- `driver` (string) **required** — The storage driver key to reset (e.g., `s3`, `local`).
+
+Example:
+
+```json
+{
+  "driver": "s3"
+}
+```
+
+
+**Responses**
+
+- **200** — Successful response. Returns the driver's reset settings, with secret keys omitted.
+
+  Schema (`application/json`):
+
+  - `message` (string)
+  - `data` (object) — The driver's default settings after reset, excluding hidden/secret keys.
+    - _(object)_
+
+  Example:
+
+```json
+{
+  "message": "Settings reset successfully",
+  "data": {
+    "is_active": "no",
+    "region": "",
+    "bucket": ""
+  }
+}
+```
+
+
+- **400** — The driver could not be resolved, or resetting its settings failed.
+
+  Example:
+
+```json
+{
+  "message": "Invalid driver.",
+  "error_data": null
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`is_super_admin`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
+
+---
+
+## POST `/settings/mcp/toggle`
+
+**POST Toggle MCP**
+
+Flip the master switch that enables or disables the FluentCart MCP server for AI agents. Writes the same option key the server boot guard reads, so a disabled state immediately blocks further MCP requests. The response reports the actually-persisted state rather than the requested value.
+
+**Required permission:** `is_super_admin`
+
+**Auth:** ApplicationPasswords
+
+**Request body** (`application/json`, required)
+
+- `mcp_enabled` (any) — Desired MCP state. Accepts a boolean, or the strings `yes`, `true`, `1`, `on` (case-insensitive) to enable; any other value disables.
+
+Example:
+
+```json
+{
+  "mcp_enabled": "yes"
+}
+```
+
+
+**Responses**
+
+- **200** — Successful response. Returns the persisted MCP state.
+
+  Schema (`application/json`):
+
+  - `mcp_enabled` (boolean)
+  - `message` (string)
+
+  Example:
+
+```json
+{
+  "mcp_enabled": true,
+  "message": "MCP enabled. AI agents with a valid app password can now reach the FluentCart tools."
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`is_super_admin`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — The current user cannot manage_options, so the setting was not changed.
+
+  Example:
+
+```json
+{
+  "message": "Sorry, you do not have permission to change the MCP setting."
+}
+```
+
+
+
+---
+
+## POST `/settings/modules/turnstile/verify`
+
+**POST Verify Turnstile Keys**
+
+Verify a Cloudflare Turnstile Site Key and Secret Key by exchanging the supplied client-side token with Cloudflare's `siteverify` endpoint. Used by the settings UI to confirm a Turnstile configuration works before it is saved.
+
+**Required permission:** `is_super_admin`
+
+**Auth:** ApplicationPasswords
+
+**Request body** (`application/json`, required)
+
+- `site_key` (string) **required** — Cloudflare Turnstile Site Key.
+- `secret_key` (string) **required** — Cloudflare Turnstile Secret Key.
+- `token` (string) **required** — The client-side Turnstile response token to verify, generated by widget on the current domain using the supplied Site Key.
+
+Example:
+
+```json
+{
+  "site_key": "0x4AAAAAAAExampleSiteKey",
+  "secret_key": "0x4AAAAAAAExampleSecretKey",
+  "token": "0.ExampleTurnstileResponseToken"
+}
+```
+
+
+**Responses**
+
+- **200** — Successful response. The keys and token verified against Cloudflare.
+
+  Schema (`application/json`):
+
+  - `message` (string)
+
+  Example:
+
+```json
+{
+  "message": "Turnstile keys are valid and working."
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`is_super_admin`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Site Key/Secret Key missing, no token could be obtained, Cloudflare could not be reached, or the keys/token failed verification.
+
+  Example:
+
+```json
+{
+  "message": "The Secret Key is invalid. Please check it in your Cloudflare Dashboard."
 }
 ```
 

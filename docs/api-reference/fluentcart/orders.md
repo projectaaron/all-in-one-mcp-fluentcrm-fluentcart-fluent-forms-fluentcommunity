@@ -1,16 +1,18 @@
 # FluentCart API — Orders
 
-22 endpoints. Base URL: `https://{website}/wp-json/fluent-cart/v2`. See the [FluentCart overview](../fluentcart.md) for auth and the full group list.
+32 endpoints. Base URL: `https://{website}/wp-json/fluent-cart/v2`. See the [FluentCart overview](../fluentcart.md) for auth and the full group list.
 
 _Generated from the FluentCart OpenAPI specs (dev.fluentcart.com)._
 
 ---
 
-## POST `/orders/{order}/transactions/{transaction_id}/accept-dispute/`
+## POST `/orders/{order}/transactions/{transaction_id}/accept-dispute`
 
 **POST Accept Dispute**
 
 Accept a payment dispute (chargeback) for a specific transaction.
+
+**Required permission:** `orders/manage`
 
 **Auth:** ApplicationPasswords
 
@@ -52,6 +54,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`orders/manage`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -60,6 +108,8 @@ Example:
 **POST Bulk Actions**
 
 Perform bulk actions on multiple orders at once.
+
+**Required permission:** `orders/manage`
 
 **Auth:** ApplicationPasswords
 
@@ -102,6 +152,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`orders/manage`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -110,6 +206,8 @@ Example:
 **POST Calculate Shipping**
 
 Calculate shipping charges for order items with a specific shipping method.
+
+**Required permissions:** all of `orders/create`, `orders/manage`
 
 **Auth:** ApplicationPasswords
 
@@ -170,6 +268,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`orders/create, orders/manage`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -178,6 +322,8 @@ Example:
 **POST Change Customer**
 
 Reassign an order to a different existing customer. Updates all connected orders (parent/child/renewals), subscriptions, and customer statistics.
+
+**Required permission:** `orders/manage`
 
 **Auth:** ApplicationPasswords
 
@@ -218,6 +364,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`orders/manage`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 - **423** — Validation error.
 
   Schema (`application/json`):
@@ -241,6 +433,8 @@ Example:
 **POST Create and Change Customer**
 
 Create a new customer and immediately assign them to the order. Combines customer creation with order reassignment.
+
+**Required permission:** `orders/manage`
 
 **Auth:** ApplicationPasswords
 
@@ -293,6 +487,36 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`orders/manage`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 - **422** — Validation error.
 
   Schema (`application/json`):
@@ -316,6 +540,8 @@ Example:
 **POST Create Custom Order Item**
 
 Add a custom product/item to an existing order.
+
+**Required permission:** `orders/create`
 
 **Auth:** ApplicationPasswords
 
@@ -363,6 +589,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`orders/create`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 - **423** — Error processing custom item.
 
   Schema (`application/json`):
@@ -386,6 +658,8 @@ Example:
 **POST Create Order**
 
 Create a new order manually from the admin panel.
+
+**Required permission:** `orders/create`
 
 **Auth:** ApplicationPasswords
 
@@ -516,6 +790,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`orders/create`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -524,6 +844,8 @@ Example:
 **DELETE Delete Order**
 
 Permanently delete an order and all associated data (transactions, items, meta, addresses, coupons, cart data, download permissions, labels). For subscription orders, also deletes all child renewal orders and subscriptions.
+
+**Required permission:** `orders/delete`
 
 **Auth:** ApplicationPasswords
 
@@ -562,6 +884,36 @@ Permanently delete an order and all associated data (transactions, items, meta, 
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`orders/delete`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 - **404** — Order not found.
 
   Schema (`application/json`):
@@ -577,6 +929,22 @@ Permanently delete an order and all associated data (transactions, items, meta, 
 ```
 
 
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -585,6 +953,8 @@ Permanently delete an order and all associated data (transactions, items, meta, 
 **POST Generate Missing Licenses**
 
 Generate any missing license keys for an order's items (requires Pro with licensing module).
+
+**Required permission:** `orders/manage`
 
 **Auth:** ApplicationPasswords
 
@@ -627,6 +997,36 @@ Generate any missing license keys for an order's items (requires Pro with licens
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`orders/manage`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 - **404** — Order not found.
 
   Schema (`application/json`):
@@ -642,6 +1042,22 @@ Generate any missing license keys for an order's items (requires Pro with licens
 ```
 
 
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -650,6 +1066,8 @@ Generate any missing license keys for an order's items (requires Pro with licens
 **GET Get Order Details**
 
 Retrieve detailed information about a specific order, including items, transactions, addresses, subscriptions, and activities.
+
+**Required permission:** `orders/view`
 
 **Auth:** ApplicationPasswords
 
@@ -676,6 +1094,9 @@ Retrieve detailed information about a specific order, including items, transacti
     - _(object)_
   - `selected_labels` (array<integer>) — Array of selected label IDs
   - `tax_id` (integer) — Tax ID if applicable
+  - `checkout_shipping` (object) — Shipping option selected at checkout, if any
+    - _(object)_
+  - `can_send_payment_reminder` (boolean) — Whether a payment reminder can currently be sent for this order
 
   Example:
 
@@ -884,7 +1305,55 @@ Retrieve detailed information about a specific order, including items, transacti
   "selected_labels": [
     1
   ],
-  "tax_id": null
+  "tax_id": null,
+  "checkout_shipping": null,
+  "can_send_payment_reminder": false
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`orders/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
 }
 ```
 
@@ -897,6 +1366,8 @@ Retrieve detailed information about a specific order, including items, transacti
 **GET Get Order Transactions**
 
 Retrieve all transactions for an order. Returns the full order details (same as Get Order Details), which includes the transactions relation.
+
+**Required permission:** `orders/view`
 
 **Auth:** ApplicationPasswords
 
@@ -923,6 +1394,9 @@ Retrieve all transactions for an order. Returns the full order details (same as 
     - _(object)_
   - `selected_labels` (array<integer>) — Array of selected label IDs
   - `tax_id` (integer) — Tax ID if applicable
+  - `checkout_shipping` (object) — Shipping option selected at checkout, if any
+    - _(object)_
+  - `can_send_payment_reminder` (boolean) — Whether a payment reminder can currently be sent for this order
 
   Example:
 
@@ -999,7 +1473,55 @@ Retrieve all transactions for an order. Returns the full order details (same as 
   "selected_labels": [
     1
   ],
-  "tax_id": null
+  "tax_id": null,
+  "checkout_shipping": null,
+  "can_send_payment_reminder": false
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`orders/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
 }
 ```
 
@@ -1012,6 +1534,8 @@ Retrieve all transactions for an order. Returns the full order details (same as 
 **GET Get Shipping Methods**
 
 Retrieve available shipping methods, optionally filtered by country and state. Returns methods applicable to the specified location and all other enabled methods separately.
+
+**Required permission:** `orders/manage`
 
 **Auth:** ApplicationPasswords
 
@@ -1065,6 +1589,36 @@ Retrieve available shipping methods, optionally filtered by country and state. R
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`orders/manage`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -1073,6 +1627,8 @@ Retrieve available shipping methods, optionally filtered by country and state. R
 **GET Get Single Transaction**
 
 Retrieve details of a specific transaction within an order. Returns the full order details (same as Get Order Details).
+
+**Required permission:** `orders/view`
 
 **Auth:** ApplicationPasswords
 
@@ -1100,6 +1656,9 @@ Retrieve details of a specific transaction within an order. Returns the full ord
     - _(object)_
   - `selected_labels` (array<integer>) — Array of selected label IDs
   - `tax_id` (integer) — Tax ID if applicable
+  - `checkout_shipping` (object) — The shipping method/rate selected at checkout, if the order has shipping. Null for orders without a shipping component.
+    - _(object)_
+  - `can_send_payment_reminder` (boolean) — Whether a manual payment reminder can currently be sent for this order (e.g. order is unpaid/past due and reminders are applicable).
 
   Example:
 
@@ -1176,7 +1735,55 @@ Retrieve details of a specific transaction within an order. Returns the full ord
   "selected_labels": [
     1
   ],
-  "tax_id": null
+  "tax_id": null,
+  "checkout_shipping": null,
+  "can_send_payment_reminder": false
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`orders/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
 }
 ```
 
@@ -1189,6 +1796,8 @@ Retrieve details of a specific transaction within an order. Returns the full ord
 **GET List Orders**
 
 Retrieve a paginated list of orders with optional filtering, sorting, and search.
+
+**Required permission:** `orders/view`
 
 **Auth:** ApplicationPasswords
 
@@ -1223,6 +1832,17 @@ Retrieve a paginated list of orders with optional filtering, sorting, and search
 
   - `orders` (object) — Paginated response
     - `current_page` (integer) — Current page number
+    - `first_page_url` (string) — URL of the first page
+    - `from` (integer) — Index of first item on this page
+    - `last_page_url` (string) — URL of the last page
+    - `links` (array<object>) — Pagination links (previous, page numbers, next)
+      - `url` (string)
+      - `label` (string)
+      - `active` (boolean)
+    - `next_page_url` (string) — URL of the next page
+    - `path` (string) — Base URL without query string
+    - `prev_page_url` (string) — URL of the previous page
+    - `to` (integer) — Index of last item on this page
     - `data` (array<object>) — Array of order objects
       - _(object)_
     - `per_page` (integer) — Items per page
@@ -1235,6 +1855,35 @@ Retrieve a paginated list of orders with optional filtering, sorting, and search
 {
   "orders": {
     "current_page": 1,
+    "first_page_url": "https://yoursite.com/wp-json/fluent-cart/v2/orders/?page=1",
+    "from": 1,
+    "last_page_url": "https://yoursite.com/wp-json/fluent-cart/v2/orders/?page=10",
+    "links": [
+      {
+        "url": null,
+        "label": "pagination.previous",
+        "active": false
+      },
+      {
+        "url": "https://yoursite.com/wp-json/fluent-cart/v2/orders/?page=1",
+        "label": "1",
+        "active": true
+      },
+      {
+        "url": "https://yoursite.com/wp-json/fluent-cart/v2/orders/?page=2",
+        "label": "2",
+        "active": false
+      },
+      {
+        "url": "https://yoursite.com/wp-json/fluent-cart/v2/orders/?page=2",
+        "label": "pagination.next",
+        "active": false
+      }
+    ],
+    "next_page_url": "https://yoursite.com/wp-json/fluent-cart/v2/orders/?page=2",
+    "path": "https://yoursite.com/wp-json/fluent-cart/v2/orders",
+    "prev_page_url": null,
+    "to": 10,
     "data": [
       {
         "id": 42,
@@ -1347,6 +1996,36 @@ Retrieve a paginated list of orders with optional filtering, sorting, and search
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`orders/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -1355,6 +2034,8 @@ Retrieve a paginated list of orders with optional filtering, sorting, and search
 **POST Mark Order as Paid**
 
 Mark a pending order as paid, creating or updating the transaction record.
+
+**Required permission:** `orders/manage`
 
 **Auth:** ApplicationPasswords
 
@@ -1400,6 +2081,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`orders/manage`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 - **423** — Order cannot be marked as paid.
 
   Schema (`application/json`):
@@ -1424,6 +2151,8 @@ Example:
 
 Process a full or partial refund for an order. Supports both gateway refunds and manual refunds, with optional subscription cancellation.
 
+**Required permission:** `orders/can_refund`
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -1437,7 +2166,7 @@ Process a full or partial refund for an order. Supports both gateway refunds and
 
 - `refund_info` (object) **required** — Refund details object
   - `transaction_id` (integer) **required** — ID of the transaction to refund
-  - `amount` (number) **required** — Refund amount in decimal format (e.g., 10.00 not cents). Will be converted to cents internally
+  - `amount` (number) **required** — Refund amount in cents, matching every other money value in the API (e.g. 2500 refunds $25.00).
   - `cancelSubscription` (string) — Set to `"true"` to cancel associated subscription
 
 Example:
@@ -1446,7 +2175,7 @@ Example:
 {
   "refund_info": {
     "transaction_id": 15,
-    "amount": 25,
+    "amount": 2500,
     "cancelSubscription": "true"
   }
 }
@@ -1504,6 +2233,36 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`orders/can_refund`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 - **422** — Validation error.
 
   Schema (`application/json`):
@@ -1527,6 +2286,8 @@ Example:
 **PUT Sync Order Statuses**
 
 Synchronize the order's status and payment status based on the latest transaction data. Useful for resolving status mismatches.
+
+**Required permission:** `orders/manage`
 
 **Auth:** ApplicationPasswords
 
@@ -1580,6 +2341,36 @@ Synchronize the order's status and payment status based on the latest transactio
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`orders/manage`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 - **404** — No transaction found.
 
   Schema (`application/json`):
@@ -1595,6 +2386,22 @@ Synchronize the order's status and payment status based on the latest transactio
 ```
 
 
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -1603,6 +2410,8 @@ Synchronize the order's status and payment status based on the latest transactio
 **POST Update Order**
 
 Update an existing order's details, items, discounts, shipping, and coupons. Subscription orders cannot be edited.
+
+**Required permission:** `orders/manage`
 
 **Auth:** ApplicationPasswords
 
@@ -1769,6 +2578,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`orders/manage`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -1777,6 +2632,8 @@ Example:
 **PUT Update Order Address**
 
 Update an existing order address (billing or shipping) with new address data.
+
+**Required permission:** `orders/manage`
 
 **Auth:** ApplicationPasswords
 
@@ -1835,6 +2692,36 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`orders/manage`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 - **404** — Address information does not match.
 
   Schema (`application/json`):
@@ -1850,6 +2737,22 @@ Example:
 ```
 
 
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -1858,6 +2761,8 @@ Example:
 **POST Update Order Address ID**
 
 Assign an existing customer address to an order's billing or shipping address.
+
+**Required permission:** `orders/manage`
 
 **Auth:** ApplicationPasswords
 
@@ -1900,6 +2805,36 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`orders/manage`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 - **404** — Order not found.
 
   Schema (`application/json`):
@@ -1915,6 +2850,22 @@ Example:
 ```
 
 
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -1923,6 +2874,8 @@ Example:
 **PUT Update Statuses**
 
 Update the order status or shipping status for an order.
+
+**Required permission:** `orders/manage_statuses`
 
 **Auth:** ApplicationPasswords
 
@@ -1994,6 +2947,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`orders/manage_statuses`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -2002,6 +3001,8 @@ Example:
 **PUT Update Transaction Status**
 
 Update the payment status of a specific transaction and sync the order's payment status accordingly.
+
+**Required permission:** `orders/manage`
 
 **Auth:** ApplicationPasswords
 
@@ -2067,6 +3068,1172 @@ Example:
 ```json
 {
   "message": "Transaction already has the same status"
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`orders/manage`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
+
+---
+
+## POST `/orders/calculate-tax`
+
+**POST Calculate Order Tax**
+
+Calculate tax for an admin-created order given a destination address and a list of line items. This is a pure calculation helper — no database writes occur and no order is created or modified. Up to 100 items are processed per request; any beyond that are silently dropped. If tax calculation isn't available for the given address, all totals are returned as zero.
+
+**Required permissions:** any one of `orders/create`, `orders/manage`
+
+**Auth:** ApplicationPasswords
+
+**Request body** (`application/json`, required)
+
+- `country` (string) — Destination country code (e.g. US).
+- `state` (string) — Destination state/province code.
+- `city` (string) — Destination city.
+- `postcode` (string) — Destination postal/zip code.
+- `items` (array<object>) — Line items to calculate tax for. Capped at 100 items per request.
+  - `post_id` (integer) — Product post ID.
+  - `object_id` (integer) — Variation/object ID.
+  - `subtotal` (integer) — Line subtotal in cents.
+  - `discount_total` (integer) — Discount applied to the line, in cents.
+  - `shipping_charge` (integer) — Shipping charge attributed to the line, in cents.
+  - `quantity` (integer) — Line quantity. Minimum 1.
+
+Example:
+
+```json
+{
+  "country": "US",
+  "state": "CA",
+  "city": "Springfield",
+  "postcode": "62704",
+  "items": [
+    {
+      "post_id": 123,
+      "object_id": 456,
+      "subtotal": 9900,
+      "discount_total": 0,
+      "shipping_charge": 0,
+      "quantity": 1
+    }
+  ]
+}
+```
+
+
+**Responses**
+
+- **200** — Successful response. Returns calculated tax totals.
+
+  Schema (`application/json`):
+
+  - `tax_total` (integer) — Total tax across all items, in cents.
+  - `shipping_tax` (integer) — Tax on shipping, in cents.
+  - `tax_behavior` (integer) — 0 for tax-exclusive, 1 for tax-inclusive pricing.
+  - `tax_country` (string)
+  - `tax_lines` (array<object>)
+    - `label` (string)
+    - `rate_percent` (number)
+    - `tax_amount` (integer) — Tax amount for this line, in cents.
+    - `inclusive` (boolean)
+
+  Example:
+
+```json
+{
+  "tax_total": 792,
+  "shipping_tax": 0,
+  "tax_behavior": 0,
+  "tax_country": "US",
+  "tax_lines": [
+    {
+      "label": "CA State Tax",
+      "rate_percent": 8,
+      "tax_amount": 792,
+      "inclusive": false
+    }
+  ]
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
+
+---
+
+## POST `/orders/{order}/subscriptions/{subscription}/charge-now`
+
+**POST Charge Subscription Now**
+
+Run one immediate off-session charge attempt against a subscription's open renewal invoice. Requires a store-billed (manual or auto-charge) subscription that already has a pending or scheduled renewal order. A declined card is returned as HTTP 200 with `status: "failed"` — the request itself succeeded, the charge attempt did not; only a state violation (e.g. no open renewal order to charge) returns an error response.
+
+**Required permission:** `subscriptions/manage`
+
+**Auth:** ApplicationPasswords
+
+**Path parameters**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `order` | integer | yes | Parent order ID the subscription belongs to. |
+| `subscription` | integer | yes | Subscription ID. |
+
+
+**Responses**
+
+- **200** — Charge attempt completed (may still report a failed charge in `status`).
+
+  Schema (`application/json`):
+
+  - `status` (string)
+  - `message` (string)
+  - `subscription` (object)
+    - _(object)_
+
+  Example:
+
+```json
+{
+  "status": "success",
+  "message": "Subscription charged successfully.",
+  "subscription": {
+    "id": 15,
+    "customer_id": 12,
+    "parent_order_id": 42,
+    "product_id": 123,
+    "item_name": "Developer Toolkit Pro - Annual License",
+    "variation_id": 456,
+    "billing_interval": "yearly",
+    "recurring_amount": 9900,
+    "recurring_total": 10692,
+    "status": "active",
+    "next_billing_date": "2026-09-20 14:25:00",
+    "created_at": "2025-09-20 14:25:00",
+    "updated_at": "2026-08-18 10:00:00"
+  }
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **404** — The 404 fires for whichever route-bound model resolves first: `order` (if the order ID doesn't exist) or `subscription` (if the order exists but the subscription ID doesn't, or doesn't belong to that order). No order matches the given ID. Thrown by the framework's route-model-binding, not an explicit controller check, so the message is generic and names the model class.
+
+  Example:
+
+```json
+{
+  "message": "No query results for model [FluentCart\\\\App\\\\Models\\\\Order]."
+}
+```
+
+
+- **422** — No open renewal order to charge, or the charge attempt could not be started.
+
+  Schema (`application/json`):
+
+  - `message` (string)
+
+  Example:
+
+```json
+{
+  "message": "There is no open renewal order to charge for this subscription."
+}
+```
+
+
+
+---
+
+## POST `/orders/{order}/subscriptions/{subscription}/create-renewal`
+
+**POST Create Renewal Now**
+
+Immediately create the next renewal order for a store-billed (manual or auto-charge) subscription, ahead of its scheduled billing date. Only valid for active or trialing subscriptions that have an upcoming billing date. For auto-charge (system) subscriptions, the newly created (or already-open) renewal is charged immediately and the response mirrors the charge-now endpoint; for manual subscriptions the renewal is created as a pay-now invoice and the customer is emailed.
+
+**Required permission:** `subscriptions/manage`
+
+**Auth:** ApplicationPasswords
+
+**Path parameters**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `order` | integer | yes | Parent order ID the subscription belongs to. |
+| `subscription` | integer | yes | Subscription ID. |
+
+
+**Responses**
+
+- **200** — Renewal created (manual subscriptions) or charged (auto-charge subscriptions).
+
+  Schema (`application/json`):
+
+  - `message` (string)
+  - `renewal` (object)
+    - _(object)_
+
+  Example:
+
+```json
+{
+  "message": "Renewal has been created successfully.",
+  "renewal": {
+    "id": 87,
+    "uuid": "ord_b2c3d4e5f6a7",
+    "parent_id": 42,
+    "type": "renewal",
+    "status": "pending",
+    "payment_status": "pending",
+    "total_amount": 10692,
+    "currency": "USD",
+    "created_at": "2026-08-18 10:00:00"
+  }
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **404** — The 404 fires for whichever route-bound model resolves first: `order` or `subscription`. No order matches the given ID. Thrown by the framework's route-model-binding, not an explicit controller check, so the message is generic and names the model class.
+
+  Example:
+
+```json
+{
+  "message": "No query results for model [FluentCart\\\\App\\\\Models\\\\Order]."
+}
+```
+
+
+- **422** — The subscription is not eligible for an immediate renewal right now (wrong billing type, status, or a renewal already exists).
+
+  Schema (`application/json`):
+
+  - `message` (string)
+
+  Example:
+
+```json
+{
+  "message": "A pending renewal already exists for this subscription."
+}
+```
+
+
+
+---
+
+## GET `/renewals/{id}`
+
+**GET Get Renewal Invoice Details**
+
+Retrieve a single renewal invoice (an order of type `renewal`), including its customer, order items, and transactions.
+
+**Required permission:** `orders/view`
+
+**Auth:** ApplicationPasswords
+
+**Path parameters**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `id` | integer | yes | Renewal order ID |
+
+
+**Responses**
+
+- **200** — Successful response. Returns the renewal invoice.
+
+  Schema (`application/json`):
+
+  - `invoice` (object) — Renewal order with customer, order_items, and transactions relations
+    - _(object)_
+
+  Example:
+
+```json
+{
+  "invoice": {
+    "id": 5151,
+    "status": "completed",
+    "type": "renewal",
+    "customer_id": 1484,
+    "payment_status": "paid",
+    "total_amount": 9900
+  }
+}
+```
+
+
+- **401** — Authentication required.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — The current user lacks the orders/view permission.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **404** — No renewal order matches the given ID. Uses the shared entity-not-found shape (`entityNotFoundError()`), which nests the message under `data` and includes admin-UI hints.
+
+  Example:
+
+```json
+{
+  "code": "fluent_cart_entity_not_found",
+  "data": {
+    "message": "Renewal order not found",
+    "buttonText": "Back to Orders",
+    "route": "/orders"
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
+
+---
+
+## GET `/renewals`
+
+**GET List Renewal Invoices**
+
+List orders of type `renewal` (subscription renewal invoices), newest first, paginated. Each row includes its customer relation.
+
+**Required permission:** `orders/view`
+
+**Auth:** ApplicationPasswords
+
+**Query parameters**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `payment_status` | string | no | Filter by payment status (e.g. paid, pending, failed). |
+| `parent_id` | integer | no | Filter to renewal invoices belonging to a specific parent order ID. |
+| `customer_id` | integer | no | Filter to renewal invoices belonging to a specific customer ID. |
+
+
+**Responses**
+
+- **200** — Successful response. Returns a paginated list of renewal invoices.
+
+  Schema (`application/json`):
+
+  - `invoices` (object) — Laravel-style paginator payload
+    - _(object)_
+
+  Example:
+
+```json
+{
+  "invoices": {
+    "current_page": 1,
+    "data": [
+      {
+        "id": 5151,
+        "status": "completed",
+        "customer_id": 1484,
+        "payment_status": "paid",
+        "total_amount": 9900
+      }
+    ],
+    "from": 1,
+    "last_page": 175,
+    "per_page": 15,
+    "to": 15,
+    "total": 2612
+  }
+}
+```
+
+
+- **401** — Authentication required.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — The current user lacks the orders/view permission.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+
+---
+
+## POST `/renewals/{order}/resend`
+
+**POST Resend Renewal Invoice Email**
+
+Resend the pay-now email notification for a pending renewal invoice. Only allowed for renewal orders with `payment_status = pending`. If the invoice belongs to a system (store-managed) subscription that is still mid-retry, the resend is blocked until the automatic retry ladder is exhausted, so it never overlaps the dunning emails.
+
+**Required permission:** `orders/manage`
+
+**Auth:** ApplicationPasswords
+
+**Path parameters**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `order` | integer | yes | Renewal order ID |
+
+
+**Responses**
+
+- **200** — Renewal invoice email resent.
+
+  Schema (`application/json`):
+
+  - `message` (string)
+
+  Example:
+
+```json
+{
+  "message": "Renewal order email has been resent"
+}
+```
+
+
+- **400** — Order is not a renewal, is not pending, or its automatic retries have not yet exhausted.
+
+  Example:
+
+```json
+{
+  "message": "Only pending renewal orders can be resent"
+}
+```
+
+
+- **401** — Authentication required.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — The current user lacks the orders/manage permission.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **404** — No order matches the given ID. Thrown by the framework's route-model-binding (`Order::firstOrFail()`), not an explicit controller check, so the message is generic.
+
+  Example:
+
+```json
+{
+  "message": "No query results for model [FluentCart\\App\\Models\\Order]."
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
+
+---
+
+## POST `/orders/{order}/subscriptions/{subscription}/skip-renewal`
+
+**POST Skip Next Renewal Period**
+
+Advance a store-billed (manual or auto-charge) subscription's `next_billing_date` to the following period without creating or charging a renewal for the current one. Only valid for active or trialing subscriptions with an upcoming billing date. The skip does not stack — if a skip is already pending, or there is nothing left to advance, the request fails.
+
+**Required permission:** `subscriptions/manage`
+
+**Auth:** ApplicationPasswords
+
+**Path parameters**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `order` | integer | yes | Parent order ID the subscription belongs to. |
+| `subscription` | integer | yes | Subscription ID. |
+
+
+**Request body** (`application/json`)
+
+- `reason` (string) — Optional note recorded against the skip.
+
+Example:
+
+```json
+{
+  "reason": "Customer requested a one-cycle pause"
+}
+```
+
+
+**Responses**
+
+- **200** — Billing period skipped successfully.
+
+  Schema (`application/json`):
+
+  - `message` (string)
+  - `old_next_billing_date` (string)
+  - `new_next_billing_date` (string)
+
+  Example:
+
+```json
+{
+  "message": "Billing period has been skipped successfully.",
+  "old_next_billing_date": "2026-09-01 00:00:00",
+  "new_next_billing_date": "2026-10-01 00:00:00"
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **404** — The 404 fires for whichever route-bound model resolves first: `order` or `subscription`. No order matches the given ID. Thrown by the framework's route-model-binding, not an explicit controller check, so the message is generic and names the model class.
+
+  Example:
+
+```json
+{
+  "message": "No query results for model [FluentCart\\\\App\\\\Models\\\\Order]."
+}
+```
+
+
+- **422** — The subscription is not eligible to skip a period right now (wrong billing type, status, no upcoming date, or a skip is already pending).
+
+  Schema (`application/json`):
+
+  - `message` (string)
+
+  Example:
+
+```json
+{
+  "message": "The next period could not be skipped. It may have already been skipped."
+}
+```
+
+
+
+---
+
+## POST `/orders/{order}/transactions/{transaction}/sync`
+
+**POST Sync Pending Transaction**
+
+Re-fetch a pending transaction's current status directly from its payment gateway and update the local record to match. Use this to reconcile a transaction stuck in a pending state after a webhook was missed or delayed.
+
+**Required permission:** `orders/manage`
+
+**Auth:** ApplicationPasswords
+
+**Path parameters**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `order` | integer | yes | Order ID the transaction belongs to. |
+| `transaction` | integer | yes | Transaction ID to sync. |
+
+
+**Responses**
+
+- **200** — Transaction synced from the payment gateway successfully.
+
+  Schema (`application/json`):
+
+  - `message` (string)
+  - `transaction` (object)
+    - _(object)_
+
+  Example:
+
+```json
+{
+  "message": "Transaction has been synced from the payment gateway successfully!",
+  "transaction": {
+    "id": 78,
+    "order_id": 42,
+    "vendor_charge_id": "ch_3PxKE2JY8q",
+    "payment_method": "stripe",
+    "payment_mode": "live",
+    "payment_method_type": "card",
+    "currency": "USD",
+    "transaction_type": "payment",
+    "card_last_4": "4242",
+    "card_brand": "visa",
+    "status": "paid",
+    "total": 10692,
+    "uuid": "txn_f7e8d9c0",
+    "created_at": "2026-08-18 10:00:00"
+  }
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **404** — The 404 fires for whichever route-bound model resolves first: `order` (the plain `$order` string) is not model-bound here, only `transaction` is, so this only fires when the transaction ID doesn't exist. No ordertransaction matches the given ID. Thrown by the framework's route-model-binding, not an explicit controller check, so the message is generic and names the model class.
+
+  Example:
+
+```json
+{
+  "message": "No query results for model [FluentCart\\\\App\\\\Models\\\\OrderTransaction]."
+}
+```
+
+
+- **422** — The transaction does not belong to the given order, or the gateway sync failed.
+
+  Schema (`application/json`):
+
+  - `message` (string)
+
+  Example:
+
+```json
+{
+  "message": "The selected transaction does not match with the provided order"
+}
+```
+
+
+
+---
+
+## PUT `/orders/{order}/subscriptions/{subscription}/update`
+
+**PUT Update Subscription**
+
+Update a manual subscription's billing details — recurring amount, remaining bill count, billing interval, status, or next billing date. Only subscriptions with a manual collection method can be updated through this endpoint; system (auto-charge) and gateway-managed subscriptions are rejected. Note `recurring_total` is submitted as a decimal amount in the store's currency (e.g. `29.99`), not cents, unlike most other money fields in this API.
+
+**Required permission:** `subscriptions/manage`
+
+**Auth:** ApplicationPasswords
+
+**Path parameters**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `order` | integer | yes | Parent order ID the subscription belongs to. |
+| `subscription` | integer | yes | Subscription ID. |
+
+
+**Request body** (`application/json`, required)
+
+- `status` (string) **required** _(enum: `active`, `paused`, `trialing`, `canceled`, `expired`, `completed`, `past_due`)_ — New subscription status.
+- `recurring_total` (number) _(min: 0)_ — New recurring amount, as a decimal in the store's currency (e.g. 29.99) — not cents.
+- `bill_times` (integer) _(min: 0)_ — Number of remaining billing cycles.
+- `billing_interval` (string) _(maxLength: 100)_ — Billing interval label (e.g. monthly, yearly).
+- `next_billing_date` (string) _(maxLength: 25)_ — Next billing date. Any string `strtotime()` can parse.
+
+Example:
+
+```json
+{
+  "status": "active",
+  "recurring_total": 29.99,
+  "bill_times": 0,
+  "billing_interval": "monthly",
+  "next_billing_date": "2026-09-18 00:00:00"
+}
+```
+
+
+**Responses**
+
+- **200** — Subscription updated successfully.
+
+  Schema (`application/json`):
+
+  - `message` (string)
+  - `subscription` (object)
+    - _(object)_
+
+  Example:
+
+```json
+{
+  "message": "Subscription has been updated successfully!",
+  "subscription": {
+    "id": 15,
+    "customer_id": 12,
+    "parent_order_id": 42,
+    "product_id": 123,
+    "item_name": "Developer Toolkit Pro - Annual License",
+    "variation_id": 456,
+    "billing_interval": "yearly",
+    "recurring_amount": 9900,
+    "recurring_total": 10692,
+    "status": "active",
+    "next_billing_date": "2026-09-20 14:25:00",
+    "created_at": "2025-09-20 14:25:00",
+    "updated_at": "2026-08-18 10:00:00"
+  }
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **404** — The 404 fires for whichever route-bound model resolves first: `order` or `subscription`. No order matches the given ID. Thrown by the framework's route-model-binding, not an explicit controller check, so the message is generic and names the model class.
+
+  Example:
+
+```json
+{
+  "message": "No query results for model [FluentCart\\\\App\\\\Models\\\\Order]."
+}
+```
+
+
+- **422** — Validation failed (e.g. missing/invalid status, or the subscription is not manual and cannot be updated).
+
+  Schema (`application/json`):
+
+  - `message` (string)
+
+  Example:
+
+```json
+{
+  "message": "Only manual subscriptions can be updated."
+}
+```
+
+
+
+---
+
+## POST `/renewals/{order}/void`
+
+**POST Void Renewal Invoice**
+
+Cancel a pending or scheduled renewal invoice. Sets the order's payment_status to failed and status to canceled, fails any pending transactions on it, advances the subscription past this billing period so the scheduler doesn't immediately regenerate the same invoice, and recounts the customer's stats. If the invoice was paid by a concurrent webhook between validation and the update, the void is rejected instead of overwriting a paid invoice.
+
+**Required permission:** `orders/manage`
+
+**Auth:** ApplicationPasswords
+
+**Path parameters**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `order` | integer | yes | Renewal order ID |
+
+
+**Responses**
+
+- **200** — Renewal invoice voided.
+
+  Schema (`application/json`):
+
+  - `message` (string)
+
+  Example:
+
+```json
+{
+  "message": "Renewal order has been voided successfully"
+}
+```
+
+
+- **400** — Order is not a renewal, or is not pending/scheduled.
+
+  Example:
+
+```json
+{
+  "message": "Only pending or scheduled invoices can be voided"
+}
+```
+
+
+- **401** — Authentication required.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — The current user lacks the orders/manage permission.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **404** — No order matches the given ID. Thrown by the framework's route-model-binding, not an explicit controller check, so the message is generic and names the model class.
+
+  Example:
+
+```json
+{
+  "message": "No query results for model [FluentCart\\\\App\\\\Models\\\\Order]."
+}
+```
+
+
+- **409** — The invoice was paid by a concurrent webhook and can no longer be voided.
+
+  Example:
+
+```json
+{
+  "message": "This invoice was just paid and can no longer be voided"
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
 }
 ```
 

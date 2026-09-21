@@ -1,6 +1,6 @@
 # FluentCart API — Licensing (Pro)
 
-27 endpoints. Base URL: `https://{website}/wp-json/fluent-cart/v2`. See the [FluentCart overview](../fluentcart.md) for auth and the full group list.
+26 endpoints. Base URL: `https://{website}/wp-json/fluent-cart/v2`. See the [FluentCart overview](../fluentcart.md) for auth and the full group list.
 
 _Generated from the FluentCart OpenAPI specs (dev.fluentcart.com)._
 
@@ -11,6 +11,8 @@ _Generated from the FluentCart OpenAPI specs (dev.fluentcart.com)._
 **POST Activate Plugin License**
 
 Activate a FluentCart Pro license key on this WordPress site.
+
+**Policy:** `AdminPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -82,6 +84,8 @@ Example:
 
 Manually activate a site URL on a license from the admin panel.
 
+**Permission:** `licenses/manage` · **Policy:** `LicensePolicy`
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -147,6 +151,8 @@ Example:
 
 Deactivate the FluentCart Pro license from this WordPress site.
 
+**Policy:** `AdminPolicy`
+
 **Auth:** ApplicationPasswords
 
 **Responses**
@@ -181,6 +187,8 @@ Deactivate the FluentCart Pro license from this WordPress site.
 **POST Deactivate Site (Admin)**
 
 Deactivate a specific site activation from a license using the activation ID.
+
+**Permission:** `licenses/manage` · **Policy:** `LicensePolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -247,6 +255,8 @@ Example:
 
 Deactivate a specific site from a license. The customer can only deactivate sites from their own licenses.
 
+**Policy:** `CustomerFrontendPolicy`
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -310,6 +320,8 @@ Example:
 
 Permanently delete a license and all its associated data.
 
+**Permission:** `licenses/delete` · **Policy:** `LicensePolicy`
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -344,6 +356,8 @@ Permanently delete a license and all its associated data.
 **POST Extend License Validity**
 
 Change the expiration date of a license. Can extend, reduce, or set to lifetime. If the license status is not `active` or `inactive`, it will be automatically set to `active`.
+
+**Permission:** `licenses/manage` · **Policy:** `LicensePolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -417,6 +431,8 @@ Example:
 
 Retrieve full details of a specific license for the currently logged-in customer.
 
+**Policy:** `CustomerFrontendPolicy`
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -432,7 +448,6 @@ Retrieve full details of a specific license for the currently logged-in customer
 
   Schema (`application/json`):
 
-  - `message` (string)
   - `license` (object)
     - `license_key` (string)
     - `status` (string)
@@ -486,7 +501,7 @@ Retrieve full details of a specific license for the currently logged-in customer
 ```
 
 
-- **422** — License or customer not found
+- **422** — License not found for this customer, or no customer could be resolved for the current user. Both causes return 422 — the controller's `sendError()` calls use the framework default status.
 
   Schema (`application/json`):
 
@@ -509,6 +524,8 @@ Retrieve full details of a specific license for the currently logged-in customer
 **GET Get Customer Licenses (Admin)**
 
 Retrieve a paginated list of licenses belonging to a specific customer.
+
+**Permission:** `licenses/view` · **Policy:** `LicensePolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -619,6 +636,8 @@ Retrieve a paginated list of licenses belonging to a specific customer.
 
 Retrieve all site activations for a specific license belonging to the currently logged-in customer.
 
+**Policy:** `CustomerFrontendPolicy`
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -680,85 +699,13 @@ Retrieve all site activations for a specific license belonging to the currently 
 
 ---
 
-## GET `/reports/license-chart`
-
-**GET Get License Line Chart**
-
-Retrieve license data formatted for a line chart visualization.
-
-**Auth:** ApplicationPasswords
-
-**Query parameters**
-
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `params` | object | yes | Request parameters object containing filters, date range, and grouping |
-| `params[startDate]` | string | yes | Start date for the report (ISO 8601 format) |
-| `params[endDate]` | string | yes | End date for the report (ISO 8601 format) |
-| `params[groupKey]` | string | yes | Grouping key for the chart (e.g., 'day', 'week', 'month') |
-| `params[filters]` | object | no | Filter criteria |
-
-
-**Responses**
-
-- **200** — Successful response
-
-  Schema (`application/json`):
-
-  - _(object)_
-
-  Example:
-
-```json
-{
-  "labels": [
-    "2024-01",
-    "2024-02",
-    "2024-03",
-    "2024-04",
-    "2024-05",
-    "2024-06"
-  ],
-  "datasets": [
-    {
-      "label": "Licenses Issued",
-      "data": [
-        18,
-        22,
-        28,
-        24,
-        32,
-        30
-      ]
-    },
-    {
-      "label": "Activations",
-      "data": [
-        25,
-        30,
-        38,
-        35,
-        45,
-        42
-      ]
-    }
-  ],
-  "summary": {
-    "total_licenses_issued": 154,
-    "total_activations": 215
-  }
-}
-```
-
-
-
----
-
 ## GET `/licensing/licenses/{id}`
 
 **GET Get License Details**
 
 Retrieve the full details of a single license including the associated order, activations, product information, downloads, labels, and previous orders.
+
+**Permission:** `licenses/view` · **Policy:** `LicensePolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -780,6 +727,8 @@ Retrieve the full details of a single license including the associated order, ac
   - `downloads` (array<object>)
     - _(object)_
   - `order` (object)
+    - _(object)_
+  - `transactions` (array<object>) — Related order transactions. Always present, but only populated when `transactions` is requested in the helper's `$with` list — this route does not request it, so it is always an empty array here.
     - _(object)_
   - `activations` (array<object>)
     - _(object)_
@@ -967,113 +916,13 @@ Retrieve the full details of a single license including the associated order, ac
 
 ---
 
-## GET `/reports/license-pie-chart`
-
-**GET Get License Pie Chart**
-
-Retrieve license data formatted for a pie chart visualization.
-
-**Auth:** ApplicationPasswords
-
-**Query parameters**
-
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `params` | object | yes | Request parameters object containing filters and date range |
-| `params[startDate]` | string | yes | Start date for the report (ISO 8601 format) |
-| `params[endDate]` | string | yes | End date for the report (ISO 8601 format) |
-| `params[filters]` | object | no | Filter criteria |
-
-
-**Responses**
-
-- **200** — Successful response
-
-  Schema (`application/json`):
-
-  - _(object)_
-
-  Example:
-
-```json
-{
-  "distribution": [
-    {
-      "label": "Active",
-      "value": 198,
-      "percentage": 80.8,
-      "color": "#67C23A"
-    },
-    {
-      "label": "Expired",
-      "value": 32,
-      "percentage": 13.1,
-      "color": "#E6A23C"
-    },
-    {
-      "label": "Revoked",
-      "value": 15,
-      "percentage": 6.1,
-      "color": "#F56C6C"
-    }
-  ],
-  "total_licenses": 245
-}
-```
-
-
-
----
-
-## GET `/reports/license-summary`
-
-**GET Get License Summary**
-
-Retrieve a summary of license statistics.
-
-**Auth:** ApplicationPasswords
-
-**Query parameters**
-
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `params` | object | yes | Request parameters object containing filters and date range |
-| `params[startDate]` | string | yes | Start date for the report (ISO 8601 format) |
-| `params[endDate]` | string | yes | End date for the report (ISO 8601 format) |
-| `params[filters]` | object | no | Filter criteria |
-
-
-**Responses**
-
-- **200** — Successful response
-
-  Schema (`application/json`):
-
-  - _(object)_
-
-  Example:
-
-```json
-{
-  "total_licenses": 245,
-  "active_licenses": 198,
-  "expired_licenses": 32,
-  "revoked_licenses": 15,
-  "total_activations": 412,
-  "average_activations_per_license": 1.68,
-  "activation_limit_reached": 24
-}
-```
-
-
-
----
-
 ## GET `/settings/license/`
 
 **GET Get Plugin License Status**
 
 Retrieve the current activation status of the FluentCart Pro plugin license on this site.
+
+**Policy:** `AdminPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -1086,6 +935,9 @@ Retrieve the current activation status of the FluentCart Pro plugin license on t
   - `status` (string) — License status (e.g., `valid`, `invalid`, `expired`)
   - `license_key` (string) — The activated license key
   - `expires` (string) — License expiration date
+  - `activation_hash` (string) — Opaque hash identifying this site's activation record.
+  - `variation_id` (integer) — ID of the purchased product variation.
+  - `variation_title` (string) — Human-readable variation title, e.g. `5 Sites - Yearly`.
 
   Example:
 
@@ -1106,6 +958,8 @@ Retrieve the current activation status of the FluentCart Pro plugin license on t
 **GET Get Product License Settings**
 
 Retrieve the license configuration for a specific product, including per-variation activation limits and validity periods.
+
+**Permission:** `licenses/view` · **Policy:** `LicensePolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -1152,6 +1006,7 @@ Retrieve the license configuration for a specific product, including per-variati
     - `changelog` (string) — HTML changelog content
     - `license_keys` (string) — Pre-defined license keys (if applicable)
   - `is_bundle_product` (boolean) — Whether the product is a bundle (licensing is disabled for bundles)
+  - `signed_releases_enabled` (boolean) — Whether release signing is active, from `ReleaseSignature::isEnabled()`. Gates the two release-signing inputs on the product screen; stores that do not sign releases never see the fields. Toggled with the `fluent_cart/licensing/enable_signed_releases` filter.
 
   Example:
 
@@ -1231,6 +1086,8 @@ Retrieve the license configuration for a specific product, including per-variati
 **GET List Customer Licenses**
 
 Retrieve a paginated list of licenses belonging to the currently logged-in customer.
+
+**Policy:** `CustomerFrontendPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -1312,6 +1169,8 @@ Retrieve a paginated list of licenses belonging to the currently logged-in custo
 
 Retrieve a paginated list of all licenses with optional filtering, sorting, and search.
 
+**Permission:** `licenses/view` · **Policy:** `LicensePolicy`
+
 **Auth:** ApplicationPasswords
 
 **Query parameters**
@@ -1358,9 +1217,24 @@ Retrieve a paginated list of all licenses with optional filtering, sorting, and 
       - `subscription_id` (integer)
       - `created_at` (string)
       - `updated_at` (string)
+      - `config` (object) — Arbitrary per-license configuration payload.
+        - _(object)_
+      - `last_reminder_sent` (string) — Timestamp of the last renewal reminder sent for this license.
+      - `last_reminder_type` (string) — Which reminder template was last sent.
     - `per_page` (integer)
     - `total` (integer)
     - `last_page` (integer)
+    - `first_page_url` (string)
+    - `from` (integer)
+    - `last_page_url` (string)
+    - `links` (array<object>) — Rendered pagination links, including the `&laquo; Previous` / `Next &raquo;` entries.
+      - `url` (string)
+      - `label` (string)
+      - `active` (boolean)
+    - `next_page_url` (string)
+    - `path` (string)
+    - `prev_page_url` (string)
+    - `to` (integer)
 
   Example:
 
@@ -1779,6 +1653,8 @@ Retrieve the latest version information for a licensed product. This endpoint is
 
 Generate a new random license key for an existing license. The old key is immediately invalidated.
 
+**Permission:** `licenses/manage` · **Policy:** `LicensePolicy`
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -1822,6 +1698,8 @@ Generate a new random license key for an existing license. The old key is immedi
 **POST Save Product License Settings**
 
 Update the license configuration for a specific product.
+
+**Permission:** `licenses/manage` · **Policy:** `LicensePolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -1939,6 +1817,8 @@ Example:
 
 Change the maximum number of site activations allowed for a license.
 
+**Permission:** `licenses/manage` · **Policy:** `LicensePolicy`
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -1993,6 +1873,8 @@ Example:
 **POST Update License Status**
 
 Change the status of a license.
+
+**Permission:** `licenses/manage` · **Policy:** `LicensePolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -2051,6 +1933,323 @@ Example:
 ```json
 {
   "message": "Invalid status!"
+}
+```
+
+
+
+---
+
+## GET `/licensing/sites/{id}`
+
+**GET Get License Site**
+
+Retrieve one site with its paginated activation history, plus the customers and orders referenced by those activations.
+
+Activations are ordered newest first. Note the response nests a **hand-built** pagination object under `activations` (only `data`, `total`, `per_page`, `current_page`, `last_page`) rather than the full paginator used elsewhere.
+
+**Permission:** `licenses/view` · **Policy:** `LicensePolicy`
+
+**Auth:** ApplicationPasswords
+
+**Path parameters**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `id` | integer | yes | ID of the license site. |
+
+
+**Query parameters**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `per_page` | integer | no | Activations per page. Clamped into the 1–100 range (default: 15). |
+| `page` | integer | no | Page number of the activation history. |
+
+
+**Responses**
+
+- **200** — Successful response
+
+  Schema (`application/json`):
+
+  - `site` (object)
+    - `id` (integer)
+    - `site_url` (string) — Host the license was activated against, stored without a scheme.
+    - `server_version` (string) — PHP version reported by the remote site.
+    - `platform_version` (string) — WordPress version reported by the remote site.
+    - `other` (array<object>) — Additional environment data reported at activation.
+      - _(object)_
+    - `created_at` (string)
+    - `updated_at` (string)
+  - `activations` (object)
+    - `data` (array<object>)
+      - `id` (integer)
+      - `license_id` (string)
+      - `license_key` (string)
+      - `product_id` (string)
+      - `product_name` (string) — Falls back to `Unknown Product` when the product has been deleted.
+      - `variation_title` (string)
+      - `license_status` (string)
+      - `activation_status` (string)
+      - `is_local` (string)
+      - `last_update_version` (string)
+      - `last_update_date` (string)
+      - `customer` (object)
+        - `id` (integer)
+        - `full_name` (string)
+        - `email` (string)
+      - `order_id` (string)
+      - `expiration_date` (string) — `null` for lifetime licenses.
+      - `activation_limit` (string)
+      - `activation_count` (string)
+      - `created_at` (object)
+        - _(object)_
+    - `total` (integer)
+    - `per_page` (integer)
+    - `current_page` (integer)
+    - `last_page` (integer)
+  - `customers` (array<object>) — Full customer records referenced by the activations on this page.
+    - _(object)_
+  - `orders` (array<object>) — Full order records referenced by the activations on this page, newest first.
+    - _(object)_
+
+  Example:
+
+```json
+{
+  "site": {
+    "id": 2480,
+    "site_url": "shop.example.org",
+    "server_version": "8.3.30",
+    "platform_version": "7.0",
+    "other": [],
+    "created_at": "2026-05-29T19:12:38+00:00",
+    "updated_at": "2026-05-29T19:12:38+00:00"
+  },
+  "activations": {
+    "data": [
+      {
+        "id": 2798,
+        "license_id": "1196",
+        "license_key": "fct-3f9a1c7e58b24d06af71e2c9b5d84a30",
+        "product_id": "21480",
+        "product_name": "FluentCart Pro",
+        "variation_title": "50 Sites - Lifetime License",
+        "license_status": "active",
+        "activation_status": "active",
+        "is_local": "0",
+        "last_update_version": "",
+        "last_update_date": "2026-05-29 13:12:38",
+        "customer": {
+          "id": 1219,
+          "full_name": "Alex Morgan",
+          "email": "alex.morgan@example.com"
+        },
+        "order_id": "1311",
+        "expiration_date": null,
+        "activation_limit": "50",
+        "activation_count": "3",
+        "created_at": {
+          "date": "2026-05-29 19:12:38.000000",
+          "timezone_type": 3,
+          "timezone": "UTC"
+        }
+      }
+    ],
+    "total": 1,
+    "per_page": 15,
+    "current_page": 1,
+    "last_page": 1
+  },
+  "customers": [
+    {
+      "id": 1219,
+      "first_name": "Alex",
+      "last_name": "Morgan",
+      "email": "alex.morgan@example.com",
+      "status": "active",
+      "purchase_count": 1
+    }
+  ],
+  "orders": [
+    {
+      "id": 1311,
+      "status": "completed",
+      "payment_status": "paid",
+      "currency": "USD",
+      "total_amount": 24900
+    }
+  ]
+}
+```
+
+
+- **403** — Forbidden — the user lacks `licenses/view`.
+
+  Schema (`application/json`):
+
+  - `code` (string)
+  - `message` (string)
+  - `data` (object)
+    - `status` (integer)
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **404** — No license site matches that ID.
+
+  Schema (`application/json`):
+
+  - `message` (string) — Human-readable error message
+
+  Example:
+
+```json
+{
+  "message": "No query results for model [LicenseSite]."
+}
+```
+
+
+
+---
+
+## GET `/licensing/sites`
+
+**GET List License Sites**
+
+Retrieve a paginated list of every site that has activated a license, enriched with the products licensed there, the owning customers, whether any activation is a local/dev install, and the most recent activation activity.
+
+Activations are batch-loaded per page, so the enrichment costs one extra query regardless of page size.
+
+**Permission:** `licenses/view` · **Policy:** `LicensePolicy`
+
+**Auth:** ApplicationPasswords
+
+**Query parameters**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `page` | integer | no | Page number for pagination. |
+| `per_page` | integer | no | Records per page (default: 10). |
+| `search` | string | no | Search term matched against the site URL. |
+| `sort_by` | string | no | Column to sort by. |
+| `sort_type` | string | no | Sort direction. |
+| `filter_type` | string | no | Filter mode. |
+| `advanced_filters` | string | no | JSON-encoded array of advanced filter groups. |
+
+
+**Responses**
+
+- **200** — Successful response
+
+  Schema (`application/json`):
+
+  - `sites` (object)
+    - `current_page` (integer)
+    - `data` (array<object>)
+      - `id` (integer)
+      - `site_url` (string) — Host the license was activated against, stored without a scheme.
+      - `server_version` (string) — PHP version reported by the remote site.
+      - `platform_version` (string) — WordPress version reported by the remote site.
+      - `other` (array<object>) — Additional environment data reported at activation.
+        - _(object)_
+      - `created_at` (string)
+      - `updated_at` (string)
+      - `active_licenses_count` (string) — Number of active licenses on this site.
+      - `products` (array<object>) — Distinct products licensed on this site, derived from the site's activations.
+        - `name` (string)
+        - `variation` (string)
+      - `customers` (array<string>) — Distinct customer full names owning licenses on this site.
+      - `is_local` (boolean) — `true` when any activation on this site was flagged as a local/dev install.
+      - `last_activity` (string) — Most recent `last_update_date` across the site's activations.
+    - `first_page_url` (string)
+    - `from` (integer)
+    - `last_page` (integer)
+    - `last_page_url` (string)
+    - `links` (array<object>)
+      - _(object)_
+    - `next_page_url` (string)
+    - `path` (string)
+    - `per_page` (integer)
+    - `prev_page_url` (string)
+    - `to` (integer)
+    - `total` (integer)
+
+  Example:
+
+```json
+{
+  "sites": {
+    "current_page": 1,
+    "data": [
+      {
+        "id": 2480,
+        "site_url": "shop.example.org",
+        "server_version": "8.3.30",
+        "platform_version": "7.0",
+        "other": [],
+        "created_at": "2026-05-29T19:12:38+00:00",
+        "updated_at": "2026-05-29T19:12:38+00:00",
+        "active_licenses_count": "1",
+        "products": [
+          {
+            "name": "FluentCart Pro",
+            "variation": "50 Sites - Lifetime License"
+          }
+        ],
+        "customers": [
+          "Alex Morgan"
+        ],
+        "is_local": false,
+        "last_activity": "2026-05-29 13:12:38"
+      }
+    ],
+    "first_page_url": "https://example.com/wp-json/fluent-cart/v2/licensing/sites?page=1",
+    "from": 1,
+    "last_page": 228,
+    "last_page_url": "https://example.com/wp-json/fluent-cart/v2/licensing/sites?page=228",
+    "links": [],
+    "next_page_url": "https://example.com/wp-json/fluent-cart/v2/licensing/sites?page=2",
+    "path": "https://example.com/wp-json/fluent-cart/v2/licensing/sites",
+    "per_page": 10,
+    "prev_page_url": null,
+    "to": 10,
+    "total": 2273
+  }
+}
+```
+
+
+- **403** — Forbidden — the user lacks `licenses/view`.
+
+  Schema (`application/json`):
+
+  - `code` (string)
+  - `message` (string)
+  - `data` (object)
+    - `status` (integer)
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
 }
 ```
 

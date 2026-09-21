@@ -1,6 +1,6 @@
 # FluentCart API — Subscriptions
 
-17 endpoints. Base URL: `https://{website}/wp-json/fluent-cart/v2`. See the [FluentCart overview](../fluentcart.md) for auth and the full group list.
+19 endpoints. Base URL: `https://{website}/wp-json/fluent-cart/v2`. See the [FluentCart overview](../fluentcart.md) for auth and the full group list.
 
 _Generated from the FluentCart OpenAPI specs (dev.fluentcart.com)._
 
@@ -11,6 +11,10 @@ _Generated from the FluentCart OpenAPI specs (dev.fluentcart.com)._
 **POST Cancel Auto-Renew**
 
 Cancel auto-renewal for a subscription from the customer portal. The subscription is cancelled both locally and with the remote payment gateway. The cancellation reason is automatically set to cancelled_by_customer.
+
+**Access policy:** `CustomerFrontendPolicy`
+
+**Access policy:** `CustomerFrontendPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -38,6 +42,36 @@ Cancel auto-renewal for a subscription from the customer portal. The subscriptio
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 - **404** — Customer or subscription not found
 
   Schema (`application/json`):
@@ -56,6 +90,22 @@ Cancel auto-renewal for a subscription from the customer portal. The subscriptio
 ```
 
 
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -64,6 +114,8 @@ Cancel auto-renewal for a subscription from the customer portal. The subscriptio
 **PUT Cancel Subscription**
 
 Cancel a subscription both locally and with the remote payment gateway.
+
+**Required permission:** `subscriptions/manage`
 
 **Auth:** ApplicationPasswords
 
@@ -125,6 +177,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`subscriptions/manage`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -133,6 +231,10 @@ Example:
 **POST Confirm Subscription Switch**
 
 Confirm a two-step payment method switch. After the initial switch-payment-method call creates a new subscription on the target gateway, this endpoint finalizes the switch by confirming the new subscription and deactivating the old one.
+
+**Access policy:** `CustomerFrontendPolicy`
+
+**Access policy:** `CustomerFrontendPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -178,6 +280,36 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 - **422** — Could not confirm subscription switch
 
   Schema (`application/json`):
@@ -201,6 +333,8 @@ Example:
 **PUT Fetch Subscription from Remote**
 
 Re-sync a subscription's data from the remote payment gateway (e.g., Stripe, PayPal). Useful for resolving data inconsistencies between local records and the payment provider.
+
+**Required permission:** `subscriptions/manage`
 
 **Auth:** ApplicationPasswords
 
@@ -235,6 +369,36 @@ Re-sync a subscription's data from the remote payment gateway (e.g., Stripe, Pay
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`subscriptions/manage`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 - **422** — Gateway error
 
   Schema (`application/json`):
@@ -258,6 +422,8 @@ Re-sync a subscription's data from the remote payment gateway (e.g., Stripe, Pay
 **POST Generate Early Payment Link**
 
 Generate a URL that allows early payment of remaining installments on an installment-based subscription. Requires early payment feature to be enabled, the subscription must belong to the specified order, have finite installments, be active or trialing, and have remaining installments.
+
+**Required permission:** `subscriptions/manage`
 
 **Auth:** ApplicationPasswords
 
@@ -306,6 +472,52 @@ Generate a URL that allows early payment of remaining installments on an install
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`subscriptions/manage`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -314,6 +526,8 @@ Generate a URL that allows early payment of remaining installments on an install
 **GET Get Customer Subscription Details**
 
 Retrieve full details of a specific subscription for the currently logged-in customer, including transactions, upgrade eligibility, and payment method capabilities.
+
+**Access policy:** `CustomerFrontendPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -332,6 +546,8 @@ Retrieve full details of a specific subscription for the currently logged-in cus
 
   - `message` (string)
   - `subscription` (CustomerSubscriptionDetail)
+  - `section_parts` (object) — Extra HTML content sections for the subscription details page, keyed by section name (filterable via fluent_cart/customer/subscription_details_section_parts). Values are sanitized HTML strings.
+    - _(object)_
 
   Example:
 
@@ -408,6 +624,55 @@ Retrieve full details of a specific subscription for the currently logged-in cus
         }
       }
     ]
+  },
+  "section_parts": {
+    "end_of_subscription": ""
+  }
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
   }
 }
 ```
@@ -421,6 +686,10 @@ Retrieve full details of a specific subscription for the currently logged-in cus
 **POST Get or Create Plan**
 
 Get or create a subscription plan on the remote payment gateway. Typically used during the payment method switch flow to ensure the target gateway has a matching plan configured.
+
+**Access policy:** `CustomerFrontendPolicy`
+
+**Access policy:** `CustomerFrontendPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -466,6 +735,36 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 - **422** — Could not get or create plan
 
   Schema (`application/json`):
@@ -489,6 +788,10 @@ Example:
 **GET Get Setup Intent Remaining Attempts**
 
 Check how many Stripe SetupIntent attempts remain for the customer. Used to enforce rate limiting on payment method update attempts. Only works when the subscription's current_payment_method is stripe.
+
+**Access policy:** `CustomerFrontendPolicy`
+
+**Access policy:** `CustomerFrontendPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -531,6 +834,52 @@ Check how many Stripe SetupIntent attempts remain for the customer. Used to enfo
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -539,6 +888,8 @@ Check how many Stripe SetupIntent attempts remain for the customer. Used to enfo
 **GET Get Subscription Details**
 
 Retrieve the full details of a single subscription including customer addresses, labels, activities, and related orders.
+
+**Required permission:** `subscriptions/view`
 
 **Auth:** ApplicationPasswords
 
@@ -557,6 +908,9 @@ Retrieve the full details of a single subscription including customer addresses,
 
   - `subscription` (SubscriptionDetail)
   - `selected_labels` (array<integer>) — Array of label IDs applied to the subscription
+  - `reminder_permissions` (object) — Flags indicating whether renewal/trial-end reminder emails can be sent for this subscription.
+    - `canSendRenewal` (boolean)
+    - `canSendTrialEnd` (boolean)
 
   Example:
 
@@ -663,7 +1017,41 @@ Retrieve the full details of a single subscription including customer addresses,
   "selected_labels": [
     2,
     5
-  ]
+  ],
+  "reminder_permissions": {
+    "canSendRenewal": false,
+    "canSendTrialEnd": false
+  }
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`subscriptions/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
 }
 ```
 
@@ -685,6 +1073,22 @@ Retrieve the full details of a single subscription including customer addresses,
 ```
 
 
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -693,6 +1097,10 @@ Retrieve the full details of a single subscription including customer addresses,
 **POST Initiate Early Payment**
 
 Generate a checkout URL for paying remaining installments early on an installment-based subscription. Requires Pro license, early payment feature enabled, finite installments with remaining payments, and active or trialing status.
+
+**Access policy:** `CustomerFrontendPolicy`
+
+**Access policy:** `CustomerFrontendPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -737,6 +1145,36 @@ Generate a checkout URL for paying remaining installments early on an installmen
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 - **404** — Customer or subscription not found
 
   Schema (`application/json`):
@@ -755,6 +1193,22 @@ Generate a checkout URL for paying remaining installments early on an installmen
 ```
 
 
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -763,6 +1217,8 @@ Generate a checkout URL for paying remaining installments early on an installmen
 **GET List Customer Subscriptions**
 
 Retrieve a paginated list of subscriptions belonging to the currently logged-in customer. Subscriptions with pending or intended status are excluded.
+
+**Access policy:** `CustomerFrontendPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -792,29 +1248,113 @@ Retrieve a paginated list of subscriptions belonging to the currently logged-in 
     "data": [
       {
         "uuid": "a3f7c1b2-9e4d-4a8b-b5c6-d7e8f9012345",
+        "vendor_subscription_id": "sub_1QxR3nH8k5m2Np9",
         "status": "active",
-        "item_name": "Developer Toolkit Pro - Business Annual",
-        "billing_interval": "yearly",
-        "recurring_amount": 9900,
+        "overridden_status": "active",
         "next_billing_date": "2026-09-20 14:25:00",
-        "bill_times": 0,
-        "bill_count": 1
+        "billing_info": {
+          "method": "stripe",
+          "vendor_method_id": "pm_1QxR3nH8k5m2Np9",
+          "payment_type": "card",
+          "details": {
+            "brand": "visa",
+            "last_4": "4242",
+            "exp_month": 11,
+            "exp_year": 2028,
+            "country": "US",
+            "postal_code": "94102",
+            "name": "Alex Morgan"
+          }
+        },
+        "current_payment_method": "stripe",
+        "payment_method": null,
+        "payment_info": "&#36;99.00 per year, for 1 year",
+        "bill_times": "0",
+        "bill_count": "1",
+        "config": {
+          "is_trial_days_simulated": "no",
+          "currency": "USD"
+        },
+        "reactivate_url": "https://yoursite.com/?fluent-cart=reactivate-subscription&subscription_hash=a3f7c1b2-9e4d-4a8b-b5c6-d7e8f9012345",
+        "can_upgrade": true,
+        "can_switch_payment_method": true,
+        "can_update_payment_method": true,
+        "collection_method": "automatic",
+        "is_auto_charged": true,
+        "item_name": "Developer Toolkit Pro - Business Annual"
       },
       {
         "uuid": "c5f9e3d4-1a6f-6c0d-d7e8-f9a0b1234567",
+        "vendor_subscription_id": "sub_2RyS4oI9l6n3Oq0",
         "status": "active",
-        "item_name": "CloudSync Starter - Monthly",
-        "billing_interval": "monthly",
-        "recurring_amount": 1900,
+        "overridden_status": "active",
         "next_billing_date": "2026-04-15 09:00:00",
-        "bill_times": 12,
-        "bill_count": 3
+        "billing_info": {
+          "method": "stripe",
+          "vendor_method_id": "pm_2RyS4oI9l6n3Oq0",
+          "payment_type": "card",
+          "details": {
+            "brand": "mastercard",
+            "last_4": "4444",
+            "exp_month": 6,
+            "exp_year": 2029,
+            "country": "US",
+            "postal_code": "10001",
+            "name": "Jordan Lee"
+          }
+        },
+        "current_payment_method": "stripe",
+        "payment_method": null,
+        "payment_info": "&#36;19.00 per month, for 12 month",
+        "bill_times": "12",
+        "bill_count": "3",
+        "config": {
+          "is_trial_days_simulated": "no",
+          "currency": "USD"
+        },
+        "reactivate_url": "https://yoursite.com/?fluent-cart=reactivate-subscription&subscription_hash=c5f9e3d4-1a6f-6c0d-d7e8-f9a0b1234567",
+        "can_upgrade": false,
+        "can_switch_payment_method": true,
+        "can_update_payment_method": true,
+        "collection_method": "automatic",
+        "is_auto_charged": true,
+        "item_name": "CloudSync Starter - Monthly"
       }
     ],
     "total": 2,
     "per_page": 10,
     "current_page": 1,
     "last_page": 1
+  }
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
   }
 }
 ```
@@ -828,6 +1368,8 @@ Retrieve a paginated list of subscriptions belonging to the currently logged-in 
 **GET List Subscriptions**
 
 Retrieve a paginated list of subscriptions with optional filtering, sorting, and search.
+
+**Required permission:** `subscriptions/view`
 
 **Auth:** ApplicationPasswords
 
@@ -909,9 +1451,68 @@ Retrieve a paginated list of subscriptions with optional filtering, sorting, and
         "updated_at": "2026-03-01 09:00:15"
       }
     ],
+    "first_page_url": "https://yoursite.com/wp-json/fluent-cart/v2/subscriptions/?page=1",
+    "from": 1,
+    "last_page_url": "https://yoursite.com/wp-json/fluent-cart/v2/subscriptions/?page=5",
+    "links": [
+      {
+        "url": null,
+        "label": "pagination.previous",
+        "active": false
+      },
+      {
+        "url": "https://yoursite.com/wp-json/fluent-cart/v2/subscriptions/?page=1",
+        "label": "1",
+        "active": true
+      },
+      {
+        "url": "https://yoursite.com/wp-json/fluent-cart/v2/subscriptions/?page=2",
+        "label": "2",
+        "active": false
+      },
+      {
+        "url": "https://yoursite.com/wp-json/fluent-cart/v2/subscriptions/?page=2",
+        "label": "pagination.next",
+        "active": false
+      }
+    ],
+    "next_page_url": "https://yoursite.com/wp-json/fluent-cart/v2/subscriptions/?page=2",
+    "path": "https://yoursite.com/wp-json/fluent-cart/v2/subscriptions",
     "per_page": 10,
+    "prev_page_url": null,
+    "to": 10,
     "total": 50,
     "last_page": 5
+  }
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`subscriptions/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
   }
 }
 ```
@@ -926,6 +1527,8 @@ Retrieve a paginated list of subscriptions with optional filtering, sorting, and
 
 Pause an active subscription. Note: This endpoint is registered but currently returns a 'Not available yet' error. It is reserved for future implementation.
 
+**Required permission:** `subscriptions/manage`
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -949,6 +1552,52 @@ Pause an active subscription. Note: This endpoint is registered but currently re
 ```json
 {
   "message": "Not available yet"
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`subscriptions/manage`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
 }
 ```
 
@@ -962,6 +1611,8 @@ Pause an active subscription. Note: This endpoint is registered but currently re
 
 Reactivate a previously canceled or paused subscription. Note: This endpoint is registered but currently returns a 'Not available yet' error. It is reserved for future implementation.
 
+**Required permission:** `subscriptions/manage`
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -985,6 +1636,52 @@ Reactivate a previously canceled or paused subscription. Note: This endpoint is 
 ```json
 {
   "message": "Not available yet"
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`subscriptions/manage`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
 }
 ```
 
@@ -998,6 +1695,8 @@ Reactivate a previously canceled or paused subscription. Note: This endpoint is 
 
 Resume a paused subscription. Note: This endpoint is registered but currently returns a 'Not available yet' error. It is reserved for future implementation.
 
+**Required permission:** `subscriptions/manage`
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -1025,6 +1724,52 @@ Resume a paused subscription. Note: This endpoint is registered but currently re
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`subscriptions/manage`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -1033,6 +1778,10 @@ Resume a paused subscription. Note: This endpoint is registered but currently re
 **POST Switch Payment Method**
 
 Switch a subscription's payment method from one gateway to another (e.g., from Stripe to PayPal). This initiates the switch process, which may require a confirmation step depending on the target gateway.
+
+**Access policy:** `CustomerFrontendPolicy`
+
+**Access policy:** `CustomerFrontendPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -1078,6 +1827,36 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 - **422** — Could not switch payment method
 
   Schema (`application/json`):
@@ -1101,6 +1880,10 @@ Example:
 **POST Update Payment Method**
 
 Update the payment method (e.g., replace the card on file) for an existing subscription within the same payment gateway.
+
+**Access policy:** `CustomerFrontendPolicy`
+
+**Access policy:** `CustomerFrontendPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -1146,6 +1929,36 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 - **422** — Could not update payment method
 
   Schema (`application/json`):
@@ -1157,6 +1970,230 @@ Example:
 ```json
 {
   "message": "Could not update payment method"
+}
+```
+
+
+
+---
+
+## PUT `/orders/{order}/subscriptions/{subscription}/vendor-ids`
+
+**PUT Update Vendor IDs**
+
+Correct the gateway identifiers (vendor_subscription_id, vendor_customer_id) on a gateway-billed subscription. Opt-in: the endpoint returns an error unless the site enables the `fluent_cart/subscription/vendor_id_editing_enabled` filter. Writes only the identifier columns — no renewal is voided, no invoice re-synced, no status event dispatched, and the payment gateway is not called. Only the keys sent are written. The new vendor_subscription_id is claimed atomically, so another subscription on the same payment method cannot already hold it.
+
+**Required permission:** `subscriptions/manage`
+
+**Auth:** ApplicationPasswords
+
+**Path parameters**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `order` | integer | yes | The parent order ID |
+| `subscription` | integer | yes | The subscription ID |
+
+
+**Request body** (`application/json`, required)
+
+- `vendor_subscription_id` (string) _(maxLength: 45)_ — The subscription ID at the payment gateway. Send an empty string to clear it. Omit the key to leave it untouched.
+- `vendor_customer_id` (string) _(maxLength: 45)_ — The customer ID at the payment gateway. Send an empty string to clear it. Omit the key to leave it untouched.
+
+Example:
+
+```json
+{
+  "vendor_subscription_id": "sub_1P9xyzABCdef",
+  "vendor_customer_id": "cus_NffrFeUfNV2Hib"
+}
+```
+
+
+**Responses**
+
+- **200** — Vendor IDs updated
+
+  Schema (`application/json`):
+
+  - `message` (string)
+  - `subscription` (object)
+    - _(object)_
+
+  Example:
+
+```json
+{
+  "message": "Vendor IDs have been updated successfully!",
+  "subscription": {
+    "id": 1,
+    "status": "active",
+    "collection_method": "automatic",
+    "current_payment_method": "stripe",
+    "vendor_subscription_id": "sub_1P9xyzABCdef",
+    "vendor_customer_id": "cus_NffrFeUfNV2Hib"
+  }
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`subscriptions/manage`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed
+
+  Schema (`application/json`):
+
+  - _(object)_
+
+  Example:
+
+```json
+{
+  "vendor_subscription_id": [
+    "Vendor IDs may only contain letters, numbers, dots, dashes and underscores."
+  ]
+}
+```
+
+
+
+---
+
+## POST `/orders/{order}/subscriptions/{subscription}/verify-vendor-ids`
+
+**POST Verify Vendor IDs**
+
+Read-only lookup of a candidate vendor subscription ID at the payment gateway, used before saving a correction. Writes nothing locally and nothing at the gateway. Requires the `fluent_cart/subscription/vendor_id_editing_enabled` filter and a gateway declaring the `verify_vendor_ids` capability (Stripe and PayPal); other gateways return an error. A successful lookup proves the ID exists in the merchant account whose credentials this store holds — it is not proof of ownership, since one merchant account can back several stores.
+
+**Required permission:** `subscriptions/manage`
+
+**Auth:** ApplicationPasswords
+
+**Path parameters**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `order` | integer | yes | The parent order ID |
+| `subscription` | integer | yes | The subscription ID |
+
+
+**Request body** (`application/json`, required)
+
+- `vendor_subscription_id` (string) _(maxLength: 45)_ — The candidate subscription ID to look up
+- `vendor_customer_id` (string) _(maxLength: 45)_ — The candidate customer ID. Sent because some gateways nest the subscription under its customer.
+
+Example:
+
+```json
+{
+  "vendor_subscription_id": "sub_1P9xyzABCdef",
+  "vendor_customer_id": "cus_NffrFeUfNV2Hib"
+}
+```
+
+
+**Responses**
+
+- **200** — Lookup result
+
+  Schema (`application/json`):
+
+  - `message` (string)
+  - `verification` (object)
+    - `id` (string)
+    - `status` (string) — The gateway's own status string
+    - `customer_id` (string)
+    - `amount` (string) — Decimal amount, empty when the gateway does not report one
+    - `currency` (string)
+    - `next_billing_date` (string) — GMT, Y-m-d H:i:s; empty when unknown
+
+  Example:
+
+```json
+{
+  "message": "Subscription found at the payment gateway.",
+  "verification": {
+    "id": "sub_1P9xyzABCdef",
+    "status": "active",
+    "customer_id": "cus_NffrFeUfNV2Hib",
+    "amount": "29.00",
+    "currency": "USD",
+    "next_billing_date": "2026-09-01 00:00:00"
+  }
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`subscriptions/manage`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
 }
 ```
 

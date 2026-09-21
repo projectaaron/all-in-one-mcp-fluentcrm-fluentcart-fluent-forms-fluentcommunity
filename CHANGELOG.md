@@ -1,5 +1,59 @@
 # Changelog
 
+## 1.1.0 — 2026-09-21
+
+**Upstream API refresh: FluentCRM 319 → 363 endpoints, FluentCart 381 → 436.**
+The scheduled docs refresh (PR #12) recorded both vendors' API growth since
+July; this release wires it into tools. Totals: 1,191 → 1,290 endpoint tools
+(1,298 registered), 68 → 73 areas, 184 → 203 confirm-gated operations.
+
+FluentCRM (+45, −1):
+- New areas `crm_ai` (generate/rewrite text and email bodies, contact
+  summaries, provider models, AI settings and connection test) and
+  `crm_email_patterns` (reusable email content patterns and categories,
+  incl. wp_block format, bulk delete⚠).
+- `crm_utilities` gains the contact export (`crm_utilities_export_contacts`,
+  paged); `crm_settings` gains DB index health + repair⚠, system-log CSV
+  export, and the MCP-adapter status/config/install⚠/toggle⚠ endpoints.
+- 11 new read-only reports (automations, campaigns list, contacts by
+  country/list/status/tag, unsubscribe stats, top campaigns, recent tags);
+  bulk note deletes⚠ on contacts and companies; sequence email delay patch;
+  automation sticky note; built-in template fetch; company custom-field
+  group rename; legacy SMS unschedule path.
+- Removed upstream: `crm_webhooks_list_sms` (route no longer served).
+- `crm_settings_reset_system_logs` is now a DELETE upstream (was a GET); the
+  confirm gate is unchanged.
+
+FluentCart (+73, −18):
+- New areas `cart_inventory` (stock list/stats, single and bulk⚠ updates,
+  adjustment history, export), `cart_data_export` (paged batch exports of
+  customers/orders/subscriptions/licenses with schemas) and
+  `cart_pdf_templates` (receipt/invoice PDF templates, factory defaults,
+  seller details, preview). Saved admin list views join `cart_utilities`.
+- `cart_orders` gains renewal invoices (list/get/resend/void⚠), subscription
+  charge-now⚠, create-renewal-now⚠, skip-renewal⚠, subscription detail
+  update, pending-transaction sync, tax calculation. `cart_products`: bulk
+  and group-bulk variant updates⚠, tax-exemption toggles. `cart_settings`:
+  storage-driver status/bucket/reset⚠, Turnstile key check, MCP adapter
+  status/snippets/install⚠/toggle⚠. `cart_email_notifications`: store
+  digest settings, digest test, manual reminder. `cart_shipping`: packages,
+  class profiles, zone countries. `cart_labels_attributes`: bulk term
+  create, reorder, attribute library. `cart_customer_portal`: sections,
+  pause⚠/resume subscription. `cart_licensing`: license sites.
+  `cart_utilities`: run data backfills⚠, onboarding tax settings.
+- Removed upstream (18): the per-product integration feed routes under
+  `/products/{id}/integrations/*`, two attribute-term routes, six legacy
+  `customer-profile` routes that duplicated `cart_customers`, the three
+  license report charts under `/reports/*`, and the duplicate
+  `roles-permissions` permission routes (`cart_settings_get/save_permissions`
+  remain).
+
+Safety classification for the additions followed the existing line: money
+movement (charge-now, create-renewal-now, skip/void renewal), bulk rewrites
+(variants, stock), code installation (MCP adapter), schema/data operations
+(DB index repair, data backfills) and pauses gate; single reads, single
+updates and single sends do not.
+
 ## 1.0.0 — 2026-09-18
 
 **First public release.** Source on GitHub under MIT, sponsored by

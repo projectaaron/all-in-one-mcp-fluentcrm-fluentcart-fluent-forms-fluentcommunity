@@ -12,6 +12,16 @@ _Generated from the FluentCRM OpenAPI specs (developers.fluentcrm.com)._
 
 Retrieve a specific type of commerce report for a provider. Returns detailed reporting data for the requested report type. Supported providers include 'woo' (WooCommerce), 'edd' (Easy Digital Downloads), 'learndash', 'lifterlms', 'tutorlms', and 'crm'. Additional providers can be registered via the 'fluentcrm_advanced_reports_provider_{provider}' filter.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -88,6 +98,16 @@ Retrieve a specific type of commerce report for a provider. Returns detailed rep
 **GET Commerce Reports**
 
 Retrieve commerce reports for a specific provider. Returns aggregated reporting data based on the provider's implementation. Supported providers include 'woo' (WooCommerce), 'edd' (Easy Digital Downloads), 'learndash', 'lifterlms', 'tutorlms', and 'crm'. Additional providers can be registered via the 'fluentcrm_advanced_reports_provider_{provider}' filter.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
