@@ -12,6 +12,16 @@ _Generated from the FluentCRM OpenAPI specs (developers.fluentcrm.com)._
 
 Add a WordPress user as a FluentCRM manager with specific permissions. The user must already exist in WordPress. Permission dependencies are validated before assignment.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`, required)
@@ -76,6 +86,16 @@ Example:
 
 Deactivate the current FluentCRM Pro license key. Contacts the licensing server to release the activation slot and removes the stored license key locally.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Responses**
@@ -113,6 +133,16 @@ Deactivate the current FluentCRM Pro license key. Contacts the licensing server 
 **DELETE Remove Manager**
 
 Remove a FluentCRM manager by their WordPress user ID. This removes all FluentCRM permissions from the user and clears their manager role flag. The WordPress user account itself is not affected.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -164,6 +194,16 @@ Remove a FluentCRM manager by their WordPress user ID. This removes all FluentCR
 
 Disable the SMS module entirely. This sets the SMS enabled flag to 'no' and updates the experimental settings. Provider credentials are preserved but the module is deactivated.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Responses**
@@ -194,6 +234,16 @@ Disable the SMS module entirely. This sets the SMS enabled flag to 'no' and upda
 
 Retrieve the current FluentCRM Pro license status. The license key is partially masked for security (first 4 and last 4 characters visible). If the license is expired, a renewal URL is included.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Responses**
@@ -206,7 +256,12 @@ Retrieve the current FluentCRM Pro license status. The license key is partially 
   - `license_key` (string) — Partially masked license key (e.g., 'abcd****efgh').
   - `purchase_url` (string) — URL to purchase a license.
   - `renew_url` (string) — URL to renew the license. Only present when status is 'expired'.
-  - `error` (boolean) — Present and true if there was an error checking license status.
+  - `error` (boolean) — Present and true if there was an error checking license status. Present **only** when the licence check failed; absent on a valid licence.
+  - `variation_id` (string) — Identifier of the purchased licence variation.
+  - `variation_title` (string) — Human-readable licence tier, e.g. `50 Sites Lifetime License`.
+  - `expires` (string) — Expiry date, or `lifetime` for a perpetual licence.
+  - `activation_hash` (string) — Hash identifying this site's activation.
+  - `is_expired` (boolean) — True when the licence has lapsed.
 
   Example:
 
@@ -227,6 +282,16 @@ Retrieve the current FluentCRM Pro license status. The license key is partially 
 **GET List Managers**
 
 Retrieve a paginated list of FluentCRM managers. Managers are WordPress users who have been assigned FluentCRM-specific permissions (roles). Also returns the full list of available permissions.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -299,6 +364,16 @@ Retrieve a paginated list of FluentCRM managers. Managers are WordPress users wh
 
 Retrieve the current SMS module settings, including the active SMS provider configuration and available provider options with their field definitions.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Responses**
@@ -313,6 +388,7 @@ Retrieve the current SMS module settings, including the active SMS provider conf
   - `options` (object) — Available SMS provider options with field definitions.
     - `providers` (object) — Available SMS providers keyed by provider slug.
       - _(object)_
+  - `sms_webhook` (string) — Inbound webhook URL for delivery receipts and replies.
 
   Example:
 
@@ -358,6 +434,16 @@ Retrieve the current SMS module settings, including the active SMS provider conf
 
 Import an automation funnel from a file. Accepts a funnel configuration file and creates the corresponding funnel with all its sequences, triggers, and actions.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`, required)
@@ -384,6 +470,16 @@ Import an automation funnel from a file. Accepts a funnel configuration file and
 **POST Save License**
 
 Activate a FluentCRM Pro license key. Validates the key against the licensing server and stores it if valid.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -446,6 +542,16 @@ Example:
 **POST Save SMS Settings**
 
 Save SMS module settings including the provider selection and credentials. When enabling SMS, all required provider fields must be filled. If enabling for the first time, runs the SMS database migration. Saves credentials for all configured providers.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -534,6 +640,16 @@ Example:
 **PUT Update Manager**
 
 Update the permissions of an existing FluentCRM manager. Permission dependencies are validated before assignment. The manager is identified by their WordPress user ID.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 

@@ -1,6 +1,6 @@
 # FluentCart API — Products
 
-59 endpoints. Base URL: `https://{website}/wp-json/fluent-cart/v2`. See the [FluentCart overview](../fluentcart.md) for auth and the full group list.
+63 endpoints. Base URL: `https://{website}/wp-json/fluent-cart/v2`. See the [FluentCart overview](../fluentcart.md) for auth and the full group list.
 
 _Generated from the FluentCart OpenAPI specs (dev.fluentcart.com)._
 
@@ -11,6 +11,8 @@ _Generated from the FluentCart OpenAPI specs (dev.fluentcart.com)._
 **POST Add Product Terms**
 
 Create new taxonomy terms for products (categories, brands, etc.).
+
+**Required permission:** `products/edit`
 
 **Auth:** ApplicationPasswords
 
@@ -55,6 +57,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/edit`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -63,6 +111,8 @@ Example:
 **GET Bulk Edit Fetch**
 
 Fetch products formatted for the bulk editing spreadsheet view.
+
+**Required permission:** `products/edit`
 
 **Auth:** ApplicationPasswords
 
@@ -89,53 +139,172 @@ Fetch products formatted for the bulk editing spreadsheet view.
     {
       "ID": 123,
       "post_title": "Developer Toolkit Pro",
+      "post_content": "<p>A complete developer toolkit.</p>",
+      "post_excerpt": "A complete developer toolkit for building modern apps.",
       "post_status": "publish",
-      "post_date": "2025-03-15 10:00:00",
+      "view_url": "https://yoursite.com/product/developer-toolkit-pro/",
+      "gallery": [
+        {
+          "id": 456,
+          "url": "https://yoursite.com/wp-content/uploads/2025/06/toolkit-icon.webp",
+          "title": "Developer Toolkit icon"
+        }
+      ],
       "detail": {
-        "id": 89,
-        "post_id": 123,
+        "variation_type": "simple_variations",
         "fulfillment_type": "digital",
-        "min_price": 4900,
-        "max_price": 19900,
-        "variation_type": "multi",
-        "formatted_min_price": "$49.00",
-        "formatted_max_price": "$199.00"
-      }
+        "manage_stock": 1
+      },
+      "variants": [
+        {
+          "id": 1,
+          "post_id": 123,
+          "variation_title": "Single Site License",
+          "sku": "DEV-TOOLKIT-1",
+          "item_price": 49,
+          "compare_price": 0,
+          "payment_type": "onetime",
+          "manage_stock": 1,
+          "total_stock": 100,
+          "available": 100,
+          "stock_status": "in-stock",
+          "serial_index": 1,
+          "fulfillment_type": "digital",
+          "other_info": {
+            "description": "",
+            "payment_type": "onetime",
+            "tax_class": "standard",
+            "tax_exempt": "no",
+            "tax_inclusion": "",
+            "package_slug": "",
+            "weight": null,
+            "weight_unit": "kg",
+            "length": null,
+            "width": null,
+            "height": null,
+            "is_bundle_product": null,
+            "bundle_child_ids": []
+          },
+          "media": []
+        },
+        {
+          "id": 2,
+          "post_id": 123,
+          "variation_title": "5 Site License",
+          "sku": "DEV-TOOLKIT-5",
+          "item_price": 99,
+          "compare_price": 0,
+          "payment_type": "onetime",
+          "manage_stock": 1,
+          "total_stock": 100,
+          "available": 100,
+          "stock_status": "in-stock",
+          "serial_index": 2,
+          "fulfillment_type": "digital",
+          "other_info": {
+            "description": "",
+            "payment_type": "onetime",
+            "tax_class": "standard",
+            "tax_exempt": "no",
+            "tax_inclusion": "",
+            "package_slug": "",
+            "weight": null,
+            "weight_unit": "kg",
+            "length": null,
+            "width": null,
+            "height": null,
+            "is_bundle_product": null,
+            "bundle_child_ids": []
+          },
+          "media": []
+        }
+      ],
+      "category_terms": [],
+      "categories": []
     },
     {
       "ID": 124,
       "post_title": "Cloud Hosting Starter",
+      "post_content": "",
+      "post_excerpt": "",
       "post_status": "draft",
-      "post_date": "2025-06-20 08:30:00",
+      "view_url": "https://yoursite.com/?post_type=fluent-products&p=124",
+      "gallery": [],
       "detail": {
-        "id": 90,
-        "post_id": 124,
+        "variation_type": "simple_variations",
         "fulfillment_type": "digital",
-        "min_price": 1900,
-        "max_price": 4900,
-        "variation_type": "single",
-        "formatted_min_price": "$19.00",
-        "formatted_max_price": "$49.00"
-      }
+        "manage_stock": 1
+      },
+      "variants": [
+        {
+          "id": 3,
+          "post_id": 124,
+          "variation_title": "Monthly Plan",
+          "sku": "CLOUD-HOST-M",
+          "item_price": 19,
+          "compare_price": 0,
+          "payment_type": "onetime",
+          "manage_stock": 1,
+          "total_stock": 1,
+          "available": 1,
+          "stock_status": "in-stock",
+          "serial_index": 1,
+          "fulfillment_type": "digital",
+          "other_info": {
+            "description": "",
+            "payment_type": "onetime",
+            "tax_class": "standard",
+            "tax_exempt": "no",
+            "tax_inclusion": "",
+            "package_slug": "",
+            "weight": null,
+            "weight_unit": "kg",
+            "length": null,
+            "width": null,
+            "height": null,
+            "is_bundle_product": null,
+            "bundle_child_ids": []
+          },
+          "media": []
+        }
+      ],
+      "category_terms": [],
+      "categories": []
     }
   ],
-  "columns": [
-    {
-      "key": "post_title",
-      "label": "Product Title",
-      "editable": true
-    },
-    {
-      "key": "post_status",
-      "label": "Status",
-      "editable": true
-    },
-    {
-      "key": "fulfillment_type",
-      "label": "Fulfillment",
-      "editable": true
-    }
-  ]
+  "total": 2,
+  "per_page": 10,
+  "page": 1
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/edit`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
 }
 ```
 
@@ -147,13 +316,15 @@ Fetch products formatted for the bulk editing spreadsheet view.
 
 **POST Bulk Insert Products**
 
-Insert multiple products at once. Maximum 10 products per request.
+Insert multiple products at once. Maximum 10 products per request. Money fields are in cents: `detail.item_price`, `detail.compare_price` (single-variation products), and `variants[].item_price`, `variants[].compare_price`, `variants[].other_info.signup_fee` (multi-variation products) all take cents — e.g. `1999` for $19.99.
+
+**Required permission:** `products/create`
 
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`, required)
 
-- `products` (array<object>) **required** — Array of product data objects (max 10)
+- `products` (array<object>) **required** — Array of product data objects (max 10). Money fields (detail.item_price, detail.compare_price, variants[].item_price, variants[].compare_price, variants[].other_info.signup_fee) are cents.
   - _(object)_
 
 Example:
@@ -164,7 +335,9 @@ Example:
     {
       "post_title": "Product A",
       "detail": {
-        "fulfillment_type": "digital"
+        "fulfillment_type": "digital",
+        "item_price": 1999,
+        "compare_price": 2999
       }
     },
     {
@@ -216,6 +389,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/create`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -223,13 +442,15 @@ Example:
 
 **POST Bulk Update Products**
 
-Update multiple products at once from the bulk edit view. Maximum 10 products per request.
+Update multiple products at once from the bulk edit view. Maximum 10 products per request. Money fields are in cents: `variants[].item_price`, `variants[].compare_price`, `variants[].item_cost`, and `variants[].other_info.signup_fee` all take cents — e.g. `1999` for $19.99.
+
+**Required permission:** `products/edit`
 
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`, required)
 
-- `products` (array<object>) **required** — Array of product data objects to update (max 10)
+- `products` (array<object>) **required** — Array of product data objects to update (max 10). Money fields (variants[].item_price, variants[].compare_price, variants[].item_cost, variants[].other_info.signup_fee) are cents.
   - _(object)_
 
 Example:
@@ -239,7 +460,14 @@ Example:
   "products": [
     {
       "ID": 123,
-      "post_title": "Updated Title A"
+      "post_title": "Updated Title A",
+      "variants": [
+        {
+          "id": 456,
+          "item_price": 1999,
+          "compare_price": 2999
+        }
+      ]
     }
   ]
 }
@@ -267,6 +495,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/edit`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -275,6 +549,10 @@ Example:
 **POST Change Integration Status**
 
 Enable or disable a product integration feed.
+
+**Also used by the integrations UI.** Toggle a product-level integration feed on or off.
+
+**Required permission:** `products/edit`
 
 **Auth:** ApplicationPasswords
 
@@ -314,6 +592,82 @@ Example:
 ```
 
 
+- **400** — Missing required parameters
+
+  Schema (`application/json`):
+
+  - `message` (string)
+
+  Example:
+
+```json
+{
+  "message": "Product ID and Notification ID are required"
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/edit`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **404** — Notification not found
+
+  Schema (`application/json`):
+
+  - `message` (string)
+
+  Example:
+
+```json
+{
+  "message": "Notification not found"
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -322,6 +676,8 @@ Example:
 **POST Create Dummy Products**
 
 Create sample/demo products for testing or onboarding purposes.
+
+**Required permission:** `products/create`
 
 **Auth:** ApplicationPasswords
 
@@ -367,6 +723,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/create`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -375,6 +777,8 @@ Example:
 **POST Create Product**
 
 Create a new product. A default variation is automatically created with the product.
+
+**Required permission:** `products/create`
 
 **Auth:** ApplicationPasswords
 
@@ -453,6 +857,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/create`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -461,6 +911,8 @@ Example:
 **POST Create Variation**
 
 Create a new product variation.
+
+**Required permission:** `products/create`
 
 **Auth:** ApplicationPasswords
 
@@ -554,6 +1006,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/create`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -562,6 +1060,8 @@ Example:
 **DELETE Delete Downloadable File**
 
 Delete a downloadable file record.
+
+**Required permission:** `products/delete`
 
 **Auth:** ApplicationPasswords
 
@@ -585,6 +1085,52 @@ Delete a downloadable file record.
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/delete`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -593,6 +1139,8 @@ Delete a downloadable file record.
 **DELETE Delete Product**
 
 Delete a product and all associated data.
+
+**Required permission:** `products/delete`
 
 **Auth:** ApplicationPasswords
 
@@ -616,6 +1164,52 @@ Delete a product and all associated data.
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/delete`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -624,6 +1218,10 @@ Delete a product and all associated data.
 **DELETE Delete Product Integration**
 
 Delete a product integration feed.
+
+**Also used by the integrations UI.** Permanently delete a product-level integration feed.
+
+**Required permission:** `products/delete`
 
 **Auth:** ApplicationPasswords
 
@@ -648,6 +1246,52 @@ Delete a product integration feed.
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/delete`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -656,6 +1300,8 @@ Delete a product integration feed.
 **POST Delete Taxonomy Term**
 
 Remove a specific taxonomy term from a product.
+
+**Required permission:** `products/edit`
 
 **Auth:** ApplicationPasswords
 
@@ -694,6 +1340,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/edit`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -702,6 +1394,8 @@ Example:
 **DELETE Delete Upgrade Path**
 
 Delete an upgrade path.
+
+**Required permission:** `products/delete`
 
 **Auth:** ApplicationPasswords
 
@@ -725,6 +1419,52 @@ Delete an upgrade path.
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/delete`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -733,6 +1473,8 @@ Delete an upgrade path.
 **DELETE Delete Variation**
 
 Delete a product variation.
+
+**Required permission:** `products/delete`
 
 **Auth:** ApplicationPasswords
 
@@ -756,6 +1498,52 @@ Delete a product variation.
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/delete`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -764,6 +1552,8 @@ Delete a product variation.
 **POST Do Bulk Action**
 
 Perform bulk actions on selected products (e.g., publish, draft, delete).
+
+**Required permission:** `products/edit`
 
 **Auth:** ApplicationPasswords
 
@@ -799,6 +1589,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/edit`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -807,6 +1643,8 @@ Example:
 **POST Duplicate Product**
 
 Duplicate a product with options to include or exclude certain settings. The new product is saved as a draft.
+
+**Required permission:** `products/create`
 
 **Auth:** ApplicationPasswords
 
@@ -855,6 +1693,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/create`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -863,6 +1747,8 @@ Example:
 **GET Fetch Products by IDs**
 
 Retrieve products by an array of IDs. Returns products with their detail relation.
+
+**Required permission:** `products/view`
 
 **Auth:** ApplicationPasswords
 
@@ -935,6 +1821,36 @@ Retrieve products by an array of IDs. Returns products with their detail relatio
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -943,6 +1859,8 @@ Retrieve products by an array of IDs. Returns products with their detail relatio
 **GET Fetch Taxonomy Terms**
 
 Retrieve all registered taxonomies and their terms for product categorization.
+
+**Required permission:** `products/view`
 
 **Auth:** ApplicationPasswords
 
@@ -954,46 +1872,81 @@ Retrieve all registered taxonomies and their terms for product categorization.
 
 ```json
 {
-  "taxonomies": [
-    {
+  "taxonomies": {
+    "product-categories": {
       "name": "product-categories",
       "label": "Product Categories",
       "terms": [
         {
-          "value": 10,
+          "value": "10",
           "label": "Software",
+          "parent": "0",
           "children": [
             {
-              "value": 11,
+              "value": "11",
               "label": "Developer Tools",
+              "parent": "10",
               "children": []
             },
             {
-              "value": 12,
+              "value": "12",
               "label": "Plugins",
+              "parent": "10",
               "children": []
             }
           ]
         },
         {
-          "value": 13,
+          "value": "13",
           "label": "Templates",
+          "parent": "0",
           "children": []
         }
       ]
     },
-    {
+    "product-brands": {
       "name": "product-brands",
       "label": "Product Brands",
       "terms": [
         {
-          "value": 20,
+          "value": "20",
           "label": "FluentWP",
+          "parent": "0",
           "children": []
         }
       ]
     }
-  ]
+  }
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
 }
 ```
 
@@ -1006,6 +1959,8 @@ Retrieve all registered taxonomies and their terms for product categorization.
 **POST Fetch Terms by Parent**
 
 Retrieve taxonomy terms filtered by parent term IDs.
+
+**Required permission:** `products/view`
 
 **Auth:** ApplicationPasswords
 
@@ -1055,6 +2010,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -1063,6 +2064,8 @@ Example:
 **GET Fetch Variations by IDs**
 
 Retrieve variations by an array of IDs. Returns simplified label/value pairs.
+
+**Required permission:** `products/view`
 
 **Auth:** ApplicationPasswords
 
@@ -1095,6 +2098,36 @@ Retrieve variations by an array of IDs. Returns simplified label/value pairs.
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -1103,6 +2136,8 @@ Retrieve variations by an array of IDs. Returns simplified label/value pairs.
 **GET Find Subscription Variants**
 
 Search for product variants that have a subscription payment type.
+
+**Required permission:** `products/view`
 
 **Auth:** ApplicationPasswords
 
@@ -1147,6 +2182,36 @@ Search for product variants that have a subscription payment type.
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -1155,6 +2220,8 @@ Search for product variants that have a subscription payment type.
 **GET Get Bundle Info**
 
 Retrieve bundle configuration information for a product, including child variant mappings.
+
+**Required permission:** `products/view`
 
 **Auth:** ApplicationPasswords
 
@@ -1221,6 +2288,52 @@ Retrieve bundle configuration information for a product, including child variant
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -1229,6 +2342,8 @@ Retrieve bundle configuration information for a product, including child variant
 **GET Get Downloadable URL**
 
 Generate a temporary download URL for a downloadable file (valid for 7 days).
+
+**Required permission:** `products/view`
 
 **Auth:** ApplicationPasswords
 
@@ -1252,6 +2367,52 @@ Generate a temporary download URL for a downloadable file (valid for 7 days).
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -1260,6 +2421,8 @@ Generate a temporary download URL for a downloadable file (valid for 7 days).
 **GET Get Max Excerpt Word Count**
 
 Returns the maximum allowed word count for product excerpts (controlled by the WordPress excerpt_length filter).
+
+**Required permission:** `products/view`
 
 **Auth:** ApplicationPasswords
 
@@ -1276,6 +2439,36 @@ Returns the maximum allowed word count for product excerpts (controlled by the W
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -1284,6 +2477,8 @@ Returns the maximum allowed word count for product excerpts (controlled by the W
 **GET Get Pricing Widgets**
 
 Retrieve sales overview widgets for a product (all-time, last 30 days, this month).
+
+**Required permission:** `products/view`
 
 **Auth:** ApplicationPasswords
 
@@ -1312,6 +2507,52 @@ Retrieve sales overview widgets for a product (all-time, last 30 days, this mont
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -1320,6 +2561,8 @@ Retrieve sales overview widgets for a product (all-time, last 30 days, this mont
 **GET Get Product**
 
 Retrieve a single product by ID.
+
+**Required permission:** `products/view`
 
 **Auth:** ApplicationPasswords
 
@@ -1341,23 +2584,72 @@ Retrieve a single product by ID.
 
 - **200** — Successful response.
 
+  Schema (`application/json`):
+
+  - `product` is the raw WordPress post record (post_type `fluent-products`) with its `detail` relation (pricing, stock, media) always attached, plus an appended `thumbnail` URL. `product_menu` is included only when `product_menu` is passed in the `with[]` query parameter; it is absent otherwise.
+
   Example:
 
 ```json
 {
   "product": {
     "ID": 123,
-    "post_title": "Developer Toolkit Pro",
-    "post_status": "publish",
-    "post_type": "fluent-products",
     "post_date": "2025-03-15 10:00:00",
-    "post_modified": "2025-09-01 15:30:00",
-    "post_name": "developer-toolkit-pro",
-    "post_excerpt": "Professional developer tools for building modern applications.",
+    "post_date_gmt": "2025-03-15 10:00:00",
     "post_content": "A comprehensive developer toolkit with API access, code generators, and premium support.",
-    "thumbnail": "https://example.com/wp-content/uploads/2025/03/dev-toolkit.png",
-    "view_url": "https://example.com/product/developer-toolkit-pro",
-    "edit_url": "https://example.com/wp-admin/admin.php?page=fluent-cart#/products/123"
+    "post_title": "Developer Toolkit Pro",
+    "post_excerpt": "Professional developer tools for building modern applications.",
+    "post_status": "publish",
+    "comment_status": "closed",
+    "ping_status": "closed",
+    "post_name": "developer-toolkit-pro",
+    "post_modified": "2025-09-01 15:30:00",
+    "post_modified_gmt": "2025-09-01 15:30:00",
+    "guid": "https://yoursite.com/?post_type=fluent-products&p=123",
+    "post_type": "fluent-products",
+    "thumbnail": "https://yoursite.com/wp-content/uploads/2025/03/dev-toolkit.png",
+    "detail": {
+      "id": 1,
+      "post_id": 123,
+      "fulfillment_type": "digital",
+      "min_price": "4999",
+      "max_price": "9999",
+      "default_variation_id": null,
+      "default_media": null,
+      "manage_stock": "1",
+      "stock_availability": "in-stock",
+      "variation_type": "simple_variations",
+      "manage_downloadable": "1",
+      "other_info": {
+        "group_pricing_by": "none",
+        "sold_individually": "yes",
+        "use_pricing_table": "no",
+        "shipping_class": 0,
+        "tax_class": 0,
+        "active_editor": "gutenberg"
+      },
+      "created_at": "2025-03-15T10:00:00+00:00",
+      "updated_at": "2025-09-01T15:30:00+00:00",
+      "featured_media": {
+        "id": 456,
+        "url": "https://yoursite.com/wp-content/uploads/2025/03/dev-toolkit.png",
+        "title": "Developer Toolkit Pro icon"
+      },
+      "formatted_min_price": "&#36;49.99",
+      "formatted_max_price": "&#36;99.99",
+      "gallery_image": {
+        "meta_id": "789",
+        "post_id": 123,
+        "meta_key": "fluent-products-gallery-image",
+        "meta_value": [
+          {
+            "id": 456,
+            "url": "https://yoursite.com/wp-content/uploads/2025/03/dev-toolkit.png",
+            "title": "Developer Toolkit Pro icon"
+          }
+        ]
+      }
+    }
   },
   "product_menu": [
     {
@@ -1380,6 +2672,52 @@ Retrieve a single product by ID.
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -1388,6 +2726,10 @@ Retrieve a single product by ID.
 **GET Get Product Integration Feeds**
 
 Retrieve all integration feeds configured for a product, along with available integrations.
+
+**Also used by the integrations UI.** Retrieve all integration feeds configured for a specific product, along with available product-scoped integrations.
+
+**Required permission:** `products/view`
 
 **Auth:** ApplicationPasswords
 
@@ -1441,6 +2783,52 @@ Retrieve all integration feeds configured for a product, along with available in
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -1449,6 +2837,10 @@ Retrieve all integration feeds configured for a product, along with available in
 **GET Get Product Integration Settings**
 
 Retrieve settings for a specific integration type on a product. Returns the integration form configuration, existing settings, and product variations.
+
+**Also used by the integrations UI.** Retrieve the feed editor settings for a specific integration provider, scoped to a product. Returns form schema, saved values, available shortcodes, and the product's variation list for conditional targeting.
+
+**Required permission:** `products/view`
 
 **Auth:** ApplicationPasswords
 
@@ -1517,6 +2909,52 @@ Retrieve settings for a specific integration type on a product. Returns the inte
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -1525,6 +2963,8 @@ Retrieve settings for a specific integration type on a product. Returns the inte
 **GET Get Product Pricing**
 
 Retrieve the full product details including pricing, variants, downloadable files, and taxonomy information.
+
+**Required permission:** `products/view`
 
 **Auth:** ApplicationPasswords
 
@@ -1674,6 +3114,52 @@ Retrieve the full product details including pricing, variants, downloadable file
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -1682,6 +3168,8 @@ Retrieve the full product details including pricing, variants, downloadable file
 **GET Get Related Products**
 
 Retrieve products related to a given product based on shared categories or brands.
+
+**Required permission:** `products/view`
 
 **Auth:** ApplicationPasswords
 
@@ -1754,6 +3242,52 @@ Retrieve products related to a given product based on shared categories or brand
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -1762,6 +3296,8 @@ Retrieve products related to a given product based on shared categories or brand
 **GET Get Upgrade Settings**
 
 Retrieve all upgrade path configurations for a product.
+
+**Required permission:** `products/view`
 
 **Auth:** ApplicationPasswords
 
@@ -1776,42 +3312,103 @@ Retrieve all upgrade path configurations for a product.
 
 - **200** — Successful response.
 
+  Schema (`application/json`):
+
+  - `data` (array<object>) — List of upgrade path meta records defined for the product's variants.
+    - `id` (integer) — Meta record ID.
+    - `object_type` (string) — Always `variant_upgrade` for upgrade path records.
+    - `object_id` (string) — The source variant ID this upgrade path is attached to.
+    - `meta_key` (string) — Always `variant_upgrade_path`.
+    - `meta_value` (object)
+      - `to_variants` (array<string>) — Variant IDs the source variant can upgrade to.
+      - `is_prorate` (string) — Whether the upgrade is prorated (`"1"` or `"0"`).
+      - `discount_amount` (string) — Discount amount applied on upgrade, in cents (as a numeric string).
+    - `created_at` (string) — Creation timestamp (ISO 8601).
+    - `updated_at` (string) — Last update timestamp (ISO 8601).
+
   Example:
 
 ```json
 {
   "data": [
     {
-      "id": 5,
-      "product_id": 123,
-      "from_variant": 456,
-      "to_variants": [
-        457,
-        458
-      ],
-      "title": "Upgrade to Business License",
-      "description": "Upgrade from Personal to Business for team access and priority support.",
-      "slug": "upgrade-to-business",
-      "discount_amount": 500,
-      "from_variation": {
-        "id": 456,
-        "variation_title": "Personal License",
-        "item_price": 4900
+      "id": 13,
+      "object_type": "variant_upgrade",
+      "object_id": "456",
+      "meta_key": "variant_upgrade_path",
+      "meta_value": {
+        "to_variants": [
+          "457",
+          "458"
+        ],
+        "is_prorate": "1",
+        "discount_amount": "500"
       },
-      "to_variations": [
-        {
-          "id": 457,
-          "variation_title": "Business License - Annual",
-          "item_price": 9900
-        },
-        {
-          "id": 458,
-          "variation_title": "Enterprise License",
-          "item_price": 19900
-        }
-      ]
+      "created_at": "2025-10-14T22:20:09+00:00",
+      "updated_at": "2025-10-14T22:20:09+00:00"
+    },
+    {
+      "id": 14,
+      "object_type": "variant_upgrade",
+      "object_id": "457",
+      "meta_key": "variant_upgrade_path",
+      "meta_value": {
+        "to_variants": [
+          "458"
+        ],
+        "is_prorate": "1",
+        "discount_amount": "0"
+      },
+      "created_at": "2025-10-14T22:20:31+00:00",
+      "updated_at": "2025-10-14T22:20:31+00:00"
     }
   ]
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
 }
 ```
 
@@ -1824,6 +3421,8 @@ Retrieve all upgrade path configurations for a product.
 **GET Get Variation Upgrade Paths**
 
 Retrieve available upgrade paths for a specific variation (used in customer-facing upgrade flows).
+
+**Required permission:** `products/view`
 
 **Auth:** ApplicationPasswords
 
@@ -1883,6 +3482,52 @@ Retrieve available upgrade paths for a specific variation (used in customer-faci
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -1891,6 +3536,8 @@ Retrieve available upgrade paths for a specific variation (used in customer-faci
 **GET List All Variants**
 
 Retrieve all product variations across all products (separate route group using VariantController).
+
+**Required permission:** `products/view`
 
 **Auth:** ApplicationPasswords
 
@@ -1965,6 +3612,36 @@ Retrieve all product variations across all products (separate route group using 
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -1973,6 +3650,8 @@ Retrieve all product variations across all products (separate route group using 
 **GET List Product Variations**
 
 Retrieve a list of product variations.
+
+**Required permissions:** all of `products/view`, `products/view`
 
 **Auth:** ApplicationPasswords
 
@@ -2043,6 +3722,36 @@ Retrieve a list of product variations.
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/view, products/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -2051,6 +3760,8 @@ Retrieve a list of product variations.
 **GET List Products**
 
 Retrieve a paginated list of products with filtering, sorting, and search capabilities.
+
+**Required permission:** `products/view`
 
 **Auth:** ApplicationPasswords
 
@@ -2080,6 +3791,17 @@ Retrieve a paginated list of products with filtering, sorting, and search capabi
     - `per_page` (integer)
     - `current_page` (integer)
     - `last_page` (integer)
+    - `first_page_url` (string) — URL of the first page.
+    - `from` (integer) — Index of the first item on this page.
+    - `last_page_url` (string) — URL of the last page.
+    - `links` (array<object>) — Pagination links (previous, numbered pages, next).
+      - `url` (string)
+      - `label` (string)
+      - `active` (boolean)
+    - `next_page_url` (string) — URL of the next page.
+    - `path` (string) — Base URL without the query string.
+    - `prev_page_url` (string) — URL of the previous page.
+    - `to` (integer) — Index of the last item on this page.
     - `data` (array<object>)
       - _(object)_
 
@@ -2092,6 +3814,35 @@ Retrieve a paginated list of products with filtering, sorting, and search capabi
     "per_page": 10,
     "current_page": 1,
     "last_page": 5,
+    "first_page_url": "https://yoursite.com/wp-json/fluent-cart/v2/products/?page=1",
+    "from": 1,
+    "last_page_url": "https://yoursite.com/wp-json/fluent-cart/v2/products/?page=5",
+    "links": [
+      {
+        "url": null,
+        "label": "pagination.previous",
+        "active": false
+      },
+      {
+        "url": "https://yoursite.com/wp-json/fluent-cart/v2/products/?page=1",
+        "label": "1",
+        "active": true
+      },
+      {
+        "url": "https://yoursite.com/wp-json/fluent-cart/v2/products/?page=2",
+        "label": "2",
+        "active": false
+      },
+      {
+        "url": "https://yoursite.com/wp-json/fluent-cart/v2/products/?page=2",
+        "label": "pagination.next",
+        "active": false
+      }
+    ],
+    "next_page_url": "https://yoursite.com/wp-json/fluent-cart/v2/products/?page=2",
+    "path": "https://yoursite.com/wp-json/fluent-cart/v2/products",
+    "prev_page_url": null,
+    "to": 10,
     "data": [
       {
         "ID": 123,
@@ -2149,6 +3900,36 @@ Retrieve a paginated list of products with filtering, sorting, and search capabi
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -2157,6 +3938,8 @@ Retrieve a paginated list of products with filtering, sorting, and search capabi
 **POST Remove Shipping Class**
 
 Remove the assigned shipping class from a product.
+
+**Required permission:** `products/edit`
 
 **Auth:** ApplicationPasswords
 
@@ -2180,6 +3963,52 @@ Remove the assigned shipping class from a product.
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/edit`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -2188,6 +4017,8 @@ Remove the assigned shipping class from a product.
 **POST Remove Tax Class**
 
 Remove the assigned tax class from a product.
+
+**Required permission:** `products/edit`
 
 **Auth:** ApplicationPasswords
 
@@ -2211,6 +4042,52 @@ Remove the assigned tax class from a product.
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/edit`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -2219,6 +4096,8 @@ Remove the assigned tax class from a product.
 **POST Save Bundle Info**
 
 Save bundle child variant IDs for a variation. Bundle products cannot be added as children of other bundles.
+
+**Required permission:** `products/edit`
 
 **Auth:** ApplicationPasswords
 
@@ -2263,6 +4142,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/edit`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -2271,6 +4196,10 @@ Example:
 **POST Save Product Integration**
 
 Create or update an integration feed for a product.
+
+**Also used by the integrations UI.** Create a new product-level integration feed or update an existing one. Validates required fields and associates the feed with the specified product.
+
+**Required permission:** `products/edit`
 
 **Auth:** ApplicationPasswords
 
@@ -2326,6 +4255,71 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/edit`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **404** — Product not found
+
+  Schema (`application/json`):
+
+  - `message` (string)
+
+  Example:
+
+```json
+{
+  "message": "Product not found"
+}
+```
+
+
+- **422** — Validation error
+
+  Schema (`application/json`):
+
+  - `message` (string)
+  - `errors` (object)
+    - _(object)_
+
+  Example:
+
+```json
+{
+  "message": "Please fill up the required fields:",
+  "errors": {
+    "name": "Feed Name is required."
+  }
+}
+```
+
+
 
 ---
 
@@ -2334,6 +4328,8 @@ Example:
 **POST Save Upgrade Path**
 
 Create a new upgrade path for a product.
+
+**Required permission:** `products/edit`
 
 **Auth:** ApplicationPasswords
 
@@ -2380,6 +4376,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/edit`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -2388,6 +4430,8 @@ Example:
 **GET Search Product Variant Options**
 
 Search for product variants suitable for selection (e.g., in order creation). Filters out out-of-stock items.
+
+**Required permission:** `products/view`
 
 **Auth:** ApplicationPasswords
 
@@ -2439,6 +4483,36 @@ Search for product variants suitable for selection (e.g., in order creation). Fi
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -2447,6 +4521,8 @@ Search for product variants suitable for selection (e.g., in order creation). Fi
 **GET Search Products by Name**
 
 Search for published products by name. Returns products formatted for select dropdowns.
+
+**Required permission:** `products/view`
 
 **Auth:** ApplicationPasswords
 
@@ -2467,38 +4543,158 @@ Search for published products by name. Returns products formatted for select dro
 
 ```json
 {
-  "products": [
-    {
-      "ID": 123,
-      "post_title": "Developer Toolkit Pro",
-      "post_status": "publish",
-      "post_name": "developer-toolkit-pro",
-      "thumbnail": "https://example.com/wp-content/uploads/2025/03/dev-toolkit.png",
-      "wpTerms": [
-        {
-          "term_id": 10,
-          "name": "Software",
-          "slug": "software",
-          "taxonomy": "fluent_cart_category"
+  "products": {
+    "current_page": 1,
+    "data": [
+      {
+        "ID": 123,
+        "post_title": "Developer Toolkit Pro",
+        "thumbnail": "https://example.com/wp-content/uploads/2025/03/dev-toolkit-pro.png",
+        "wp_terms": [
+          {
+            "term_id": 10,
+            "name": "Software",
+            "slug": "software",
+            "taxonomy": "product-categories"
+          }
+        ],
+        "detail": {
+          "id": 1,
+          "post_id": 123,
+          "fulfillment_type": "digital",
+          "min_price": "9900",
+          "max_price": "219800",
+          "default_variation_id": null,
+          "default_media": null,
+          "manage_stock": "1",
+          "stock_availability": "in-stock",
+          "variation_type": "simple_variations",
+          "manage_downloadable": "1",
+          "other_info": {
+            "group_pricing_by": "none",
+            "sold_individually": "yes",
+            "use_pricing_table": "no",
+            "shipping_class": 0,
+            "tax_class": 0,
+            "active_editor": "gutenberg"
+          },
+          "created_at": "2025-10-08T05:24:50+00:00",
+          "updated_at": "2026-06-24T06:37:44+00:00",
+          "featured_media": {
+            "id": 501,
+            "url": "https://example.com/wp-content/uploads/2025/03/dev-toolkit-pro.png",
+            "title": "Developer Toolkit Pro icon"
+          },
+          "formatted_min_price": "$99.00",
+          "formatted_max_price": "$2,198.00",
+          "gallery_image": {
+            "meta_id": "3001",
+            "post_id": 123,
+            "meta_key": "fluent-products-gallery-image",
+            "meta_value": [
+              {
+                "id": 501,
+                "url": "https://example.com/wp-content/uploads/2025/03/dev-toolkit-pro.png",
+                "title": "Developer Toolkit Pro icon"
+              }
+            ]
+          }
         }
-      ]
-    },
-    {
-      "ID": 124,
-      "post_title": "Code Generator Plugin",
-      "post_status": "publish",
-      "post_name": "code-generator-plugin",
-      "thumbnail": "https://example.com/wp-content/uploads/2025/04/code-gen.png",
-      "wpTerms": [
-        {
-          "term_id": 11,
-          "name": "Developer Tools",
-          "slug": "developer-tools",
-          "taxonomy": "fluent_cart_category"
+      },
+      {
+        "ID": 124,
+        "post_title": "Code Generator Plugin",
+        "thumbnail": "https://example.com/wp-content/uploads/2025/04/code-generator-plugin.png",
+        "wp_terms": [
+          {
+            "term_id": 11,
+            "name": "Developer Tools",
+            "slug": "developer-tools",
+            "taxonomy": "product-categories"
+          }
+        ],
+        "detail": {
+          "id": 2,
+          "post_id": 124,
+          "fulfillment_type": "digital",
+          "min_price": "4900",
+          "max_price": "14900",
+          "default_variation_id": null,
+          "default_media": null,
+          "manage_stock": "1",
+          "stock_availability": "in-stock",
+          "variation_type": "simple_variations",
+          "manage_downloadable": "1",
+          "other_info": {
+            "group_pricing_by": "none",
+            "sold_individually": "yes",
+            "use_pricing_table": "no",
+            "shipping_class": 0,
+            "tax_class": 0,
+            "active_editor": "gutenberg"
+          },
+          "created_at": "2025-10-08T05:24:50+00:00",
+          "updated_at": "2026-06-24T06:37:44+00:00",
+          "featured_media": {
+            "id": 502,
+            "url": "https://example.com/wp-content/uploads/2025/04/code-generator-plugin.png",
+            "title": "Code Generator Plugin icon"
+          },
+          "formatted_min_price": "$49.00",
+          "formatted_max_price": "$149.00",
+          "gallery_image": {
+            "meta_id": "3002",
+            "post_id": 124,
+            "meta_key": "fluent-products-gallery-image",
+            "meta_value": [
+              {
+                "id": 502,
+                "url": "https://example.com/wp-content/uploads/2025/04/code-generator-plugin.png",
+                "title": "Code Generator Plugin icon"
+              }
+            ]
+          }
         }
-      ]
-    }
-  ]
+      }
+    ],
+    "first_page_url": "https://yoursite.com/wp-json/fluent-cart/v2/products/searchProductByName/?current_page=1",
+    "from": 1,
+    "next_page_url": null,
+    "path": "https://yoursite.com/wp-json/fluent-cart/v2/products/searchProductByName",
+    "per_page": 10,
+    "prev_page_url": null,
+    "to": 2
+  }
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
 }
 ```
 
@@ -2511,6 +4707,8 @@ Search for published products by name. Returns products formatted for select dro
 **GET Search Variants by Name**
 
 Search for published product variants by name. Returns a hierarchical product > variants structure.
+
+**Required permission:** `products/view`
 
 **Auth:** ApplicationPasswords
 
@@ -2568,6 +4766,36 @@ Search for published product variants by name. Returns a hierarchical product > 
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -2576,6 +4804,8 @@ Search for published product variants by name. Returns a hierarchical product > 
 **POST Set Variation Media**
 
 Set media/images for a variation.
+
+**Required permission:** `products/edit`
 
 **Auth:** ApplicationPasswords
 
@@ -2621,6 +4851,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/edit`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -2629,6 +4905,8 @@ Example:
 **GET Suggest SKU**
 
 Generate a unique SKU suggestion based on product and variant titles.
+
+**Required permission:** `products/view`
 
 **Auth:** ApplicationPasswords
 
@@ -2654,6 +4932,36 @@ Generate a unique SKU suggestion based on product and variant titles.
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -2662,6 +4970,8 @@ Generate a unique SKU suggestion based on product and variant titles.
 **POST Sync Downloadable Files**
 
 Attach multiple downloadable files to a product. Automatically enables the manage_downloadable flag.
+
+**Required permission:** `products/edit`
 
 **Auth:** ApplicationPasswords
 
@@ -2749,6 +5059,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/edit`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -2757,6 +5113,8 @@ Example:
 **POST Sync Taxonomy Terms**
 
 Sync (replace) taxonomy terms for a product.
+
+**Required permission:** `products/edit`
 
 **Auth:** ApplicationPasswords
 
@@ -2799,6 +5157,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/edit`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -2807,6 +5211,8 @@ Example:
 **PUT Update Downloadable File**
 
 Update an existing downloadable file record.
+
+**Required permission:** `products/edit`
 
 **Auth:** ApplicationPasswords
 
@@ -2861,6 +5267,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/edit`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -2869,6 +5321,8 @@ Example:
 **PUT Update Inventory**
 
 Update stock levels for a specific variant. Automatically updates stock status and product-level availability.
+
+**Required permission:** `products/edit`
 
 **Auth:** ApplicationPasswords
 
@@ -2908,6 +5362,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/edit`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -2916,6 +5416,8 @@ Example:
 **POST Update Long Description Editor Mode**
 
 Switch the long description editor between modes (e.g., visual, code).
+
+**Required permission:** `products/edit`
 
 **Auth:** ApplicationPasswords
 
@@ -2952,6 +5454,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/edit`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -2960,6 +5508,8 @@ Example:
 **PUT Update Manage Stock Setting**
 
 Enable or disable stock management for a product and all its variants.
+
+**Required permission:** `products/edit`
 
 **Auth:** ApplicationPasswords
 
@@ -2996,6 +5546,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/edit`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -3004,6 +5600,8 @@ Example:
 **POST Update Product Detail**
 
 Update a product detail record (e.g., change variation type).
+
+**Required permission:** `products/edit`
 
 **Auth:** ApplicationPasswords
 
@@ -3043,6 +5641,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/edit`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -3051,6 +5695,8 @@ Example:
 **POST Update Product Pricing**
 
 Update a product's pricing, details, variants, and other metadata.
+
+**Required permission:** `products/edit`
 
 **Auth:** ApplicationPasswords
 
@@ -3087,10 +5733,10 @@ Update a product's pricing, details, variants, and other metadata.
 - `variants` (array<object>)
   - `variation_title` (string)
   - `post_id` (integer)
-  - `item_price` (number)
-  - `compare_price` (number)
+  - `item_price` (number) — Price in cents (min: 0).
+  - `compare_price` (number) — Compare-at price in cents.
   - `manage_cost` (string)
-  - `item_cost` (number)
+  - `item_cost` (number) — Item cost in cents (required if manage_cost is true).
   - `serial_index` (integer)
   - `sku` (string)
   - `fulfillment_type` (string)
@@ -3177,6 +5823,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/edit`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -3185,6 +5877,8 @@ Example:
 **POST Update Shipping Class**
 
 Assign a shipping class to a product.
+
+**Required permission:** `products/edit`
 
 **Auth:** ApplicationPasswords
 
@@ -3221,6 +5915,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/edit`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -3229,6 +5969,8 @@ Example:
 **POST Update Tax Class**
 
 Assign a tax class to a product.
+
+**Required permission:** `products/edit`
 
 **Auth:** ApplicationPasswords
 
@@ -3265,6 +6007,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/edit`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -3273,6 +6061,8 @@ Example:
 **POST Update Upgrade Path**
 
 Update an existing upgrade path.
+
+**Required permission:** `products/edit`
 
 **Auth:** ApplicationPasswords
 
@@ -3319,6 +6109,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/edit`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -3327,6 +6163,8 @@ Example:
 **POST Update Variant Option**
 
 Sync variant options for a product (used when managing product attribute variations).
+
+**Required permission:** `products/edit`
 
 **Auth:** ApplicationPasswords
 
@@ -3383,6 +6221,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/edit`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -3391,6 +6275,8 @@ Example:
 **POST Update Variation**
 
 Update an existing product variation.
+
+**Required permission:** `products/edit`
 
 **Auth:** ApplicationPasswords
 
@@ -3407,8 +6293,8 @@ Update an existing product variation.
   - `id` (integer)
   - `post_id` (integer)
   - `variation_title` (string)
-  - `item_price` (number)
-  - `compare_price` (number)
+  - `item_price` (number) — Price in cents (min: 0).
+  - `compare_price` (number) — Compare-at price in cents.
   - `sku` (string)
   - `fulfillment_type` (string) _(enum: `physical`, `digital`)_
   - `total_stock` (integer)
@@ -3476,6 +6362,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/edit`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -3484,6 +6416,8 @@ Example:
 **PUT Update Variation Pricing Table**
 
 Update the pricing table description for a variation.
+
+**Required permission:** `products/edit`
 
 **Auth:** ApplicationPasswords
 
@@ -3516,6 +6450,501 @@ Example:
 ```json
 {
   "message": "Pricing table updated successfully"
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`products/edit`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
+
+---
+
+## POST `/products/variants/bulk-update`
+
+**POST Bulk Update Product Variants**
+
+Update price and status fields on multiple product variants in one request. All targeted variants must belong to the same product. Rows in the payload that target the same variant ID are merged (last field wins), the batch is applied inside a single locked transaction, and the `item_price` / `compare_price` relationship is enforced in both directions — raising `item_price` above an existing `compare_price` clears `compare_price`, and a `compare_price` below `item_price` is rejected back to 0. Up to 500 update rows are processed per request; additional rows are silently dropped. `item_price` and `compare_price` are submitted as cents (e.g. `2999` for $29.99), matching every other price field in the API — sending `29.99` creates a 29-cent price, not a $29.99 one.
+
+**Required permission:** `products/edit`
+
+**Auth:** ApplicationPasswords
+
+**Request body** (`application/json`, required)
+
+- `updates` (array<object>) **required** — Variant updates. Each row must include id plus at least one of item_price, compare_price, or item_status.
+  - `id` (integer) **required** — Product variation ID.
+  - `item_price` (number) — New price in cents (e.g. 2999 for $29.99).
+  - `compare_price` (number) — New compare-at price in cents. Must be 0 or >= item_price.
+  - `item_status` (string) _(enum: `active`, `inactive`)_ — New variant status.
+
+Example:
+
+```json
+{
+  "updates": [
+    {
+      "id": 501,
+      "item_price": 2999,
+      "compare_price": 3999,
+      "item_status": "active"
+    },
+    {
+      "id": 502,
+      "item_price": 2499
+    }
+  ]
+}
+```
+
+
+**Responses**
+
+- **200** — Variants updated successfully.
+
+  Schema (`application/json`):
+
+  - `message` (string)
+  - `updated` (integer)
+
+  Example:
+
+```json
+{
+  "message": "Variants updated successfully.",
+  "updated": 2
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **404** — One or more variant IDs do not exist.
+
+  Example:
+
+```json
+{
+  "message": "One or more variant IDs do not exist."
+}
+```
+
+
+- **422** — No updates provided, or the updates target variants across more than one product.
+
+  Schema (`application/json`):
+
+  - `message` (string)
+
+  Example:
+
+```json
+{
+  "message": "All updates must target variants on the same product."
+}
+```
+
+
+
+---
+
+## POST `/products/variants/group-bulk-update`
+
+**POST Group Bulk Update Variants**
+
+Apply a partial (PATCH-style) update to a group of product variants at once. Any field left null or omitted in the payload is skipped for every variant in the group; only the provided non-null fields are written. For `other_info`, only the supplied non-null sub-keys are merged into each variant's existing JSON rather than replacing it outright. All variants in `variant_ids` must belong to the same product, and `sku` can only be set when exactly one variant is targeted (SKUs must stay unique).
+
+**Required permission:** `products/edit`
+
+**Auth:** ApplicationPasswords
+
+**Request body** (`application/json`, required)
+
+- `variant_ids` (array<integer>) **required** — IDs of the variants to update. All must belong to the same product.
+- `sku` (string) _(maxLength: 30)_ — New SKU. Only accepted when variant_ids contains exactly one ID. An empty string clears the SKU. Must be unique.
+- `item_price` (number) — New sale price in cents, applied to every targeted variant.
+- `compare_price` (number) — New compare-at price in cents. Ignored per-row if it would be less than the effective item_price for that row.
+- `manage_stock` (integer) _(enum: `0`, `1`)_ — Whether to track stock for the targeted variants.
+- `total_stock` (integer) — New total stock quantity.
+- `fulfillment_type` (string) _(enum: `physical`, `digital`)_ — New fulfillment type.
+- `manage_cost` (string) _(enum: `true`, `false`)_ — Whether to track cost of goods for the targeted variants.
+- `item_cost` (number) — New cost of goods in cents.
+- `other_info` (object) — Partial delta merged into each variant's existing other_info JSON (e.g. payment_type, repeat_interval, signup_fee). Only non-null sub-keys are applied. signup_fee, when present, is also in cents.
+  - _(object)_
+
+Example:
+
+```json
+{
+  "variant_ids": [
+    456,
+    457
+  ],
+  "item_price": 8900,
+  "manage_stock": 1,
+  "total_stock": 50
+}
+```
+
+
+**Responses**
+
+- **200** — Variants updated successfully.
+
+  Schema (`application/json`):
+
+  - `message` (string)
+  - `updated` (integer)
+
+  Example:
+
+```json
+{
+  "message": "2 variants updated successfully.",
+  "updated": 2
+}
+```
+
+
+- **401** — Authentication required.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — The current user lacks the products/edit permission.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **404** — One or more variant IDs do not exist.
+
+  Example:
+
+```json
+{
+  "message": "One or more variant IDs do not exist."
+}
+```
+
+
+- **422** — No valid variant IDs/updates provided, variants span more than one product, or a subscription variant is missing a billing interval.
+
+  Example:
+
+```json
+{
+  "message": "All variants must belong to the same product."
+}
+```
+
+
+
+---
+
+## POST `/products/{postId}/tax-exempt`
+
+**POST Toggle Product Tax Exempt**
+
+Set the tax-exempt flag and tax class for an entire product (stored on the product detail, not per-variant). If `tax_class` is omitted, the product's existing tax class (or `standard`) is kept. The resolved tax class ID (not the slug) is stored on the product.
+
+**Required permission:** `products/edit`
+
+**Auth:** ApplicationPasswords
+
+**Path parameters**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `postId` | integer | yes | Product post ID |
+
+
+**Request body** (`application/json`)
+
+- `tax_exempt` (string) _(enum: `yes`, `no`)_ — Whether the product is exempt from tax. Defaults to 'no'.
+- `tax_class` (string) — Slug of an existing tax class. Defaults to the product's current tax class, or 'standard'.
+
+Example:
+
+```json
+{
+  "tax_exempt": "yes",
+  "tax_class": "standard"
+}
+```
+
+
+**Responses**
+
+- **200** — Product tax settings updated.
+
+  Schema (`application/json`):
+
+  - `message` (string)
+  - `tax_exempt` (string)
+  - `tax_class` (integer) — Resolved tax class ID
+  - `tax_class_slug` (string)
+
+  Example:
+
+```json
+{
+  "message": "Product is now tax exempt",
+  "tax_exempt": "yes",
+  "tax_class": 1,
+  "tax_class_slug": "standard"
+}
+```
+
+
+- **400** — Product not found.
+
+  Example:
+
+```json
+{
+  "message": "Product not found"
+}
+```
+
+
+- **401** — Authentication required.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — The current user lacks the products/edit permission.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — The supplied tax_class does not exist.
+
+  Example:
+
+```json
+{
+  "message": "Invalid tax class"
+}
+```
+
+
+
+---
+
+## POST `/products/variants/{variantId}/tax-exempt`
+
+**POST Update Variant Tax Settings**
+
+Set the tax-exempt flag and tax class for a single product variant. If `tax_class` is omitted, the variant's existing tax class (or `standard` if none is set) is kept. The supplied tax class must already exist.
+
+**Required permission:** `products/edit`
+
+**Auth:** ApplicationPasswords
+
+**Path parameters**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `variantId` | integer | yes | Product variation ID |
+
+
+**Request body** (`application/json`)
+
+- `tax_exempt` (string) _(enum: `yes`, `no`)_ — Whether the variant is exempt from tax. Defaults to 'no'.
+- `tax_class` (string) — Slug of an existing tax class. Defaults to the variant's current tax class, or 'standard'.
+
+Example:
+
+```json
+{
+  "tax_exempt": "yes",
+  "tax_class": "standard"
+}
+```
+
+
+**Responses**
+
+- **200** — Variant tax settings updated.
+
+  Schema (`application/json`):
+
+  - `message` (string)
+  - `tax_exempt` (string)
+  - `tax_class` (string)
+  - `tax_class_slug` (string)
+
+  Example:
+
+```json
+{
+  "message": "Variation is now tax exempt",
+  "tax_exempt": "yes",
+  "tax_class": "standard",
+  "tax_class_slug": "standard"
+}
+```
+
+
+- **400** — Variant not found.
+
+  Example:
+
+```json
+{
+  "message": "Variant not found"
+}
+```
+
+
+- **401** — Authentication required.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — The current user lacks the products/edit permission.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — The supplied tax_class does not exist.
+
+  Example:
+
+```json
+{
+  "message": "Invalid tax class"
 }
 ```
 

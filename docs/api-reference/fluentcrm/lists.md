@@ -12,6 +12,14 @@ _Generated from the FluentCRM OpenAPI specs (developers.fluentcrm.com)._
 
 Perform a bulk action on multiple contact lists. Currently supports bulk deletion of lists by their IDs.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats_delete`
+
+_Enforced by `ListPolicy::handleBulkAction()`._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`, required)
@@ -56,6 +64,14 @@ Example:
 **POST Bulk Create Lists**
 
 Create or update multiple contact lists in a single request. Lists are matched by slug -- if a list with the given slug already exists, its title is updated; otherwise a new list is created. Lists without a `title` are skipped.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats`
+
+_Enforced by `ListPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -120,6 +136,14 @@ Example:
 **POST Create List**
 
 Create a new contact list. The `title` field is required. If `slug` is omitted, it is auto-generated from the title. The slug must be unique across all lists.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats`
+
+_Enforced by `ListPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -209,6 +233,14 @@ Example:
 
 Permanently delete a contact list by its ID. This removes the list but does not delete contacts that were in the list.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats_delete`
+
+_Enforced by `ListPolicy::remove()`._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -244,6 +276,16 @@ Permanently delete a contact list by its ID. This removes the list but does not 
 
 Retrieve a single contact list by its ID.
 
+The list object is returned **at the top level** — there is no `list` wrapper key. A missing id yields `null` rather than a 404.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats`
+
+_Enforced by `ListPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -259,21 +301,25 @@ Retrieve a single contact list by its ID.
 
   Schema (`application/json`):
 
-  - `list` (ContactList)
+  - `id` (integer) — List id.
+  - `title` (string) — List name.
+  - `slug` (string) — URL-friendly unique identifier.
+  - `description` (string,null) — Optional description. Null when never set.
+  - `is_public` (string) _(enum: `0`, `1`)_ — `"1"` when the list may be shown on public preference pages, `"0"` otherwise. Returned as a string, not a boolean.
+  - `created_at` (string) _(format: date-time)_ — Creation timestamp.
+  - `updated_at` (string) _(format: date-time)_ — Last update timestamp.
 
   Example:
 
 ```json
 {
-  "list": {
-    "id": 1,
-    "title": "Newsletter",
-    "slug": "newsletter",
-    "description": "Main newsletter subscribers",
-    "is_public": 0,
-    "created_at": "2024-01-15 10:30:00",
-    "updated_at": "2024-01-15 10:30:00"
-  }
+  "id": 1,
+  "title": "Community Members",
+  "slug": "community-members",
+  "description": null,
+  "is_public": "0",
+  "created_at": "2024-03-27 00:52:39",
+  "updated_at": "2024-03-27 00:52:39"
 }
 ```
 
@@ -286,6 +332,14 @@ Retrieve a single contact list by its ID.
 **GET List Lists**
 
 Retrieve a paginated list of contact lists. Optionally includes subscriber counts and a separate array of all lists for dropdown/select usage.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats`
+
+_Enforced by `ListPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -300,6 +354,7 @@ Retrieve a paginated list of contact lists. Optionally includes subscriber count
 | `page` | integer | no | Page number for pagination. |
 | `exclude_counts` | boolean | no | If set to any truthy value, `totalCount` and `subscribersCount` will not be included for each list. |
 | `all_lists` | boolean | no | If set to any truthy value, includes a flat `all_lists` array with id, title, and slug of every list (useful for dropdowns). |
+| `with[]` | array<string> | no | Extra data to include. `subscribersCount` adds per-list contact counts via one grouped pivot query. |
 
 
 **Responses**
@@ -320,7 +375,7 @@ Retrieve a paginated list of contact lists. Optionally includes subscriber count
     - `data` (array<ContactList>)
   - `pagination` (object)
     - `total` (integer) — Total number of lists matching the query.
-  - `all_lists` (array<object>) — Only present when `all_lists` query parameter is truthy. A flat array of all lists.
+  - `all_lists` (array<object>) — Only present when `all_lists` query parameter is truthy. A flat array of all lists. Returned **only** when the request sends `all_lists`. Contains every list, unpaginated, for use in pickers.
     - `id` (string) — List ID as a string.
     - `title` (string)
     - `slug` (string)
@@ -378,6 +433,14 @@ Retrieve a paginated list of contact lists. Optionally includes subscriber count
 **PUT Update List**
 
 Update an existing contact list by its ID. The `title` field is required. If `slug` is provided, it is regenerated from the title. Alternatively, set `id` to `0` and pass `update_by=slug` to find the list by its slug instead.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats`
+
+_Enforced by `ListPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 

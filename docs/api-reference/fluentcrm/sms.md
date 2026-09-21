@@ -1,6 +1,6 @@
 # FluentCRM API — SMS (Pro)
 
-24 endpoints. Base URL: `https://{website}/wp-json/fluent-crm/v2`. See the [FluentCRM overview](../fluentcrm.md) for auth and the full group list.
+25 endpoints. Base URL: `https://{website}/wp-json/fluent-crm/v2`. See the [FluentCRM overview](../fluentcrm.md) for auth and the full group list.
 
 _Generated from the FluentCRM OpenAPI specs (developers.fluentcrm.com)._
 
@@ -11,6 +11,18 @@ _Generated from the FluentCRM OpenAPI specs (developers.fluentcrm.com)._
 **POST Bulk Action on SMS Campaigns**
 
 Perform bulk actions on multiple SMS campaigns. Supported actions: `delete_campaigns` (permanently deletes campaigns and their data) and `apply_labels` (attaches labels to campaigns). Use `select_all` to target all campaigns. **PRO** (requires FluentCampaign Pro SMS module).
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+Route exists only while the SMS module is enabled; the policy returns false otherwise.
+
+_Enforced by `SMSPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro **with the SMS module enabled**. While SMS is switched off the route is not registered at all and returns a 404.
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -61,6 +73,18 @@ Example:
 **POST Create SMS Campaign**
 
 Create a new SMS campaign. The campaign is created in `draft` status. The message content allows only anchor (`<a>`) tags for links; all other HTML is stripped. **PRO** (requires FluentCampaign Pro SMS module).
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+Route exists only while the SMS module is enabled; the policy returns false otherwise.
+
+_Enforced by `SMSPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro **with the SMS module enabled**. While SMS is switched off the route is not registered at all and returns a 404.
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -116,6 +140,18 @@ Example:
 
 Permanently delete an SMS campaign and all its associated data (messages, meta, etc.). **PRO** (requires FluentCampaign Pro SMS module).
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_email_delete`
+
+Route exists only while the SMS module is enabled; the policy returns false otherwise.
+
+_Enforced by `SMSPolicy::delete()`._
+
+**Requires:** FluentCampaign Pro **with the SMS module enabled**. While SMS is switched off the route is not registered at all and returns a 404.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -151,6 +187,18 @@ Permanently delete an SMS campaign and all its associated data (messages, meta, 
 **DELETE Delete SMS Messages**
 
 Delete multiple SMS messages by their IDs. **PRO** (requires FluentCampaign Pro SMS module).
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+Route exists only while the SMS module is enabled; the policy returns false otherwise.
+
+_Enforced by `SMSPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro **with the SMS module enabled**. While SMS is switched off the route is not registered at all and returns a 404.
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -199,6 +247,18 @@ Example:
 **POST Apply Tag Actions to SMS Campaign Recipients**
 
 Add or remove tags for recipients of an archived SMS campaign. Processes recipients in batches (default 50 per page). Filter recipients by activity type (all recipients, sent, failed, delivered). Only subscribed contacts are affected. **PRO** (requires FluentCampaign Pro SMS module).
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+Route exists only while the SMS module is enabled; the policy returns false otherwise.
+
+_Enforced by `SMSPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro **with the SMS module enabled**. While SMS is switched off the route is not registered at all and returns a 404.
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -265,6 +325,18 @@ Example:
 
 Create a duplicate of an existing SMS campaign. The new campaign is created in `draft` status with the title prefixed by `[Duplicate]`. Labels from the original campaign are copied to the duplicate. **PRO** (requires FluentCampaign Pro SMS module).
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+Route exists only while the SMS module is enabled; the policy returns false otherwise.
+
+_Enforced by `SMSPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro **with the SMS module enabled**. While SMS is switched off the route is not registered at all and returns a 404.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -310,6 +382,18 @@ Create a duplicate of an existing SMS campaign. The new campaign is created in `
 **POST Estimate SMS Campaign Contacts**
 
 Estimate the number of contacts that match the given segment/filter criteria for an SMS campaign. Supports three filter modes: `list_tag` (lists and tags), `dynamic_segment`, and `advanced_filters`. **PRO** (requires FluentCampaign Pro SMS module).
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+Route exists only while the SMS module is enabled; the policy returns false otherwise.
+
+_Enforced by `SMSPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro **with the SMS module enabled**. While SMS is switched off the route is not registered at all and returns a 404.
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -379,6 +463,18 @@ Example:
 
 Retrieve a single SMS campaign by ID. The response includes the current server time. **PRO** (requires FluentCampaign Pro SMS module).
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+Route exists only while the SMS module is enabled; the policy returns false otherwise.
+
+_Enforced by `SMSPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro **with the SMS module enabled**. While SMS is switched off the route is not registered at all and returns a 404.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -427,6 +523,18 @@ Retrieve a single SMS campaign by ID. The response includes the current server t
 
 Get the processing status of an SMS campaign that is being prepared for sending. If the campaign is in `pending-scheduled` status and its scheduled time is within 6 minutes, it transitions to `processing`. Returns whether the client should reload for updated data. **PRO** (requires FluentCampaign Pro SMS module).
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+Route exists only while the SMS module is enabled; the policy returns false otherwise.
+
+_Enforced by `SMSPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro **with the SMS module enabled**. While SMS is switched off the route is not registered at all and returns a 404.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -474,6 +582,18 @@ Get the processing status of an SMS campaign that is being prepared for sending.
 **GET Get SMS Campaign Recipients**
 
 Retrieve a paginated list of SMS message recipients for a specific campaign. Supports filtering by message status (sent, failed, delivered) and searching by subscriber details. **PRO** (requires FluentCampaign Pro SMS module).
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+Route exists only while the SMS module is enabled; the policy returns false otherwise.
+
+_Enforced by `SMSPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro **with the SMS module enabled**. While SMS is switched off the route is not registered at all and returns a 404.
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -552,6 +672,18 @@ Retrieve a paginated list of SMS message recipients for a specific campaign. Sup
 
 Get the estimated number of recipients for an SMS campaign. For campaigns in `draft`, `processing`, or `pending-scheduled` status, a live count is computed from the subscriber model. For other statuses, the stored `recipients_count` is returned. **PRO** (requires FluentCampaign Pro SMS module).
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+Route exists only while the SMS module is enabled; the policy returns false otherwise.
+
+_Enforced by `SMSPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro **with the SMS module enabled**. While SMS is switched off the route is not registered at all and returns a 404.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -587,6 +719,18 @@ Get the estimated number of recipients for an SMS campaign. For campaigns in `dr
 **GET Get SMS Campaign Status**
 
 Get the current sending status of an SMS campaign, including message statistics, sent count, and analytics. For `working` campaigns, this endpoint also performs housekeeping: resets stale processing messages, schedules recovery batch sends, and auto-archives completed campaigns. **PRO** (requires FluentCampaign Pro SMS module).
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+Route exists only while the SMS module is enabled; the policy returns false otherwise.
+
+_Enforced by `SMSPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro **with the SMS module enabled**. While SMS is switched off the route is not registered at all and returns a 404.
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -662,6 +806,18 @@ Get the current sending status of an SMS campaign, including message statistics,
 
 Retrieve paginated SMS message logs for a specific subscriber/contact. Each log entry includes the message content, phone number, timestamps, and type. Supports filtering by SMS type and ordering. **PRO** (requires FluentCampaign Pro SMS module).
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+Route exists only while the SMS module is enabled; the policy returns false otherwise.
+
+_Enforced by `SMSPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro **with the SMS module enabled**. While SMS is switched off the route is not registered at all and returns a 404.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -736,6 +892,18 @@ Retrieve paginated SMS message logs for a specific subscriber/contact. Each log 
 
 Retrieve SMS statistics for a specific subscriber/contact, including total message counts broken down by type (campaign, automation, custom) and status (sent, delivered, failed, pending). **PRO** (requires FluentCampaign Pro SMS module).
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+Route exists only while the SMS module is enabled; the policy returns false otherwise.
+
+_Enforced by `SMSPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro **with the SMS module enabled**. While SMS is switched off the route is not registered at all and returns a 404.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -791,6 +959,18 @@ Retrieve SMS statistics for a specific subscriber/contact, including total messa
 
 Retrieve a paginated list of SMS campaigns. Supports filtering by status, search term, labels, and sorting. Optionally includes campaign statistics and labels. **PRO** (requires FluentCampaign Pro SMS module).
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+Route exists only while the SMS module is enabled; the policy returns false otherwise.
+
+_Enforced by `SMSPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro **with the SMS module enabled**. While SMS is switched off the route is not registered at all and returns a 404.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Query parameters**
@@ -805,6 +985,7 @@ Retrieve a paginated list of SMS campaigns. Supports filtering by status, search
 | `labels[]` | array<integer> | no | Filter by label term IDs. |
 | `per_page` | integer | no | Number of results per page. |
 | `page` | integer | no | Page number. |
+| `channel` | string | no | Messaging channel to list campaigns for. |
 
 
 **Responses**
@@ -864,6 +1045,18 @@ Retrieve a paginated list of SMS campaigns. Supports filtering by status, search
 
 Retrieve a paginated list of all SMS messages across all campaigns and types. Supports filtering by status and searching by message content, phone number, or subscriber details. Also returns status counts for filter dropdowns. **PRO** (requires FluentCampaign Pro SMS module).
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+Route exists only while the SMS module is enabled; the policy returns false otherwise.
+
+_Enforced by `SMSPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro **with the SMS module enabled**. While SMS is switched off the route is not registered at all and returns a 404.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Query parameters**
@@ -874,6 +1067,7 @@ Retrieve a paginated list of all SMS messages across all campaigns and types. Su
 | `page` | integer | no | Page number. |
 | `status` | string | no | Filter by message status. Use empty string or `all` to show all statuses. |
 | `search` | string | no | Search by message content, phone number, or subscriber details (name, email). |
+| `channel` | string | no | Messaging channel to list messages for. |
 
 
 **Responses**
@@ -974,6 +1168,18 @@ Retrieve a paginated list of all SMS messages across all campaigns and types. Su
 
 Pause an actively sending SMS campaign. The campaign must be in `working` status. All pending/scheduled/scheduling messages are set to `paused`. **PRO** (requires FluentCampaign Pro SMS module).
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+Route exists only while the SMS module is enabled; the policy returns false otherwise.
+
+_Enforced by `SMSPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro **with the SMS module enabled**. While SMS is switched off the route is not registered at all and returns a 404.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -1018,6 +1224,18 @@ Pause an actively sending SMS campaign. The campaign must be in `working` status
 
 Resend a specific SMS message by creating a new message entry with the same content and queuing it for delivery via Action Scheduler. The subscriber must still have a valid phone number and the message content must not exceed 1600 characters. **PRO** (requires FluentCampaign Pro SMS module).
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+Route exists only while the SMS module is enabled; the policy returns false otherwise.
+
+_Enforced by `SMSPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro **with the SMS module enabled**. While SMS is switched off the route is not registered at all and returns a 404.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -1057,6 +1275,18 @@ Resend a specific SMS message by creating a new message entry with the same cont
 **POST Resume SMS Campaign**
 
 Resume a paused SMS campaign. The campaign must be in `paused` status. All paused messages are re-scheduled and batch sending is triggered via Action Scheduler. **PRO** (requires FluentCampaign Pro SMS module).
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+Route exists only while the SMS module is enabled; the policy returns false otherwise.
+
+_Enforced by `SMSPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro **with the SMS module enabled**. While SMS is switched off the route is not registered at all and returns a 404.
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -1101,6 +1331,18 @@ Resume a paused SMS campaign. The campaign must be in `paused` status. All pause
 **POST Schedule SMS Campaign**
 
 Schedule an SMS campaign for sending. The campaign must be in `draft` status. If `scheduled_at` is provided, the campaign is scheduled for that time. If omitted, the campaign starts sending within 5 minutes (instant send with admin cancel window). Accepts Unix timestamps, MySQL datetime strings, and ISO-8601 strings. **PRO** (requires FluentCampaign Pro SMS module).
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+Route exists only while the SMS module is enabled; the policy returns false otherwise.
+
+_Enforced by `SMSPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro **with the SMS module enabled**. While SMS is switched off the route is not registered at all and returns a 404.
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -1164,6 +1406,18 @@ Example:
 
 Send a custom (one-off) SMS message to a specific subscriber/contact. The SMS module must be active and the subscriber must have a phone number. Maximum message length is 1600 characters (up to 10 SMS segments). The message is queued via Action Scheduler for near-immediate delivery. **PRO** (requires FluentCampaign Pro SMS module).
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+Route exists only while the SMS module is enabled; the policy returns false otherwise.
+
+_Enforced by `SMSPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro **with the SMS module enabled**. While SMS is switched off the route is not registered at all and returns a 404.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -1216,6 +1470,18 @@ Example:
 
 Unschedule a previously scheduled SMS campaign, reverting it to `draft` status. All generated SMS messages for this campaign are deleted. The campaign must be in `scheduled`, `pending-scheduled`, or `processing` status (and for `processing`, the scheduled time must still be in the future). **PRO** (requires FluentCampaign Pro SMS module).
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+Route exists only while the SMS module is enabled; the policy returns false otherwise.
+
+_Enforced by `SMSPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro **with the SMS module enabled**. While SMS is switched off the route is not registered at all and returns a 404.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -1252,6 +1518,18 @@ Unschedule a previously scheduled SMS campaign, reverting it to `draft` status. 
 **PUT Update SMS Campaign**
 
 Update an existing SMS campaign. Only `title`, `message_content`, and `settings` can be updated. An optional `next_step` value can be stored as campaign meta. The message content allows only anchor (`<a>`) tags; all other HTML is stripped. **PRO** (requires FluentCampaign Pro SMS module).
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+Route exists only while the SMS module is enabled; the policy returns false otherwise.
+
+_Enforced by `SMSPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro **with the SMS module enabled**. While SMS is switched off the route is not registered at all and returns a 404.
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -1322,6 +1600,18 @@ Example:
 
 Attach or detach labels from an SMS campaign. Use the `action` parameter to specify `attach` or `detach`. **PRO** (requires FluentCampaign Pro SMS module).
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+Route exists only while the SMS module is enabled; the policy returns false otherwise.
+
+_Enforced by `SMSPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro **with the SMS module enabled**. While SMS is switched off the route is not registered at all and returns a 404.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -1369,5 +1659,78 @@ Example:
 
 - **404** — Campaign not found.
 - **422** — No valid label IDs provided.
+
+---
+
+## POST `/sms/campaigns/{id}/un-schedule`
+
+**POST Unschedule SMS Campaign (Legacy Path)**
+
+<Badge type="warning" text="Pro" />
+
+Cancel a scheduled SMS campaign and return it to draft.
+
+This is a **legacy alias**, kept so older admin screens keep working. It is the same handler as `POST /sms/campaigns/{id}/unschedule` — note the hyphen is the only difference. Use the un-hyphenated path in new integrations.
+
+Like every `/sms` route, this exists only while the SMS module is enabled; with it off the route is not registered at all.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+Route exists only while the SMS module is enabled; the policy returns false otherwise.
+
+_Enforced by `SMSPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro **with the SMS module enabled**. While SMS is switched off the route is not registered at all and returns a 404.
+
+<!-- /fc:access -->
+
+**Auth:** ApplicationPasswords
+
+**Path parameters**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `id` | integer | yes | SMS campaign id. |
+
+
+**Responses**
+
+- **200** — Campaign unscheduled and returned to draft.
+
+  Schema (`application/json`):
+
+  - `message` (string) — Confirmation message.
+
+  Example:
+
+```json
+{
+  "message": "Campaign has been unscheduled"
+}
+```
+
+
+- **401** — Not authenticated — missing or invalid credentials.
+
+  Schema (`application/json`):
+
+  - _$ref: Error_
+- **403** — Authenticated but the user lacks the capability this route requires.
+
+  Schema (`application/json`):
+
+  - _$ref: Error_
+- **404** — The requested resource does not exist.
+
+  Schema (`application/json`):
+
+  - _$ref: Error_
+- **422** — Validation failed — the response message names the offending field.
+
+  Schema (`application/json`):
+
+  - _$ref: Error_
 
 ---

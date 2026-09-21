@@ -12,6 +12,16 @@ _Generated from the FluentCRM OpenAPI specs (developers.fluentcrm.com)._
 
 Create a new custom dynamic segment with filter conditions. The segment data is stored as a JSON-encoded string in the `segment` parameter. Requires FluentCampaign Pro.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats`
+
+_Enforced by `DynamicSegmentPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`, required)
@@ -96,6 +106,16 @@ Example:
 
 Permanently delete a custom dynamic segment by its ID. Only custom segments (stored in the Meta table) can be deleted. Requires FluentCampaign Pro.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats_delete`
+
+_Enforced by `DynamicSegmentPolicy::deleteCustomSegment()`._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -146,6 +166,16 @@ Permanently delete a custom dynamic segment by its ID. Only custom segments (sto
 
 Create a copy of an existing custom dynamic segment. The duplicated segment will have `[Duplicate]` prepended to its title. Requires FluentCampaign Pro.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats`
+
+_Enforced by `DynamicSegmentPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -182,6 +212,16 @@ Create a copy of an existing custom dynamic segment. The duplicated segment will
 **POST Estimate Dynamic Segment Contacts**
 
 Get the estimated number of contacts matching a set of segment filter conditions. Useful for previewing a segment before creating or updating it. Requires FluentCampaign Pro.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats`
+
+_Enforced by `DynamicSegmentPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -258,6 +298,16 @@ Example:
 **GET Get Dynamic Segment Custom Fields**
 
 Retrieve the available filter field definitions and default settings for building custom dynamic segment conditions. Returns field types, operators, and options for constructing segment filters. Requires FluentCampaign Pro.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats`
+
+_Enforced by `DynamicSegmentPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -438,6 +488,16 @@ Retrieve the available filter field definitions and default settings for buildin
 
 Retrieve contact count statistics for all registered dynamic segments. Returns a map of segment keys to their subscriber counts. Requires FluentCampaign Pro.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats`
+
+_Enforced by `DynamicSegmentPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Responses**
@@ -470,6 +530,16 @@ Retrieve contact count statistics for all registered dynamic segments. Returns a
 
 Retrieve a paginated list of subscribers belonging to a specific dynamic segment. Supports sorting, searching, and optional custom field inclusion. Requires FluentCampaign Pro.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats`
+
+_Enforced by `DynamicSegmentPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -491,6 +561,9 @@ Retrieve a paginated list of subscribers belonging to a specific dynamic segment
 | `has_commerce` | boolean | no | If truthy, includes commerce data for each subscriber (requires a commerce provider like WooCommerce). |
 | `per_page` | integer | no | Number of subscribers per page. |
 | `page` | integer | no | Page number for pagination. |
+| `tags[]` | array<integer> | no | Restrict the segment's contacts to these tag ids. |
+| `lists[]` | array<integer> | no | Restrict the segment's contacts to these list ids. |
+| `statuses[]` | array<string> | no | Restrict the segment's contacts to these subscription statuses. |
 
 
 **Responses**
@@ -556,6 +629,16 @@ Retrieve a paginated list of subscribers belonging to a specific dynamic segment
 
 Retrieve all registered dynamic segments. Returns both built-in segments (e.g., WordPress Users, WooCommerce Customers) and custom segments created via the API. Requires FluentCampaign Pro.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats`
+
+_Enforced by `DynamicSegmentPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Responses**
@@ -598,6 +681,16 @@ Retrieve all registered dynamic segments. Returns both built-in segments (e.g., 
 **PUT Update Dynamic Segment**
 
 Update an existing custom dynamic segment's title, conditions, and filter settings. The segment data is sent as a JSON-encoded string. Requires FluentCampaign Pro.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats`
+
+_Enforced by `DynamicSegmentPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 

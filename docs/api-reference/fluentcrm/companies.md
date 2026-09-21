@@ -1,6 +1,6 @@
 # FluentCRM API — Companies
 
-19 endpoints. Base URL: `https://{website}/wp-json/fluent-crm/v2`. See the [FluentCRM overview](../fluentcrm.md) for auth and the full group list.
+21 endpoints. Base URL: `https://{website}/wp-json/fluent-crm/v2`. See the [FluentCRM overview](../fluentcrm.md) for auth and the full group list.
 
 _Generated from the FluentCRM OpenAPI specs (developers.fluentcrm.com)._
 
@@ -11,6 +11,14 @@ _Generated from the FluentCRM OpenAPI specs (developers.fluentcrm.com)._
 **POST Attach Subscribers to Companies**
 
 Attach one or more contacts (subscribers) to one or more companies. Creates the many-to-many relationship between contacts and companies. Uses the `FluentCrmApi('companies')->attachContactsByIds()` method internally.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats`
+
+_Enforced by `CompanyPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -114,6 +122,14 @@ Example:
 
 Perform a bulk action on multiple companies. Supports deleting companies, changing status, changing type, and changing industry category. Companies can be selected by explicit IDs or by filter criteria (search + inline_filters). When using filter criteria, processes up to 50 companies per request in batches -- use `last_id` for pagination across multiple requests.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats_delete` or `fcrm_manage_contact_cats` — which one applies depends on the action being performed.
+
+_Enforced by `CompanyPolicy::handleBulkActions()`._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`, required)
@@ -178,6 +194,14 @@ Example:
 **POST Create Company**
 
 Create a new company. The company name must be unique. If a website is provided and the `company_auto_logo` experimental feature is enabled, the logo will be automatically fetched from the website's favicon/apple-touch-icon. Optionally attach the company to an existing contact via `intended_contact_id`.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats`
+
+_Enforced by `CompanyPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -299,6 +323,14 @@ Example:
 
 Add a new note to a company. If `created_at` is not provided, it defaults to the current WordPress time. Fires the `fluent_crm/company_note_added` action hook after creation.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats`
+
+_Enforced by `CompanyPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -385,6 +417,14 @@ Example:
 
 Permanently delete a company by its ID. Fires `fluent_crm/before_company_delete` and `fluent_crm/company_deleted` action hooks.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats_delete`
+
+_Enforced by `CompanyPolicy::delete()`._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -424,6 +464,14 @@ Permanently delete a company by its ID. Fires `fluent_crm/before_company_delete`
 **DELETE Delete Company Note**
 
 Delete a note from a company. Fires the `fluent_crm/company_note_deleted` action hook after deletion.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats_delete`
+
+_Enforced by `CompanyPolicy::deleteNote()`._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -465,6 +513,14 @@ Delete a note from a company. Fires the `fluent_crm/company_note_deleted` action
 **POST Detach Subscribers from Companies**
 
 Detach one or more contacts (subscribers) from one or more companies. Removes the many-to-many relationship between contacts and companies. Uses the `FluentCrmApi('companies')->detachContactsByIds()` method internally.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats`
+
+_Enforced by `CompanyPolicy::detachSubscribers()`._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -527,6 +583,14 @@ Example:
 **GET Get Company**
 
 Retrieve a single company by its ID, or by an alternate field (`name`, `email`, or `phone`) using the `find_by` and `find_by_value` query parameters. The response includes the eager-loaded `owner` relation (with stats if available) and the computed `contacts_count`.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats`
+
+_Enforced by `CompanyPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -648,6 +712,14 @@ Retrieve a single company by its ID, or by an alternate field (`name`, `email`, 
 
 Retrieve the global custom field definitions for companies. These define the custom fields available for all companies (not the values for a specific company).
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats`
+
+_Enforced by `CompanyPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Query parameters**
@@ -698,6 +770,14 @@ Retrieve the global custom field definitions for companies. These define the cus
 
 Retrieve a custom tab/section view for a company profile. This endpoint delegates to the `fluent_crm/company_profile_section_{section_provider}` filter hook, allowing third-party integrations to provide custom content sections on the company profile page.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats`
+
+_Enforced by `CompanyPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -747,6 +827,14 @@ Retrieve a custom tab/section view for a company profile. This endpoint delegate
 
 Retrieve a paginated list of notes for a company. Notes are ordered by ID descending (newest first). Each note includes the `added_by` field showing who created it. Also returns note sync fields configuration.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats`
+
+_Enforced by `CompanyPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -763,6 +851,7 @@ Retrieve a paginated list of notes for a company. Notes are ordered by ID descen
 | `search` | string | no | Search notes by title (LIKE match). |
 | `per_page` | integer | no | Number of notes per page. |
 | `page` | integer | no | Page number for pagination. |
+| `include_id` | integer | no | Id of a note that must appear in the response even when it falls outside the current page. When it is not already on the page it is returned separately as `included_note`, scoped to this company. |
 
 
 **Responses**
@@ -826,6 +915,14 @@ Retrieve a paginated list of notes for a company. Notes are ordered by ID descen
 **POST Import Companies from CSV**
 
 Import companies from a previously uploaded CSV file. Processes up to 100 records per request for batch importing. Use the `importing_page` parameter to paginate through large files. Supports field mapping via the `map` parameter, optional updating of existing companies (matched by name), and automatic owner creation from the CSV data.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats`
+
+_Enforced by `CompanyPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -924,6 +1021,14 @@ Example:
 
 Retrieve a paginated list of companies. Supports sorting, searching, and inline filtering by industry categories and company types. Each company in the response includes the computed `contacts_count` and the eager-loaded `owner` relation.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats`
+
+_Enforced by `CompanyPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Query parameters**
@@ -937,6 +1042,7 @@ Retrieve a paginated list of companies. Supports sorting, searching, and inline 
 | `inline_filters[company_types][]` | array<string> | no | Filter by company types (e.g., partner, customer, vendor). |
 | `per_page` | integer | no | Number of companies per page. |
 | `page` | integer | no | Page number for pagination. |
+| `inline_filters` | string | no | Column-level filters applied from the companies table header. Sent as a nested object keyed by column. |
 
 
 **Responses**
@@ -1016,6 +1122,14 @@ Retrieve a paginated list of companies. Supports sorting, searching, and inline 
 **PUT Save Company Custom Fields**
 
 Save (create or update) the global custom field definitions for companies. This replaces the entire set of custom field definitions.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats`
+
+_Enforced by `CompanyPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -1124,6 +1238,14 @@ Example:
 
 Search companies by name with a simplified result format (id, name, email, logo, phone, website). Returns up to 50 results sorted by name. Optionally exclude companies already associated with a specific subscriber. Pre-selected company IDs can be passed via `values[]` to ensure they appear in the results even if they don't match the search.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats`
+
+_Enforced by `CompanyPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Query parameters**
@@ -1185,6 +1307,14 @@ Search companies by name with a simplified result format (id, name, email, logo,
 **GET Search Unattached Contacts**
 
 Search for contacts (subscribers) that are **not** currently associated with a specific company. Useful for finding contacts to attach to a company. Returns contacts ordered by ID descending.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats`
+
+_Enforced by `CompanyPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -1249,6 +1379,14 @@ Search for contacts (subscribers) that are **not** currently associated with a s
 
 Update a single property for one or more companies. Valid properties are `type`, `logo`, `owner_id`, and `refetch_logo`. When `refetch_logo` is used, the system attempts to re-fetch the company logo from its website URL. Fires `fluent_crm/company_{column}_to_{value}` action hooks for `type`, `status`, and `owner_id` changes.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats`
+
+_Enforced by `CompanyPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`, required)
@@ -1305,6 +1443,14 @@ Example:
 **PUT Update Company**
 
 Update an existing company. The company name must remain unique across all companies. If the `id` is `0`, the request is treated as a create operation. URL fields (`website`, `linkedin_url`, `facebook_url`, `twitter_url`) are auto-prefixed with `https://` if no scheme is provided and validated as URLs.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats`
+
+_Enforced by `CompanyPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -1427,6 +1573,14 @@ Example:
 
 Update an existing note on a company. Only the `title`, `description`, `type`, and `created_at` fields can be updated. Fires the `fluent_crm/company_note_updated` action hook after the update.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats`
+
+_Enforced by `CompanyPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -1505,5 +1659,170 @@ Example:
   - `message` (string)
   - `errors` (object)
     - _(object)_
+
+---
+
+## POST `/companies/{id}/notes/bulk-delete`
+
+**POST Bulk Delete Company Notes**
+
+Delete several notes from one company in a single request. The company-side counterpart to `POST /subscribers/{id}/notes/bulk-delete`, with identical semantics: ids are scoped to the company in the path, foreign ids are silently skipped, and no more than **200** ids are accepted.
+
+Each deletion fires `fluent_crm/company_note_deleted`.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats_delete`
+
+_Enforced by `CompanyPolicy::bulkDeleteNotes()`._
+
+<!-- /fc:access -->
+
+**Auth:** ApplicationPasswords
+
+**Path parameters**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `id` | integer | yes | Company id. |
+
+
+**Request body** (`application/json`, required)
+
+- `note_ids` (array<integer>) **required** — Note ids to delete. Required, and capped at 200 per request. Ids belonging to a different company are silently skipped.
+
+Example:
+
+```json
+{
+  "note_ids": [
+    1201,
+    1202,
+    1203
+  ]
+}
+```
+
+
+**Responses**
+
+- **200** — Notes deleted.
+
+  Schema (`application/json`):
+
+  - `message` (string) — Confirmation message stating how many notes were removed.
+
+  Example:
+
+```json
+{
+  "message": "3 notes deleted"
+}
+```
+
+
+- **401** — Not authenticated — missing or invalid credentials.
+
+  Schema (`application/json`):
+
+  - _$ref: Error_
+- **403** — Authenticated but the user lacks the capability this route requires.
+
+  Schema (`application/json`):
+
+  - _$ref: Error_
+- **404** — The requested resource does not exist.
+
+  Schema (`application/json`):
+
+  - _$ref: Error_
+- **422** — `note_ids` was empty, or more than 200 ids were supplied.
+
+  Schema (`application/json`):
+
+  - _$ref: Error_
+
+---
+
+## PUT `/companies/custom-fields/update_group_name`
+
+**PUT Rename Company Custom Field Group**
+
+Rename a company custom-field group, moving every field assigned to `old_name` over to `new_name` in one operation.
+
+Groups are not standalone records — they exist only as a label on each custom field — so this endpoint is the only way to rename one without editing every field individually.
+
+The full updated field set is returned so the caller can refresh without a second request.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats`
+
+_Enforced by `CompanyPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
+**Auth:** ApplicationPasswords
+
+**Request body** (`application/json`, required)
+
+- `old_name` (string) **required** — Existing group name to rename.
+- `new_name` (string) **required** — Replacement group name.
+
+Example:
+
+```json
+{
+  "old_name": "Billing",
+  "new_name": "Finance"
+}
+```
+
+
+**Responses**
+
+- **200** — Group renamed.
+
+  Schema (`application/json`):
+
+  - `fields` (array<object>) — Every company custom field after the rename.
+    - `slug` (string) — Field key.
+    - `label` (string) — Field label.
+    - `type` (string) — Field input type.
+    - `group` (string) — Group name, now reflecting `new_name`.
+  - `message` (string) — Confirmation message.
+
+  Example:
+
+```json
+{
+  "fields": [
+    {
+      "slug": "vat_number",
+      "label": "VAT Number",
+      "type": "text",
+      "group": "Finance"
+    }
+  ],
+  "message": "Group name updated successfully!"
+}
+```
+
+
+- **401** — Not authenticated — missing or invalid credentials.
+
+  Schema (`application/json`):
+
+  - _$ref: Error_
+- **403** — Authenticated but the user lacks the capability this route requires.
+
+  Schema (`application/json`):
+
+  - _$ref: Error_
+- **422** — Validation failed — the response message names the offending field.
+
+  Schema (`application/json`):
+
+  - _$ref: Error_
 
 ---

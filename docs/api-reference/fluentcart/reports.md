@@ -12,6 +12,10 @@ _Generated from the FluentCart OpenAPI specs (dev.fluentcart.com)._
 
 Retrieve order counts grouped by billing country for world map / heat map visualization.
 
+**Access policy:** `ReportPolicy`
+
+**Access policy:** `ReportPolicy`
+
 **Auth:** ApplicationPasswords
 
 **Query parameters**
@@ -81,6 +85,36 @@ Retrieve order counts grouped by billing country for world map / heat map visual
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -89,6 +123,10 @@ Retrieve order counts grouped by billing country for world map / heat map visual
 **GET Get Customer Report**
 
 Retrieve customer acquisition and activity data as time-series chart data with summary statistics. Supports comparison against a prior period with fluctuation calculations.
+
+**Access policy:** `ReportPolicy`
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -231,6 +269,36 @@ Retrieve customer acquisition and activity data as time-series chart data with s
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -239,6 +307,10 @@ Retrieve customer acquisition and activity data as time-series chart data with s
 **GET Get Daily Signups**
 
 Retrieve daily subscription signup counts over the specified date range.
+
+**Access policy:** `ReportPolicy`
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -296,6 +368,36 @@ Retrieve daily subscription signup counts over the specified date range.
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -304,6 +406,10 @@ Retrieve daily subscription signup counts over the specified date range.
 **GET Get Dashboard Stats**
 
 Retrieve key dashboard statistics including total orders, paid orders, paid order items, and total paid amounts. Automatically calculates comparison against the equivalent prior period based on the selected date range.
+
+**Access policy:** `ReportPolicy`
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -361,6 +467,36 @@ Retrieve key dashboard statistics including total orders, paid orders, paid orde
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -368,7 +504,9 @@ Retrieve key dashboard statistics including total orders, paid orders, paid orde
 
 **GET Get New vs Returning Customers**
 
-Compare the ratio of orders from new customers versus returning customers over the given period.
+Compare orders from new customers versus returning customers over the given period.
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -394,33 +532,61 @@ Compare the ratio of orders from new customers versus returning customers over t
 
   Schema (`application/json`):
 
-  - `newVsReturning` (object) — Comparison data for new vs returning customers
-    - _(object)_
+  - `newVsReturning` (array<NewVsReturningRow>) — Two rows: one for new customers, one for returning customers.
 
   Example:
 
 ```json
 {
-  "newVsReturning": {
-    "new_customers": 32,
-    "returning_customers": 183,
-    "new_orders": 38,
-    "returning_orders": 304,
-    "new_revenue": 285000,
-    "returning_revenue": 965000,
-    "new_vs_returning_ratio": 0.175,
-    "chart": [
-      {
-        "label": "New Customers",
-        "value": 32,
-        "percentage": 14.9
-      },
-      {
-        "label": "Returning Customers",
-        "value": 183,
-        "percentage": 85.1
-      }
-    ]
+  "newVsReturning": [
+    {
+      "customer_type": "new",
+      "customer_count": 32,
+      "order_count": 38,
+      "net_sales": 261500,
+      "average_net": 6882,
+      "gross_sales": 285000,
+      "average_gross": 7500
+    },
+    {
+      "customer_type": "returning",
+      "customer_count": 183,
+      "order_count": 304,
+      "net_sales": 889000,
+      "average_net": 2924,
+      "gross_sales": 965000,
+      "average_gross": 3174
+    }
+  ]
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
   }
 }
 ```
@@ -434,6 +600,10 @@ Compare the ratio of orders from new customers versus returning customers over t
 **GET Get Orders by Group**
 
 Retrieve order data broken down by a specified grouping dimension (e.g., payment method, country, payment status).
+
+**Access policy:** `ReportPolicy`
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -511,6 +681,36 @@ Retrieve order data broken down by a specified grouping dimension (e.g., payment
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -519,6 +719,8 @@ Retrieve order data broken down by a specified grouping dimension (e.g., payment
 **GET Get Report by Day and Hour**
 
 Retrieve a heatmap-style report showing order distribution by day of the week and hour of the day.
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -544,112 +746,123 @@ Retrieve a heatmap-style report showing order distribution by day of the week an
 
   Schema (`application/json`):
 
-  - _(object)_
+  - `orderByDayAndHour` (array<object>) — One row per hour of the day (24 rows), with an order count per day of the week.
+    - `hour` (string) — Hour label, e.g. `9 AM`.
+    - `Sunday` (integer)
+    - `Monday` (integer)
+    - `Tuesday` (integer)
+    - `Wednesday` (integer)
+    - `Thursday` (integer)
+    - `Friday` (integer)
+    - `Saturday` (integer)
+  - `grossSaleByDay` (array<object>) — One row per day of the week (1=Sunday ... 7=Saturday) with gross sale totals.
+    - `day` (integer) — Day of week, 1=Sunday through 7=Saturday.
+    - `gross_sale` (number) — Gross sale total for the day, in major currency units (e.g. dollars).
+    - `order_count` (integer)
+  - `grossSaleByHour` (array<object>) — One row per hour of the day (24 rows) with gross sale totals.
+    - `hour` (string) — Hour label, e.g. `9 AM`.
+    - `gross_sale` (number) — Gross sale total for the hour, in major currency units (e.g. dollars).
+    - `order_count` (integer)
 
   Example:
 
 ```json
 {
-  "heatmap": {
-    "days": [
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-      "Sunday"
-    ],
-    "hours": [
-      0,
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7,
-      8,
-      9,
-      10,
-      11,
-      12,
-      13,
-      14,
-      15,
-      16,
-      17,
-      18,
-      19,
-      20,
-      21,
-      22,
-      23
-    ],
-    "data": [
-      {
-        "day": "Monday",
-        "hour": 9,
-        "count": 18
-      },
-      {
-        "day": "Monday",
-        "hour": 10,
-        "count": 24
-      },
-      {
-        "day": "Monday",
-        "hour": 14,
-        "count": 22
-      },
-      {
-        "day": "Tuesday",
-        "hour": 10,
-        "count": 28
-      },
-      {
-        "day": "Tuesday",
-        "hour": 11,
-        "count": 26
-      },
-      {
-        "day": "Wednesday",
-        "hour": 9,
-        "count": 20
-      },
-      {
-        "day": "Wednesday",
-        "hour": 14,
-        "count": 19
-      },
-      {
-        "day": "Thursday",
-        "hour": 10,
-        "count": 25
-      },
-      {
-        "day": "Thursday",
-        "hour": 15,
-        "count": 21
-      },
-      {
-        "day": "Friday",
-        "hour": 11,
-        "count": 16
-      },
-      {
-        "day": "Saturday",
-        "hour": 12,
-        "count": 8
-      },
-      {
-        "day": "Sunday",
-        "hour": 15,
-        "count": 5
-      }
-    ],
-    "max_count": 28,
-    "total_orders": 342
+  "orderByDayAndHour": [
+    {
+      "hour": "9 AM",
+      "Sunday": 0,
+      "Monday": 18,
+      "Tuesday": 12,
+      "Wednesday": 15,
+      "Thursday": 0,
+      "Friday": 0,
+      "Saturday": 0
+    },
+    {
+      "hour": "10 AM",
+      "Sunday": 0,
+      "Monday": 24,
+      "Tuesday": 28,
+      "Wednesday": 0,
+      "Thursday": 25,
+      "Friday": 0,
+      "Saturday": 0
+    },
+    {
+      "hour": "2 PM",
+      "Sunday": 0,
+      "Monday": 22,
+      "Tuesday": 0,
+      "Wednesday": 19,
+      "Thursday": 0,
+      "Friday": 0,
+      "Saturday": 0
+    }
+  ],
+  "grossSaleByDay": [
+    {
+      "day": 1,
+      "gross_sale": 542,
+      "order_count": 8
+    },
+    {
+      "day": 2,
+      "gross_sale": 1284.5,
+      "order_count": 21
+    },
+    {
+      "day": 3,
+      "gross_sale": 998,
+      "order_count": 16
+    }
+  ],
+  "grossSaleByHour": [
+    {
+      "hour": "9 AM",
+      "gross_sale": 320,
+      "order_count": 5
+    },
+    {
+      "hour": "10 AM",
+      "gross_sale": 610,
+      "order_count": 9
+    },
+    {
+      "hour": "2 PM",
+      "gross_sale": 415,
+      "order_count": 6
+    }
+  ]
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
   }
 }
 ```
@@ -663,6 +876,10 @@ Retrieve a heatmap-style report showing order distribution by day of the week an
 **GET Get Report Meta**
 
 Retrieve metadata for the reporting interface, including available currencies, the earliest order date, and store mode.
+
+**Access policy:** `ReportPolicy`
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -711,6 +928,36 @@ Retrieve metadata for the reporting interface, including available currencies, t
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -719,6 +966,10 @@ Retrieve metadata for the reporting interface, including available currencies, t
 **GET Get Top Sold Products**
 
 Retrieve a ranked list of the best-selling products within the specified date range.
+
+**Access policy:** `ReportPolicy`
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -791,6 +1042,36 @@ Retrieve a ranked list of the best-selling products within the specified date ra
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -799,6 +1080,10 @@ Retrieve a ranked list of the best-selling products within the specified date ra
 **GET Get Top Sold Variants**
 
 Retrieve a ranked list of the best-selling product variants within the specified date range.
+
+**Access policy:** `ReportPolicy`
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -871,6 +1156,36 @@ Retrieve a ranked list of the best-selling product variants within the specified
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -879,6 +1194,8 @@ Retrieve a ranked list of the best-selling product variants within the specified
 **GET Get Future Renewals**
 
 Retrieve projected future subscription renewal data.
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -896,46 +1213,73 @@ Retrieve projected future subscription renewal data.
 
   Schema (`application/json`):
 
-  - _(object)_
+  - `totalProjected` (integer) — Sum of all projected renewal amounts across the period, in cents
+  - `totalRenewals` (integer) — Total count of projected renewals across the period
+  - `projections` (array<object>) — Renewals and projected revenue grouped by month
+    - `group` (string) — Month bucket, formatted Y-m
+    - `renewals_count` (integer)
+    - `projected_amount` (integer) — Projected renewal amount for this month, in cents
+  - `period` (array<string>) — [start, end] datetime strings of the report window
+  - `groupBy` (string) — Grouping granularity (currently always "monthly")
 
   Example:
 
 ```json
 {
-  "futureRenewals": [
+  "totalProjected": 148500,
+  "totalRenewals": 15,
+  "projections": [
     {
-      "date": "2025-10-01",
-      "count": 15,
-      "expected_revenue": 148500
+      "group": "2026-08",
+      "renewals_count": 5,
+      "projected_amount": 49500
     },
     {
-      "date": "2025-11-01",
-      "count": 22,
-      "expected_revenue": 217800
+      "group": "2026-09",
+      "renewals_count": 6,
+      "projected_amount": 59400
     },
     {
-      "date": "2025-12-01",
-      "count": 18,
-      "expected_revenue": 178200
-    },
-    {
-      "date": "2026-01-01",
-      "count": 28,
-      "expected_revenue": 277200
-    },
-    {
-      "date": "2026-02-01",
-      "count": 12,
-      "expected_revenue": 118800
-    },
-    {
-      "date": "2026-03-01",
-      "count": 20,
-      "expected_revenue": 198000
+      "group": "2026-10",
+      "renewals_count": 4,
+      "projected_amount": 39600
     }
   ],
-  "total_expected_revenue": 1138500,
-  "total_renewals": 115
+  "period": [
+    "2026-08-17 00:00:00",
+    "2026-11-17 23:59:59"
+  ],
+  "groupBy": "monthly"
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
 }
 ```
 
@@ -948,6 +1292,10 @@ Retrieve projected future subscription renewal data.
 **POST Generate Retention Snapshots**
 
 Trigger generation of retention snapshot data. If Action Scheduler is available, the job runs in the background; otherwise it runs synchronously.
+
+**Access policy:** `ReportPolicy`
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -978,6 +1326,52 @@ Trigger generation of retention snapshot data. If Action Scheduler is available,
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -986,6 +1380,10 @@ Trigger generation of retention snapshot data. If Action Scheduler is available,
 **GET Get Dashboard Summary**
 
 Retrieve a high-level summary of the store including product counts and coupon statistics.
+
+**Access policy:** `ReportPolicy`
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -1015,6 +1413,36 @@ Retrieve a high-level summary of the store including product counts and coupon s
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -1023,6 +1451,10 @@ Retrieve a high-level summary of the store including product counts and coupon s
 **GET Get Revenue Overview**
 
 Retrieve a comprehensive year-over-year revenue overview comparing the last 12 months against the same months in the prior year. Includes monthly breakdowns, quarterly aggregations, and top revenue-generating countries.
+
+**Access policy:** `ReportPolicy`
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -1192,6 +1624,36 @@ Retrieve a comprehensive year-over-year revenue overview comparing the last 12 m
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -1200,6 +1662,10 @@ Retrieve a comprehensive year-over-year revenue overview comparing the last 12 m
 **GET Get Recent Activities**
 
 Retrieve the 10 most recent activity log entries, optionally filtered by time period.
+
+**Access policy:** `ReportPolicy`
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -1314,6 +1780,36 @@ Retrieve the 10 most recent activity log entries, optionally filtered by time pe
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -1322,6 +1818,10 @@ Retrieve the 10 most recent activity log entries, optionally filtered by time pe
 **GET Get Recent Orders**
 
 Retrieve the 10 most recent orders for the dashboard with basic customer and order information.
+
+**Access policy:** `ReportPolicy`
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -1429,6 +1929,36 @@ Retrieve the 10 most recent orders for the dashboard with basic customer and ord
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -1437,6 +1967,10 @@ Retrieve the 10 most recent orders for the dashboard with basic customer and ord
 **GET Get Revenue Data**
 
 Retrieve detailed revenue data grouped by the specified interval, with optional comparison against a prior period. Includes summary totals, period-over-period fluctuations, and the applied group key.
+
+**Access policy:** `ReportPolicy`
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -1579,6 +2113,36 @@ Retrieve detailed revenue data grouped by the specified interval, with optional 
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -1587,6 +2151,10 @@ Retrieve detailed revenue data grouped by the specified interval, with optional 
 **GET Get Item Count Distribution**
 
 Retrieve the distribution of orders by the number of items per order (e.g., how many orders have 1 item, 2 items, etc.).
+
+**Access policy:** `ReportPolicy`
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -1650,6 +2218,36 @@ Retrieve the distribution of orders by the number of items per order (e.g., how 
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -1658,6 +2256,10 @@ Retrieve the distribution of orders by the number of items per order (e.g., how 
 **GET Get License Line Chart**
 
 Retrieve license creation/activation data as time-series chart data, grouped by the specified interval.
+
+**Also used by the licensing UI.** Retrieve license data formatted for a line chart visualization.
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -1673,6 +2275,8 @@ Retrieve license creation/activation data as time-series chart data, grouped by 
 | `params[filterMode]` | string | no | Payment mode filter. |
 | `params[orderTypes]` | array<string> | no | Order type filter. |
 | `params[groupKey]` | string | no | Time grouping interval. |
+| `params` | object | yes | Request parameters object containing filters, date range, and grouping |
+| `params[filters]` | object | no | Filter criteria |
 
 
 **Responses**
@@ -1681,56 +2285,59 @@ Retrieve license creation/activation data as time-series chart data, grouped by 
 
   Schema (`application/json`):
 
-  - _(object)_
+  - `lineChartData` (array<object>)
+    - `date` (string) — Date bucket (Y-m-d), present when groupKey is "daily"
+    - `year` (integer) — Present when groupKey is "monthly" or "yearly"
+    - `month` (integer) — Present when groupKey is "monthly"
+    - `license_count` (integer) — Number of licenses created in this bucket
 
   Example:
 
 ```json
 {
-  "labels": [
-    "2025-01",
-    "2025-02",
-    "2025-03",
-    "2025-04",
-    "2025-05",
-    "2025-06",
-    "2025-07",
-    "2025-08",
-    "2025-09"
-  ],
-  "datasets": [
+  "lineChartData": [
     {
-      "label": "Licenses Issued",
-      "data": [
-        18,
-        22,
-        28,
-        24,
-        32,
-        30,
-        35,
-        29,
-        38
-      ]
+      "date": "2026-08-01",
+      "license_count": 4
     },
     {
-      "label": "Activations",
-      "data": [
-        25,
-        30,
-        38,
-        35,
-        45,
-        42,
-        50,
-        40,
-        52
-      ]
+      "date": "2026-08-02",
+      "license_count": 7
+    },
+    {
+      "date": "2026-08-03",
+      "license_count": 2
     }
-  ],
-  "summary": {
-    "total_licenses_issued": 256,
-    "total_activations": 357
+  ]
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
   }
 }
 ```
@@ -1745,6 +2352,10 @@ Retrieve license creation/activation data as time-series chart data, grouped by 
 
 Retrieve license distribution data suitable for pie/donut chart visualization (e.g., active vs expired vs revoked).
 
+**Also used by the licensing UI.** Retrieve license data formatted for a pie chart visualization.
+
+**Access policy:** `ReportPolicy`
+
 **Auth:** ApplicationPasswords
 
 **Query parameters**
@@ -1758,6 +2369,8 @@ Retrieve license distribution data suitable for pie/donut chart visualization (e
 | `params[currency]` | string | no | Currency code filter. |
 | `params[filterMode]` | string | no | Payment mode filter. |
 | `params[orderTypes]` | array<string> | no | Order type filter. |
+| `params` | object | yes | Request parameters object containing filters and date range |
+| `params[filters]` | object | no | Filter criteria |
 
 
 **Responses**
@@ -1766,33 +2379,56 @@ Retrieve license distribution data suitable for pie/donut chart visualization (e
 
   Schema (`application/json`):
 
-  - _(object)_
+  - `pieChartData` (array<LicensePieChartSlice>) — License activation distribution by product, one entry per product that has licenses
 
   Example:
 
 ```json
 {
-  "distribution": [
+  "pieChartData": [
     {
-      "label": "Active",
-      "value": 198,
-      "percentage": 80.8,
-      "color": "#67C23A"
+      "product_id": "10",
+      "post_title": "FluentCart Pro",
+      "activation_count": "198",
+      "percentage": "80.82"
     },
     {
-      "label": "Expired",
-      "value": 32,
-      "percentage": 13.1,
-      "color": "#E6A23C"
-    },
-    {
-      "label": "Revoked",
-      "value": 15,
-      "percentage": 6.1,
-      "color": "#F56C6C"
+      "product_id": "14",
+      "post_title": "FluentCart Pro Add-on",
+      "activation_count": "47",
+      "percentage": "19.18"
     }
-  ],
-  "total_licenses": 245
+  ]
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
 }
 ```
 
@@ -1804,7 +2440,11 @@ Retrieve license distribution data suitable for pie/donut chart visualization (e
 
 **GET Get License Summary**
 
-Retrieve summary statistics for licenses (total issued, active, expired, revoked, etc.) within the specified date range.
+Retrieve summary statistics for licenses (total, active, inactive, expired, total activated sites, and licensed product count). Note: the date range parameters are accepted but the current counts are not filtered by them.
+
+**Also used by the licensing UI.** Retrieve a summary of license statistics.
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -1819,6 +2459,8 @@ Retrieve summary statistics for licenses (total issued, active, expired, revoked
 | `params[currency]` | string | no | Currency code filter. |
 | `params[filterMode]` | string | no | Payment mode filter. |
 | `params[orderTypes]` | array<string> | no | Order type filter. |
+| `params` | object | yes | Request parameters object containing filters and date range |
+| `params[filters]` | object | no | Filter criteria |
 
 
 **Responses**
@@ -1827,19 +2469,56 @@ Retrieve summary statistics for licenses (total issued, active, expired, revoked
 
   Schema (`application/json`):
 
-  - _(object)_
+  - `summaryData` (object) — License summary statistics
+    - `totalLicense` (integer) — Total number of licenses issued
+    - `totalActiveLicense` (integer) — Number of licenses with status 'active'
+    - `totalInactiveLicense` (integer) — Number of licenses with status 'disabled'
+    - `totalExpiredLicense` (integer) — Number of licenses with status 'expired'
+    - `totalActivatedSites` (string) — Sum of activation_count across all licenses (site activations), returned as a numeric string
+    - `totalLicensedProducts` (integer) — Number of products that have license settings configured
 
   Example:
 
 ```json
 {
-  "total_licenses": 245,
-  "active_licenses": 198,
-  "expired_licenses": 32,
-  "revoked_licenses": 15,
-  "total_activations": 412,
-  "average_activations_per_license": 1.68,
-  "activation_limit_reached": 24
+  "summaryData": {
+    "totalLicense": 245,
+    "totalActiveLicense": 198,
+    "totalInactiveLicense": 12,
+    "totalExpiredLicense": 32,
+    "totalActivatedSites": "412",
+    "totalLicensedProducts": 3
+  }
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
 }
 ```
 
@@ -1852,6 +2531,10 @@ Retrieve summary statistics for licenses (total issued, active, expired, revoked
 **GET Get Order Chart**
 
 Retrieve order count and statistics as time-series chart data, with optional comparison against a prior period. Includes summary totals and fluctuation calculations.
+
+**Access policy:** `ReportPolicy`
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -1949,6 +2632,36 @@ Retrieve order count and statistics as time-series chart data, with optional com
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -1957,6 +2670,10 @@ Retrieve order count and statistics as time-series chart data, with optional com
 **GET Get Order Completion Time**
 
 Retrieve statistics on how long orders take to be completed (time between creation and completion).
+
+**Access policy:** `ReportPolicy`
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -2027,6 +2744,36 @@ Retrieve statistics on how long orders take to be completed (time between creati
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -2035,6 +2782,8 @@ Retrieve statistics on how long orders take to be completed (time between creati
 **GET Get Order Value Distribution**
 
 Retrieve the distribution of orders by their total value, showing how orders are spread across different price ranges.
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -2060,45 +2809,66 @@ Retrieve the distribution of orders by their total value, showing how orders are
 
   Schema (`application/json`):
 
-  - `data` (array<object>) — Order value distribution data
-    - _(object)_
+  - `data` (object) — Order counts bucketed by fixed $100-wide order-value ranges (order total_amount, in dollars).
+    - `0-100` (integer) — Order count for orders totaling $0–$100.
+    - `100-200` (integer) — Order count for orders totaling $100–$200.
+    - `200-300` (integer) — Order count for orders totaling $200–$300.
+    - `300-400` (integer) — Order count for orders totaling $300–$400.
+    - `400-500` (integer) — Order count for orders totaling $400–$500.
+    - `500-600` (integer) — Order count for orders totaling $500–$600.
+    - `600-700` (integer) — Order count for orders totaling $600–$700.
+    - `700-800` (integer) — Order count for orders totaling $700–$800.
+    - `800-900` (integer) — Order count for orders totaling $800–$900.
+    - `900-1000` (integer) — Order count for orders totaling $900–$1000.
+    - `1000+` (integer) — Order count for orders totaling more than $1000.
 
   Example:
 
 ```json
 {
-  "data": [
-    {
-      "label": "$0-$25",
-      "count": 28,
-      "percentage": 8.2
-    },
-    {
-      "label": "$25-$50",
-      "count": 82,
-      "percentage": 24
-    },
-    {
-      "label": "$50-$100",
-      "count": 120,
-      "percentage": 35.1
-    },
-    {
-      "label": "$100-$200",
-      "count": 78,
-      "percentage": 22.8
-    },
-    {
-      "label": "$200-$500",
-      "count": 28,
-      "percentage": 8.2
-    },
-    {
-      "label": "$500+",
-      "count": 6,
-      "percentage": 1.7
-    }
-  ]
+  "data": {
+    "0-100": 28,
+    "100-200": 82,
+    "200-300": 45,
+    "300-400": 30,
+    "400-500": 22,
+    "500-600": 15,
+    "600-700": 10,
+    "700-800": 6,
+    "800-900": 4,
+    "900-1000": 3,
+    "1000+": 6
+  }
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
 }
 ```
 
@@ -2111,6 +2881,10 @@ Retrieve the distribution of orders by their total value, showing how orders are
 **GET Get Product Performance**
 
 Retrieve a ranked performance chart of top-performing products within the specified date range.
+
+**Access policy:** `ReportPolicy`
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -2194,6 +2968,36 @@ Retrieve a ranked performance chart of top-performing products within the specif
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -2202,6 +3006,10 @@ Retrieve a ranked performance chart of top-performing products within the specif
 **GET Get Product Report**
 
 Retrieve product-level report data as time-series chart data with summary statistics. Supports comparison against a prior period with fluctuation calculations.
+
+**Access policy:** `ReportPolicy`
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -2324,6 +3132,36 @@ Retrieve product-level report data as time-series chart data with summary statis
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -2332,6 +3170,10 @@ Retrieve product-level report data as time-series chart data with summary statis
 **GET Get Quick Order Stats**
 
 Retrieve quick summary statistics for orders within a specified range, with automatic comparison against the equivalent prior period.
+
+**Access policy:** `ReportPolicy`
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -2372,6 +3214,36 @@ Retrieve quick summary statistics for orders within a specified range, with auto
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -2380,6 +3252,10 @@ Retrieve quick summary statistics for orders within a specified range, with auto
 **GET Get Refund Chart**
 
 Retrieve refund data as time-series chart data with summary totals. Supports comparison against a prior period with fluctuation calculations.
+
+**Access policy:** `ReportPolicy`
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -2504,6 +3380,36 @@ Retrieve refund data as time-series chart data with summary totals. Supports com
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -2512,6 +3418,10 @@ Retrieve refund data as time-series chart data with summary totals. Supports com
 **GET Get Refund Data by Group**
 
 Retrieve refund data broken down by a grouping dimension (e.g., payment method, country).
+
+**Access policy:** `ReportPolicy`
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -2589,6 +3499,36 @@ Retrieve refund data broken down by a grouping dimension (e.g., payment method, 
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -2597,6 +3537,8 @@ Retrieve refund data broken down by a grouping dimension (e.g., payment method, 
 **GET Get Report Overview**
 
 Retrieve an aggregated report overview including order summary statistics and breakdowns by payment method.
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -2613,42 +3555,73 @@ Retrieve an aggregated report overview including order summary statistics and br
 
   Schema (`application/json`):
 
-  - `data` (object) — Aggregated report data
-    - _(object)_
-  - `orders_by_payment_method` (object) — Order breakdown by payment method
-    - _(object)_
+  - `_deprecated` (string) — Present because this endpoint is deprecated since v1.4. Use GET /reports/overview instead.
+  - `data` (object) — Aggregated order totals for the filtered period. Note: values are numeric strings (raw SQL aggregate results) and amounts are in cents.
+    - `total_sales` (string) — Total sales amount, in cents.
+    - `net_sales` (string) — Net sales amount (after discounts), in cents.
+    - `total_discounts` (string) — Total discount amount, in cents.
+    - `total_shipping_tax` (string) — Total shipping tax amount, in cents.
+    - `average_order_value` (string) — Average order value, in cents.
+    - `customer_order_count` (string) — Number of orders counted.
+  - `orders_by_payment_method` (array<object>) — Order counts and transaction totals broken down by payment method.
+    - `payment_method` (string)
+    - `order_count` (string)
+    - `transactions` (string) — Total transaction amount for this payment method, in cents.
 
   Example:
 
 ```json
 {
+  "_deprecated": "This endpoint is deprecated since v1.4 and will be removed in a future release. Use GET /fluent-cart/v2/reports/overview instead.",
   "data": {
-    "total_orders": 342,
-    "total_revenue": 1250000,
-    "net_revenue": 1180000,
-    "total_tax": 95000,
-    "total_shipping": 35000,
-    "total_discounts": 42000,
-    "total_refunds": 70000,
-    "average_order_value": 3655,
-    "total_customers": 215
+    "total_sales": "1086707",
+    "net_sales": "1009851",
+    "total_discounts": "76856",
+    "total_shipping_tax": "0",
+    "average_order_value": "229.5051",
+    "customer_order_count": "473"
   },
-  "orders_by_payment_method": {
-    "stripe": {
-      "count": 230,
-      "revenue": 850000,
-      "percentage": 67.3
+  "orders_by_payment_method": [
+    {
+      "payment_method": "stripe",
+      "order_count": "421",
+      "transactions": "880637"
     },
-    "paypal": {
-      "count": 95,
-      "revenue": 320000,
-      "percentage": 27.8
-    },
-    "cod": {
-      "count": 17,
-      "revenue": 80000,
-      "percentage": 4.9
+    {
+      "payment_method": "offline_payment",
+      "order_count": "52",
+      "transactions": "26970"
     }
+  ]
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
   }
 }
 ```
@@ -2662,6 +3635,8 @@ Retrieve an aggregated report overview including order summary statistics and br
 **GET Get Retention Chart**
 
 Retrieve subscription retention data as chart data, showing how many subscribers remain active over time.
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -2686,44 +3661,50 @@ Retrieve subscription retention data as chart data, showing how many subscribers
 
   Schema (`application/json`):
 
-  - `chartData` (object) — Retention chart data
-    - _(object)_
+  - `chartData` (RetentionChartData)
 
   Example:
 
 ```json
 {
   "chartData": {
-    "labels": [
-      "Month 1",
-      "Month 2",
-      "Month 3",
-      "Month 4",
-      "Month 5",
-      "Month 6",
-      "Month 7",
-      "Month 8",
-      "Month 9",
-      "Month 10",
-      "Month 11",
-      "Month 12"
-    ],
-    "data": [
-      100,
-      92,
-      87,
-      83,
-      80,
-      78,
-      76,
-      74,
-      73,
-      72,
-      71,
-      70
-    ],
-    "total_initial_subscribers": 183,
-    "current_active": 128
+    "day_7": 12,
+    "day_15": 9,
+    "day_30": 24,
+    "day_90": 41,
+    "day_180": 33,
+    "day_365": 28,
+    "more_than_year": 36
+  }
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
   }
 }
 ```
@@ -2737,6 +3718,8 @@ Retrieve subscription retention data as chart data, showing how many subscribers
 **GET Check Retention Snapshot Status**
 
 Check the status of a previously queued retention snapshot generation job.
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -2753,10 +3736,13 @@ Check the status of a previously queued retention snapshot generation job.
 
   Schema (`application/json`):
 
-  - `success` (boolean) — Whether the lookup was successful
-  - `status` (string) _(enum: `running`, `completed`)_ — Job status
+  - `success` (boolean) — Whether the lookup was successful. `false` when `params[job_id]` is missing or no job is found for that ID — in that case `status` and `data` are omitted.
+  - `status` (string) _(enum: `running`, `completed`, `failed`)_ — Job status. Only present when a valid job was found (i.e. when `success` is true, or when `success` is false because the job was not found — see `job_id` in that case).
   - `message` (string) — Status message
-  - `data` (object) — Job details
+  - `job_id` (string) — Echoes back `params[job_id]`. Only present in the 'job not found' error response.
+  - `stats` (object) — Snapshot generation statistics. Only present once the job has reached `completed` or `failed` status.
+    - _(object)_
+  - `data` (object) — Raw job record as stored for this job ID. Present whenever a job was found (running, completed, or failed).
     - _(object)_
 
   Example:
@@ -2775,6 +3761,36 @@ Check the status of a previously queued retention snapshot generation job.
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -2783,6 +3799,10 @@ Check the status of a previously queued retention snapshot generation job.
 **GET Get Revenue by Group**
 
 Retrieve revenue data broken down by a specific grouping dimension (e.g., payment method, billing country).
+
+**Access policy:** `ReportPolicy`
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -2873,6 +3893,36 @@ Retrieve revenue data broken down by a specific grouping dimension (e.g., paymen
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -2881,6 +3931,10 @@ Retrieve revenue data broken down by a specific grouping dimension (e.g., paymen
 **GET Get Sales Growth**
 
 Retrieve sales growth data over a specified period. Filters to orders with successful payment and order statuses.
+
+**Access policy:** `ReportPolicy`
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -2958,6 +4012,36 @@ Retrieve sales growth data over a specified period. Filters to orders with succe
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -2966,6 +4050,10 @@ Retrieve sales growth data over a specified period. Filters to orders with succe
 **GET Get Sales Growth Chart**
 
 Retrieve time-series chart data for sales growth on the dashboard, showing order counts and net revenue grouped by the specified interval.
+
+**Access policy:** `ReportPolicy`
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -3057,6 +4145,36 @@ Retrieve time-series chart data for sales growth on the dashboard, showing order
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -3065,6 +4183,10 @@ Retrieve time-series chart data for sales growth on the dashboard, showing order
 **GET Get Sales Report**
 
 Retrieve comprehensive sales report data with multiple graph metrics (revenue, orders, items, etc.) broken down by the specified time interval. Supports comparison against a prior period with fluctuation calculations.
+
+**Access policy:** `ReportPolicy`
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -3211,6 +4333,36 @@ Retrieve comprehensive sales report data with multiple graph metrics (revenue, o
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -3219,6 +4371,8 @@ Retrieve comprehensive sales report data with multiple graph metrics (revenue, o
 **GET Search Repeat Customers**
 
 Search and paginate through customers who have made multiple purchases.
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -3240,8 +4394,20 @@ Search and paginate through customers who have made multiple purchases.
     - `total` (integer)
     - `per_page` (integer)
     - `current_page` (integer)
+    - `last_page` (integer)
     - `data` (array<object>)
       - _(object)_
+    - `first_page_url` (string)
+    - `from` (integer)
+    - `last_page_url` (string)
+    - `links` (array<object>)
+      - `url` (string)
+      - `label` (string)
+      - `active` (boolean)
+    - `next_page_url` (string)
+    - `path` (string)
+    - `prev_page_url` (string)
+    - `to` (integer)
 
   Example:
 
@@ -3251,6 +4417,7 @@ Search and paginate through customers who have made multiple purchases.
     "total": 183,
     "per_page": 15,
     "current_page": 1,
+    "last_page": 13,
     "data": [
       {
         "customer_id": 42,
@@ -3297,7 +4464,66 @@ Search and paginate through customers who have made multiple purchases.
         "first_order": "2024-09-05",
         "last_order": "2025-09-12"
       }
-    ]
+    ],
+    "first_page_url": "https://yoursite.com/wp-json/fluent-cart/v2/reports/search-repeat-customer/?page=1",
+    "from": 1,
+    "last_page_url": "https://yoursite.com/wp-json/fluent-cart/v2/reports/search-repeat-customer/?page=13",
+    "links": [
+      {
+        "url": null,
+        "label": "pagination.previous",
+        "active": false
+      },
+      {
+        "url": "https://yoursite.com/wp-json/fluent-cart/v2/reports/search-repeat-customer/?page=1",
+        "label": "1",
+        "active": true
+      },
+      {
+        "url": "https://yoursite.com/wp-json/fluent-cart/v2/reports/search-repeat-customer/?page=2",
+        "label": "2",
+        "active": false
+      },
+      {
+        "url": "https://yoursite.com/wp-json/fluent-cart/v2/reports/search-repeat-customer/?page=2",
+        "label": "pagination.next",
+        "active": false
+      }
+    ],
+    "next_page_url": "https://yoursite.com/wp-json/fluent-cart/v2/reports/search-repeat-customer/?page=2",
+    "path": "https://yoursite.com/wp-json/fluent-cart/v2/reports/search-repeat-customer",
+    "prev_page_url": null,
+    "to": 15
+  }
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
   }
 }
 ```
@@ -3311,6 +4537,10 @@ Search and paginate through customers who have made multiple purchases.
 **GET Get Source Report**
 
 Retrieve order source/attribution data showing where orders originated from. Supports comparison against a prior period with fluctuation calculations.
+
+**Access policy:** `ReportPolicy`
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -3397,6 +4627,36 @@ Retrieve order source/attribution data showing where orders originated from. Sup
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -3405,6 +4665,10 @@ Retrieve order source/attribution data showing where orders originated from. Sup
 **GET Get Subscription Chart**
 
 Retrieve subscription data as time-series chart data, including total subscription counts and future installment projections. Supports comparison against a prior period.
+
+**Access policy:** `ReportPolicy`
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -3542,6 +4806,36 @@ Retrieve subscription data as time-series chart data, including total subscripti
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -3550,6 +4844,10 @@ Retrieve subscription data as time-series chart data, including total subscripti
 **GET Get Subscription Cohorts**
 
 Retrieve cohort analysis data for subscriptions. Groups subscribers by their signup period and tracks retention over subsequent periods. Uses pre-generated retention snapshots for efficient querying.
+
+**Access policy:** `ReportPolicy`
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -3651,6 +4949,36 @@ Retrieve cohort analysis data for subscriptions. Groups subscribers by their sig
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -3659,6 +4987,8 @@ Retrieve cohort analysis data for subscriptions. Groups subscribers by their sig
 **GET Get Subscription Retention**
 
 Retrieve subscription retention data showing the percentage of subscribers who remain active over successive billing periods.
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -3682,73 +5012,79 @@ Retrieve subscription retention data showing the percentage of subscribers who r
 
   Schema (`application/json`):
 
-  - `retention_data` (object) — Subscription retention data by billing period
-    - _(object)_
+  - `retention_data` (array<SubscriptionRetentionPeriod>) — Monthly subscription retention statistics, one entry per calendar month in the requested date range.
 
   Example:
 
 ```json
 {
-  "retention_data": {
-    "labels": [
-      "Period 1",
-      "Period 2",
-      "Period 3",
-      "Period 4",
-      "Period 5",
-      "Period 6",
-      "Period 7",
-      "Period 8",
-      "Period 9",
-      "Period 10",
-      "Period 11",
-      "Period 12"
-    ],
-    "retention_rates": [
-      100,
-      92,
-      87,
-      83,
-      80,
-      78,
-      76,
-      74,
-      73,
-      72,
-      71,
-      70
-    ],
-    "subscriber_counts": [
-      183,
-      168,
-      159,
-      152,
-      146,
-      143,
-      139,
-      135,
-      134,
-      132,
-      130,
-      128
-    ],
-    "churn_rates": [
-      0,
-      8,
-      5.4,
-      4.6,
-      3.6,
-      2.5,
-      2.6,
-      2.6,
-      1.4,
-      1.4,
-      1.4,
-      1.4
-    ],
-    "total_initial_subscribers": 183,
-    "current_active": 128,
-    "overall_retention_rate": 70
+  "retention_data": [
+    {
+      "day": "2026-06-30",
+      "week": "2026-26",
+      "group": "2026-06",
+      "year": "2026",
+      "new_subscriptions": 24,
+      "new_subscriptions_mrr": 1176,
+      "churned_subscriptions": 6,
+      "churned_subscriptions_mrr": 294,
+      "active_subscriptions": "382",
+      "active_paid_subscriptions": "382",
+      "active_free_subscriptions": "0",
+      "mrr": "41258.75",
+      "retention_rate": 98.4,
+      "retention_rate_money": 98.9,
+      "period_gross": 1176,
+      "period_subscriptions": 24
+    },
+    {
+      "day": "2026-07-31",
+      "week": "2026-31",
+      "group": "2026-07",
+      "year": "2026",
+      "new_subscriptions": 31,
+      "new_subscriptions_mrr": 1519,
+      "churned_subscriptions": 4,
+      "churned_subscriptions_mrr": 196,
+      "active_subscriptions": "409",
+      "active_paid_subscriptions": "409",
+      "active_free_subscriptions": "0",
+      "mrr": "44232.75",
+      "retention_rate": 99.1,
+      "retention_rate_money": 99.3,
+      "period_gross": 1519,
+      "period_subscriptions": 31
+    }
+  ]
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
   }
 }
 ```
@@ -3761,7 +5097,9 @@ Retrieve subscription retention data showing the percentage of subscribers who r
 
 **GET Get Top Products Sold**
 
-Retrieve a list of top-selling products based on order item data, using the Resource API layer.
+**Deprecated since v1.4** — use `GET /reports/fetch-top-sold-products` instead. Retrieve the top 5 products by total quantity sold, using the Resource API layer. The response always includes a `_deprecated` notice alongside the data.
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -3771,50 +5109,62 @@ Retrieve a list of top-selling products based on order item data, using the Reso
 
   Schema (`application/json`):
 
-  - `top_products_sold` (array<object>) — List of top-selling products
-    - _(object)_
+  - `_deprecated` (string) — Deprecation notice always included in the response.
+  - `top_products_sold` (array<TopProductSoldRow>) — Top 5 products by total quantity sold (descending).
 
   Example:
 
 ```json
 {
+  "_deprecated": "This endpoint is deprecated since v1.4 and will be removed in a future release. Use GET /fluent-cart/v2/reports/fetch-top-sold-products instead.",
   "top_products_sold": [
     {
-      "product_id": 123,
-      "title": "Developer Toolkit Pro",
+      "post_id": 123,
       "total_sold": 142,
-      "total_revenue": 680000,
-      "average_price": 4789
+      "product": {
+        "ID": 123,
+        "post_title": "Developer Toolkit Pro"
+      }
     },
     {
-      "product_id": 125,
-      "title": "API Testing Suite",
+      "post_id": 125,
       "total_sold": 98,
-      "total_revenue": 290000,
-      "average_price": 2959
-    },
-    {
-      "product_id": 130,
-      "title": "WordPress starter theme",
-      "total_sold": 76,
-      "total_revenue": 152000,
-      "average_price": 2000
-    },
-    {
-      "product_id": 128,
-      "title": "Cloud Hosting Add-on",
-      "total_sold": 65,
-      "total_revenue": 97500,
-      "average_price": 1500
-    },
-    {
-      "product_id": 135,
-      "title": "Premium Support Package",
-      "total_sold": 42,
-      "total_revenue": 626000,
-      "average_price": 14905
+      "product": {
+        "ID": 125,
+        "post_title": "API Testing Suite"
+      }
     }
   ]
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
 }
 ```
 
@@ -3827,6 +5177,10 @@ Retrieve a list of top-selling products based on order item data, using the Reso
 **GET Get Weeks Between Refund**
 
 Retrieve analysis data showing the distribution of time (in weeks) between order placement and refund request.
+
+**Access policy:** `ReportPolicy`
+
+**Access policy:** `ReportPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -3891,6 +5245,36 @@ Retrieve analysis data showing the distribution of time (in weeks) between order
       "amount": 9200
     }
   ]
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
 }
 ```
 

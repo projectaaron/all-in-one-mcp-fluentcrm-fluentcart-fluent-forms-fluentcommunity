@@ -1,6 +1,6 @@
 # FluentCRM REST API — Reference
 
-> **Source:** <https://developers.fluentcrm.com/rest-api/> · **Scraped:** 2026-07-29 · **Endpoints:** 319 across 28 groups
+> **Source:** <https://developers.fluentcrm.com/rest-api/> · **Scraped:** 2026-09-21 · **Endpoints:** 363 across 32 groups
 > Regenerate with `node scripts/gen-api-docs.mjs fluentcrm` — see [MAINTAINING.md](./MAINTAINING.md).
 
 **Base URL:** `https://{website}/wp-json/fluent-crm/v2` (namespace `fluent-crm/v2`)
@@ -18,34 +18,38 @@ Credential setup for all products: [auth.md](./auth.md).
 
 | Group | Endpoints | Full schemas |
 |-------|-----------|------|
-| Contacts (Subscribers) | 31 | [contacts.md](./fluentcrm/contacts.md) |
+| Contacts (Subscribers) | 32 | [contacts.md](./fluentcrm/contacts.md) |
 | Lists | 7 | [lists.md](./fluentcrm/lists.md) |
 | Tags | 7 | [tags.md](./fluentcrm/tags.md) |
 | Dynamic Segments | 9 | [dynamic-segments.md](./fluentcrm/dynamic-segments.md) |
 | Custom Fields | 3 | [custom-fields.md](./fluentcrm/custom-fields.md) |
-| Companies | 19 | [companies.md](./fluentcrm/companies.md) |
+| Companies | 21 | [companies.md](./fluentcrm/companies.md) |
 | Campaigns | 32 | [campaigns.md](./fluentcrm/campaigns.md) |
 | Campaign Actions (Pro) | 7 | [campaigns-pro.md](./fluentcrm/campaigns-pro.md) |
 | Recurring Campaigns (Pro) | 14 | [recurring-campaigns.md](./fluentcrm/recurring-campaigns.md) |
-| Email Sequences (Pro) | 18 | [sequences.md](./fluentcrm/sequences.md) |
-| Automations (Funnels) | 31 | [funnels.md](./fluentcrm/funnels.md) |
-| Email Templates | 11 | [templates.md](./fluentcrm/templates.md) |
+| Email Sequences (Pro) | 19 | [sequences.md](./fluentcrm/sequences.md) |
+| Automations (Funnels) | 32 | [funnels.md](./fluentcrm/funnels.md) |
+| Email Templates | 12 | [templates.md](./fluentcrm/templates.md) |
 | Forms | 5 | [forms.md](./fluentcrm/forms.md) |
-| Incoming Webhooks | 5 | [webhooks.md](./fluentcrm/webhooks.md) |
+| Incoming Webhooks | 4 | [webhooks.md](./fluentcrm/webhooks.md) |
 | Smart Links (Pro) | 5 | [smart-links.md](./fluentcrm/smart-links.md) |
-| SMS (Pro) | 24 | [sms.md](./fluentcrm/sms.md) |
+| SMS (Pro) | 25 | [sms.md](./fluentcrm/sms.md) |
 | Abandoned Carts (Pro) | 3 | [abandon-carts.md](./fluentcrm/abandon-carts.md) |
 | Commerce Reports (Pro) | 2 | [commerce-reports.md](./fluentcrm/commerce-reports.md) |
-| Reports | 14 | [reports.md](./fluentcrm/reports.md) |
+| Reports | 25 | [reports.md](./fluentcrm/reports.md) |
 | Contact Import | 6 | [import.md](./fluentcrm/import.md) |
 | Migrators | 5 | [migrators.md](./fluentcrm/migrators.md) |
 | WordPress Users | 2 | [users.md](./fluentcrm/users.md) |
 | Labels | 4 | [labels.md](./fluentcrm/labels.md) |
 | Docs & Addons | 3 | [docs.md](./fluentcrm/docs.md) |
 | Global Search | 1 | [global-search.md](./fluentcrm/global-search.md) |
-| Settings | 38 | [settings.md](./fluentcrm/settings.md) |
+| Settings | 41 | [settings.md](./fluentcrm/settings.md) |
 | Pro Settings | 11 | [pro-settings.md](./fluentcrm/pro-settings.md) |
 | Public Bounce Handlers | 2 | [public-bounce.md](./fluentcrm/public-bounce.md) |
+| ai | 7 | [ai.md](./fluentcrm/ai.md) |
+| email-patterns | 11 | [email-patterns.md](./fluentcrm/email-patterns.md) |
+| export | 2 | [export.md](./fluentcrm/export.md) |
+| mcp | 4 | [mcp.md](./fluentcrm/mcp.md) |
 
 ## Endpoints by group
 
@@ -86,6 +90,7 @@ Full schemas: [`fluentcrm/contacts.md`](./fluentcrm/contacts.md)
 | PUT | `/subscribers/{id}` | PUT Update Contact |
 | PUT | `/subscribers/{id}/notes/{note_id}` | PUT Update Contact Note |
 | PUT | `/subscribers/subscribers-property` | PUT Update Contacts Property |
+| POST | `/subscribers/{id}/notes/bulk-delete` | POST Bulk Delete Contact Notes |
 
 ### Lists
 
@@ -166,6 +171,8 @@ Full schemas: [`fluentcrm/companies.md`](./fluentcrm/companies.md)
 | PUT | `/companies/companies-property` | PUT Update Companies Property |
 | PUT | `/companies/{id}` | PUT Update Company |
 | PUT | `/companies/{id}/notes/{note_id}` | PUT Update Company Note |
+| POST | `/companies/{id}/notes/bulk-delete` | POST Bulk Delete Company Notes |
+| PUT | `/companies/custom-fields/update_group_name` | PUT Rename Company Custom Field Group |
 
 ### Campaigns
 
@@ -265,6 +272,7 @@ Full schemas: [`fluentcrm/sequences.md`](./fluentcrm/sequences.md)
 | DELETE | `/sequences/{id}/subscribers` | DELETE Remove Sequence Subscribers |
 | PUT | `/sequences/{id}` | PUT Update Sequence |
 | PUT | `/sequences/{id}/email/{email_id}` | PUT Update Sequence Email |
+| PATCH | `/sequences/{id}/email/{email_id}/delay` | PATCH Update Sequence Email Delay |
 
 ### Automations (Funnels)
 
@@ -303,6 +311,7 @@ Full schemas: [`fluentcrm/funnels.md`](./fluentcrm/funnels.md)
 | PUT | `/funnels/{id}` | PUT Update Funnel Property |
 | PUT | `/funnels/{id}/subscribers/{subscriber_id}/status` | PUT Update Funnel Subscription Status |
 | PUT | `/funnels/funnel/{id}/title` | PUT Update Funnel Title |
+| PUT | `/funnels/{id}/sticky-note` | PUT Update Automation Sticky Note |
 
 ### Email Templates
 
@@ -321,6 +330,7 @@ Full schemas: [`fluentcrm/templates.md`](./fluentcrm/templates.md)
 | GET | `/templates` | GET List Templates |
 | POST | `/templates/set-global-style` | POST Set Global Style |
 | PUT | `/templates/{id}` | PUT Update Template |
+| POST | `/templates/built-in-template` | POST Fetch A Built-In Template |
 
 ### Forms
 
@@ -342,7 +352,6 @@ Full schemas: [`fluentcrm/webhooks.md`](./fluentcrm/webhooks.md)
 |--------|------|---------|
 | POST | `/webhooks` | POST Create Webhook |
 | DELETE | `/webhooks/{id}` | DELETE Delete Webhook |
-| GET | `/webhooks/sms` | GET List SMS Webhooks |
 | GET | `/webhooks` | GET List Webhooks |
 | PUT | `/webhooks/{id}` | PUT Update Webhook |
 
@@ -388,6 +397,7 @@ Full schemas: [`fluentcrm/sms.md`](./fluentcrm/sms.md)
 | POST | `/sms/campaigns/{id}/unschedule` | POST Unschedule SMS Campaign |
 | PUT | `/sms/campaigns/{id}` | PUT Update SMS Campaign |
 | PUT | `/sms/{id}/update-labels` | PUT Update SMS Campaign Labels |
+| POST | `/sms/campaigns/{id}/un-schedule` | POST Unschedule SMS Campaign (Legacy Path) _(deprecated)_ |
 
 ### Abandoned Carts (Pro)
 
@@ -428,6 +438,17 @@ Full schemas: [`fluentcrm/reports.md`](./fluentcrm/reports.md)
 | GET | `/reports/options` | GET Report Options |
 | GET | `/reports/taxonomy-terms` | GET Taxonomy Terms |
 | GET | `/reports/ping` | GET Ping Report |
+| GET | `/reports/automations` | GET Automation Reports |
+| GET | `/reports/automations/{id}/steps` | GET Automation Step Report |
+| GET | `/reports/campaign-options` | GET Campaign Options |
+| GET | `/reports/campaigns-list` | GET Campaigns List Report |
+| GET | `/reports/contacts-by-country` | GET Contacts By Country |
+| GET | `/reports/contacts-by-lists` | GET Contacts By Lists |
+| GET | `/reports/contacts-by-status` | GET Contacts By Status |
+| GET | `/reports/contacts-by-tags` | GET Contacts By Tags |
+| GET | `/reports/email-unsubs` | GET Email Unsubscribe Stats |
+| GET | `/reports/recent-tags` | GET Recently Created Tags |
+| GET | `/reports/top-campaigns` | GET Top Campaigns |
 
 ### Contact Import
 
@@ -523,7 +544,7 @@ Full schemas: [`fluentcrm/settings.md`](./fluentcrm/settings.md)
 | POST | `/setting/install-fluent-support` | POST Install Fluent Support Plugin |
 | DELETE | `/setting/old_logs` | DELETE Remove Old Logs |
 | POST | `/setting/reset_db` | POST Reset Database |
-| GET | `/setting/system-logs/reset` | GET Reset System Logs |
+| DELETE | `/setting/system-logs/reset` | DELETE Reset System Logs |
 | POST | `/setting/run_cron` | POST Run Cron Event |
 | POST | `/setting/abandon-cart` | POST Save Abandon Cart Settings |
 | POST | `/setting/auto_subscribe_settings` | POST Save Auto Subscribe Settings |
@@ -536,6 +557,9 @@ Full schemas: [`fluentcrm/settings.md`](./fluentcrm/settings.md)
 | PUT | `/setting/test` | PUT Test Request Resolver |
 | POST | `/setting/compliance` | POST Update Compliance Settings |
 | POST | `/setting/experiments` | POST Update Experimental Settings |
+| GET | `/setting/system-logs/export` | GET Export System Logs (CSV) |
+| GET | `/setting/db-index-health` | GET Database Index Health |
+| POST | `/setting/db-index-health/repair` | POST Repair Database Indexes |
 
 ### Pro Settings
 
@@ -561,7 +585,59 @@ Full schemas: [`fluentcrm/public-bounce.md`](./fluentcrm/public-bounce.md)
 
 | Method | Path | Summary |
 |--------|------|---------|
-| POST | `/public/bounce_handler/{service_name}/{security_code}` | POST Handle Bounce |
-| POST | `/public/bounce_handler/{service_name}/handle/{security_code}` | POST Handle Bounce (with /handle/ path) |
+| GET | `/public/bounce_handler/{service_name}/{security_code}` | GET Handle Bounce Webhook |
+| GET | `/public/bounce_handler/{service_name}/handle/{security_code}` | GET Handle Bounce Webhook |
+
+### ai
+
+Full schemas: [`fluentcrm/ai.md`](./fluentcrm/ai.md)
+
+| Method | Path | Summary |
+|--------|------|---------|
+| POST | `/ai/generate` | POST Rewrite Or Generate Text |
+| POST | `/ai/generate-email-body` | POST Generate Email Body |
+| POST | `/ai/contact-summary` | POST Get Or Generate Contact Summary |
+| POST | `/ai/models` | POST List Models For Provider |
+| GET | `/ai/settings` | GET AI Settings |
+| POST | `/ai/settings` | POST Save AI Settings |
+| POST | `/ai/test` | POST Test AI Connection |
+
+### email-patterns
+
+Full schemas: [`fluentcrm/email-patterns.md`](./fluentcrm/email-patterns.md)
+
+| Method | Path | Summary |
+|--------|------|---------|
+| POST | `/email-patterns/do-bulk-action` | POST Bulk Delete Email Patterns |
+| POST | `/email-patterns` | POST Create Email Pattern |
+| POST | `/email-patterns/categories` | POST Create Pattern Category |
+| POST | `/email-patterns/wp-format` | POST Create Pattern From wp_block Payload |
+| DELETE | `/email-patterns/{id}` | DELETE Delete Email Pattern |
+| DELETE | `/email-patterns/categories/{id}` | DELETE Delete Pattern Category |
+| GET | `/email-patterns/{id}` | GET Single Email Pattern |
+| GET | `/email-patterns/categories` | GET List Pattern Categories |
+| GET | `/email-patterns` | GET List Email Patterns |
+| GET | `/email-patterns/wp-format` | GET List Patterns In wp_block Format |
+| PUT | `/email-patterns/{id}` | PUT Update Email Pattern |
+
+### export
+
+Full schemas: [`fluentcrm/export.md`](./fluentcrm/export.md)
+
+| Method | Path | Summary |
+|--------|------|---------|
+| POST | `/subscribers-export` | POST Fetch Contact Export Page |
+| GET | `/subscribers-export` | GET Fetch Contact Export Page |
+
+### mcp
+
+Full schemas: [`fluentcrm/mcp.md`](./fluentcrm/mcp.md)
+
+| Method | Path | Summary |
+|--------|------|---------|
+| GET | `/mcp/config-snippet` | GET MCP Client Config Snippet |
+| GET | `/mcp/status` | GET MCP Status |
+| POST | `/mcp/install-adapter` | POST Install MCP Adapter |
+| POST | `/mcp/toggle` | POST Toggle MCP Tools |
 
 _Generated by `scripts/gen-api-docs.mjs` from the per-operation OpenAPI specs; endpoints marked (Pro) require the product's Pro version._

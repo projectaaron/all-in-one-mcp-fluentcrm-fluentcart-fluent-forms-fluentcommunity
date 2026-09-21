@@ -1,6 +1,6 @@
 # FluentCart API — Email Notifications
 
-11 endpoints. Base URL: `https://{website}/wp-json/fluent-cart/v2`. See the [FluentCart overview](../fluentcart.md) for auth and the full group list.
+15 endpoints. Base URL: `https://{website}/wp-json/fluent-cart/v2`. See the [FluentCart overview](../fluentcart.md) for auth and the full group list.
 
 _Generated from the FluentCart OpenAPI specs (dev.fluentcart.com)._
 
@@ -11,6 +11,10 @@ _Generated from the FluentCart OpenAPI specs (dev.fluentcart.com)._
 **POST Enable/Disable Notification**
 
 Toggle a notification template on or off without modifying other settings.
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Access policy:** `StoreSensitivePolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -66,6 +70,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -74,6 +124,10 @@ Example:
 **GET Get Single Notification**
 
 Retrieve a single email notification template by its name, along with available shortcodes for the email editor.
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Access policy:** `StoreSensitivePolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -179,6 +233,36 @@ Retrieve a single email notification template by its name, along with available 
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 - **404** — Notification not found
 
   Schema (`application/json`):
@@ -194,6 +278,22 @@ Retrieve a single email notification template by its name, along with available 
 ```
 
 
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -202,6 +302,10 @@ Retrieve a single email notification template by its name, along with available 
 **GET Get Scheduling Settings**
 
 Retrieve reminder/scheduling settings for automated email notifications such as payment reminders, renewal reminders, and trial-end reminders. Returns both the current settings and the form field definitions for the reminders tab.
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Access policy:** `StoreSensitivePolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -301,6 +405,36 @@ Retrieve reminder/scheduling settings for automated email notifications such as 
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -309,6 +443,10 @@ Retrieve reminder/scheduling settings for automated email notifications such as 
 **GET Get Global Email Settings**
 
 Retrieve the global email configuration settings used across all notification emails (sender name, email addresses, footer, etc.).
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Access policy:** `StoreSensitivePolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -383,6 +521,36 @@ Retrieve the global email configuration settings used across all notification em
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -391,6 +559,10 @@ Retrieve the global email configuration settings used across all notification em
 **GET Get Shortcodes**
 
 Retrieve available shortcodes, email template files, and editor buttons for the email notification editor.
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Access policy:** `StoreSensitivePolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -512,6 +684,36 @@ Retrieve available shortcodes, email template files, and editor buttons for the 
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -520,6 +722,8 @@ Retrieve available shortcodes, email template files, and editor buttons for the 
 **GET List All Notifications**
 
 Retrieve all registered email notification templates with their current configuration. Returns both default and customized notification settings for orders, subscriptions, and scheduler/reminder actions.
+
+**Access policy:** `StoreSensitivePolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -557,7 +761,8 @@ Retrieve all registered email notification templates with their current configur
         "active": "yes",
         "subject": "New Sales On {{settings.store_name}}",
         "is_default_body": "yes",
-        "email_body": ""
+        "email_body": "",
+        "attach_pdf_template": ""
       }
     },
     "order_paid_customer": {
@@ -579,7 +784,8 @@ Retrieve all registered email notification templates with their current configur
         "active": "yes",
         "subject": "Purchase Receipt #{{order.invoice_no}}",
         "is_default_body": "yes",
-        "email_body": ""
+        "email_body": "",
+        "attach_pdf_template": ""
       }
     },
     "order_refunded_admin": {
@@ -602,7 +808,8 @@ Retrieve all registered email notification templates with their current configur
         "active": "yes",
         "subject": "Refund Processed for Order #{{order.invoice_no}}",
         "is_default_body": "yes",
-        "email_body": ""
+        "email_body": "",
+        "attach_pdf_template": ""
       }
     },
     "order_refunded_customer": {
@@ -624,7 +831,8 @@ Retrieve all registered email notification templates with their current configur
         "active": "yes",
         "subject": "Your Refund for Order #{{order.invoice_no}}",
         "is_default_body": "yes",
-        "email_body": ""
+        "email_body": "",
+        "attach_pdf_template": ""
       }
     },
     "subscription_renewal_customer": {
@@ -666,7 +874,469 @@ Retrieve all registered email notification templates with their current configur
         "is_default_body": "yes",
         "email_body": ""
       }
+    },
+    "order_delivered_customer": {
+      "event": "shipping_status_changed_to_delivered",
+      "group": "order",
+      "group_label": "Order Actions",
+      "title": "Send mail to customer when shipping status changed to delivered.",
+      "description": "This email will be sent to the customer after an order is marked as delivered",
+      "recipient": "customer",
+      "smartcode_groups": [],
+      "template_path": "order.delivered.customer",
+      "is_async": false,
+      "settings": {
+        "active": "yes",
+        "subject": "Order has been delivered #{{order.invoice_no}}",
+        "is_default_body": "yes",
+        "email_body": "",
+        "attach_pdf_template": ""
+      },
+      "name": "order_delivered_customer"
+    },
+    "order_placed_admin": {
+      "event": "order_placed_offline",
+      "group": "order",
+      "group_label": "Order Actions",
+      "title": "Send mail to admin after New Order Placed (Offline Payment)",
+      "description": "This email will be sent to the admin when an order is placed using offline payment method.",
+      "recipient": "admin",
+      "smartcode_groups": [],
+      "template_path": "order.placed.admin",
+      "is_async": false,
+      "manage_toggle": "no",
+      "toggle_label": "Auto-enabled for offline payments",
+      "pre_header": "You have a new order on your shop placed with offline payment. Please review the order details in this email. You can also go to FluentCart Dashboard to view the order details and manage it. Thank you for using FluentCart.",
+      "settings": {
+        "subject": "New Order on {{settings.store_name}} (Offline Payment)",
+        "is_default_body": "yes",
+        "email_body": "",
+        "attach_pdf_template": ""
+      },
+      "name": "order_placed_admin"
+    },
+    "order_placed_customer": {
+      "event": "order_placed_offline",
+      "group": "order",
+      "group_label": "Order Actions",
+      "title": "Order confirmation to customer (Offline Payment)",
+      "description": "This email will be sent to the customer when an order is placed using offline payment method.",
+      "recipient": "customer",
+      "smartcode_groups": [],
+      "template_path": "order.placed.customer",
+      "is_async": false,
+      "manage_toggle": "no",
+      "toggle_label": "Auto-enabled for offline payments",
+      "settings": {
+        "subject": "Order Confirmation #{{order.invoice_no}} (Offline Payment)",
+        "is_default_body": "yes",
+        "email_body": "",
+        "attach_pdf_template": ""
+      },
+      "name": "order_placed_customer"
+    },
+    "order_shipped_customer": {
+      "event": "shipping_status_changed_to_shipped",
+      "group": "order",
+      "group_label": "Order Actions",
+      "title": "Send mail to customer when shipping status changed to shipped.",
+      "description": "This email will be sent to the customer after an order is marked as shipped",
+      "recipient": "customer",
+      "smartcode_groups": [],
+      "template_path": "order.shipped.customer",
+      "is_async": false,
+      "settings": {
+        "active": "yes",
+        "subject": "Order has been shipped #{{order.invoice_no}} 📦",
+        "is_default_body": "yes",
+        "email_body": "",
+        "attach_pdf_template": ""
+      },
+      "name": "order_shipped_customer"
+    },
+    "renewal_created_admin": {
+      "event": "renewal_created",
+      "group": "manual_subscription",
+      "group_label": "Store-Managed Renewals",
+      "title": "Notify admin when a renewal order is created",
+      "description": "This email will be sent to the admin when a renewal order is generated for a store-managed subscription.",
+      "recipient": "admin",
+      "smartcode_groups": [],
+      "template_path": "renewal.created.admin",
+      "pre_header": "A new renewal order has been created for a store-managed subscription. Review it in the FluentCart Dashboard.",
+      "is_async": false,
+      "settings": {
+        "active": "yes",
+        "subject": "New Renewal Order Created on {{settings.store_name}}",
+        "is_default_body": "yes",
+        "email_body": ""
+      },
+      "name": "renewal_created_admin"
+    },
+    "renewal_created_customer": {
+      "event": "renewal_created",
+      "group": "manual_subscription",
+      "group_label": "Store-Managed Renewals",
+      "title": "Send the renewal order to the customer when a renewal order is created",
+      "description": "This email will be sent to the customer when a renewal order is generated for a store-managed subscription.",
+      "recipient": "customer",
+      "smartcode_groups": [],
+      "template_path": "renewal.created.customer",
+      "is_async": false,
+      "settings": {
+        "active": "yes",
+        "subject": "Your Subscription Renewal #{{order.invoice_no}}",
+        "is_default_body": "yes",
+        "email_body": ""
+      },
+      "name": "renewal_created_customer"
+    },
+    "renewal_reminder_due_admin": {
+      "event": "renewal_reminder_due",
+      "group": "manual_subscription",
+      "group_label": "Store-Managed Renewals",
+      "title": "Renewal due reminder copy to admin",
+      "description": "This email will be sent to admin when a due reminder is sent to customer.",
+      "recipient": "admin",
+      "smartcode_groups": [],
+      "template_path": "order.reminder.due.admin",
+      "pre_header": "A renewal due reminder was sent to a customer. Review the order details in this email or visit FluentCart Dashboard.",
+      "is_async": false,
+      "settings": {
+        "active": "no",
+        "subject": "Renewal Reminder Sent #{{order.invoice_no}}",
+        "is_default_body": "yes",
+        "email_body": ""
+      },
+      "name": "renewal_reminder_due_admin"
+    },
+    "renewal_reminder_due_customer": {
+      "event": "renewal_reminder_due",
+      "group": "manual_subscription",
+      "group_label": "Store-Managed Renewals",
+      "title": "Renewal due reminder to customer",
+      "description": "This email will be sent before/at renewal due date when payment is pending.",
+      "recipient": "customer",
+      "smartcode_groups": [],
+      "template_path": "order.reminder.due.customer",
+      "is_async": false,
+      "settings": {
+        "active": "yes",
+        "subject": "Payment Reminder #{{order.invoice_no}}",
+        "is_default_body": "yes",
+        "email_body": ""
+      },
+      "name": "renewal_reminder_due_customer"
+    },
+    "renewal_reminder_overdue_customer": {
+      "event": "renewal_reminder_overdue",
+      "group": "scheduler",
+      "group_label": "Scheduler / Reminder Actions",
+      "title": "Payment reminder to customer",
+      "description": "This email will be sent to remind customer about pending payment.",
+      "recipient": "customer",
+      "smartcode_groups": [],
+      "template_path": "order.reminder.overdue.customer",
+      "is_async": false,
+      "manage_toggle": "no",
+      "toggle_label": "On demand",
+      "settings": {
+        "subject": "Payment Reminder - Order #{{order.id}}",
+        "is_default_body": "yes",
+        "email_body": ""
+      },
+      "name": "renewal_reminder_overdue_customer"
+    },
+    "subscription_canceled_admin": {
+      "event": "subscription_canceled",
+      "group": "subscription",
+      "group_label": "Subscription Actions",
+      "title": "Send mail to admin when a subscription is canceled",
+      "description": "This email will be sent to the admin when a subscription is canceled.",
+      "recipient": "admin",
+      "smartcode_groups": [],
+      "template_path": "subscription.canceled.admin",
+      "pre_header": "A subscription has been canceled. Review the details in this email or visit FluentCart Dashboard to manage the subscription.",
+      "is_async": false,
+      "settings": {
+        "active": "yes",
+        "subject": "Subscription Canceled - {{order.customer.full_name}}",
+        "is_default_body": "yes",
+        "email_body": ""
+      },
+      "name": "subscription_canceled_admin"
+    },
+    "subscription_past_due_admin": {
+      "event": "subscription_past_due",
+      "group": "subscription",
+      "group_label": "Subscription Actions",
+      "title": "Notify admin when a subscription is past due",
+      "description": "This email will be sent to the admin when a subscription is marked as past due.",
+      "recipient": "admin",
+      "smartcode_groups": [],
+      "template_path": "subscription.past_due.admin",
+      "pre_header": "A subscription payment is past due. Review the subscription details in this email or visit FluentCart Dashboard.",
+      "is_async": false,
+      "settings": {
+        "active": "no",
+        "subject": "Subscription Past Due #{{order.invoice_no}}",
+        "is_default_body": "yes",
+        "email_body": ""
+      },
+      "name": "subscription_past_due_admin"
+    },
+    "subscription_past_due_customer": {
+      "event": "subscription_past_due",
+      "group": "subscription",
+      "group_label": "Subscription Actions",
+      "title": "Notify customer when subscription is past due",
+      "description": "This email will be sent to the customer when their subscription is marked as past due.",
+      "recipient": "customer",
+      "smartcode_groups": [],
+      "template_path": "subscription.past_due.customer",
+      "is_async": false,
+      "settings": {
+        "active": "yes",
+        "subject": "Your Subscription is Past Due on {{settings.store_name}}",
+        "is_default_body": "yes",
+        "email_body": ""
+      },
+      "name": "subscription_past_due_customer"
+    },
+    "subscription_period_skipped_customer": {
+      "event": "subscription_period_skipped",
+      "group": "subscription",
+      "group_label": "Subscription Actions",
+      "title": "Notify customer when a billing period is skipped",
+      "description": "This email will be sent to the customer when an admin skips their next billing period. The internal reason and actor are never included. Off by default.",
+      "recipient": "customer",
+      "smartcode_groups": [],
+      "template_path": "subscription.period_skipped.customer",
+      "is_async": false,
+      "settings": {
+        "active": "no",
+        "subject": "Your next payment has been skipped on {{settings.store_name}}",
+        "is_default_body": "yes",
+        "email_body": ""
+      },
+      "name": "subscription_period_skipped_customer"
+    },
+    "subscription_renewal_admin": {
+      "event": "subscription_renewed",
+      "group": "subscription",
+      "group_label": "Subscription Actions",
+      "title": "Send mail to admin after a subscription renewed",
+      "description": "This email will be sent to the admin after a renewal payment made",
+      "recipient": "admin",
+      "smartcode_groups": [],
+      "template_path": "subscription.renewal.admin",
+      "pre_header": "You got a new Renewal on your shop. Congratulations! Checkout all the details in this email. You can also go to FluentCart Dashboard to view the order details and manage it. Thank you for using FluentCart.",
+      "is_async": false,
+      "settings": {
+        "active": "yes",
+        "subject": "New Renewal On {{settings.store_name}}",
+        "is_default_body": "yes",
+        "email_body": "",
+        "attach_pdf_template": ""
+      },
+      "name": "subscription_renewal_admin"
+    },
+    "subscription_renewal_failed_admin": {
+      "event": "subscription_renewal_failed",
+      "group": "subscription",
+      "group_label": "Subscription Actions",
+      "title": "Notify admin when an automatic renewal charge fails",
+      "description": "This email will be sent to the admin when a saved payment method could not be charged for a subscription renewal.",
+      "recipient": "admin",
+      "smartcode_groups": [],
+      "template_path": "subscription.renewal_failed.admin",
+      "pre_header": "An automatic subscription renewal charge failed. Review the order in the FluentCart Dashboard.",
+      "is_async": false,
+      "settings": {
+        "active": "no",
+        "subject": "Automatic Charge Failed for Renewal #{{order.invoice_no}}",
+        "is_default_body": "yes",
+        "email_body": ""
+      },
+      "name": "subscription_renewal_failed_admin"
+    },
+    "subscription_renewal_failed_customer": {
+      "event": "subscription_renewal_failed",
+      "group": "subscription",
+      "group_label": "Subscription Actions",
+      "title": "Notify customer when an automatic renewal charge fails",
+      "description": "This email will be sent to the customer when their saved payment method could not be charged for a subscription renewal.",
+      "recipient": "customer",
+      "smartcode_groups": [],
+      "template_path": "subscription.renewal_failed.customer",
+      "is_async": false,
+      "settings": {
+        "active": "yes",
+        "subject": "Automatic Payment Failed for Renewal #{{order.invoice_no}}",
+        "is_default_body": "yes",
+        "email_body": ""
+      },
+      "name": "subscription_renewal_failed_customer"
+    },
+    "subscription_renewal_reminder_admin": {
+      "event": "subscription_renewal_reminder",
+      "group": "scheduler",
+      "group_label": "Scheduler / Reminder Actions",
+      "title": "Upcoming renewal reminder copy to admin",
+      "description": "This email will be sent to admin when an upcoming renewal reminder is sent.",
+      "recipient": "admin",
+      "smartcode_groups": [],
+      "template_path": "subscription.reminder.admin",
+      "pre_header": "A subscription renewal reminder was sent to a customer. Review subscription details from FluentCart Dashboard.",
+      "is_async": false,
+      "settings": {
+        "active": "no",
+        "subject": "Renewal Reminder Sent for {{order.customer.full_name}}",
+        "is_default_body": "yes",
+        "email_body": ""
+      },
+      "name": "subscription_renewal_reminder_admin"
+    },
+    "subscription_renewal_reminder_customer": {
+      "event": "subscription_renewal_reminder",
+      "group": "scheduler",
+      "group_label": "Scheduler / Reminder Actions",
+      "title": "Upcoming renewal reminder to customer",
+      "description": "This email will be sent before subscription auto-renewal date.",
+      "recipient": "customer",
+      "smartcode_groups": [],
+      "template_path": "subscription.reminder.customer",
+      "is_async": false,
+      "settings": {
+        "active": "yes",
+        "subject": "Upcoming Renewal Reminder from {{settings.store_name}}",
+        "is_default_body": "yes",
+        "email_body": ""
+      },
+      "name": "subscription_renewal_reminder_customer"
+    },
+    "subscription_trial_end_reminder_admin": {
+      "event": "subscription_trial_end_reminder",
+      "group": "scheduler",
+      "group_label": "Scheduler / Reminder Actions",
+      "title": "Trial ending soon reminder copy to admin",
+      "description": "This email will be sent to admin when a trial ending reminder is sent to a customer.",
+      "recipient": "admin",
+      "smartcode_groups": [],
+      "template_path": "subscription.trial_end.admin",
+      "pre_header": "A trial ending soon reminder was sent to a customer. Review subscription details from FluentCart Dashboard.",
+      "is_async": false,
+      "settings": {
+        "active": "no",
+        "subject": "Trial Ending Soon - {{order.customer.full_name}}",
+        "is_default_body": "yes",
+        "email_body": ""
+      },
+      "name": "subscription_trial_end_reminder_admin"
+    },
+    "subscription_trial_end_reminder_customer": {
+      "event": "subscription_trial_end_reminder",
+      "group": "scheduler",
+      "group_label": "Scheduler / Reminder Actions",
+      "title": "Trial ending soon reminder to customer",
+      "description": "This email will be sent before a trial period ends and converts to a paid subscription.",
+      "recipient": "customer",
+      "smartcode_groups": [],
+      "template_path": "subscription.trial_end.customer",
+      "is_async": false,
+      "settings": {
+        "active": "yes",
+        "subject": "Your Trial is Ending Soon - {{settings.store_name}}",
+        "is_default_body": "yes",
+        "email_body": ""
+      },
+      "name": "subscription_trial_end_reminder_customer"
+    },
+    "system_charge_failed_admin": {
+      "event": "system_charge_failed",
+      "group": "system_subscription",
+      "group_label": "Store-Managed Renewals · Auto-Charge",
+      "title": "Notify admin when an automatic renewal charge fails",
+      "description": "This email will be sent to the admin when a saved payment method could not be charged for a renewal order.",
+      "recipient": "admin",
+      "smartcode_groups": [],
+      "template_path": "subscription.charge_failed.admin",
+      "pre_header": "An automatic subscription renewal charge failed. Review the renewal order in the FluentCart Dashboard.",
+      "is_async": false,
+      "settings": {
+        "active": "no",
+        "subject": "Automatic Charge Failed for Renewal #{{order.invoice_no}}",
+        "is_default_body": "yes",
+        "email_body": ""
+      },
+      "name": "system_charge_failed_admin"
+    },
+    "system_charge_failed_customer": {
+      "event": "system_charge_failed",
+      "group": "system_subscription",
+      "group_label": "Store-Managed Renewals · Auto-Charge",
+      "title": "Notify customer when an automatic renewal charge fails",
+      "description": "This email will be sent to the customer when the saved payment method could not be charged for a renewal order. It includes the failure reason and a Pay Now link.",
+      "recipient": "customer",
+      "smartcode_groups": [],
+      "template_path": "subscription.charge_failed.customer",
+      "is_async": false,
+      "settings": {
+        "active": "yes",
+        "subject": "Automatic Payment Failed for Renewal #{{order.invoice_no}}",
+        "is_default_body": "yes",
+        "email_body": ""
+      },
+      "name": "system_charge_failed_customer"
+    },
+    "system_upcoming_charge_customer": {
+      "event": "system_upcoming_charge",
+      "group": "system_subscription",
+      "group_label": "Store-Managed Renewals · Auto-Charge",
+      "title": "Notify customer before an automatic renewal charge",
+      "description": "This email tells the customer the amount and date of the upcoming automatic charge to their saved payment method, when the renewal order is created ahead of the due date.",
+      "recipient": "customer",
+      "smartcode_groups": [],
+      "template_path": "subscription.upcoming_charge.customer",
+      "is_async": false,
+      "settings": {
+        "active": "yes",
+        "subject": "Upcoming automatic payment for your subscription",
+        "is_default_body": "yes",
+        "email_body": ""
+      },
+      "name": "system_upcoming_charge_customer"
     }
+  }
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
   }
 }
 ```
@@ -680,6 +1350,10 @@ Retrieve all registered email notification templates with their current configur
 **POST Preview Default Template**
 
 Generate an HTML preview of a default (built-in) email template. Unlike the custom block editor preview, this renders the PHP-based default template using dummy preview data, wrapped in the standard email layout with header and footer.
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Access policy:** `StoreSensitivePolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -716,6 +1390,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -724,6 +1444,8 @@ Example:
 **POST Preview Notification**
 
 Generate an HTML preview of a custom email notification template. Uses the block editor email body from the notification's saved settings, parses it through the block parser, wraps it in the email template layout, and resolves shortcodes using real or fallback order data.
+
+**Policy:** `StoreSensitivePolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -797,6 +1519,10 @@ Example:
 **POST Save Scheduling Settings**
 
 Update reminder/scheduling settings for automated email notifications. Each reminder type has an enable toggle and a days configuration that controls how many days before the event the reminder is sent.
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Access policy:** `StoreSensitivePolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -889,6 +1615,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -897,6 +1669,10 @@ Example:
 **POST Save Global Email Settings**
 
 Update the global email configuration settings for all notification emails.
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Access policy:** `StoreSensitivePolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -919,7 +1695,7 @@ Example:
   "reply_to_name": "TechStore Support",
   "reply_to_email": "support@example.com",
   "email_footer": "<p>&copy; 2025 TechStore Inc. All rights reserved.</p>",
-  "admin_email": "admin@techstore.com",
+  "admin_email": "admin@example.com",
   "show_email_footer": "yes"
 }
 ```
@@ -957,6 +1733,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -965,6 +1787,10 @@ Example:
 **PUT Update Notification**
 
 Update an email notification template's settings including subject, body content, and active status.
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Access policy:** `StoreSensitivePolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -1025,6 +1851,454 @@ Example:
 ```json
 {
   "message": "Failed to update notification"
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
+
+---
+
+## GET `/email-notification/digest-settings`
+
+**GET Get Store Digest Settings**
+
+Retrieve the store's digest email settings — the recurring summary email(s) sent to store admins on a daily, weekly, and/or monthly cadence.
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Auth:** ApplicationPasswords
+
+**Responses**
+
+- **200** — Successful response. Returns the current store digest settings.
+
+  Schema (`application/json`):
+
+  - `data` (object)
+    - `enabled` (string) — "yes" or "no" — whether digest emails are enabled at all.
+    - `recipients` (string) — Comma-separated recipient list, or a template like {{wp.admin_email}}.
+    - `send_when_empty` (string) — "yes" or "no" — whether to send a digest even when there's no activity to report.
+    - `daily` (object)
+      - `enabled` (string)
+      - `send_hour` (integer)
+    - `weekly` (object)
+      - `enabled` (string)
+      - `send_hour` (integer)
+      - `send_dow` (integer) — Day of week to send, 0-6.
+    - `monthly` (object)
+      - `enabled` (string)
+      - `send_hour` (integer)
+
+  Example:
+
+```json
+{
+  "data": {
+    "enabled": "yes",
+    "recipients": "{{wp.admin_email}}",
+    "send_when_empty": "no",
+    "daily": {
+      "enabled": "no",
+      "send_hour": 8
+    },
+    "weekly": {
+      "enabled": "yes",
+      "send_hour": 8,
+      "send_dow": 1
+    },
+    "monthly": {
+      "enabled": "no",
+      "send_hour": 8
+    }
+  }
+}
+```
+
+
+- **401** — Unauthenticated.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — The authenticated user lacks store-sensitive access.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+
+---
+
+## POST `/email-notification/digest-settings`
+
+**POST Save Store Digest Settings**
+
+Save the store's digest email settings. The `enabled` master flag is derived server-side — it is set to "yes" automatically whenever any of the daily, weekly, or monthly cadences are enabled, and cannot be set directly.
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Auth:** ApplicationPasswords
+
+**Request body** (`application/json`)
+
+- `recipients` (string) — Comma-separated recipient list, or a template like {{wp.admin_email}}. Defaults to {{wp.admin_email}} if omitted.
+- `send_when_empty` (string) — "yes" to send a digest even when there's no activity to report; anything else is treated as "no".
+- `daily` (object)
+  - `enabled` (string) — "yes" to enable the daily digest; anything else is treated as "no".
+  - `send_hour` (integer) — Hour of day to send, clamped to 0-23.
+- `weekly` (object)
+  - `enabled` (string)
+  - `send_hour` (integer) — Hour of day to send, clamped to 0-23.
+  - `send_dow` (integer) — Day of week to send, 0-6.
+- `monthly` (object)
+  - `enabled` (string)
+  - `send_hour` (integer) — Hour of day to send, clamped to 0-23.
+
+Example:
+
+```json
+{
+  "recipients": "alex.morgan@example.com",
+  "send_when_empty": "no",
+  "daily": {
+    "enabled": "no",
+    "send_hour": 8
+  },
+  "weekly": {
+    "enabled": "yes",
+    "send_hour": 8,
+    "send_dow": 1
+  },
+  "monthly": {
+    "enabled": "no",
+    "send_hour": 8
+  }
+}
+```
+
+
+**Responses**
+
+- **200** — Digest settings saved successfully.
+
+  Schema (`application/json`):
+
+  - `data` (object) — The stored digest settings, including the server-derived enabled flag.
+    - _(object)_
+  - `message` (string)
+
+  Example:
+
+```json
+{
+  "data": {
+    "enabled": "yes",
+    "recipients": "alex.morgan@example.com",
+    "send_when_empty": "no",
+    "daily": {
+      "enabled": "no",
+      "send_hour": 8
+    },
+    "weekly": {
+      "enabled": "yes",
+      "send_hour": 8,
+      "send_dow": 1
+    },
+    "monthly": {
+      "enabled": "no",
+      "send_hour": 8
+    }
+  },
+  "message": "Store digest settings saved successfully"
+}
+```
+
+
+- **401** — Unauthenticated.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — The authenticated user lacks store-sensitive access.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
+
+---
+
+## POST `/email-notification/digest-settings/send-test`
+
+**POST Send Test Digest Email**
+
+Send a one-off test digest email for the given cadence, using the store's currently configured digest recipients (falling back to the WordPress admin email if none are configured).
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Auth:** ApplicationPasswords
+
+**Request body** (`application/json`)
+
+- `frequency` (string) _(enum: `daily`, `weekly`, `monthly`)_ — One of: daily, weekly, monthly. Falls back to "daily" if omitted or not a recognized cadence.
+
+Example:
+
+```json
+{
+  "frequency": "weekly"
+}
+```
+
+
+**Responses**
+
+- **200** — Test digest email sent successfully.
+
+  Schema (`application/json`):
+
+  - `message` (string)
+
+  Example:
+
+```json
+{
+  "message": "Test digest email sent."
+}
+```
+
+
+- **401** — Unauthenticated.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — The authenticated user lacks store-sensitive access.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — The test email could not be sent (e.g. no valid mailer/recipients configured).
+
+  Example:
+
+```json
+{
+  "message": "Could not send the test email. Please check your mailing settings and recipients."
+}
+```
+
+
+
+---
+
+## POST `/email-notification/send-manual-reminder`
+
+**POST Send Manual Reminder**
+
+Manually trigger a reminder email for a single entity (for example, a subscription payment reminder) outside of its normal scheduled trigger.
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Auth:** ApplicationPasswords
+
+**Request body** (`application/json`, required)
+
+- `event` (string) **required** — The reminder event type to send.
+- `entity_id` (integer) **required** — ID of the entity (e.g. subscription ID) the reminder relates to.
+
+Example:
+
+```json
+{
+  "event": "subscription_payment_reminder",
+  "entity_id": 15
+}
+```
+
+
+**Responses**
+
+- **200** — Reminder sent successfully.
+
+  Schema (`application/json`):
+
+  - `message` (string)
+
+  Example:
+
+```json
+{
+  "message": "Reminder sent successfully."
+}
+```
+
+
+- **401** — Unauthenticated.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — The authenticated user lacks store-sensitive access.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Missing event/entity_id, or the reminder could not be sent for the given entity.
+
+  Example:
+
+```json
+{
+  "message": "Event type and entity ID are required"
 }
 ```
 
