@@ -1,6 +1,6 @@
 # FluentCart REST API — Reference
 
-> **Source:** <https://dev.fluentcart.com/restapi/> · **Scraped:** 2026-07-29 · **Endpoints:** 381 across 20 groups
+> **Source:** <https://dev.fluentcart.com/restapi/> · **Scraped:** 2026-09-21 · **Endpoints:** 436 across 24 groups
 > Regenerate with `node scripts/gen-api-docs.mjs fluentcart` — see [MAINTAINING.md](./MAINTAINING.md).
 
 **Base URL:** `https://{website}/wp-json/fluent-cart/v2` (namespace `fluent-cart/v2`)
@@ -19,26 +19,30 @@ Credential setup for all products: [auth.md](./auth.md).
 
 | Group | Endpoints | Full schemas |
 |-------|-----------|------|
-| Orders | 22 | [orders.md](./fluentcart/orders.md) |
-| Products | 59 | [products.md](./fluentcart/products.md) |
+| Orders | 32 | [orders.md](./fluentcart/orders.md) |
+| Products | 63 | [products.md](./fluentcart/products.md) |
 | Customers | 18 | [customers.md](./fluentcart/customers.md) |
 | Coupons | 12 | [coupons.md](./fluentcart/coupons.md) |
-| Subscriptions | 17 | [subscriptions.md](./fluentcart/subscriptions.md) |
+| Subscriptions | 19 | [subscriptions.md](./fluentcart/subscriptions.md) |
 | Tax | 27 | [tax.md](./fluentcart/tax.md) |
-| Shipping | 15 | [shipping.md](./fluentcart/shipping.md) |
-| Settings | 30 | [settings.md](./fluentcart/settings.md) |
-| Email Notifications | 11 | [email-notification.md](./fluentcart/email-notification.md) |
+| Shipping | 19 | [shipping.md](./fluentcart/shipping.md) |
+| Settings | 39 | [settings.md](./fluentcart/settings.md) |
+| Email Notifications | 15 | [email-notification.md](./fluentcart/email-notification.md) |
 | Reports | 43 | [reports.md](./fluentcart/reports.md) |
-| Integrations | 17 | [integration.md](./fluentcart/integration.md) |
+| Integrations | 12 | [integration.md](./fluentcart/integration.md) |
 | Files | 5 | [files.md](./fluentcart/files.md) |
-| Labels & Attributes | 13 | [labels-attributes.md](./fluentcart/labels-attributes.md) |
-| Dashboard & Utilities | 20 | [dashboard.md](./fluentcart/dashboard.md) |
+| Labels & Attributes | 15 | [labels-attributes.md](./fluentcart/labels-attributes.md) |
+| Dashboard & Utilities | 22 | [dashboard.md](./fluentcart/dashboard.md) |
 | Public Shop | 3 | [public-shop.md](./fluentcart/public-shop.md) |
 | Checkout | 7 | [checkout.md](./fluentcart/checkout.md) |
-| Customer Profile | 21 | [customer-profile.md](./fluentcart/customer-profile.md) |
-| Licensing (Pro) | 27 | [licensing.md](./fluentcart/licensing.md) |
-| Roles & Permissions (Pro) | 9 | [roles-permissions.md](./fluentcart/roles-permissions.md) |
+| Customer Profile | 18 | [customer-profile.md](./fluentcart/customer-profile.md) |
+| Licensing (Pro) | 26 | [licensing.md](./fluentcart/licensing.md) |
+| Roles & Permissions (Pro) | 7 | [roles-permissions.md](./fluentcart/roles-permissions.md) |
 | Order Bumps (Pro) | 5 | [order-bumps.md](./fluentcart/order-bumps.md) |
+| data-export | 8 | [data-export.md](./fluentcart/data-export.md) |
+| inventory | 6 | [inventory.md](./fluentcart/inventory.md) |
+| pdf-templates | 11 | [pdf-templates.md](./fluentcart/pdf-templates.md) |
+| saved-views | 4 | [saved-views.md](./fluentcart/saved-views.md) |
 
 ## Endpoints by group
 
@@ -48,7 +52,7 @@ Full schemas: [`fluentcart/orders.md`](./fluentcart/orders.md)
 
 | Method | Path | Summary |
 |--------|------|---------|
-| POST | `/orders/{order}/transactions/{transaction_id}/accept-dispute/` | POST Accept Dispute |
+| POST | `/orders/{order}/transactions/{transaction_id}/accept-dispute` | POST Accept Dispute |
 | POST | `/orders/do-bulk-action` | POST Bulk Actions |
 | POST | `/orders/calculate-shipping` | POST Calculate Shipping |
 | POST | `/orders/{order_id}/change-customer` | POST Change Customer |
@@ -70,6 +74,16 @@ Full schemas: [`fluentcart/orders.md`](./fluentcart/orders.md)
 | POST | `/orders/{order_id}/update-address-id` | POST Update Order Address ID |
 | PUT | `/orders/{order}/statuses` | PUT Update Statuses |
 | PUT | `/orders/{order}/transactions/{transaction}/status` | PUT Update Transaction Status |
+| POST | `/orders/calculate-tax` | POST Calculate Order Tax |
+| POST | `/orders/{order}/subscriptions/{subscription}/charge-now` | POST Charge Subscription Now |
+| POST | `/orders/{order}/subscriptions/{subscription}/create-renewal` | POST Create Renewal Now |
+| GET | `/renewals/{id}` | GET Get Renewal Invoice Details |
+| GET | `/renewals` | GET List Renewal Invoices |
+| POST | `/renewals/{order}/resend` | POST Resend Renewal Invoice Email |
+| POST | `/orders/{order}/subscriptions/{subscription}/skip-renewal` | POST Skip Next Renewal Period |
+| POST | `/orders/{order}/transactions/{transaction}/sync` | POST Sync Pending Transaction |
+| PUT | `/orders/{order}/subscriptions/{subscription}/update` | PUT Update Subscription |
+| POST | `/renewals/{order}/void` | POST Void Renewal Invoice |
 
 ### Products
 
@@ -136,6 +150,10 @@ Full schemas: [`fluentcart/products.md`](./fluentcart/products.md)
 | POST | `/products/{postId}/update-variant-option` | POST Update Variant Option |
 | POST | `/products/variants/{variantId}` | POST Update Variation |
 | PUT | `/products/variants/{variantId}/pricing-table` | PUT Update Variation Pricing Table |
+| POST | `/products/variants/bulk-update` | POST Bulk Update Product Variants |
+| POST | `/products/variants/group-bulk-update` | POST Group Bulk Update Variants |
+| POST | `/products/{postId}/tax-exempt` | POST Toggle Product Tax Exempt |
+| POST | `/products/variants/{variantId}/tax-exempt` | POST Update Variant Tax Settings |
 
 ### Customers
 
@@ -204,6 +222,8 @@ Full schemas: [`fluentcart/subscriptions.md`](./fluentcart/subscriptions.md)
 | PUT | `/orders/{order}/subscriptions/{subscription}/resume` | PUT Resume Subscription |
 | POST | `/customer-profile/subscriptions/{subscription_uuid}/switch-payment-method` | POST Switch Payment Method |
 | POST | `/customer-profile/subscriptions/{subscription_uuid}/update-payment-method` | POST Update Payment Method |
+| PUT | `/orders/{order}/subscriptions/{subscription}/vendor-ids` | PUT Update Vendor IDs |
+| POST | `/orders/{order}/subscriptions/{subscription}/verify-vendor-ids` | POST Verify Vendor IDs |
 
 ### Tax
 
@@ -260,6 +280,10 @@ Full schemas: [`fluentcart/shipping.md`](./fluentcart/shipping.md)
 | PUT | `/shipping/methods` | PUT Update Shipping Method |
 | PUT | `/shipping/zones/{id}` | PUT Update Shipping Zone |
 | POST | `/shipping/zones/update-order` | POST Update Zone Order |
+| GET | `/shipping/classes/{id}/profile` | GET Get Shipping Class Profile |
+| GET | `/shipping/packages` | GET Get Shipping Packages |
+| GET | `/shipping/zone/countries` | GET Get Countries By Continent |
+| POST | `/shipping/packages` | POST Save Shipping Packages |
 
 ### Settings
 
@@ -297,6 +321,15 @@ Full schemas: [`fluentcart/settings.md`](./fluentcart/settings.md)
 | POST | `/settings/store` | POST Save Store Settings |
 | POST | `/settings/payment-methods/paypal/webhook/setup` | POST Setup PayPal Webhook |
 | POST | `/settings/storage-drivers/verify-info` | POST Verify Storage Driver Connection |
+| POST | `/settings/storage-drivers/change-status` | POST Change Storage Driver Status |
+| POST | `/settings/storage-drivers/create-bucket` | POST Create Storage Bucket |
+| GET | `/settings/mcp/config-snippets` | GET Get MCP Config Snippets |
+| GET | `/settings/mcp` | GET Get MCP Status |
+| POST | `/settings/mcp/install-adapter` | POST Install MCP Adapter |
+| POST | `/settings/storage-drivers/bucket-list` | POST List Storage Buckets |
+| POST | `/settings/storage-drivers/reset` | POST Reset Storage Driver Settings |
+| POST | `/settings/mcp/toggle` | POST Toggle MCP |
+| POST | `/settings/modules/turnstile/verify` | POST Verify Turnstile Keys |
 
 ### Email Notifications
 
@@ -315,6 +348,10 @@ Full schemas: [`fluentcart/email-notification.md`](./fluentcart/email-notificati
 | POST | `/email-notification/reminders` | POST Save Scheduling Settings |
 | POST | `/email-notification/save-settings` | POST Save Global Email Settings |
 | PUT | `/email-notification/{notification}` | PUT Update Notification |
+| GET | `/email-notification/digest-settings` | GET Get Store Digest Settings |
+| POST | `/email-notification/digest-settings` | POST Save Store Digest Settings |
+| POST | `/email-notification/digest-settings/send-test` | POST Send Test Digest Email |
+| POST | `/email-notification/send-manual-reminder` | POST Send Manual Reminder |
 
 ### Reports
 
@@ -363,7 +400,7 @@ Full schemas: [`fluentcart/reports.md`](./fluentcart/reports.md)
 | GET | `/reports/subscription-chart` | GET Get Subscription Chart |
 | GET | `/reports/subscription-cohorts` | GET Get Subscription Cohorts |
 | GET | `/reports/subscription-retention` | GET Get Subscription Retention |
-| GET | `/reports/top-products-sold` | GET Get Top Products Sold |
+| GET | `/reports/top-products-sold` | GET Get Top Products Sold _(deprecated)_ |
 | GET | `/reports/weeks-between-refund` | GET Get Weeks Between Refund |
 
 ### Integrations
@@ -374,20 +411,15 @@ Full schemas: [`fluentcart/integration.md`](./fluentcart/integration.md)
 |--------|------|---------|
 | POST | `/integration/feed/chained` | POST Chained Data Request |
 | POST | `/integration/global-feeds/change-status/{integration_id}` | POST Change Feed Status |
-| POST | `/products/{product_id}/integrations/feed/change-status` | POST Change Product Feed Status |
 | DELETE | `/integration/global-feeds/{integration_id}` | DELETE Feed |
-| DELETE | `/products/{product_id}/integrations/{integration_id}` | DELETE Product Integration Feed |
 | GET | `/integration/feed/dynamic_options` | GET Dynamic Options |
 | GET | `/integration/feed/lists` | GET Feed Merge Fields (Lists) |
 | GET | `/integration/global-feeds/settings` | GET Feed Settings |
 | GET | `/integration/global-feeds` | GET List Global Integration Feeds |
 | GET | `/integration/global-settings` | GET Global Integration Settings |
-| GET | `/products/{product_id}/integrations/{integration_name}/settings` | GET Product Integration Settings |
 | POST | `/integration/feed/install-plugin` | POST Install and Activate Add-on Plugin |
 | GET | `/integration/addons` | GET List Available Add-ons |
-| GET | `/products/{productId}/integrations` | GET List Product Integration Feeds |
 | POST | `/integration/global-feeds/settings` | POST Save Feed Settings |
-| POST | `/products/{product_id}/integrations` | POST Save Product Integration Feed |
 | POST | `/integration/global-settings` | POST Save Global Integration Settings |
 
 ### Files
@@ -408,9 +440,7 @@ Full schemas: [`fluentcart/labels-attributes.md`](./fluentcart/labels-attributes
 
 | Method | Path | Summary |
 |--------|------|---------|
-| POST | `/options/attr/group/{group_id}/term/{term_id}/serial` | POST Change Term Sort Order |
 | POST | `/options/attr/group` | POST Create Attribute Group |
-| POST | `/options/attr/group/{group_id}/term` | POST Create Attribute Term |
 | POST | `/labels` | POST Create Label |
 | DELETE | `/options/attr/group/{group_id}` | DELETE Delete Attribute Group |
 | DELETE | `/options/attr/group/{group_id}/term/{term_id}` | DELETE Delete Attribute Term |
@@ -421,6 +451,10 @@ Full schemas: [`fluentcart/labels-attributes.md`](./fluentcart/labels-attributes
 | PUT | `/options/attr/group/{group_id}` | PUT Update Attribute Group |
 | POST | `/options/attr/group/{group_id}/term/{term_id}` | POST Update Attribute Term |
 | POST | `/labels/update-label-selections` | POST Update Label Selections |
+| POST | `/options/attr/group/{group_id}/terms` | POST Create Attribute Terms |
+| GET | `/options/attr/groups/library` | GET Get Attribute Groups Library |
+| POST | `/options/attr/groups/reorder` | POST Reorder Attribute Groups |
+| POST | `/options/attr/group/{group_id}/terms/reorder` | POST Reorder Attribute Terms |
 
 ### Dashboard & Utilities
 
@@ -448,6 +482,8 @@ Full schemas: [`fluentcart/dashboard.md`](./fluentcart/dashboard.md)
 | POST | `/onboarding` | POST Save Onboarding Settings |
 | PUT | `/templates/print-templates` | PUT Save Print Templates |
 | POST | `/app/upload-attachments` | POST Upload Attachment |
+| POST | `/data-backfills/run` | POST Run Pending Data Backfills |
+| POST | `/onboarding/save-tax` | POST Save Onboarding Tax Settings |
 
 ### Public Shop
 
@@ -481,11 +517,8 @@ Full schemas: [`fluentcart/customer-profile.md`](./fluentcart/customer-profile.m
 |--------|------|---------|
 | POST | `/customers/add-address` | POST Create Address (Checkout) |
 | POST | `/customer-profile/create-address` | POST Create Profile Address |
-| GET | `/customer-profile/` | GET Dashboard Overview |
-| DELETE | `/customers/{customerId}/address` | DELETE Delete Address (Checkout) |
+| GET | `/customer-profile` | GET Dashboard Overview |
 | POST | `/customer-profile/delete-address` | POST Delete Profile Address |
-| GET | `/customers/{customerId}` | GET Get Customer Details |
-| GET | `/customers/{customerId}/orders` | GET Get Customer Orders |
 | GET | `/customer-profile/orders/{order_uuid}` | GET Get Order Details |
 | GET | `/customer-profile/profile` | GET Get Profile Details |
 | GET | `/customer-profile/orders/{transaction_uuid}/billing-address` | GET Get Transaction Billing Address |
@@ -495,11 +528,11 @@ Full schemas: [`fluentcart/customer-profile.md`](./fluentcart/customer-profile.m
 | POST | `/customer-profile/make-primary-address` | POST Make Profile Address Primary |
 | PUT | `/customer-profile/orders/{transaction_uuid}/billing-address` | PUT Save Transaction Billing Address |
 | GET | `/customers/{customerAddressId}/update-address-select` | GET Select Address for Checkout |
-| POST | `/customers/{customerId}/address/make-primary` | POST Set Address as Primary |
-| PUT | `/customers/{customerId}/address` | PUT Update Address (Checkout) |
-| PUT | `/customers/{customerId}` | PUT Update Customer Details |
 | POST | `/customer-profile/edit-address` | POST Update Profile Address |
 | POST | `/customer-profile/update` | POST Update Profile Details |
+| GET | `/customer-profile/sections` | GET Get Portal Sections |
+| POST | `/customer-profile/subscriptions/{subscription_uuid}/pause` | POST Pause Subscription |
+| POST | `/customer-profile/subscriptions/{subscription_uuid}/resume` | POST Resume Subscription |
 
 ### Licensing (Pro)
 
@@ -517,10 +550,7 @@ Full schemas: [`fluentcart/licensing.md`](./fluentcart/licensing.md)
 | GET | `/customer-profile/licenses/{license_key}` | GET Get Customer License Details |
 | GET | `/licensing/licenses/customer/{id}` | GET Get Customer Licenses (Admin) |
 | GET | `/customer-profile/licenses/{license_key}/activations` | GET Get License Activations |
-| GET | `/reports/license-chart` | GET Get License Line Chart |
 | GET | `/licensing/licenses/{id}` | GET Get License Details |
-| GET | `/reports/license-pie-chart` | GET Get License Pie Chart |
-| GET | `/reports/license-summary` | GET Get License Summary |
 | GET | `/settings/license/` | GET Get Plugin License Status |
 | GET | `/licensing/products/{id}/settings` | GET Get Product License Settings |
 | GET | `/customer-profile/licenses/` | GET List Customer Licenses |
@@ -534,6 +564,8 @@ Full schemas: [`fluentcart/licensing.md`](./fluentcart/licensing.md)
 | POST | `/licensing/products/{id}/settings` | POST Save Product License Settings |
 | POST | `/licensing/licenses/{id}/update_limit` | POST Update License Activation Limit |
 | POST | `/licensing/licenses/{id}/update_status` | POST Update License Status |
+| GET | `/licensing/sites/{id}` | GET Get License Site |
+| GET | `/licensing/sites` | GET List License Sites |
 
 ### Roles & Permissions (Pro)
 
@@ -543,11 +575,9 @@ Full schemas: [`fluentcart/roles-permissions.md`](./fluentcart/roles-permissions
 |--------|------|---------|
 | POST | `/roles` | POST Assign Role |
 | DELETE | `/roles/{key}` | DELETE Delete Role Assignment |
-| GET | `/settings/permissions` | GET Get Permissions |
 | GET | `/roles/{key}` | GET Get Role |
 | GET | `/roles/managers` | GET List Managers |
 | GET | `/roles` | GET List Roles |
-| POST | `/settings/permissions` | POST Save Permissions |
 | GET | `/roles/user-list` | GET Search Users |
 | POST | `/roles/{key}` | POST Update Role |
 
@@ -562,5 +592,62 @@ Full schemas: [`fluentcart/order-bumps.md`](./fluentcart/order-bumps.md)
 | GET | `/order_bump/{id}` | GET Get Order Bump |
 | GET | `/order_bump` | GET List Order Bumps |
 | PUT | `/order_bump/{id}` | PUT Update Order Bump |
+
+### data-export
+
+Full schemas: [`fluentcart/data-export.md`](./fluentcart/data-export.md)
+
+| Method | Path | Summary |
+|--------|------|---------|
+| POST | `/data-export/customers/batch` | POST Export Customers Batch |
+| POST | `/data-export/licenses/batch` | POST Export Licenses Batch |
+| POST | `/data-export/orders/batch` | POST Export Orders Batch |
+| POST | `/data-export/subscriptions/batch` | POST Export Subscriptions Batch |
+| GET | `/data-export/customers/schema` | GET Get Customers Export Schema |
+| GET | `/data-export/licenses/schema` | GET Get Licenses Export Schema |
+| GET | `/data-export/orders/schema` | GET Get Orders Export Schema |
+| GET | `/data-export/subscriptions/schema` | GET Get Subscriptions Export Schema |
+
+### inventory
+
+Full schemas: [`fluentcart/inventory.md`](./fluentcart/inventory.md)
+
+| Method | Path | Summary |
+|--------|------|---------|
+| POST | `/inventory/bulk-update` | POST Bulk Update Stock |
+| POST | `/inventory/export` | POST Export Inventory |
+| GET | `/inventory/adjustment-history` | GET Get Adjustment History |
+| GET | `/inventory/stats` | GET Get Inventory Stats |
+| GET | `/inventory` | GET List Inventory |
+| POST | `/inventory/update-stock` | POST Update Stock |
+
+### pdf-templates
+
+Full schemas: [`fluentcart/pdf-templates.md`](./fluentcart/pdf-templates.md)
+
+| Method | Path | Summary |
+|--------|------|---------|
+| POST | `/settings/pdf-templates/create` | POST Create PDF Template |
+| DELETE | `/settings/pdf-templates/delete/{template_id}` | DELETE Delete PDF Template |
+| POST | `/settings/pdf-templates/download` | POST Download PDF Preview |
+| GET | `/settings/pdf-templates/factory-default` | GET Get Factory Default Templates |
+| GET | `/settings/pdf-templates/status` | GET Get PDF Status |
+| GET | `/settings/pdf-templates/receipt/{template_id}` | GET Get PDF Template |
+| GET | `/settings/pdf-templates/saved` | GET Get Saved Templates |
+| GET | `/settings/pdf-templates/seller-details` | GET Get Seller Details |
+| GET | `/settings/pdf-templates/receipt` | GET List PDF Templates |
+| POST | `/settings/pdf-templates/receipt/{template_id}` | POST Save PDF Template |
+| POST | `/settings/pdf-templates/seller-details` | POST Save Seller Details |
+
+### saved-views
+
+Full schemas: [`fluentcart/saved-views.md`](./fluentcart/saved-views.md)
+
+| Method | Path | Summary |
+|--------|------|---------|
+| POST | `/saved-views` | POST Create Saved View |
+| DELETE | `/saved-views/{id}` | DELETE Delete Saved View |
+| GET | `/saved-views` | GET List Saved Views |
+| PUT | `/saved-views/{id}` | PUT Update Saved View |
 
 _Generated by `scripts/gen-api-docs.mjs` from the per-operation OpenAPI specs; endpoints marked (Pro) require the product's Pro version._

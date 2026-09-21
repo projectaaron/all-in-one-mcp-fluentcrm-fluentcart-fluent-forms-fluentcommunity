@@ -12,6 +12,16 @@ _Generated from the FluentCRM OpenAPI specs (developers.fluentcrm.com)._
 
 Perform a bulk action on multiple recurring campaigns. Supported actions are `apply_labels` (attach labels to campaigns) and `delete_campaigns` (delete campaigns and their child emails). When `select_all` is `true`, the action is applied to all recurring campaigns regardless of the `campaign_ids` provided. Requires FluentCampaign Pro.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `SequencePolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`, required)
@@ -78,6 +88,16 @@ Example:
 **POST Change Recurring Campaign Status**
 
 Change the status of a recurring campaign between `active` and `draft`. When activating a campaign, the email subject and body must already be set. The next scheduled send time is recalculated upon status change. Requires FluentCampaign Pro.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `SequencePolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -151,6 +171,16 @@ Example:
 **POST Create Recurring Campaign**
 
 Create a new recurring email campaign. The campaign object must include a title, scheduling settings (type and time), and optionally sending conditions and subscriber settings. The title must be unique. The campaign is created in draft status. Requires FluentCampaign Pro.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `SequencePolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -247,6 +277,16 @@ Example:
 
 Delete multiple recurring campaigns by their IDs. Also deletes all child email campaigns (recurring mails) and their associated campaign emails. Fires the `fluent_crm/campaign_deleted` action for each deleted campaign and child. Requires FluentCampaign Pro.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `SequencePolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`, required)
@@ -306,6 +346,16 @@ Example:
 **POST Duplicate Recurring Campaign**
 
 Create a duplicate of an existing recurring campaign. The new campaign is created in draft status with a title prefixed by `[Duplicate]` and suffixed with the current date. All email content, UTM settings, design template, and labels are copied to the new campaign. Requires FluentCampaign Pro.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `SequencePolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -368,6 +418,16 @@ Create a duplicate of an existing recurring campaign. The new campaign is create
 **GET Get Recurring Campaign**
 
 Retrieve a single recurring campaign by ID. Returns the full campaign object including settings, email content, and all metadata. Requires FluentCampaign Pro.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+_Enforced by `SequencePolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -462,6 +522,16 @@ Retrieve a single recurring campaign by ID. Returns the full campaign object inc
 
 Retrieve a single child email from a recurring campaign. Returns both the parent recurring campaign and the specific email. If the email has a `scheduled` status and its scheduled time has passed, its status is automatically updated to `working`. Requires FluentCampaign Pro.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+_Enforced by `SequencePolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -536,6 +606,16 @@ Retrieve a single child email from a recurring campaign. Returns both the parent
 
 Retrieve a paginated list of child email campaigns (recurring mails) for a recurring campaign. Non-draft emails are returned paginated. On the first page, draft emails are also included separately. Requires FluentCampaign Pro.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+_Enforced by `SequencePolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -569,7 +649,7 @@ Retrieve a paginated list of child email campaigns (recurring mails) for a recur
     - `from` (integer,null)
     - `to` (integer,null)
     - `data` (array<RecurringMail>)
-  - `drafts` (array<RecurringMail>) — Draft emails for this recurring campaign. Only included when `page` is 1.
+  - `drafts` (array<RecurringMail>) — Draft emails for this recurring campaign. Only included when `page` is 1. Returned **only** when draft emails are requested; contains the campaign's unsent draft emails.
 
   Example:
 
@@ -637,6 +717,16 @@ Retrieve a paginated list of child email campaigns (recurring mails) for a recur
 
 Retrieve a paginated list of recurring email campaigns. Supports filtering by search term and labels, and sorting by column and direction. Each campaign includes an `emails_count` of child mail campaigns and formatted labels. If the campaign is active with manual sending, a `has_draft` flag indicates whether a draft email exists. Requires FluentCampaign Pro.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+_Enforced by `SequencePolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Query parameters**
@@ -649,6 +739,7 @@ Retrieve a paginated list of recurring email campaigns. Supports filtering by se
 | `labels[]` | array<integer> | no | Filter by label IDs. |
 | `per_page` | integer | no | Number of results per page. |
 | `page` | integer | no | Page number for pagination. |
+| `statuses[]` | array<string> | no | Filter recurring campaigns by status. |
 
 
 **Responses**
@@ -724,6 +815,16 @@ Retrieve a paginated list of recurring email campaigns. Supports filtering by se
 
 Update the status of a specific child email in a recurring campaign. Only allows status transitions between `draft` and `cancelled`. The email's current status must be either `draft` or `cancelled`, and the target status must also be one of those two values. Requires FluentCampaign Pro.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `SequencePolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -777,6 +878,16 @@ Example:
 **POST Update Recurring Campaign Email Data**
 
 Update the email content and settings for an existing recurring campaign. Includes email body, subject, pre-header, UTM parameters, template, footer settings, and design template. The campaign's next scheduled send time is recalculated based on the scheduling settings. Footer content must include an unsubscribe or manage subscription URL if a custom footer is enabled. Requires FluentCampaign Pro.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `SequencePolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -880,6 +991,16 @@ Example:
 
 Update a child email within a recurring campaign. Supports two steps: `edit` for updating the email body, design template, and settings; and `review` for updating the email subject, scheduled time, status, and settings. When using the `review` step with `pending-scheduled` status, the parent recurring campaign must be active. Requires FluentCampaign Pro.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `SequencePolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -973,6 +1094,16 @@ Example:
 
 Attach or detach labels from a recurring campaign. Use the `action` parameter to specify whether to attach or detach the provided label IDs. Requires FluentCampaign Pro.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `SequencePolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -1030,6 +1161,16 @@ Example:
 **POST Update Recurring Campaign Settings**
 
 Update the title and settings (scheduling, sending conditions, subscriber targeting) for a recurring campaign. The title must be unique across all recurring campaigns. The next scheduled send time is recalculated based on the new scheduling settings. Requires FluentCampaign Pro.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `SequencePolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 

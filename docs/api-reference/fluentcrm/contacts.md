@@ -1,6 +1,6 @@
 # FluentCRM API — Contacts (Subscribers)
 
-31 endpoints. Base URL: `https://{website}/wp-json/fluent-crm/v2`. See the [FluentCRM overview](../fluentcrm.md) for auth and the full group list.
+32 endpoints. Base URL: `https://{website}/wp-json/fluent-crm/v2`. See the [FluentCRM overview](../fluentcrm.md) for auth and the full group list.
 
 _Generated from the FluentCRM OpenAPI specs (developers.fluentcrm.com)._
 
@@ -11,6 +11,14 @@ _Generated from the FluentCRM OpenAPI specs (developers.fluentcrm.com)._
 **POST Bulk Action Contacts**
 
 Perform a bulk action on multiple contacts. Supports adding/removing tags and lists, changing status/type, deleting contacts, sending double opt-in, adding to email sequences/automation funnels/companies, removing from companies, and updating custom fields. When `is_all` is `yes`, processes contacts matching the filter query in chunks.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contacts`
+
+_Enforced by `SubscriberPolicy::handleBulkActions()`._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -97,6 +105,14 @@ Example:
 **POST Bulk Add/Update Contacts**
 
 Add or update multiple contacts in a single request. Each contact in the array is processed individually. Invalid contacts (missing or invalid email) are collected and returned separately. Optionally sends double opt-in emails and forces updates on existing contacts.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contacts`
+
+_Enforced by `SubscriberPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -206,6 +222,14 @@ Example:
 
 Create a new contact. If `__force_update` is set to `yes`, it will update an existing contact with the same email instead of returning an error. Optionally sends a double opt-in email.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contacts`
+
+_Enforced by `SubscriberPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`, required)
@@ -312,6 +336,14 @@ Example:
 
 Add a new note to a contact. The note description supports SmartCode/merge tags which are parsed before saving. If `created_at` is not provided, it defaults to the current WordPress time.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contacts`
+
+_Enforced by `SubscriberPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -385,6 +417,14 @@ Example:
 
 Permanently delete a single contact by ID. This removes the contact and all associated data.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contacts_delete`
+
+_Enforced by `SubscriberPolicy::deleteSubscriber()`._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -424,6 +464,14 @@ Permanently delete a single contact by ID. This removes the contact and all asso
 **DELETE Delete Contact Emails**
 
 Delete specific email records for a contact by their email IDs. Only deletes campaign emails belonging to the specified contact.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_email_delete`
+
+_Enforced by `SubscriberPolicy::deleteEmails()`._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -477,6 +525,14 @@ Example:
 
 Delete a specific note from a contact.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contacts_delete`
+
+_Enforced by `SubscriberPolicy::deleteNote()`._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -517,6 +573,14 @@ Delete a specific note from a contact.
 **DELETE Delete Contacts**
 
 Permanently delete multiple contacts by their IDs. This removes the contacts and all associated data.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contacts_delete`
+
+_Enforced by `SubscriberPolicy::deleteSubscribers()`._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -568,6 +632,14 @@ Example:
 
 Retrieve a single contact by ID or email. Supports eager-loading related data like stats, custom values, custom field definitions, and commerce stats via the `with[]` parameter.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_contacts`
+
+_Enforced by `SubscriberPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -592,7 +664,7 @@ Retrieve a single contact by ID or email. Supports eager-loading related data li
   Schema (`application/json`):
 
   - `subscriber` (any)
-  - `custom_fields` (array<object>) — Custom field definitions (only when `with[]` includes `custom_fields`).
+  - `custom_fields` (array<object>) — Custom field definitions (only when `with[]` includes `custom_fields`). Returned **only** when the request asks for custom fields.
     - `label` (string)
     - `slug` (string)
     - `type` (string)
@@ -703,6 +775,14 @@ Retrieve a single contact by ID or email. Supports eager-loading related data li
 
 Retrieve a dynamic item view for a contact from a specific provider. The content is generated by the `fluent_crm/dynamic_contact_item_view_{provider}` filter hook and typically returns rendered HTML content.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_contacts`
+
+_Enforced by `SubscriberPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -759,6 +839,14 @@ Retrieve a dynamic item view for a contact from a specific provider. The content
 **GET Get Contact Emails**
 
 Retrieve a paginated list of emails sent to a contact. Supports filtering by open/click status. Can also show FluentSMTP logs when the `tab` parameter is set to `fluentsmtp`.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_contacts`
+
+_Enforced by `SubscriberPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -853,6 +941,14 @@ Retrieve a paginated list of emails sent to a contact. Supports filtering by ope
 
 Retrieve external profile section content for a contact. The content is provided by registered section providers via the `fluencrm_profile_section_{section_provider}` filter hook.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_contacts`
+
+_Enforced by `SubscriberPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -901,6 +997,14 @@ Retrieve external profile section content for a contact. The content is provided
 **GET Get Contact Form Submissions**
 
 Retrieve form submissions for a contact from a specific form provider. The data is fetched via the `fluentcrm_get_form_submissions_{provider}` filter hook, so the response structure depends on the active form integration (e.g., Fluent Forms).
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_contacts`
+
+_Enforced by `SubscriberPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -963,6 +1067,14 @@ Retrieve form submissions for a contact from a specific form provider. The data 
 
 Retrieve info widgets for a contact's profile page. Returns top widgets (like commerce stats) and other widgets registered by plugins. Optionally fetches a single specific widget when `by_widget` is provided.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_contacts`
+
+_Enforced by `SubscriberPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -1010,6 +1122,14 @@ Retrieve info widgets for a contact's profile page. Returns top widgets (like co
 
 Retrieve a paginated list of notes for a contact. Supports searching notes by title. Each note includes the user who created it.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_contacts`
+
+_Enforced by `SubscriberPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -1026,6 +1146,7 @@ Retrieve a paginated list of notes for a contact. Supports searching notes by ti
 | `search` | string | no | Search notes by title. |
 | `per_page` | integer | no | Number of notes per page. |
 | `page` | integer | no | Page number. |
+| `include_id` | integer | no | Id of a note that must appear in the response even when it falls outside the current page. When it is not already on the page it is returned separately as `included_note`, scoped to this contact. |
 
 
 **Responses**
@@ -1089,6 +1210,14 @@ Retrieve a paginated list of notes for a contact. Supports searching notes by ti
 **GET Get Contact Prev/Next IDs**
 
 Get the previous and next contact IDs relative to a given contact ID within the current filter context. Returns up to 10 IDs in each direction. Useful for implementing prev/next navigation on a contact profile page.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_contacts`
+
+_Enforced by `SubscriberPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -1177,6 +1306,14 @@ Get the previous and next contact IDs relative to a given contact ID within the 
 
 Retrieve purchase/order history for a contact from a specific commerce provider. The data is fetched via the `fluent_crm/purchase_history_{provider}` filter hook, so the response structure depends on the active commerce integration (e.g., WooCommerce, EDD).
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_contacts`
+
+_Enforced by `SubscriberPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -1243,6 +1380,14 @@ Retrieve purchase/order history for a contact from a specific commerce provider.
 **GET Get Contact Support Tickets**
 
 Retrieve support tickets for a contact from a specific support ticket provider. The data is fetched via the `fluentcrm-get_support_tickets_{provider}` filter hook. Also returns column configuration for rendering the ticket table.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_contacts`
+
+_Enforced by `SubscriberPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -1330,6 +1475,14 @@ Retrieve support tickets for a contact from a specific support ticket provider. 
 
 Get a template mock/scaffold for composing a custom email to a contact. Returns default email campaign structure with empty fields ready to be filled.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_contacts`
+
+_Enforced by `SubscriberPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -1384,6 +1537,14 @@ Get a template mock/scaffold for composing a custom email to a contact. Returns 
 **GET Get Contact Tracking Events**
 
 Retrieve a paginated list of tracking events for a contact. Requires the `event_tracking` experimental feature to be enabled.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_contacts`
+
+_Enforced by `SubscriberPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -1485,6 +1646,14 @@ Retrieve a paginated list of tracking events for a contact. Requires the `event_
 
 Retrieve a paginated list of URL click metrics for a contact. Shows which URLs the contact clicked in campaign emails along with click counts.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_contacts`
+
+_Enforced by `SubscriberPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -1568,6 +1737,14 @@ Retrieve a paginated list of URL click metrics for a contact. Shows which URLs t
 **GET List Contacts**
 
 Retrieve a paginated list of contacts. Supports both simple filtering (by tags, lists, statuses) and advanced filtering with complex filter groups. Optionally includes custom field values.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_contacts`
+
+_Enforced by `SubscriberPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -1686,6 +1863,14 @@ Retrieve a paginated list of contacts. Supports both simple filtering (by tags, 
 
 Save data for an external profile section of a contact. The data handling is delegated to the registered section provider via the `fluencrm_profile_section_save_{section_provider}` filter hook.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contacts`
+
+_Enforced by `SubscriberPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -1754,6 +1939,14 @@ Example:
 
 Search contacts by name or email. Returns a lightweight object of contacts keyed by ID, suitable for dropdowns and autocomplete widgets. Optionally loads default contacts when no search term is provided.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_contacts`
+
+_Enforced by `SubscriberPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Query parameters**
@@ -1764,6 +1957,7 @@ Search contacts by name or email. Returns a lightweight object of contacts keyed
 | `limit` | integer | no | Maximum number of results to return. |
 | `load_default` | string | no | If truthy and no search term is provided, returns the most recent contacts. |
 | `values[]` | array<integer> | no | Array of contact IDs to always include in results (useful for pre-selected values). |
+| `offset` | integer | no | Rows to skip before the first result. Combine with `limit` to page through matches. |
 
 
 **Responses**
@@ -1807,6 +2001,14 @@ Search contacts by name or email. Returns a lightweight object of contacts keyed
 **POST Send Contact Custom Email**
 
 Send a custom one-off email to a specific contact. The contact must have a status of `subscribed` or `transactional`. Creates a custom email campaign record and immediately queues it for sending.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contacts`
+
+_Enforced by `SubscriberPolicy::sendCustomEmail()`._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -1885,6 +2087,14 @@ Example:
 
 Send a double opt-in confirmation email to a contact. The contact should not already be in `subscribed` status.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contacts`
+
+_Enforced by `SubscriberPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -1934,6 +2144,14 @@ Send a double opt-in confirmation email to a contact. The contact should not alr
 **POST Sync Contact Segments**
 
 Attach and/or detach tags or lists for one or more contacts in a single request. The `type` parameter controls whether tags or lists are being synced.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contacts`
+
+_Enforced by `SubscriberPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -2021,6 +2239,14 @@ Example:
 
 Track a custom event for a contact. Requires the `event_tracking` experimental feature to be enabled. Events can be marked as repeatable or unique.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contacts`
+
+_Enforced by `SubscriberPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`, required)
@@ -2079,6 +2305,14 @@ Example:
 **PUT Update Contact**
 
 Update an existing contact's fields, custom values, tags, and lists. Supports attaching and detaching tags/lists in a single request. The `subscriber` object or individual fields can be passed in the request body.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contacts`
+
+_Enforced by `SubscriberPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -2186,6 +2420,14 @@ Example:
 
 Update an existing note for a contact. The note description supports SmartCode/merge tags which are parsed before saving.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contacts`
+
+_Enforced by `SubscriberPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -2260,6 +2502,14 @@ Example:
 
 Update a single property for one or more contacts. Supported properties are `status`, `contact_type`, `avatar`, `company_id`, and `sms_status`. Validates the value against allowed options for each property type.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contacts`
+
+_Enforced by `SubscriberPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`, required)
@@ -2315,5 +2565,91 @@ Example:
 ```
 
 
+
+---
+
+## POST `/subscribers/{id}/notes/bulk-delete`
+
+**POST Bulk Delete Contact Notes**
+
+Delete several notes from one contact in a single request.
+
+Deletion is **scoped to the contact in the path**: ids that belong to a different contact are filtered out before anything is removed, so this cannot be used to reach another contact's notes. Because those ids are dropped rather than rejected, the reported count can be lower than the number of ids you sent — check `message` to see how many rows were actually removed.
+
+At most **200** ids per request; more returns a 422.
+
+Each deletion fires `fluent_crm/note_delete`.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contacts_delete`
+
+_Enforced by `SubscriberPolicy::bulkDeleteNotes()`._
+
+<!-- /fc:access -->
+
+**Auth:** ApplicationPasswords
+
+**Path parameters**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `id` | integer | yes | Contact (subscriber) id. |
+
+
+**Request body** (`application/json`, required)
+
+- `note_ids` (array<integer>) **required** — Note ids to delete. Required, and capped at 200 per request. Ids belonging to a different contact are silently skipped.
+
+Example:
+
+```json
+{
+  "note_ids": [
+    1201,
+    1202,
+    1203
+  ]
+}
+```
+
+
+**Responses**
+
+- **200** — Notes deleted.
+
+  Schema (`application/json`):
+
+  - `message` (string) — Confirmation message stating how many notes were removed.
+
+  Example:
+
+```json
+{
+  "message": "3 notes deleted"
+}
+```
+
+
+- **401** — Not authenticated — missing or invalid credentials.
+
+  Schema (`application/json`):
+
+  - _$ref: Error_
+- **403** — Authenticated but the user lacks the capability this route requires.
+
+  Schema (`application/json`):
+
+  - _$ref: Error_
+- **404** — The requested resource does not exist.
+
+  Schema (`application/json`):
+
+  - _$ref: Error_
+- **422** — `note_ids` was empty, or more than 200 ids were supplied.
+
+  Schema (`application/json`):
+
+  - _$ref: Error_
 
 ---

@@ -1,6 +1,6 @@
 # FluentCart API — Customer Profile
 
-21 endpoints. Base URL: `https://{website}/wp-json/fluent-cart/v2`. See the [FluentCart overview](../fluentcart.md) for auth and the full group list.
+18 endpoints. Base URL: `https://{website}/wp-json/fluent-cart/v2`. See the [FluentCart overview](../fluentcart.md) for auth and the full group list.
 
 _Generated from the FluentCart OpenAPI specs (dev.fluentcart.com)._
 
@@ -11,6 +11,10 @@ _Generated from the FluentCart OpenAPI specs (dev.fluentcart.com)._
 **POST Create Address (Checkout)**
 
 Create a new address for the currently authenticated customer. Used during checkout to add a new billing or shipping address. After creation, returns updated address selector HTML for the checkout form.
+
+**Access policy:** `PublicPolicy`
+
+**Access policy:** `PublicPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -83,6 +87,36 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 - **422** — Validation error.
 
   Example:
@@ -107,6 +141,10 @@ Example:
 **POST Create Profile Address**
 
 Create a new address for the authenticated customer from the profile management page.
+
+**Access policy:** `CustomerFrontendPolicy`
+
+**Access policy:** `CustomerFrontendPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -181,6 +219,36 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 - **422** — Validation error.
 
   Example:
@@ -195,11 +263,15 @@ Example:
 
 ---
 
-## GET `/customer-profile/`
+## GET `/customer-profile`
 
 **GET Dashboard Overview**
 
 Retrieve the customer's dashboard overview including the 5 most recent orders. This is the landing page data for the customer portal.
+
+**Access policy:** `CustomerFrontendPolicy`
+
+**Access policy:** `CustomerFrontendPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -255,64 +327,32 @@ Retrieve the customer's dashboard overview including the 5 most recent orders. T
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
 
----
-
-## DELETE `/customers/{customerId}/address`
-
-**DELETE Delete Address (Checkout)**
-
-Delete an existing address for the authenticated customer. The address ID is passed in the request body.
-
-**Auth:** ApplicationPasswords
-
-**Path parameters**
-
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `customerId` | integer | yes | The customer ID. Must belong to the authenticated user. |
-
-
-**Request body** (`application/json`, required)
-
-- `address` (object) **required**
-  - `id` (integer) **required** — The address record ID to delete
-
-Example:
+  Example:
 
 ```json
 {
-  "address": {
-    "id": 5
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
   }
 }
 ```
 
 
-**Responses**
-
-- **200** — Successful response. Address deleted.
-
-  Schema (`application/json`):
-
-  - `message` (string)
+- **403** — Authenticated, but the user lacks the required capability.
 
   Example:
 
 ```json
 {
-  "message": "Address deleted successfully"
-}
-```
-
-
-- **403** — Forbidden. The authenticated user does not own this address.
-
-  Example:
-
-```json
-{
-  "message": "You are not authorized to delete this address"
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
 }
 ```
 
@@ -325,6 +365,10 @@ Example:
 **POST Delete Profile Address**
 
 Delete an address from the customer's profile. The address must belong to the authenticated customer. Primary addresses and the last remaining address cannot be deleted.
+
+**Access policy:** `CustomerFrontendPolicy`
+
+**Access policy:** `CustomerFrontendPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -369,6 +413,21 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
 - **403** — Forbidden. The authenticated user does not own this address.
 
   Example:
@@ -380,138 +439,16 @@ Example:
 ```
 
 
-
----
-
-## GET `/customers/{customerId}`
-
-**GET Get Customer Details**
-
-Retrieve the details of the currently authenticated customer. The customerId must match the logged-in customer's record.
-
-**Auth:** ApplicationPasswords
-
-**Path parameters**
-
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `customerId` | integer | yes | The customer ID. Must belong to the authenticated user. |
-
-
-**Query parameters**
-
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `with` | array<string> | no | Relationships to eager-load (e.g., `billing_address`, `shipping_address`, `orders`) |
-
-
-**Responses**
-
-- **200** — Successful response. Returns the customer details.
-
-  Schema (`application/json`):
-
-  - `customer` (object)
-    - _(object)_
+- **422** — Validation failed, or the referenced record does not exist.
 
   Example:
 
 ```json
 {
-  "customer": {
-    "id": 1,
-    "user_id": 5,
-    "email": "john@example.com",
-    "first_name": "John",
-    "last_name": "Doe",
-    "status": "active",
-    "purchase_value": {
-      "total": 15000,
-      "currency": "USD",
-      "formatted": "$150.00"
-    },
-    "purchase_count": 3,
-    "ltv": 15000,
-    "country": "US",
-    "city": "New York",
-    "state": "NY",
-    "postcode": "10001",
-    "created_at": "2025-01-10 08:00:00",
-    "updated_at": "2025-06-20 14:00:00"
-  }
-}
-```
-
-
-- **403** — Forbidden. The authenticated user does not own this customer record.
-
-  Example:
-
-```json
-{
-  "message": "You are not authorized to view this customer"
-}
-```
-
-
-
----
-
-## GET `/customers/{customerId}/orders`
-
-**GET Get Customer Orders**
-
-Retrieve a paginated list of orders for the specified customer. The customerId must match the logged-in user.
-
-**Auth:** ApplicationPasswords
-
-**Path parameters**
-
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `customerId` | integer | yes | The customer ID. Must belong to the authenticated user. |
-
-
-**Query parameters**
-
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `per_page` | integer | no | Number of items per page (default: 15) |
-
-
-**Responses**
-
-- **200** — Successful response. Returns a paginated list of customer orders.
-
-  Schema (`application/json`):
-
-  - `orders` (object)
-    - `total` (integer)
-    - `per_page` (integer)
-    - `current_page` (integer)
-    - `last_page` (integer)
-    - `data` (array<object>)
-      - _(object)_
-
-  Example:
-
-```json
-{
-  "orders": {
-    "total": 25,
-    "per_page": 15,
-    "current_page": 1,
-    "last_page": 2,
-    "data": [
-      {
-        "id": 101,
-        "invoice_no": "INV-000101",
-        "total_amount": 4999,
-        "uuid": "abc-123-def",
-        "type": "one-time",
-        "status": "completed",
-        "created_at": "2025-06-15 10:30:00"
-      }
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
     ]
   }
 }
@@ -526,6 +463,10 @@ Retrieve a paginated list of orders for the specified customer. The customerId m
 **GET Get Order Details**
 
 Retrieve full details for a specific order including line items, transactions, subscriptions, downloads, and addresses. The order must belong to the authenticated customer.
+
+**Access policy:** `CustomerFrontendPolicy`
+
+**Access policy:** `CustomerFrontendPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -649,6 +590,21 @@ Retrieve full details for a specific order including line items, transactions, s
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
 - **403** — Not logged in.
 
   Example:
@@ -671,6 +627,22 @@ Retrieve full details for a specific order including line items, transactions, s
 ```
 
 
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -679,6 +651,10 @@ Retrieve full details for a specific order including line items, transactions, s
 **GET Get Profile Details**
 
 Retrieve the authenticated customer's profile details including name, email, and associated addresses. If the logged-in user does not yet have a customer record, basic WordPress user data is returned instead.
+
+**Access policy:** `CustomerFrontendPolicy`
+
+**Access policy:** `CustomerFrontendPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -745,6 +721,36 @@ Retrieve the authenticated customer's profile details including name, email, and
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -753,6 +759,10 @@ Retrieve the authenticated customer's profile details including name, email, and
 **GET Get Transaction Billing Address**
 
 Retrieve the billing address associated with a specific transaction. Used for invoice/receipt editing in the customer portal.
+
+**Access policy:** `CustomerFrontendPolicy`
+
+**Access policy:** `CustomerFrontendPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -801,6 +811,36 @@ Retrieve the billing address associated with a specific transaction. Used for in
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 - **404** — Customer, transaction, or order not found.
 
   Example:
@@ -808,6 +848,22 @@ Retrieve the billing address associated with a specific transaction. Used for in
 ```json
 {
   "message": "Transaction not found"
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
 }
 ```
 
@@ -820,6 +876,10 @@ Retrieve the billing address associated with a specific transaction. Used for in
 **GET Get Upgrade Paths**
 
 Retrieve available upgrade/downgrade paths for a specific product variation within an order. Used to show plan switching options in the customer portal.
+
+**Access policy:** `CustomerFrontendPolicy`
+
+**Access policy:** `CustomerFrontendPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -877,6 +937,21 @@ Retrieve available upgrade/downgrade paths for a specific product variation with
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
 - **403** — Not logged in.
 
   Example:
@@ -899,6 +974,22 @@ Retrieve available upgrade/downgrade paths for a specific product variation with
 ```
 
 
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -907,6 +998,10 @@ Retrieve available upgrade/downgrade paths for a specific product variation with
 **GET List Downloads**
 
 Retrieve a paginated list of downloadable files available to the authenticated customer. Only includes downloads from orders with a successful payment status. Filters downloads based on purchased product variations.
+
+**Access policy:** `CustomerFrontendPolicy`
+
+**Access policy:** `CustomerFrontendPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -962,6 +1057,36 @@ Retrieve a paginated list of downloadable files available to the authenticated c
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -970,6 +1095,8 @@ Retrieve a paginated list of downloadable files available to the authenticated c
 **GET List Orders**
 
 Retrieve a paginated list of the authenticated customer's orders. Excludes renewal orders that have a parent subscription order. Supports text search across order fields.
+
+**Access policy:** `CustomerFrontendPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -993,6 +1120,17 @@ Retrieve a paginated list of the authenticated customer's orders. Excludes renew
     - `per_page` (integer)
     - `current_page` (integer)
     - `last_page` (integer)
+    - `first_page_url` (string)
+    - `from` (integer)
+    - `last_page_url` (string)
+    - `links` (array<object>)
+      - `url` (string)
+      - `label` (string)
+      - `active` (boolean)
+    - `next_page_url` (string)
+    - `path` (string)
+    - `prev_page_url` (string)
+    - `to` (integer)
     - `data` (array<object>)
       - _(object)_
 
@@ -1005,6 +1143,35 @@ Retrieve a paginated list of the authenticated customer's orders. Excludes renew
     "per_page": 10,
     "current_page": 1,
     "last_page": 3,
+    "first_page_url": "https://yoursite.com/wp-json/fluent-cart/v2/customer-profile/orders/?page=1",
+    "from": 1,
+    "last_page_url": "https://yoursite.com/wp-json/fluent-cart/v2/customer-profile/orders/?page=3",
+    "links": [
+      {
+        "url": null,
+        "label": "pagination.previous",
+        "active": false
+      },
+      {
+        "url": "https://yoursite.com/wp-json/fluent-cart/v2/customer-profile/orders/?page=1",
+        "label": "1",
+        "active": true
+      },
+      {
+        "url": "https://yoursite.com/wp-json/fluent-cart/v2/customer-profile/orders/?page=2",
+        "label": "2",
+        "active": false
+      },
+      {
+        "url": "https://yoursite.com/wp-json/fluent-cart/v2/customer-profile/orders/?page=2",
+        "label": "pagination.next",
+        "active": false
+      }
+    ],
+    "next_page_url": "https://yoursite.com/wp-json/fluent-cart/v2/customer-profile/orders/?page=2",
+    "path": "https://yoursite.com/wp-json/fluent-cart/v2/customer-profile/orders",
+    "prev_page_url": null,
+    "to": 10,
     "data": [
       {
         "created_at": "2025-06-15 10:30:00",
@@ -1033,6 +1200,36 @@ Retrieve a paginated list of the authenticated customer's orders. Excludes renew
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -1041,6 +1238,10 @@ Retrieve a paginated list of the authenticated customer's orders. Excludes renew
 **POST Make Profile Address Primary**
 
 Set a specific address as the primary address for its type. All other addresses of the same type for the customer are demoted.
+
+**Access policy:** `CustomerFrontendPolicy`
+
+**Access policy:** `CustomerFrontendPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -1076,6 +1277,21 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
 - **403** — Forbidden. The authenticated user does not own this address.
 
   Example:
@@ -1083,6 +1299,22 @@ Example:
 ```json
 {
   "message": "You are not authorized to update this address"
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
 }
 ```
 
@@ -1095,6 +1327,10 @@ Example:
 **PUT Save Transaction Billing Address**
 
 Create or update the billing address for a specific transaction's order. Also stores the VAT/Tax ID as order metadata. Validates address fields against country-specific rules.
+
+**Access policy:** `CustomerFrontendPolicy`
+
+**Access policy:** `CustomerFrontendPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -1153,6 +1389,36 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 - **404** — Order not found.
 
   Example:
@@ -1187,6 +1453,10 @@ Example:
 **GET Select Address for Checkout**
 
 Select an existing address and apply it to the current cart/checkout session. Updates the cart's checkout data with the selected address and returns the rendered address HTML along with updated checkout fragments.
+
+**Access policy:** `PublicPolicy`
+
+**Access policy:** `PublicPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -1229,6 +1499,21 @@ Select an existing address and apply it to the current cart/checkout session. Up
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
 - **403** — Forbidden. The authenticated user does not own this address.
 
   Example:
@@ -1251,231 +1536,18 @@ Select an existing address and apply it to the current cart/checkout session. Up
 ```
 
 
+- **422** — Validation failed, or the referenced record does not exist.
 
----
-
-## POST `/customers/{customerId}/address/make-primary`
-
-**POST Set Address as Primary**
-
-Mark a specific address as the primary address for its type (billing or shipping). All other addresses of the same type are demoted.
-
-**Auth:** ApplicationPasswords
-
-**Path parameters**
-
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `customerId` | integer | yes | The customer ID. Must belong to the authenticated user. |
-
-
-**Request body** (`application/json`, required)
-
-- `address` (object) **required**
-  - `id` (integer) **required** — The address record ID to set as primary
-  - `type` (string) **required** _(enum: `billing`, `shipping`)_ — Address type: `billing` or `shipping`
-
-Example:
+  Example:
 
 ```json
 {
-  "address": {
-    "id": 5,
-    "type": "billing"
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
   }
-}
-```
-
-
-**Responses**
-
-- **200** — Successful response. Address set as primary.
-
-  Schema (`application/json`):
-
-  - `message` (string)
-
-  Example:
-
-```json
-{
-  "message": "Address successfully set as the primary"
-}
-```
-
-
-- **403** — Forbidden. The authenticated user does not own this address.
-
-  Example:
-
-```json
-{
-  "message": "You are not authorized to update this address"
-}
-```
-
-
-
----
-
-## PUT `/customers/{customerId}/address`
-
-**PUT Update Address (Checkout)**
-
-Update an existing address for the authenticated customer. The address ID is passed in the request body.
-
-**Auth:** ApplicationPasswords
-
-**Path parameters**
-
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `customerId` | integer | yes | The customer ID. Must belong to the authenticated user. |
-
-
-**Request body** (`application/json`, required)
-
-- `address` (object)
-  - `id` (integer) **required** — The address record ID to update
-- `type` (string) **required** _(enum: `billing`, `shipping`)_ — Address type: `billing` or `shipping`
-- `billing_label` (string) _(maxLength: 15)_ — Short label (max 15 characters, for billing type)
-- `billing_name` (string) — Contact name (for billing type)
-- `billing_address_1` (string) — Primary street address (for billing type)
-- `billing_address_2` (string) — Secondary address line (for billing type)
-- `billing_city` (string) — City (for billing type)
-- `billing_state` (string) — State/province code (for billing type)
-- `billing_postcode` (string) — Postal/zip code (for billing type)
-- `billing_country` (string) — Country code (for billing type)
-- `shipping_label` (string) _(maxLength: 15)_ — Short label (max 15 characters, for shipping type)
-- `shipping_name` (string) — Contact name (for shipping type)
-- `shipping_address_1` (string) — Primary street address (for shipping type)
-- `shipping_address_2` (string) — Secondary address line (for shipping type)
-- `shipping_city` (string) — City (for shipping type)
-- `shipping_state` (string) — State/province code (for shipping type)
-- `shipping_postcode` (string) — Postal/zip code (for shipping type)
-- `shipping_country` (string) — Country code (for shipping type)
-
-Example:
-
-```json
-{
-  "type": "billing",
-  "address": {
-    "id": 5
-  },
-  "billing_name": "John Doe",
-  "billing_address_1": "456 Oak Ave",
-  "billing_city": "Boston",
-  "billing_state": "MA",
-  "billing_postcode": "02101",
-  "billing_country": "US",
-  "billing_label": "Work"
-}
-```
-
-
-**Responses**
-
-- **200** — Successful response. Address updated.
-
-  Schema (`application/json`):
-
-  - `message` (string)
-
-  Example:
-
-```json
-{
-  "message": "Address updated successfully"
-}
-```
-
-
-- **403** — Forbidden. The authenticated user does not own this address.
-
-  Example:
-
-```json
-{
-  "message": "You are not authorized to update this address"
-}
-```
-
-
-
----
-
-## PUT `/customers/{customerId}`
-
-**PUT Update Customer Details**
-
-Update the authenticated customer's profile details. The customerId must match the logged-in customer's record.
-
-**Auth:** ApplicationPasswords
-
-**Path parameters**
-
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `customerId` | integer | yes | The customer ID. Must belong to the authenticated user. |
-
-
-**Request body** (`application/json`, required)
-
-- `email` (string) **required** — Customer email address. Must be unique and valid. Max 255 characters.
-- `first_name` (string) — Customer first name. Required when store uses separate name fields. Max 255 characters.
-- `last_name` (string) — Customer last name. Max 255 characters.
-- `full_name` (string) — Customer full name. Required when store uses full name mode. Max 255 characters.
-- `city` (string) — Customer city
-- `state` (string) — Customer state/province code
-- `postcode` (string) — Customer postal/zip code
-- `country` (string) — Customer country code (e.g., `US`, `GB`)
-- `notes` (string) — Internal notes about the customer
-- `status` (string) — Customer status
-
-Example:
-
-```json
-{
-  "first_name": "John",
-  "last_name": "Smith",
-  "email": "john@example.com"
-}
-```
-
-
-**Responses**
-
-- **200** — Successful response. Returns the updated customer data.
-
-  Schema (`application/json`):
-
-  - `message` (string)
-  - `data` (object)
-    - _(object)_
-
-  Example:
-
-```json
-{
-  "message": "Customer updated successfully!",
-  "data": {
-    "id": 1,
-    "email": "john@example.com",
-    "first_name": "John",
-    "last_name": "Doe"
-  }
-}
-```
-
-
-- **403** — Forbidden. The authenticated user does not own this customer record.
-
-  Example:
-
-```json
-{
-  "message": "You are not authorized to update this customer"
 }
 ```
 
@@ -1488,6 +1560,10 @@ Example:
 **POST Update Profile Address**
 
 Update an existing address from the profile management page. The address must belong to the authenticated customer.
+
+**Access policy:** `CustomerFrontendPolicy`
+
+**Access policy:** `CustomerFrontendPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -1554,6 +1630,21 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
 - **403** — Forbidden. The authenticated user does not own this address.
 
   Example:
@@ -1561,6 +1652,22 @@ Example:
 ```json
 {
   "message": "You are not authorized to update this address"
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
 }
 ```
 
@@ -1573,6 +1680,10 @@ Example:
 **POST Update Profile Details**
 
 Update the authenticated customer's profile name. Also updates the associated WordPress user's first_name, last_name, and display_name.
+
+**Access policy:** `CustomerFrontendPolicy`
+
+**Access policy:** `CustomerFrontendPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -1613,6 +1724,21 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
 - **403** — Not logged in or customer not found.
 
   Example:
@@ -1620,6 +1746,265 @@ Example:
 ```json
 {
   "message": "You are not logged in"
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
+
+---
+
+## GET `/customer-profile/sections`
+
+**GET Get Portal Sections**
+
+Return the add-on sections registered for one customer-portal surface. Each entry carries an uncompiled Vue component string plus its payload; the customer-portal SPA compiles it in the browser, since the SPA's route table is static and cannot otherwise be extended by add-ons.
+
+**Access policy:** `CustomerFrontendPolicy`
+
+**Access policy:** `CustomerFrontendPolicy`
+
+**Auth:** ApplicationPasswords
+
+**Query parameters**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `filter` | string | yes | The portal section group to fetch. Must match one of the plugin's allowlisted portal section filters or the request is rejected with a 422. |
+
+
+**Responses**
+
+- **200** — Successful response. Returns the sections registered for the requested filter, or an empty array if the current user is not a customer.
+
+  Schema (`application/json`):
+
+  - `message` (string)
+  - `sections` (array<object>) — Add-on portal sections for the requested filter.
+    - _(object)_
+
+  Example:
+
+```json
+{
+  "message": "Success",
+  "sections": []
+}
+```
+
+
+- **401** — Unauthenticated.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — The filter value is not a recognized portal section group.
+
+  Example:
+
+```json
+{
+  "message": "Unknown portal section group."
+}
+```
+
+
+
+---
+
+## POST `/customer-profile/subscriptions/{subscription_uuid}/pause`
+
+**POST Pause Subscription**
+
+Pause the logged-in customer's own subscription from the customer portal. The subscription must belong to the currently authenticated customer and is looked up by its UUID, not its numeric ID.
+
+**Access policy:** `CustomerFrontendPolicy`
+
+**Access policy:** `CustomerFrontendPolicy`
+
+**Auth:** ApplicationPasswords
+
+**Path parameters**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `subscription_uuid` | string | yes | UUID of the subscription to pause. Must belong to the currently authenticated customer. |
+
+
+**Responses**
+
+- **200** — Subscription paused successfully.
+
+  Schema (`application/json`):
+
+  - `message` (string)
+
+  Example:
+
+```json
+{
+  "message": "Your subscription has been successfully paused"
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — The requester is not logged in, has no customer record, the subscription UUID does not belong to them, or the subscription cannot be paused in its current state (the error message reflects which case occurred).
+
+  Example:
+
+```json
+{
+  "message": "Subscription not found"
+}
+```
+
+
+
+---
+
+## POST `/customer-profile/subscriptions/{subscription_uuid}/resume`
+
+**POST Resume Subscription**
+
+Resume the logged-in customer's own paused subscription from the customer portal. The subscription must belong to the currently authenticated customer and is looked up by its UUID, not its numeric ID.
+
+**Access policy:** `CustomerFrontendPolicy`
+
+**Access policy:** `CustomerFrontendPolicy`
+
+**Auth:** ApplicationPasswords
+
+**Path parameters**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `subscription_uuid` | string | yes | UUID of the subscription to resume. Must belong to the currently authenticated customer. |
+
+
+**Responses**
+
+- **200** — Subscription resumed successfully.
+
+  Schema (`application/json`):
+
+  - `message` (string)
+
+  Example:
+
+```json
+{
+  "message": "Your subscription has been successfully resumed"
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — The requester is not logged in, has no customer record, the subscription UUID does not belong to them, or the subscription cannot be resumed in its current state (the error message reflects which case occurred).
+
+  Example:
+
+```json
+{
+  "message": "Subscription not found"
 }
 ```
 

@@ -1,6 +1,6 @@
 # FluentCart API — Roles & Permissions (Pro)
 
-9 endpoints. Base URL: `https://{website}/wp-json/fluent-cart/v2`. See the [FluentCart overview](../fluentcart.md) for auth and the full group list.
+7 endpoints. Base URL: `https://{website}/wp-json/fluent-cart/v2`. See the [FluentCart overview](../fluentcart.md) for auth and the full group list.
 
 _Generated from the FluentCart OpenAPI specs (dev.fluentcart.com)._
 
@@ -11,6 +11,8 @@ _Generated from the FluentCart OpenAPI specs (dev.fluentcart.com)._
 **POST Assign Role**
 
 Assign a FluentCart role to a WordPress user. The user receives the fluent_cart_admin capability and their role is stored as user meta. If the user already has an assigned role, it is replaced.
+
+**Policy:** `AdminPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -75,6 +77,8 @@ Example:
 
 Remove a FluentCart role assignment from a user. The user's fluent_cart_admin capability is removed and their role meta is deleted. The user's WordPress account is not affected.
 
+**Policy:** `AdminPolicy`
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -135,81 +139,13 @@ Example:
 
 ---
 
-## GET `/settings/permissions`
-
-**GET Get Permissions**
-
-Retrieve a list of available WordPress roles and the currently configured capability permissions.
-
-**Auth:** ApplicationPasswords
-
-**Responses**
-
-- **200** — Successful response
-
-  Schema (`application/json`):
-
-  - `roles` (object)
-    - `capability` (boolean) — Whether capability is enabled
-    - `roles` (array<WordPressRole>) — Array of available WordPress roles (excluding administrator and subscriber)
-
-  Example:
-
-```json
-{
-  "roles": {
-    "capability": false,
-    "roles": [
-      {
-        "name": "Editor",
-        "key": "editor"
-      },
-      {
-        "name": "Author",
-        "key": "author"
-      },
-      {
-        "name": "Contributor",
-        "key": "contributor"
-      },
-      {
-        "name": "Translator",
-        "key": "translator"
-      },
-      {
-        "name": "LMS Manager",
-        "key": "lms_manager"
-      },
-      {
-        "name": "Instructor",
-        "key": "instructor"
-      },
-      {
-        "name": "Instructor's Assistant",
-        "key": "instructors_assistant"
-      },
-      {
-        "name": "Student",
-        "key": "student"
-      },
-      {
-        "name": "Group Leader",
-        "key": "group_leader"
-      }
-    ]
-  }
-}
-```
-
-
-
----
-
 ## GET `/roles/{key}`
 
 **GET Get Role**
 
 Retrieve details for a specific role by its key. This endpoint is currently a placeholder and returns no data. It is reserved for future use.
+
+**Policy:** `AdminPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -217,7 +153,7 @@ Retrieve details for a specific role by its key. This endpoint is currently a pl
 
 | Name | Type | Required | Description |
 |------|------|----------|-------------|
-| `key` | string | yes | The role key (e.g., manager, worker, accountant). |
+| `key` | string | yes | Role slug. Valid values come from `PermissionManager::getAllRoles()` — `super_admin`, `manager`, `worker`, `accountant`. |
 
 
 **Responses**
@@ -226,7 +162,11 @@ Retrieve details for a specific role by its key. This endpoint is currently a pl
 
   Schema (`application/json`):
 
-  - _(object)_
+  - `role` (object)
+    - `key` (string) — Role slug, e.g. `manager`.
+    - `title` (string) — Human-readable role name.
+    - `description` (string) — What the role is allowed to do.
+    - `permissions` (array<string>) — Permission slugs granted to the role, e.g. `orders/view`.
 
   Example:
 
@@ -247,6 +187,21 @@ Retrieve details for a specific role by its key. This endpoint is currently a pl
 ```
 
 
+- **404** — Unknown or empty role key.
+
+  Schema (`application/json`):
+
+  - `message` (string)
+
+  Example:
+
+```json
+{
+  "message": "Invalid role."
+}
+```
+
+
 
 ---
 
@@ -255,6 +210,8 @@ Retrieve details for a specific role by its key. This endpoint is currently a pl
 **GET List Managers**
 
 Retrieve a list of all WordPress users who have been assigned a FluentCart shop role. Returns user details along with their assigned role and resolved permissions.
+
+**Policy:** `AdminPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -324,6 +281,8 @@ Retrieve a list of all WordPress users who have been assigned a FluentCart shop 
 
 Retrieve all available FluentCart roles with their titles and descriptions. This returns the role definitions (not user assignments).
 
+**Policy:** `AdminPolicy`
+
 **Auth:** ApplicationPasswords
 
 **Responses**
@@ -364,75 +323,13 @@ Retrieve all available FluentCart roles with their titles and descriptions. This
 
 ---
 
-## POST `/settings/permissions`
-
-**POST Save Permissions**
-
-Update which WordPress roles have access to FluentCart.
-
-**Auth:** ApplicationPasswords
-
-**Request body** (`application/json`, required)
-
-- `capability` (array<string>) **required** — Array of WordPress role keys that should have FluentCart access
-
-Example:
-
-```json
-{
-  "capability": [
-    "editor",
-    "author"
-  ]
-}
-```
-
-
-**Responses**
-
-- **200** — Permissions updated successfully
-
-  Schema (`application/json`):
-
-  - `message` (string)
-
-  Example:
-
-```json
-{
-  "message": "Successfully updated the role(s)."
-}
-```
-
-
-- **403** — Forbidden - User doesn't have manage_options capability
-
-  Schema (`application/json`):
-
-  - `success` (boolean)
-  - `data` (object)
-    - `message` (string)
-
-  Example:
-
-```json
-{
-  "success": false,
-  "data": {
-    "message": "Sorry, You can not update permissions. Only administrators can update permissions"
-  }
-}
-```
-
-
-
----
-
 ## GET `/roles/user-list`
 
 **GET Search Users**
 
 Search for WordPress users who can be assigned a FluentCart role. Returns users matching the search query, excluding those who already have a WordPress administrator role.
+
+**Policy:** `AdminPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -456,6 +353,17 @@ Search for WordPress users who can be assigned a FluentCart role. Returns users 
     - `current_page` (integer) — Current page number
     - `last_page` (integer) — Last page number
     - `data` (array<UserListItem>)
+    - `first_page_url` (string)
+    - `from` (integer)
+    - `last_page_url` (string)
+    - `links` (array<object>) — Rendered pagination links, including the `&laquo; Previous` / `Next &raquo;` entries.
+      - `url` (string)
+      - `label` (string)
+      - `active` (boolean)
+    - `next_page_url` (string)
+    - `path` (string)
+    - `prev_page_url` (string)
+    - `to` (integer)
 
   Example:
 
@@ -491,6 +399,8 @@ Search for WordPress users who can be assigned a FluentCart role. Returns users 
 **POST Update Role**
 
 Update a specific role definition. This endpoint is currently a placeholder and returns no data. It is reserved for future use.
+
+**Policy:** `AdminPolicy`
 
 **Auth:** ApplicationPasswords
 

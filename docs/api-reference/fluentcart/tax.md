@@ -12,6 +12,8 @@ _Generated from the FluentCart OpenAPI specs (dev.fluentcart.com)._
 
 Create a new tax class. A unique slug is auto-generated from the title. Pass slug "reduced" or "zero" to create one of the built-in classes (title is then set automatically). A maximum of 6 tax classes is allowed; the built-in "standard" class always exists and cannot be deleted.
 
+**Required permission:** `store/sensitive`
+
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`, required)
@@ -54,6 +56,36 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`store/sensitive`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 - **422** — Title exceeds 30 characters.
 
   Schema (`application/json`):
@@ -92,6 +124,8 @@ Example:
 **POST Create Tax Rate**
 
 Create a new tax rate entry for a country.
+
+**Required permission:** `store/sensitive`
 
 **Auth:** ApplicationPasswords
 
@@ -177,6 +211,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`store/sensitive`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -185,6 +265,8 @@ Example:
 **DELETE Delete Shipping Tax Override**
 
 Remove the shipping tax override from a tax rate, resetting for_shipping to null.
+
+**Required permission:** `store/sensitive`
 
 **Auth:** ApplicationPasswords
 
@@ -212,6 +294,52 @@ Remove the shipping tax override from a tax rate, resetting for_shipping to null
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`store/sensitive`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -220,6 +348,8 @@ Remove the shipping tax override from a tax rate, resetting for_shipping to null
 **DELETE Delete Tax Class**
 
 Delete a tax class by ID.
+
+**Required permission:** `store/sensitive`
 
 **Auth:** ApplicationPasswords
 
@@ -262,6 +392,52 @@ Delete a tax class by ID.
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`store/sensitive`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -270,6 +446,8 @@ Delete a tax class by ID.
 **DELETE Delete Tax Rate**
 
 Delete a single tax rate by ID.
+
+**Required permission:** `store/sensitive`
 
 **Auth:** ApplicationPasswords
 
@@ -297,6 +475,52 @@ Delete a single tax rate by ID.
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`store/sensitive`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -305,6 +529,8 @@ Delete a single tax rate by ID.
 **GET Get Country Tax ID**
 
 Retrieve the store's tax identification number (VAT/GST/EIN) for a specific country.
+
+**Required permission:** `store/settings`
 
 **Auth:** ApplicationPasswords
 
@@ -335,6 +561,52 @@ Retrieve the store's tax identification number (VAT/GST/EIN) for a specific coun
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`store/settings`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -343,6 +615,8 @@ Retrieve the store's tax identification number (VAT/GST/EIN) for a specific coun
 **GET Get Country Tax Rates**
 
 Retrieve all tax rates for a specific country (ordered by priority, then ID), the country-level form configuration, and whether tax is enabled for the country.
+
+**Required permission:** `store/settings`
 
 **Auth:** ApplicationPasswords
 
@@ -405,6 +679,52 @@ Retrieve all tax rates for a specific country (ordered by priority, then ID), th
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`store/settings`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -412,7 +732,9 @@ Retrieve all tax rates for a specific country (ordered by priority, then ID), th
 
 **GET Get Preconfigured Tax Rates**
 
-Retrieve the full list of preconfigured tax rates from the built-in tax rates data file. These are the default rates organized by continent/region and country.
+Retrieve the full list of preconfigured tax rates from the built-in tax rates data file. These are the default rates organized by continent/region (`EU`, `NA`, `SA`, `AS`, `AF`, `OC`, `REST`) and country.
+
+**Required permission:** `store/settings`
 
 **Auth:** ApplicationPasswords
 
@@ -422,7 +744,7 @@ Retrieve the full list of preconfigured tax rates from the built-in tax rates da
 
   Schema (`application/json`):
 
-  - `tax_rates` (object)
+  - `tax_rates` (object) — Keyed by region/continent group code: EU, NA, SA, AS, AF, OC, REST.
     - _(object)_
 
   Example:
@@ -435,35 +757,77 @@ Retrieve the full list of preconfigured tax rates from the built-in tax rates da
       "group_code": "EU",
       "countries": [
         {
-          "country_code": "DE",
-          "country_name": "Germany",
+          "country_code": "AT",
+          "country_name": "Austria",
           "total_rates": 3,
-          "rates": {
-            "standard": {
-              "rate": 19,
-              "name": "DE Standard Tax",
+          "rates": [
+            {
+              "rate": 20,
+              "compound": false,
               "type": "standard",
-              "compound": false,
-              "shipping": false
+              "name": "MwSt"
             },
-            "reduced": {
-              "rate": 7,
-              "name": "DE Reduced Tax",
-              "type": "reduced",
+            {
+              "rate": 13,
               "compound": false,
-              "shipping": false
+              "type": "reduced"
             },
-            "zero": {
+            {
               "rate": 0,
-              "name": "DE Zero Tax",
-              "type": "zero",
               "compound": false,
-              "shipping": false
+              "type": "zero"
             }
-          }
+          ]
+        },
+        {
+          "country_code": "BE",
+          "country_name": "Belgium",
+          "total_rates": 3,
+          "rates": [
+            {
+              "rate": 21,
+              "compound": false,
+              "type": "standard",
+              "name": "BTW/TVA"
+            },
+            {
+              "rate": 6,
+              "compound": false,
+              "type": "reduced"
+            },
+            {
+              "rate": 0,
+              "compound": false,
+              "type": "zero"
+            }
+          ]
         }
       ],
       "total_countries": 27
+    },
+    "REST": {
+      "group_name": "Rest of the World",
+      "group_code": "REST",
+      "countries": [
+        {
+          "country_code": "GB",
+          "country_name": "United Kingdom (UK)",
+          "total_rates": 2,
+          "rates": [
+            {
+              "rate": 20,
+              "compound": false,
+              "type": "standard"
+            },
+            {
+              "rate": 5,
+              "compound": false,
+              "type": "reduced"
+            }
+          ]
+        }
+      ],
+      "total_countries": 28
     },
     "NA": {
       "group_name": "North America",
@@ -471,49 +835,176 @@ Retrieve the full list of preconfigured tax rates from the built-in tax rates da
       "countries": [
         {
           "country_code": "US",
-          "country_name": "United States",
+          "country_name": "United States (US)",
           "total_rates": 2,
-          "rates": {
-            "standard": {
-              "rate": 10,
-              "name": "US Standard Tax",
-              "type": "standard",
+          "rates": [
+            {
+              "rate": 4,
               "compound": false,
-              "shipping": false
+              "state": "AL",
+              "name": "Alabama State Tax (Standard)",
+              "type": "standard"
             },
-            "zero": {
-              "rate": 0,
-              "name": "US Zero Tax",
-              "type": "zero",
+            {
+              "rate": 2,
               "compound": false,
-              "shipping": false
+              "state": "AL",
+              "name": "Alabama Reduced",
+              "type": "reduced"
             }
-          }
+          ]
         },
         {
           "country_code": "CA",
           "country_name": "Canada",
           "total_rates": 2,
-          "rates": {
-            "standard": {
+          "rates": [
+            {
               "rate": 5,
-              "name": "CA GST",
+              "compound": false,
               "type": "standard",
-              "compound": false,
-              "shipping": true
+              "name": "GST"
             },
-            "zero": {
+            {
               "rate": 0,
-              "name": "CA Zero Tax",
-              "type": "zero",
               "compound": false,
-              "shipping": false
+              "type": "zero"
             }
-          }
+          ]
         }
       ],
-      "total_countries": 2
+      "total_countries": 42
+    },
+    "SA": {
+      "group_name": "South America",
+      "group_code": "SA",
+      "countries": [
+        {
+          "country_code": "BR",
+          "country_name": "Brazil",
+          "total_rates": 2,
+          "rates": [
+            {
+              "rate": 17,
+              "compound": false,
+              "type": "standard",
+              "name": "ICMS"
+            },
+            {
+              "rate": 0,
+              "compound": false,
+              "type": "zero"
+            }
+          ]
+        }
+      ],
+      "total_countries": 15
+    },
+    "AS": {
+      "group_name": "Asia",
+      "group_code": "AS",
+      "countries": [
+        {
+          "country_code": "CN",
+          "country_name": "China",
+          "total_rates": 2,
+          "rates": [
+            {
+              "rate": 13,
+              "compound": false,
+              "type": "standard",
+              "name": "VAT"
+            },
+            {
+              "rate": 0,
+              "compound": false,
+              "type": "zero"
+            }
+          ]
+        }
+      ],
+      "total_countries": 50
+    },
+    "AF": {
+      "group_name": "Africa",
+      "group_code": "AF",
+      "countries": [
+        {
+          "country_code": "BJ",
+          "country_name": "Benin",
+          "total_rates": 2,
+          "rates": [
+            {
+              "rate": 18,
+              "compound": false,
+              "type": "standard",
+              "name": "TVA"
+            },
+            {
+              "rate": 0,
+              "compound": false,
+              "type": "zero"
+            }
+          ]
+        }
+      ],
+      "total_countries": 58
+    },
+    "OC": {
+      "group_name": "Oceania",
+      "group_code": "OC",
+      "countries": [
+        {
+          "country_code": "AU",
+          "country_name": "Australia",
+          "total_rates": 2,
+          "rates": [
+            {
+              "rate": 10,
+              "compound": false,
+              "type": "standard",
+              "name": "GST"
+            },
+            {
+              "rate": 0,
+              "compound": false,
+              "type": "zero"
+            }
+          ]
+        }
+      ],
+      "total_countries": 30
     }
+  }
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`store/settings`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
   }
 }
 ```
@@ -527,6 +1018,8 @@ Retrieve the full list of preconfigured tax rates from the built-in tax rates da
 **GET Get Tax Settings**
 
 Retrieve the current global tax configuration settings along with the store country.
+
+**Required permission:** `store/settings`
 
 **Auth:** ApplicationPasswords
 
@@ -589,6 +1082,36 @@ Retrieve the current global tax configuration settings along with the store coun
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`store/settings`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -597,6 +1120,8 @@ Retrieve the current global tax configuration settings along with the store coun
 **GET List All Tax Rates**
 
 Retrieve all tax rates from the database, grouped by continent/region and country.
+
+**Required permission:** `store/settings`
 
 **Auth:** ApplicationPasswords
 
@@ -607,6 +1132,8 @@ Retrieve all tax rates from the database, grouped by continent/region and countr
   Schema (`application/json`):
 
   - `tax_rates` (array<TaxRateGroup>)
+  - `country_enabled_map` (object) — Map of country code (plus "EU") to whether tax is enabled for that country. Defaults to true for any country without an explicit override.
+    - _(object)_
 
   Example:
 
@@ -634,7 +1161,8 @@ Retrieve all tax rates from the database, grouped by continent/region and countr
               "for_shipping": null
             }
           ],
-          "total_rates": 2
+          "total_rates": 2,
+          "enabled": true
         }
       ],
       "total_countries": 1
@@ -654,12 +1182,48 @@ Retrieve all tax rates from the database, grouped by continent/region and countr
               "for_shipping": null
             }
           ],
-          "total_rates": 1
+          "total_rates": 1,
+          "enabled": true
         }
       ],
       "total_countries": 1
     }
-  ]
+  ],
+  "country_enabled_map": {
+    "EU": true,
+    "DE": true,
+    "US": true
+  }
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`store/settings`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
 }
 ```
 
@@ -672,6 +1236,8 @@ Retrieve all tax rates from the database, grouped by continent/region and countr
 **GET List Tax Classes**
 
 Retrieve all tax classes ordered by ID (oldest first), along with the maximum allowed number of classes and the next built-in class (Reduced or Zero) that has not been created yet.
+
+**Required permission:** `store/settings`
 
 **Auth:** ApplicationPasswords
 
@@ -726,6 +1292,36 @@ Retrieve all tax classes ordered by ID (oldest first), along with the maximum al
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`store/settings`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -734,6 +1330,8 @@ Retrieve all tax classes ordered by ID (oldest first), along with the maximum al
 **GET List Tax Records**
 
 Retrieve a paginated list of order tax rate records with optional filtering, sorting, and search.
+
+**Access policy:** `AdminPolicy` — requires the `is_super_admin` FluentCart capability.
 
 **Auth:** ApplicationPasswords
 
@@ -767,6 +1365,17 @@ Retrieve a paginated list of order tax rate records with optional filtering, sor
     - `per_page` (integer)
     - `total` (integer)
     - `last_page` (integer)
+    - `first_page_url` (string) — URL of the first page of results
+    - `from` (integer) — Starting record number on the current page
+    - `last_page_url` (string) — URL of the last page of results
+    - `links` (array<object>) — Laravel-style pagination links (previous, page numbers, next)
+      - `url` (string)
+      - `label` (string)
+      - `active` (boolean)
+    - `next_page_url` (string) — URL of the next page of results
+    - `path` (string) — Base URL of the endpoint without the query string
+    - `prev_page_url` (string) — URL of the previous page of results
+    - `to` (integer) — Ending record number on the current page
 
   Example:
 
@@ -802,7 +1411,61 @@ Retrieve a paginated list of order tax rate records with optional filtering, sor
     ],
     "per_page": 10,
     "total": 50,
-    "last_page": 5
+    "last_page": 5,
+    "first_page_url": "https://yoursite.com/wp-json/fluent-cart/v2/taxes/?page=1",
+    "from": 1,
+    "last_page_url": "https://yoursite.com/wp-json/fluent-cart/v2/taxes/?page=5",
+    "links": [
+      {
+        "url": null,
+        "label": "pagination.previous",
+        "active": false
+      },
+      {
+        "url": "https://yoursite.com/wp-json/fluent-cart/v2/taxes/?page=1",
+        "label": "1",
+        "active": true
+      },
+      {
+        "url": "https://yoursite.com/wp-json/fluent-cart/v2/taxes/?page=2",
+        "label": "2",
+        "active": false
+      }
+    ],
+    "next_page_url": "https://yoursite.com/wp-json/fluent-cart/v2/taxes/?page=2",
+    "path": "https://yoursite.com/wp-json/fluent-cart/v2/taxes",
+    "prev_page_url": null,
+    "to": 10
+  }
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
   }
 }
 ```
@@ -816,6 +1479,8 @@ Retrieve a paginated list of order tax rate records with optional filtering, sor
 **POST Mark Taxes as Filed**
 
 Mark one or more order tax records as filed by setting their filed_at timestamp.
+
+**Access policy:** `AdminPolicy` — requires the `is_super_admin` FluentCart capability.
 
 **Auth:** ApplicationPasswords
 
@@ -869,6 +1534,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -877,6 +1588,8 @@ Example:
 **POST Save Configured Countries**
 
 Generate tax classes and import tax rates for the specified countries from the built-in rates data. Countries that already have rates in the database are skipped.
+
+**Required permission:** `store/sensitive`
 
 **Auth:** ApplicationPasswords
 
@@ -915,6 +1628,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`store/sensitive`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -923,6 +1682,8 @@ Example:
 **POST Save Country Tax ID**
 
 Save or update the store's tax identification number for a specific country.
+
+**Required permission:** `store/sensitive`
 
 **Auth:** ApplicationPasswords
 
@@ -963,6 +1724,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`store/sensitive`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -971,6 +1778,8 @@ Example:
 **POST Save EU VAT Cross-Border Settings**
 
 Multi-action endpoint for EU VAT settings, dispatched by the action field: euCrossBorderSettings saves the cross-border registration configuration (OSS, home country, or specific country registrations); saveCountryRegistration creates or updates a per-country VAT registration with per-class rates; deleteCountryRegistration removes a per-country VAT registration.
+
+**Required permission:** `store/sensitive`
 
 **Auth:** ApplicationPasswords
 
@@ -1020,6 +1829,36 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`store/sensitive`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 - **422** — Unknown action ("Invalid method") or validation failed for the given action.
 
   Schema (`application/json`):
@@ -1048,6 +1887,8 @@ Example:
 **POST Save Shipping Tax Override**
 
 Set a shipping-specific tax override on an existing tax rate.
+
+**Required permission:** `store/sensitive`
 
 **Auth:** ApplicationPasswords
 
@@ -1083,6 +1924,36 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`store/sensitive`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 - **404** — Tax rate not found.
 
   Schema (`application/json`):
@@ -1098,6 +1969,22 @@ Example:
 ```
 
 
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -1106,6 +1993,8 @@ Example:
 **POST Save Tax Settings**
 
 Save the global tax configuration settings. Invalid enum values are silently replaced with their defaults. If tax is enabled, initial tax classes are automatically created.
+
+**Required permission:** `store/sensitive`
 
 **Auth:** ApplicationPasswords
 
@@ -1173,6 +2062,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`store/sensitive`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -1181,6 +2116,8 @@ Example:
 **PUT Update Tax Rate**
 
 Update an existing tax rate.
+
+**Required permission:** `store/sensitive`
 
 **Auth:** ApplicationPasswords
 
@@ -1272,6 +2209,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`store/sensitive`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -1280,6 +2263,8 @@ Example:
 **DELETE Delete Product Category Tax Override**
 
 Delete a product category tax override by its ID.
+
+**Required permission:** `store/sensitive`
 
 **Auth:** ApplicationPasswords
 
@@ -1307,6 +2292,36 @@ Delete a product category tax override by its ID.
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`store/sensitive`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 - **422** — Override not found.
 
   Schema (`application/json`):
@@ -1330,6 +2345,8 @@ Delete a product category tax override by its ID.
 **GET Get EU VAT Product Overrides**
 
 Retrieve product category tax overrides for all EU countries, plus every EU tax rate that has a shipping tax override set. class_id and class_label are appended to each row for convenience.
+
+**Required permission:** `store/settings`
 
 **Auth:** ApplicationPasswords
 
@@ -1392,6 +2409,36 @@ Retrieve product category tax overrides for all EU countries, plus every EU tax 
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`store/settings`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -1400,6 +2447,8 @@ Retrieve product category tax overrides for all EU countries, plus every EU tax 
 **GET Get OSS Country Rates**
 
 Retrieve per-country EU VAT rates for every tax class. Each country entry includes the effective rate per class (custom database value or built-in default), plus top-level standard-class values for backward compatibility, and the list of tax classes.
+
+**Required permission:** `store/settings`
 
 **Auth:** ApplicationPasswords
 
@@ -1478,6 +2527,36 @@ Retrieve per-country EU VAT rates for every tax class. Each country entry includ
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`store/settings`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -1486,6 +2565,8 @@ Retrieve per-country EU VAT rates for every tax class. Each country entry includ
 **GET Get Product Category Tax Overrides**
 
 Retrieve all product category tax overrides for a specific country. Each override is a meta row whose meta_value holds the location, category, rate, and tax class data; class_id and class_label are appended for convenience.
+
+**Required permission:** `store/settings`
 
 **Auth:** ApplicationPasswords
 
@@ -1536,6 +2617,52 @@ Retrieve all product category tax overrides for a specific country. Each overrid
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`store/settings`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -1544,6 +2671,8 @@ Retrieve all product category tax overrides for a specific country. Each overrid
 **POST Reset EU VAT Rates**
 
 Reset all country-level EU standard VAT rates back to the built-in defaults. Custom rate values and auto-generated labels are overwritten; state-specific entries and shipping overrides on the rows are preserved. No request body is required.
+
+**Required permission:** `store/sensitive`
 
 **Auth:** ApplicationPasswords
 
@@ -1564,6 +2693,52 @@ Reset all country-level EU standard VAT rates back to the built-in defaults. Cus
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`store/sensitive`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -1572,6 +2747,8 @@ Reset all country-level EU standard VAT rates back to the built-in defaults. Cus
 **POST Save OSS Country Rates**
 
 Save per-country EU VAT rates. Each entry may provide class_rates keyed by tax class slug ({rate, label}); rates are upserted per country and class in the EU group. When class_rates is omitted, the single rate value is applied to the standard class (backward compatibility). Entries with unknown tax class slugs or without a country are skipped.
+
+**Required permission:** `store/sensitive`
 
 **Auth:** ApplicationPasswords
 
@@ -1625,6 +2802,36 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`store/sensitive`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 - **422** — Validation failed — one or more entries reference a non-EU VAT country.
 
   Schema (`application/json`):
@@ -1653,6 +2860,8 @@ Example:
 **POST Save Product Category Tax Override**
 
 Create or update a product category tax override. Pass id to update an existing override. Without id, an existing override matching the same category, location, and tax class is updated in place; otherwise a new override is created. Pass source_type "shipping" with source_id to convert an existing shipping tax override into a product override (the shipping override is removed).
+
+**Required permission:** `store/sensitive`
 
 **Auth:** ApplicationPasswords
 
@@ -1725,6 +2934,36 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`store/sensitive`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 - **404** — Override (or shipping override source) not found.
 
   Schema (`application/json`):
@@ -1766,6 +3005,8 @@ Example:
 
 Enable or disable tax collection for a specific country. Accepts an ISO 3166-1 alpha-2 country code or the special code EU to toggle the whole EU group. By default every country is enabled; disabling stores a flag in the fct_meta table.
 
+**Required permission:** `store/sensitive`
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -1803,6 +3044,36 @@ Example:
 {
   "enabled": true,
   "message": "Tax has been enabled successfully"
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`store/sensitive`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
 }
 ```
 

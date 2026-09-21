@@ -12,6 +12,10 @@ _Generated from the FluentCart OpenAPI specs (dev.fluentcart.com)._
 
 Delete a file from the specified storage driver. For the local driver, this requires the `manage_options` WordPress capability.
 
+**Access policy:** `StoreSensitivePolicy`
+
+**Access policy:** `StoreSensitivePolicy`
+
 **Auth:** ApplicationPasswords
 
 **Query parameters**
@@ -40,6 +44,21 @@ Delete a file from the specified storage driver. For the local driver, this requ
   "message": "File Deleted Successfully",
   "driver": "local",
   "path": "my-ebook__fluent-cart__.1710345600.pdf"
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
 }
 ```
 
@@ -83,6 +102,10 @@ Delete a file from the specified storage driver. For the local driver, this requ
 
 Retrieve the list of available storage buckets for a given driver. Useful for cloud storage drivers (e.g., S3) that organize files into buckets.
 
+**Access policy:** `StoreSensitivePolicy`
+
+**Access policy:** `StoreSensitivePolicy`
+
 **Auth:** ApplicationPasswords
 
 **Query parameters**
@@ -120,6 +143,36 @@ Retrieve the list of available storage buckets for a given driver. Useful for cl
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -128,6 +181,10 @@ Retrieve the list of available storage buckets for a given driver. Useful for cl
 **GET List Files**
 
 Retrieve a list of files from the specified storage driver. Returns file metadata including name, size, driver, and bucket information.
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Access policy:** `StoreSensitivePolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -170,6 +227,36 @@ Retrieve a list of files from the specified storage driver. Returns file metadat
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -178,6 +265,8 @@ Retrieve a list of files from the specified storage driver. Returns file metadat
 **POST Upload Editor File**
 
 Upload an image file for use in the content editor (e.g., product descriptions). The image is uploaded to the WordPress Media Library via `media_handle_upload`. Only image files are accepted.
+
+**Access policy:** `AdminPolicy` — requires the `is_super_admin` FluentCart capability.
 
 **Auth:** ApplicationPasswords
 
@@ -260,6 +349,52 @@ Upload an image file for use in the content editor (e.g., product descriptions).
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -268,6 +403,10 @@ Upload an image file for use in the content editor (e.g., product descriptions).
 **POST Upload File**
 
 Upload a downloadable file to the specified storage driver. The file is stored with a unique name appended with a timestamp to prevent collisions.
+
+**Access policy:** `StoreSensitivePolicy`
+
+**Access policy:** `StoreSensitivePolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -314,6 +453,52 @@ Upload a downloadable file to the specified storage driver. The file is stored w
 {
   "message": "Failed To Upload File",
   "additional": "File is empty"
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
 }
 ```
 

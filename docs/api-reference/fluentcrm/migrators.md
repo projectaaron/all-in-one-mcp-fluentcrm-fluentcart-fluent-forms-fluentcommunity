@@ -12,6 +12,14 @@ _Generated from the FluentCRM OpenAPI specs (developers.fluentcrm.com)._
 
 Retrieve the list of available SaaS CRM migrator drivers. Default drivers include Mailchimp, ConvertKit, MailerLite, Drip, and ActiveCampaign. Additional drivers may be registered via the `fluent_crm/saas_migrators` filter.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Responses**
@@ -65,6 +73,14 @@ Retrieve the list of available SaaS CRM migrator drivers. Default drivers includ
 **POST Get Migrator Import Summary**
 
 Retrieve a summary of what will be imported from the external CRM based on the selected list/tag mappings. Shows the number of contacts and other data that will be migrated before executing the actual import.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -155,6 +171,14 @@ Example:
 
 Retrieve the available lists and tags from the external CRM for mapping to FluentCRM lists and tags during migration. Requires valid credentials to have been verified first.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Query parameters**
@@ -227,6 +251,14 @@ Retrieve the available lists and tags from the external CRM for mapping to Fluen
 **POST Execute Migrator Import**
 
 Execute the actual import from the external CRM. Fetches contacts from the external service and creates/updates them in FluentCRM based on the configured mappings. The response structure depends on the migrator driver.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -308,6 +340,14 @@ Example:
 **POST Verify Migrator Credential**
 
 Verify the API credentials for a specific CRM migrator driver. Tests the provided credentials against the external CRM service to confirm they are valid before proceeding with the migration.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `SettingsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
