@@ -2,7 +2,8 @@
 
 ## 1.0.0 — 2026-09-18
 
-**First public release.** Source on GitHub under MIT, sponsored by
+**First public release.** Source at
+github.com/projectaaron/mcp-for-complete-fluent-suite under MIT, sponsored by
 upfluent.io; the ready-built Claude Desktop extension (`.mcpb`) is a free
 download from upfluent.io / Freemius. Five WPManageNinja products (FluentCRM, FluentCart,
 Fluent Forms, FluentCommunity, WP Social Ninja), 1,191 endpoint tools in 68
