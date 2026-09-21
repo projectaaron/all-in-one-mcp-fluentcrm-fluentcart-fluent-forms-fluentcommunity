@@ -43,7 +43,7 @@ supported by WPManageNinja. It is offered free and in good faith to help
 Fluent users get more from the plugins they already own. You use it at your
 own risk — read the [Disclaimer](#disclaimer). WPManageNinja also ships its
 own first-party MCP via [FluentHub](https://wpmanageninja.com/fluenthub-mcp/);
-see [How this differs](#how-this-differs-from-fluenthubs-mcp).
+see [How this compares](#how-this-compares-to-the-native-fluent-mcps).
 
 ---
 
@@ -378,16 +378,57 @@ All of WPManageNinja's public repositories: <https://github.com/WPManageNinja>.
 `docs/api-reference/<product>.md` in this repo is an inventory (method, path,
 one-line summary per endpoint) that the tool surface is generated from.
 
-## How this differs from FluentHub's MCP
+## How this compares to the native Fluent MCPs
 
-WPManageNinja's own [FluentHub MCP](https://wpmanageninja.com/fluenthub-mcp/)
-is a WordPress plugin exposing a curated set of tools (around 20 per
-product). All-In-One MCP for Fluent Suite runs outside WordPress and covers the **entire** REST
-surface of each product — 1,290 operations — with the write-safety machinery
-above. Use FluentHub if you want the vendor-supported basics with no extra
-install; use All-In-One MCP for Fluent Suite if you want everything the admin UI can do, with
-merge/verify/dry-run guarantees and a per-operation safety policy you
-control.
+WPManageNinja ships its own MCP servers, and they are good for what they
+cover. This project exists because of what they don't: when the maintainer
+tried to run a real business through them, several products had no MCP at
+all, the ones that did were separate servers to install and connect one by
+one, and many of the operations needed day to day were read-only or missing.
+Rather than wait, this connector was built over the products' complete REST
+APIs. The comparison below is factual as of September 2026; check the vendor
+pages, since their coverage grows.
+
+### Side by side
+
+| | Native Fluent MCPs (FluentHub / per-product) | All-In-One MCP for Fluent Suite |
+|---|---|---|
+| **Runs where** | Inside WordPress, as plugin code (FluentHub or the WordPress MCP Adapter; needs WordPress 6.9+ for the Abilities API) | Outside WordPress: Claude Desktop extension, local Node process, or a Cloudflare Worker. Nothing installed on the site. |
+| **Products covered** | FluentCRM, FluentCart, Fluent Forms, Fluent Support, FluentBoards. FluentCommunity and WP Social Ninja: none announced. | FluentCRM, FluentCart, Fluent Forms, FluentCommunity, WP Social Ninja. (Fluent Support and FluentBoards: not yet.) |
+| **Servers to connect** | One per product (Fluent Forms has its own; CRM/Cart/Support/Boards go through FluentHub, each with its own enable switch and snippet) | One. All five products behind one connector, one credential. Products you don't have are simply off. |
+| **Tool count** | FluentCRM ~25 (some Pro-only) · FluentCart 30 · Fluent Forms 20 free / 23 Pro · Fluent Support ~20 | 1,290 endpoint tools plus a `tool_map` index: CRM 366 · Cart 436 · Forms 91 · Community 274 · Social Ninja 126 |
+| **Coverage model** | Curated: a hand-picked subset of common operations | Complete: every documented REST endpoint of each product, generated from the vendor's own API reference and re-checked weekly |
+| **Writes** | Selected writes per product (e.g. Cart: order status, notes, refunds, customer create/update, subscription cancel, coupons, labels) | Every write the admin UI can do: create, update, delete, bulk actions, settings, automations, sequences, templates, integrations, licensing, courses, spaces, chat, reviews, and so on |
+| **Explicitly not exposed natively** | FluentCart: settings, shipping, tax, licensing administration, email templates. FluentCRM: templates, forms, webhooks, settings, SMS, reports (per the vendor's own write-ups). Fluent Forms: form settings beyond styling and notifications, integrations beyond listing | All of those, plus the rest of each REST surface |
+| **Partial updates** | Tool-specific | Merge by default on every update: the record is read, your fields are merged in, written, re-read and diffed. Omitted fields survive. `mode:"replace"` is explicit and confirm-gated. |
+| **Safety** | Preview-then-confirm on selected sensitive actions (refunds, cancellations); permissions inherited from the WordPress user | `confirm:true` gate on 203 destructive or privilege-changing operations, 12 locked outright, `dry_run` on every write, post-write verification, read-back guards, per-operation policy you control via `FLUENT_LOCKED_TOOLS`; permissions likewise inherited from the WordPress user |
+| **Auth** | WordPress Application Password | WordPress Application Password (per product overrides optional) |
+| **Where you can use it** | Claude Desktop, Claude Code, Cursor, Codex via HTTP to your site | Same clients, plus claude.ai web and mobile through the remote connector |
+| **Price / license** | Free with the plugins (some tools Pro-only) | Free, MIT, open source |
+| **Support** | Vendor | Community; issues on GitHub |
+
+### When to use which
+
+Use the **native MCPs** if you want the vendor-supported basics for one
+product, with nothing to host and nothing to configure beyond a toggle.
+They are the right answer for "show me last week's orders" and "tag this
+contact".
+
+Use **this project** if you want one connector for the whole suite, need the
+operations the native tools leave out, or want the write-safety guarantees
+(merge, verify, dry-run, confirm and lock) applied uniformly to everything.
+It is the right answer for "build the 37-email sequence", "reconcile the
+integration feeds on every form", "set up the course, its sections and its
+paywall", or anything else you would otherwise click through the admin UI to
+do.
+
+The two are not exclusive: they use the same Application Password model and
+can be connected to the same site at the same time.
+
+Sources: [FluentHub MCP](https://wpmanageninja.com/fluenthub-mcp/),
+[Fluent Forms MCP server](https://fluentforms.com/fluent-forms-mcp-server/),
+[FluentCart: Connecting AI assistants](https://docs.fluentcart.com/guide/settings-configuration/mcp),
+[FluentCRM MCP](https://fluentcrm.com/blog/fluentcrm-mcp-and-what-it-means/).
 
 ---
 
