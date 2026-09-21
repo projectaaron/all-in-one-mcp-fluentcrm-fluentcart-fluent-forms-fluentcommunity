@@ -59,11 +59,12 @@ community.** Read the notes below before exposing it anywhere.
 
 ## Reporting a vulnerability
 
-Please do **not** open a public issue for security problems. Email the
-maintainer via the address on the GitHub profile, or use GitHub's private
-vulnerability reporting on this repository. Include the affected file/tool, a
-reproduction, and the impact. You will get an acknowledgement within a few
-days and credit in the changelog once fixed, if you want it.
+Please do **not** open a public issue for security problems. Use GitHub's
+private vulnerability reporting on this repository, or contact the maintainer
+privately through [upfluent.io](https://upfluent.io). Include the affected
+file/tool, a reproduction, and the impact. You will
+get an acknowledgement within a few days and credit in the changelog once
+fixed, if you want it.
 
 ## Scope notes
 
