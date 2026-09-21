@@ -1,6 +1,8 @@
-# Publish an existing GitHub release's download package to Freemius — for
-# re-publishing, or for a release cut before the FREEMIUS_DEV_* secrets
-# existed. The Release workflow does this automatically for new versions.
+# For an existing GitHub release: (1) make sure the fixed-name assets
+# (all-in-one-mcp-for-fluent-suite-latest.zip, fluentmcp-latest.mcpb) exist
+# on it, so the stable download link serves this version, and (2) run the
+# Freemius publish script. The Release workflow does both automatically for
+# new versions; this is for re-runs and for releases cut before that.
 #
 #   Actions tab → Publish to Freemius → Run workflow → version (e.g. 1.1.2)
 name: Publish to Freemius
@@ -13,7 +15,7 @@ on:
         required: true
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   publish:
@@ -23,10 +25,18 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Download the release asset
+      - name: Download the release assets
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release download "v${{ inputs.version }}" --pattern "all-in-one-mcp-for-fluent-suite-*.zip"
+        run: |
+          gh release download "v${{ inputs.version }}" --pattern "all-in-one-mcp-for-fluent-suite-${{ inputs.version }}.zip" --pattern "fluentmcp-${{ inputs.version }}.mcpb"
+      - name: Refresh the fixed-name assets on the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp "all-in-one-mcp-for-fluent-suite-${{ inputs.version }}.zip" all-in-one-mcp-for-fluent-suite-latest.zip
+          cp "fluentmcp-${{ inputs.version }}.mcpb" fluentmcp-latest.mcpb
+          gh release upload "v${{ inputs.version }}" all-in-one-mcp-for-fluent-suite-latest.zip fluentmcp-latest.mcpb --clobber
       - name: Publish
         env:
           FREEMIUS_DEV_ID: ${{ secrets.FREEMIUS_DEV_ID }}
