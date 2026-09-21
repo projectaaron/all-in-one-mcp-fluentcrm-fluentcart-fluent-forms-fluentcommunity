@@ -75,7 +75,18 @@ const dup = (existing.tags || []).find((t) => t.version === args.version);
 if (dup) { console.log(`Version ${args.version} already on Freemius (tag ${dup.id}); nothing uploaded.`); process.exit(0); }
 
 console.log(`Uploading ${args.file} as version ${args.version} to product ${productId}…`);
-const tag = await call('POST', `/plugins/${productId}/tags.json`, { file: args.file, data: { version: args.version } });
+let tag;
+try {
+  tag = await call('POST', `/plugins/${productId}/tags.json`, { file: args.file, data: { version: args.version } });
+} catch (e) {
+  if (String(e.message).includes('app_deployment_not_supported')) {
+    console.log('Freemius does not accept version uploads for "Apps & Software" products yet.');
+    console.log('Nothing to do: the product\'s Download Link points at the fixed-name release asset, which this release already refreshed:');
+    console.log('  https://github.com/projectaaron/fluentMCP/releases/latest/download/all-in-one-mcp-for-fluent-suite-latest.zip');
+    process.exit(0);
+  }
+  throw e;
+}
 console.log(`Created tag ${tag.id} (version ${tag.version}, release_mode ${tag.release_mode})`);
 if (releaseMode !== 'pending' && tag.release_mode !== releaseMode) {
   const upd = await call('PUT', `/plugins/${productId}/tags/${tag.id}.json`, { json: { release_mode: releaseMode } });
