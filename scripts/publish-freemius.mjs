@@ -4,7 +4,10 @@
    Signs requests the way Freemius' own PHP SDK does (developer scope):
      string_to_sign = METHOD \n CONTENT_MD5 \n CONTENT_TYPE \n DATE \n /v1/<path>
      Authorization: FS <dev_id>:<public_key>:<base64url(hex(hmac_sha256(secret)))>
-   CONTENT_MD5 is md5(json body) for JSON requests and empty for multipart.
+   CONTENT_MD5 is md5(json body) for JSON POST/PUT and empty for multipart.
+   Verified against Freemius.php in the PHP SDK: the signed path is the
+   canonical path WITHOUT the query string, and CONTENT_TYPE is
+   "application/json" for every non-upload request, GET included.
 
    Env (set as GitHub Actions secrets):
      FREEMIUS_DEV_ID, FREEMIUS_DEV_PUBLIC_KEY, FREEMIUS_DEV_SECRET_KEY
@@ -41,6 +44,7 @@ function authHeaders(method, canonPath, contentType, bodyForMd5) {
 
 async function call(method, relPath, { json, file, data } = {}) {
   const canonPath = `/v1/developers/${devId}${relPath}`;
+  const signedPath = canonPath.split('?')[0]; // the SDK signs the path without its query string
   let body, contentType, md5Body;
   if (file) {
     const boundary = '----' + randomBytes(12).toString('hex');
@@ -51,15 +55,14 @@ async function call(method, relPath, { json, file, data } = {}) {
     parts.push(fs.readFileSync(file));
     parts.push(Buffer.from(`\r\n--${boundary}--\r\n`));
     body = Buffer.concat(parts);
-  } else if (json) {
-    contentType = 'application/json';
-    md5Body = JSON.stringify(json);
-    body = md5Body;
   } else {
-    contentType = '';
+    contentType = 'application/json'; // also for GET — the SDK signs and sends it
+    if (json) {
+      md5Body = JSON.stringify(json);
+      body = md5Body;
+    }
   }
-  const headers = { ...authHeaders(method, canonPath, contentType, md5Body), Accept: 'application/json' };
-  if (contentType) headers['Content-Type'] = contentType;
+  const headers = { ...authHeaders(method, signedPath, contentType, md5Body), Accept: 'application/json', 'Content-Type': contentType };
   const res = await fetch(API + canonPath, { method, headers, body });
   const text = await res.text();
   let parsed; try { parsed = JSON.parse(text); } catch { parsed = { raw: text.slice(0, 500) }; }
