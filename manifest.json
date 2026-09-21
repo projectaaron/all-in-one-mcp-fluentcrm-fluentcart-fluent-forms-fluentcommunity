@@ -17,6 +17,7 @@
   "documentation": "https://github.com/projectaaron/fluentMCP#readme",
   "support": "https://github.com/projectaaron/fluentMCP/issues",
   "license": "MIT",
+  "icon": "icon.png",
   "keywords": [
     "wordpress",
     "fluentcrm",
