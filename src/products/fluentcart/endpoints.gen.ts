@@ -6,7 +6,7 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
     "accept_dispute": {
       "op": "orders/accept-dispute",
       "method": "POST",
-      "path": "/orders/{order}/transactions/{transaction_id}/accept-dispute/",
+      "path": "/orders/{order}/transactions/{transaction_id}/accept-dispute",
       "summary": "Accept Dispute",
       "destructive": true
     },
@@ -156,6 +156,80 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "path": "/orders/{order}/transactions/{transaction}/status",
       "summary": "Update Transaction Status",
       "destructive": false
+    },
+    "calculate_tax": {
+      "op": "orders/calculate-tax",
+      "method": "POST",
+      "path": "/orders/calculate-tax",
+      "summary": "Calculate Order Tax",
+      "destructive": false
+    },
+    "charge_now": {
+      "op": "orders/charge-now",
+      "method": "POST",
+      "path": "/orders/{order}/subscriptions/{subscription}/charge-now",
+      "summary": "Charge Subscription Now",
+      "destructive": true,
+      "bodyNote": "Charges the subscription's stored payment method immediately and creates a renewal order. Real money moves. Requires confirm:true."
+    },
+    "create_renewal_now": {
+      "op": "orders/create-renewal-now",
+      "method": "POST",
+      "path": "/orders/{order}/subscriptions/{subscription}/create-renewal",
+      "summary": "Create Renewal Now",
+      "destructive": true,
+      "bodyNote": "Creates the next renewal order/invoice now (and charges it where the gateway supports it). Requires confirm:true."
+    },
+    "get_renewal": {
+      "op": "orders/get-renewal",
+      "method": "GET",
+      "path": "/renewals/{id}",
+      "summary": "Get Renewal Invoice Details",
+      "destructive": false
+    },
+    "list_renewals": {
+      "op": "orders/list-renewals",
+      "method": "GET",
+      "path": "/renewals",
+      "summary": "List Renewal Invoices",
+      "destructive": false
+    },
+    "resend_renewal_invoice": {
+      "op": "orders/resend-renewal-invoice",
+      "method": "POST",
+      "path": "/renewals/{order}/resend",
+      "summary": "Resend Renewal Invoice Email",
+      "destructive": false
+    },
+    "skip_renewal": {
+      "op": "orders/skip-renewal",
+      "method": "POST",
+      "path": "/orders/{order}/subscriptions/{subscription}/skip-renewal",
+      "summary": "Skip Next Renewal Period",
+      "destructive": true,
+      "bodyNote": "Skips the subscription's next billing period — changes what the customer is charged. Requires confirm:true."
+    },
+    "sync_pending_transaction": {
+      "op": "orders/sync-pending-transaction",
+      "method": "POST",
+      "path": "/orders/{order}/transactions/{transaction}/sync",
+      "summary": "Sync Pending Transaction",
+      "destructive": false
+    },
+    "update_subscription_details": {
+      "op": "orders/update-subscription-details",
+      "method": "PUT",
+      "path": "/orders/{order}/subscriptions/{subscription}/update",
+      "summary": "Update Subscription",
+      "destructive": false
+    },
+    "void_renewal": {
+      "op": "orders/void-renewal",
+      "method": "POST",
+      "path": "/renewals/{order}/void",
+      "summary": "Void Renewal Invoice",
+      "destructive": true,
+      "bodyNote": "Voids a renewal invoice so it will not be collected. Requires confirm:true."
     }
   },
   "cart_products": {
@@ -353,6 +427,36 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/products/{postId}/tax-class",
       "summary": "Update Tax Class",
+      "destructive": false
+    },
+    "bulk_update_variants": {
+      "op": "products/bulk-update-variants",
+      "method": "POST",
+      "path": "/products/variants/bulk-update",
+      "summary": "Bulk Update Product Variants",
+      "destructive": true,
+      "bodyNote": "Rewrites fields on many variants at once. Prices are plain DOLLARS here (see cart_product_variants note). Requires confirm:true."
+    },
+    "group_bulk_update_variants": {
+      "op": "products/group-bulk-update-variants",
+      "method": "POST",
+      "path": "/products/variants/group-bulk-update",
+      "summary": "Group Bulk Update Variants",
+      "destructive": true,
+      "bodyNote": "Rewrites fields on every variant in the selected groups. Requires confirm:true."
+    },
+    "toggle_product_tax_exemption": {
+      "op": "products/toggle-product-tax-exemption",
+      "method": "POST",
+      "path": "/products/{postId}/tax-exempt",
+      "summary": "Toggle Product Tax Exempt",
+      "destructive": false
+    },
+    "update_variant_tax_exemption": {
+      "op": "products/update-variant-tax-exemption",
+      "method": "POST",
+      "path": "/products/variants/{variantId}/tax-exempt",
+      "summary": "Update Variant Tax Settings",
       "destructive": false
     }
   },
@@ -911,6 +1015,20 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "path": "/customer-profile/subscriptions/{subscription_uuid}/update-payment-method",
       "summary": "Update Payment Method",
       "destructive": false
+    },
+    "update_vendor_ids": {
+      "op": "subscriptions/update-vendor-ids",
+      "method": "PUT",
+      "path": "/orders/{order}/subscriptions/{subscription}/vendor-ids",
+      "summary": "Update Vendor IDs",
+      "destructive": false
+    },
+    "verify_vendor_ids": {
+      "op": "subscriptions/verify-vendor-ids",
+      "method": "POST",
+      "path": "/orders/{order}/subscriptions/{subscription}/verify-vendor-ids",
+      "summary": "Verify Vendor IDs",
+      "destructive": false
     }
   },
   "cart_tax": {
@@ -1209,6 +1327,34 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "path": "/shipping/zones/update-order",
       "summary": "Update Zone Order",
       "destructive": false
+    },
+    "get_shipping_class_profile": {
+      "op": "shipping/get-shipping-class-profile",
+      "method": "GET",
+      "path": "/shipping/classes/{id}/profile",
+      "summary": "Get Shipping Class Profile",
+      "destructive": false
+    },
+    "get_shipping_packages": {
+      "op": "shipping/get-shipping-packages",
+      "method": "GET",
+      "path": "/shipping/packages",
+      "summary": "Get Shipping Packages",
+      "destructive": false
+    },
+    "get_zone_countries": {
+      "op": "shipping/get-zone-countries",
+      "method": "GET",
+      "path": "/shipping/zone/countries",
+      "summary": "Get Countries By Continent",
+      "destructive": false
+    },
+    "save_shipping_packages": {
+      "op": "shipping/save-shipping-packages",
+      "method": "POST",
+      "path": "/shipping/packages",
+      "summary": "Save Shipping Packages",
+      "destructive": false
     }
   },
   "cart_settings": {
@@ -1426,6 +1572,71 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "path": "/settings/storage-drivers/verify-info",
       "summary": "Verify Storage Driver Connection",
       "destructive": false
+    },
+    "change_storage_driver_status": {
+      "op": "settings/change-storage-driver-status",
+      "method": "POST",
+      "path": "/settings/storage-drivers/change-status",
+      "summary": "Change Storage Driver Status",
+      "destructive": false
+    },
+    "create_storage_bucket": {
+      "op": "settings/create-storage-bucket",
+      "method": "POST",
+      "path": "/settings/storage-drivers/create-bucket",
+      "summary": "Create Storage Bucket",
+      "destructive": false
+    },
+    "get_mcp_config_snippets": {
+      "op": "settings/get-mcp-config-snippets",
+      "method": "GET",
+      "path": "/settings/mcp/config-snippets",
+      "summary": "Get MCP Config Snippets",
+      "destructive": false
+    },
+    "get_mcp_status": {
+      "op": "settings/get-mcp-status",
+      "method": "GET",
+      "path": "/settings/mcp",
+      "summary": "Get MCP Status",
+      "destructive": false
+    },
+    "install_mcp_adapter": {
+      "op": "settings/install-mcp-adapter",
+      "method": "POST",
+      "path": "/settings/mcp/install-adapter",
+      "summary": "Install MCP Adapter",
+      "destructive": true,
+      "bodyNote": "Installs and activates the WordPress MCP Adapter plugin on the site (adds and runs new code). Requires confirm:true."
+    },
+    "list_storage_buckets": {
+      "op": "settings/list-storage-buckets",
+      "method": "POST",
+      "path": "/settings/storage-drivers/bucket-list",
+      "summary": "List Storage Buckets",
+      "destructive": false
+    },
+    "reset_storage_driver_settings": {
+      "op": "settings/reset-storage-driver-settings",
+      "method": "POST",
+      "path": "/settings/storage-drivers/reset",
+      "summary": "Reset Storage Driver Settings",
+      "destructive": true
+    },
+    "toggle_mcp": {
+      "op": "settings/toggle-mcp",
+      "method": "POST",
+      "path": "/settings/mcp/toggle",
+      "summary": "Toggle MCP",
+      "destructive": true,
+      "bodyNote": "Enables/disables FluentCart's own MCP tools on the site — a second AI control surface. Requires confirm:true."
+    },
+    "verify_turnstile_keys": {
+      "op": "settings/verify-turnstile-keys",
+      "method": "POST",
+      "path": "/settings/modules/turnstile/verify",
+      "summary": "Verify Turnstile Keys",
+      "destructive": false
     }
   },
   "cart_email_notifications": {
@@ -1504,6 +1715,34 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "PUT",
       "path": "/email-notification/{notification}",
       "summary": "Update Notification",
+      "destructive": false
+    },
+    "get_digest_settings": {
+      "op": "email-notification/get-digest-settings",
+      "method": "GET",
+      "path": "/email-notification/digest-settings",
+      "summary": "Get Store Digest Settings",
+      "destructive": false
+    },
+    "save_digest_settings": {
+      "op": "email-notification/save-digest-settings",
+      "method": "POST",
+      "path": "/email-notification/digest-settings",
+      "summary": "Save Store Digest Settings",
+      "destructive": false
+    },
+    "send_digest_test": {
+      "op": "email-notification/send-digest-test",
+      "method": "POST",
+      "path": "/email-notification/digest-settings/send-test",
+      "summary": "Send Test Digest Email",
+      "destructive": false
+    },
+    "send_manual_reminder": {
+      "op": "email-notification/send-manual-reminder",
+      "method": "POST",
+      "path": "/email-notification/send-manual-reminder",
+      "summary": "Send Manual Reminder",
       "destructive": false
     }
   },
@@ -1811,25 +2050,11 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "summary": "Change Feed Status",
       "destructive": false
     },
-    "change_product_feed_status": {
-      "op": "integration/change-product-feed-status",
-      "method": "POST",
-      "path": "/products/{product_id}/integrations/feed/change-status",
-      "summary": "Change Product Feed Status",
-      "destructive": false
-    },
     "delete_feed": {
       "op": "integration/delete-feed",
       "method": "DELETE",
       "path": "/integration/global-feeds/{integration_id}",
       "summary": "Feed",
-      "destructive": true
-    },
-    "delete_product_integration": {
-      "op": "integration/delete-product-integration",
-      "method": "DELETE",
-      "path": "/products/{product_id}/integrations/{integration_id}",
-      "summary": "Product Integration Feed",
       "destructive": true
     },
     "get_dynamic_options": {
@@ -1867,13 +2092,6 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "summary": "Global Integration Settings",
       "destructive": false
     },
-    "get_product_integration_settings": {
-      "op": "integration/get-product-integration-settings",
-      "method": "GET",
-      "path": "/products/{product_id}/integrations/{integration_name}/settings",
-      "summary": "Product Integration Settings",
-      "destructive": false
-    },
     "install_addon_plugin": {
       "op": "integration/install-addon-plugin",
       "method": "POST",
@@ -1889,25 +2107,11 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "summary": "List Available Add-ons",
       "destructive": false
     },
-    "list_product_feeds": {
-      "op": "integration/list-product-feeds",
-      "method": "GET",
-      "path": "/products/{productId}/integrations",
-      "summary": "List Product Integration Feeds",
-      "destructive": false
-    },
     "save_feed_settings": {
       "op": "integration/save-feed-settings",
       "method": "POST",
       "path": "/integration/global-feeds/settings",
       "summary": "Save Feed Settings",
-      "destructive": false
-    },
-    "save_product_integration": {
-      "op": "integration/save-product-integration",
-      "method": "POST",
-      "path": "/products/{product_id}/integrations",
-      "summary": "Save Product Integration Feed",
       "destructive": false
     },
     "set_global_settings": {
@@ -1956,25 +2160,11 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
     }
   },
   "cart_labels_attributes": {
-    "change_term_sort_order": {
-      "op": "labels-attributes/change-term-sort-order",
-      "method": "POST",
-      "path": "/options/attr/group/{group_id}/term/{term_id}/serial",
-      "summary": "Change Term Sort Order",
-      "destructive": false
-    },
     "create_attribute_group": {
       "op": "labels-attributes/create-attribute-group",
       "method": "POST",
       "path": "/options/attr/group",
       "summary": "Create Attribute Group",
-      "destructive": false
-    },
-    "create_attribute_term": {
-      "op": "labels-attributes/create-attribute-term",
-      "method": "POST",
-      "path": "/options/attr/group/{group_id}/term",
-      "summary": "Create Attribute Term",
       "destructive": false
     },
     "create_label": {
@@ -2045,6 +2235,34 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/labels/update-label-selections",
       "summary": "Update Label Selections",
+      "destructive": false
+    },
+    "create_terms": {
+      "op": "labels-attributes/create-terms",
+      "method": "POST",
+      "path": "/options/attr/group/{group_id}/terms",
+      "summary": "Create Attribute Terms",
+      "destructive": false
+    },
+    "get_attribute_library": {
+      "op": "labels-attributes/get-attribute-library",
+      "method": "GET",
+      "path": "/options/attr/groups/library",
+      "summary": "Get Attribute Groups Library",
+      "destructive": false
+    },
+    "reorder_groups": {
+      "op": "labels-attributes/reorder-groups",
+      "method": "POST",
+      "path": "/options/attr/groups/reorder",
+      "summary": "Reorder Attribute Groups",
+      "destructive": false
+    },
+    "reorder_terms": {
+      "op": "labels-attributes/reorder-terms",
+      "method": "POST",
+      "path": "/options/attr/group/{group_id}/terms/reorder",
+      "summary": "Reorder Attribute Terms",
       "destructive": false
     }
   },
@@ -2202,6 +2420,49 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "path": "/app/upload-attachments",
       "summary": "Upload Attachment",
       "destructive": false
+    },
+    "run_data_backfills": {
+      "op": "dashboard/run-data-backfills",
+      "method": "POST",
+      "path": "/data-backfills/run",
+      "summary": "Run Pending Data Backfills",
+      "destructive": true,
+      "bodyNote": "Runs pending data migrations/backfills over the store's tables. Take a backup first. Requires confirm:true."
+    },
+    "save_onboarding_tax_settings": {
+      "op": "dashboard/save-onboarding-tax-settings",
+      "method": "POST",
+      "path": "/onboarding/save-tax",
+      "summary": "Save Onboarding Tax Settings",
+      "destructive": false
+    },
+    "create_saved_view": {
+      "op": "saved-views/create-saved-view",
+      "method": "POST",
+      "path": "/saved-views",
+      "summary": "Create Saved View",
+      "destructive": false
+    },
+    "delete_saved_view": {
+      "op": "saved-views/delete-saved-view",
+      "method": "DELETE",
+      "path": "/saved-views/{id}",
+      "summary": "Delete Saved View",
+      "destructive": true
+    },
+    "list_saved_views": {
+      "op": "saved-views/list-saved-views",
+      "method": "GET",
+      "path": "/saved-views",
+      "summary": "List Saved Views",
+      "destructive": false
+    },
+    "update_saved_view": {
+      "op": "saved-views/update-saved-view",
+      "method": "PUT",
+      "path": "/saved-views/{id}",
+      "summary": "Update Saved View",
+      "destructive": false
     }
   },
   "cart_storefront": {
@@ -2296,16 +2557,9 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
     "dashboard_overview": {
       "op": "customer-profile/dashboard-overview",
       "method": "GET",
-      "path": "/customer-profile/",
+      "path": "/customer-profile",
       "summary": "Dashboard Overview",
       "destructive": false
-    },
-    "delete_address_checkout": {
-      "op": "customer-profile/delete-address-checkout",
-      "method": "DELETE",
-      "path": "/customers/{customerId}/address",
-      "summary": "Delete Address (Checkout)",
-      "destructive": true
     },
     "delete_profile_address": {
       "op": "customer-profile/delete-profile-address",
@@ -2313,20 +2567,6 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "path": "/customer-profile/delete-address",
       "summary": "Delete Profile Address",
       "destructive": true
-    },
-    "get_customer_details": {
-      "op": "customer-profile/get-customer-details",
-      "method": "GET",
-      "path": "/customers/{customerId}",
-      "summary": "Get Customer Details",
-      "destructive": false
-    },
-    "get_customer_orders": {
-      "op": "customer-profile/get-customer-orders",
-      "method": "GET",
-      "path": "/customers/{customerId}/orders",
-      "summary": "Get Customer Orders",
-      "destructive": false
     },
     "get_order_details": {
       "op": "customer-profile/get-order-details",
@@ -2391,27 +2631,6 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "summary": "Select Address for Checkout",
       "destructive": false
     },
-    "set_address_as_primary": {
-      "op": "customer-profile/set-address-as-primary",
-      "method": "POST",
-      "path": "/customers/{customerId}/address/make-primary",
-      "summary": "Set Address as Primary",
-      "destructive": false
-    },
-    "update_address_checkout": {
-      "op": "customer-profile/update-address-checkout",
-      "method": "PUT",
-      "path": "/customers/{customerId}/address",
-      "summary": "Update Address (Checkout)",
-      "destructive": false
-    },
-    "update_customer_details": {
-      "op": "customer-profile/update-customer-details",
-      "method": "PUT",
-      "path": "/customers/{customerId}",
-      "summary": "Update Customer Details",
-      "destructive": false
-    },
     "update_profile_address": {
       "op": "customer-profile/update-profile-address",
       "method": "POST",
@@ -2424,6 +2643,28 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/customer-profile/update",
       "summary": "Update Profile Details",
+      "destructive": false
+    },
+    "get_portal_sections": {
+      "op": "customer-profile/get-portal-sections",
+      "method": "GET",
+      "path": "/customer-profile/sections",
+      "summary": "Get Portal Sections",
+      "destructive": false
+    },
+    "pause_subscription": {
+      "op": "customer-profile/pause-subscription",
+      "method": "POST",
+      "path": "/customer-profile/subscriptions/{subscription_uuid}/pause",
+      "summary": "Pause Subscription",
+      "destructive": true,
+      "bodyNote": "Pauses the customer's subscription (stops renewals until resumed). Acts as the configured user's customer profile. Requires confirm:true."
+    },
+    "resume_subscription": {
+      "op": "customer-profile/resume-subscription",
+      "method": "POST",
+      "path": "/customer-profile/subscriptions/{subscription_uuid}/resume",
+      "summary": "Resume Subscription",
       "destructive": false
     }
   },
@@ -2498,32 +2739,11 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "summary": "Get License Activations",
       "destructive": false
     },
-    "get_license_chart": {
-      "op": "licensing/get-license-chart",
-      "method": "GET",
-      "path": "/reports/license-chart",
-      "summary": "Get License Line Chart",
-      "destructive": false
-    },
     "get_license_details": {
       "op": "licensing/get-license-details",
       "method": "GET",
       "path": "/licensing/licenses/{id}",
       "summary": "Get License Details",
-      "destructive": false
-    },
-    "get_license_pie_chart": {
-      "op": "licensing/get-license-pie-chart",
-      "method": "GET",
-      "path": "/reports/license-pie-chart",
-      "summary": "Get License Pie Chart",
-      "destructive": false
-    },
-    "get_license_summary": {
-      "op": "licensing/get-license-summary",
-      "method": "GET",
-      "path": "/reports/license-summary",
-      "summary": "Get License Summary",
       "destructive": false
     },
     "get_plugin_license_status": {
@@ -2621,6 +2841,20 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "path": "/licensing/licenses/{id}/update_status",
       "summary": "Update License Status",
       "destructive": false
+    },
+    "get_license_site": {
+      "op": "licensing/get-license-site",
+      "method": "GET",
+      "path": "/licensing/sites/{id}",
+      "summary": "Get License Site",
+      "destructive": false
+    },
+    "list_license_sites": {
+      "op": "licensing/list-license-sites",
+      "method": "GET",
+      "path": "/licensing/sites",
+      "summary": "List License Sites",
+      "destructive": false
     }
   },
   "cart_roles": {
@@ -2637,13 +2871,6 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "path": "/roles/{key}",
       "summary": "Delete Role Assignment",
       "destructive": true
-    },
-    "get_permissions": {
-      "op": "roles-permissions/get-permissions",
-      "method": "GET",
-      "path": "/settings/permissions",
-      "summary": "Get Permissions",
-      "destructive": false
     },
     "get_role": {
       "op": "roles-permissions/get-role",
@@ -2665,14 +2892,6 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "path": "/roles",
       "summary": "List Roles",
       "destructive": false
-    },
-    "save_permissions": {
-      "op": "roles-permissions/save-permissions",
-      "method": "POST",
-      "path": "/settings/permissions",
-      "summary": "Save Permissions",
-      "destructive": true,
-      "bodyNote": "Privilege/code change: Rewrites who may manage the store. Requires confirm:true."
     },
     "search_users": {
       "op": "roles-permissions/search-users",
@@ -2723,6 +2942,188 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "PUT",
       "path": "/order_bump/{id}",
       "summary": "Update Order Bump",
+      "destructive": false
+    }
+  },
+  "cart_inventory": {
+    "bulk_update_stock": {
+      "op": "inventory/bulk-update-stock",
+      "method": "POST",
+      "path": "/inventory/bulk-update",
+      "summary": "Bulk Update Stock",
+      "destructive": true,
+      "bodyNote": "Rewrites stock levels for many variants in one call. Read cart_inventory_list first. Requires confirm:true."
+    },
+    "export_inventory": {
+      "op": "inventory/export-inventory",
+      "method": "POST",
+      "path": "/inventory/export",
+      "summary": "Export Inventory",
+      "destructive": false
+    },
+    "get_adjustment_history": {
+      "op": "inventory/get-adjustment-history",
+      "method": "GET",
+      "path": "/inventory/adjustment-history",
+      "summary": "Get Adjustment History",
+      "destructive": false
+    },
+    "get_inventory_stats": {
+      "op": "inventory/get-inventory-stats",
+      "method": "GET",
+      "path": "/inventory/stats",
+      "summary": "Get Inventory Stats",
+      "destructive": false
+    },
+    "list_inventory": {
+      "op": "inventory/list-inventory",
+      "method": "GET",
+      "path": "/inventory",
+      "summary": "List Inventory",
+      "destructive": false
+    },
+    "update_stock": {
+      "op": "inventory/update-stock",
+      "method": "POST",
+      "path": "/inventory/update-stock",
+      "summary": "Update Stock",
+      "destructive": false
+    }
+  },
+  "cart_data_export": {
+    "export_customers_batch": {
+      "op": "data-export/export-customers-batch",
+      "method": "POST",
+      "path": "/data-export/customers/batch",
+      "summary": "Export Customers Batch",
+      "destructive": false
+    },
+    "export_licenses_batch": {
+      "op": "data-export/export-licenses-batch",
+      "method": "POST",
+      "path": "/data-export/licenses/batch",
+      "summary": "Export Licenses Batch",
+      "destructive": false
+    },
+    "export_orders_batch": {
+      "op": "data-export/export-orders-batch",
+      "method": "POST",
+      "path": "/data-export/orders/batch",
+      "summary": "Export Orders Batch",
+      "destructive": false
+    },
+    "export_subscriptions_batch": {
+      "op": "data-export/export-subscriptions-batch",
+      "method": "POST",
+      "path": "/data-export/subscriptions/batch",
+      "summary": "Export Subscriptions Batch",
+      "destructive": false
+    },
+    "get_customers_export_schema": {
+      "op": "data-export/get-customers-export-schema",
+      "method": "GET",
+      "path": "/data-export/customers/schema",
+      "summary": "Get Customers Export Schema",
+      "destructive": false
+    },
+    "get_licenses_export_schema": {
+      "op": "data-export/get-licenses-export-schema",
+      "method": "GET",
+      "path": "/data-export/licenses/schema",
+      "summary": "Get Licenses Export Schema",
+      "destructive": false
+    },
+    "get_orders_export_schema": {
+      "op": "data-export/get-orders-export-schema",
+      "method": "GET",
+      "path": "/data-export/orders/schema",
+      "summary": "Get Orders Export Schema",
+      "destructive": false
+    },
+    "get_subscriptions_export_schema": {
+      "op": "data-export/get-subscriptions-export-schema",
+      "method": "GET",
+      "path": "/data-export/subscriptions/schema",
+      "summary": "Get Subscriptions Export Schema",
+      "destructive": false
+    }
+  },
+  "cart_pdf_templates": {
+    "create_pdf_template": {
+      "op": "pdf-templates/create-pdf-template",
+      "method": "POST",
+      "path": "/settings/pdf-templates/create",
+      "summary": "Create PDF Template",
+      "destructive": false
+    },
+    "delete_pdf_template": {
+      "op": "pdf-templates/delete-pdf-template",
+      "method": "DELETE",
+      "path": "/settings/pdf-templates/delete/{template_id}",
+      "summary": "Delete PDF Template",
+      "destructive": true
+    },
+    "download_pdf_preview": {
+      "op": "pdf-templates/download-pdf-preview",
+      "method": "POST",
+      "path": "/settings/pdf-templates/download",
+      "summary": "Download PDF Preview",
+      "destructive": false
+    },
+    "get_factory_default_templates": {
+      "op": "pdf-templates/get-factory-default-templates",
+      "method": "GET",
+      "path": "/settings/pdf-templates/factory-default",
+      "summary": "Get Factory Default Templates",
+      "destructive": false
+    },
+    "get_pdf_status": {
+      "op": "pdf-templates/get-pdf-status",
+      "method": "GET",
+      "path": "/settings/pdf-templates/status",
+      "summary": "Get PDF Status",
+      "destructive": false
+    },
+    "get_pdf_template": {
+      "op": "pdf-templates/get-pdf-template",
+      "method": "GET",
+      "path": "/settings/pdf-templates/receipt/{template_id}",
+      "summary": "Get PDF Template",
+      "destructive": false
+    },
+    "get_saved_templates": {
+      "op": "pdf-templates/get-saved-templates",
+      "method": "GET",
+      "path": "/settings/pdf-templates/saved",
+      "summary": "Get Saved Templates",
+      "destructive": false
+    },
+    "get_seller_details": {
+      "op": "pdf-templates/get-seller-details",
+      "method": "GET",
+      "path": "/settings/pdf-templates/seller-details",
+      "summary": "Get Seller Details",
+      "destructive": false
+    },
+    "list_pdf_templates": {
+      "op": "pdf-templates/list-pdf-templates",
+      "method": "GET",
+      "path": "/settings/pdf-templates/receipt",
+      "summary": "List PDF Templates",
+      "destructive": false
+    },
+    "save_pdf_template": {
+      "op": "pdf-templates/save-pdf-template",
+      "method": "POST",
+      "path": "/settings/pdf-templates/receipt/{template_id}",
+      "summary": "Save PDF Template",
+      "destructive": false
+    },
+    "save_seller_details": {
+      "op": "pdf-templates/save-seller-details",
+      "method": "POST",
+      "path": "/settings/pdf-templates/seller-details",
+      "summary": "Save Seller Details",
       "destructive": false
     }
   }
@@ -2778,7 +3179,7 @@ export const TOOL_META: Record<string, { description: string; note?: string; ide
     "description": "Manage store labels and product attribute groups and their terms."
   },
   "cart_utilities": {
-    "description": "Store utilities: dashboard stats and onboarding, activity log, order notes, print templates, country data, filter options, and retention snapshots."
+    "description": "Store utilities: dashboard stats and onboarding, activity log, order notes, print templates, country data, filter options, and retention snapshots; saved list views (filters) for the admin UI."
   },
   "cart_storefront": {
     "description": "Read-only public storefront data: published products, rendered product listings, and product search — no authentication required."
@@ -2799,5 +3200,16 @@ export const TOOL_META: Record<string, { description: string; note?: string; ide
   },
   "cart_order_bumps": {
     "description": "Manage checkout order bumps: list, create, update, and delete (FluentCart Pro)."
+  },
+  "cart_inventory": {
+    "description": "Stock across all products and variants: list and stats, single and bulk stock updates, adjustment history, and inventory export.",
+    "note": "bulk_update_stock rewrites stock levels for many variants in one call and is confirm-gated; update_stock changes one."
+  },
+  "cart_data_export": {
+    "description": "Batch data exports of customers, orders, subscriptions and licenses, plus the export schema (available columns) for each.",
+    "note": "Exports are paged batches: read the schema first, then call the batch export repeatedly with the offset it returns."
+  },
+  "cart_pdf_templates": {
+    "description": "PDF receipt/invoice templates: list, get, save and delete templates, factory defaults, PDF engine status, preview download, and the seller details printed on documents."
   }
 };

@@ -117,7 +117,8 @@
     "crm_settings": {
       "description": "Read or update FluentCRM settings such as double opt-in, business info, email preferences, compliance, and experimental features.",
       "groups": [
-        "settings"
+        "settings",
+        "mcp"
       ]
     },
     "crm_settings_pro": {
@@ -127,15 +128,29 @@
       ]
     },
     "crm_utilities": {
-      "description": "Administrative utilities: import contacts from CSV or WordPress users, migrate from other tools, list WordPress users and roles, browse in-app docs, and receive bounce webhooks.",
+      "description": "Administrative utilities: import contacts from CSV or WordPress users, export contacts, migrate from other tools, list WordPress users and roles, browse in-app docs, and receive bounce webhooks.",
       "groups": [
         "import",
         "migrators",
         "users",
         "docs",
-        "public-bounce"
+        "public-bounce",
+        "export"
       ],
       "note": "The two handle_bounce actions are webhook receivers meant to be called by email services, not by API clients."
+    },
+    "crm_ai": {
+      "description": "FluentCRM's AI assistant: generate or rewrite text and email bodies, summarize a contact, list provider models, and manage the AI provider settings and connection test.",
+      "groups": [
+        "ai"
+      ],
+      "note": "Generation calls are billed by your configured AI provider. save_settings stores the provider API key on the site."
+    },
+    "crm_email_patterns": {
+      "description": "Reusable email content patterns and their categories: list, create (incl. from wp_block payloads), update, delete, and bulk actions.",
+      "groups": [
+        "email-patterns"
+      ]
     }
   },
   "operationOverrides": {
@@ -197,6 +212,29 @@
     "pro-settings/update-manager": {
       "destructive": true,
       "bodyNote": "Privilege/code change: Changes a manager's permissions. Requires confirm:true."
+    },
+    "settings/repair-db-indexes": {
+      "destructive": true,
+      "bodyNote": "Rewrites database indexes on the FluentCRM tables. Run get_db_index_health first; requires confirm:true."
+    },
+    "mcp/install-mcp-adapter": {
+      "destructive": true,
+      "bodyNote": "Installs and activates the WordPress MCP Adapter plugin on the site (adds and runs new code). Requires confirm:true."
+    },
+    "mcp/toggle-mcp": {
+      "destructive": true,
+      "bodyNote": "Enables/disables FluentCRM's own MCP tools on the site — a second AI control surface. Requires confirm:true."
+    },
+    "email-patterns/bulk-action-email-patterns": {
+      "destructive": true,
+      "bodyNote": "Bulk delete of email patterns by id list. Requires confirm:true."
+    },
+    "export/export-contacts-page": {
+      "toolName": "crm_utilities_export_contacts",
+      "bodyNote": "Returns one page of the contact export (paged by page/per_page in the body; filters mirror crm_contacts_list). Loop pages to export everything."
+    },
+    "export/export-contacts-page-get": {
+      "toolName": "crm_utilities_export_contacts_get"
     }
   }
 }
