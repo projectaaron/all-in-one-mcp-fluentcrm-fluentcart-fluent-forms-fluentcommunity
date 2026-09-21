@@ -1,4 +1,4 @@
-# All-In-One MCP for Fluent Suite
+# All-In-One MCP for Fluent Suite: FluentCRM, FluentCart, Fluent Forms, FluentCommunity & WP Social Ninja
 
 [![Sponsored by upfluent.io](https://img.shields.io/badge/sponsored%20by-upfluent.io-2563eb)](https://upfluent.io)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
@@ -96,7 +96,7 @@ Three ways to run it — pick by where you want to use your assistant:
    from the [Releases](../../releases) page, or build it yourself:
 
    ```bash
-   git clone https://github.com/projectaaron/fluentMCP.git
+   git clone https://github.com/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity.git
    cd fluentMCP
    npm install
    npm run pack:extension      # produces fluentmcp.mcpb
@@ -111,8 +111,8 @@ Three ways to run it — pick by where you want to use your assistant:
 ### B — Any MCP client (config file)
 
 ```bash
-git clone https://github.com/projectaaron/fluentMCP.git
-cd fluentMCP
+git clone https://github.com/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity.git
+cd all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity
 npm install && npm run build
 cp .env.example .env        # fill in FLUENT_SITE_URL, FLUENT_API_USERNAME, FLUENT_API_PASSWORD
 ```
@@ -124,7 +124,7 @@ cp .env.example .env        # fill in FLUENT_SITE_URL, FLUENT_API_USERNAME, FLUE
   "mcpServers": {
     "fluentmcp": {
       "command": "node",
-      "args": ["--env-file=/absolute/path/to/fluentMCP/.env", "/absolute/path/to/fluentMCP/dist/index.js"]
+      "args": ["--env-file=/absolute/path/to/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity/.env", "/absolute/path/to/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity/dist/index.js"]
     }
   }
 }

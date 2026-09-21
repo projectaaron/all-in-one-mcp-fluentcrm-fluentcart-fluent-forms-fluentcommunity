@@ -40,7 +40,7 @@ stay in sync, and add a line to `CHANGELOG.md` under the next version.
 4. Every release also uploads two fixed-name copies,
    `all-in-one-mcp-for-fluent-suite-latest.zip` and `fluentmcp-latest.mcpb`,
    so these URLs always serve the newest version:
-   `https://github.com/projectaaron/fluentMCP/releases/latest/download/all-in-one-mcp-for-fluent-suite-latest.zip`
+   `https://github.com/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity/releases/latest/download/all-in-one-mcp-for-fluent-suite-latest.zip`
    and `.../fluentmcp-latest.mcpb`. The Freemius product (39849, type
    "Apps & Software") hands out the first one through its **Download Links**
    setting; Freemius has no version upload for app products, so nothing on

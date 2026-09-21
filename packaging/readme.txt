@@ -2,7 +2,7 @@
 Version: {{VERSION}}
 License: MIT
 Homepage: https://upfluent.io
-Source and issues: https://github.com/projectaaron/fluentMCP
+Source and issues: https://github.com/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity
 
 Connect Claude to FluentCRM, FluentCart, Fluent Forms, FluentCommunity and
 WP Social Ninja on your WordPress site: every documented REST endpoint as an
@@ -32,7 +32,7 @@ Products you do not have installed are simply switched off.
 == Other clients (Claude Code, Cursor, claude.ai on web/mobile) ==
 
 Those installs use the source repository instead of this extension:
-https://github.com/projectaaron/fluentMCP#install
+https://github.com/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity#install
 
 == Safety ==
 

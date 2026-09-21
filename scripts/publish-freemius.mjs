@@ -82,7 +82,7 @@ try {
   if (String(e.message).includes('app_deployment_not_supported')) {
     console.log('Freemius does not accept version uploads for "Apps & Software" products yet.');
     console.log('Nothing to do: the product\'s Download Link points at the fixed-name release asset, which this release already refreshed:');
-    console.log('  https://github.com/projectaaron/fluentMCP/releases/latest/download/all-in-one-mcp-for-fluent-suite-latest.zip');
+    console.log('  https://github.com/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity/releases/latest/download/all-in-one-mcp-for-fluent-suite-latest.zip');
     process.exit(0);
   }
   throw e;
