@@ -85,7 +85,7 @@ with that same shape guidance — instead of letting the plugin fail on an
 opaque SQL error.
 
 **Grouped fallback.** `FLUENT_TOOL_MODE=grouped` serves the legacy surface —
-one tool per area (72 total) with an `action` enum parameter — for MCP
+one tool per area (73 total) with an `action` enum parameter — for MCP
 clients that can't handle a large tool list. Same specs, same handlers, same
 gating; only the registration differs (`src/core/tool-factory.ts` vs
 `src/core/action-tools.ts`, both funneling into a shared `executeAction`).
