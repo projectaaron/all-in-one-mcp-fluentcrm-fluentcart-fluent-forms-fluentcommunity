@@ -5,8 +5,11 @@ the forms, the community — through one safe, complete
 [MCP](https://modelcontextprotocol.io) server.
 
 fluentMCP connects Claude (or any MCP client) to the WPManageNinja plugin
-suite on your WordPress site: **FluentCRM**, **FluentCart**, **Fluent Forms**,
-**FluentCommunity**, and **WP Social Ninja**. Every one of their **1,191
+suite on your WordPress site: **[FluentCRM](https://fluentcrm.com/?ref=4618)**,
+**[FluentCart](https://fluentcart.com/?by=272)**,
+**[Fluent Forms](https://fluentforms.com/?ref=4618)**,
+**[FluentCommunity](https://fluentcommunity.co/?ref=4618)**, and
+**[WP Social Ninja](https://wpsocialninja.com/?ref=4618)**. Every one of their **1,191
 documented REST endpoints** is its own clearly named tool
 (`crm_contacts_list`, `cart_orders_refund`, `forms_submissions_list`,
 `community_spaces_list`, …), a built-in `tool_map` answers "which tool do I
@@ -42,15 +45,20 @@ project. WPManageNinja also ships its own first-party MCP via
 - [Troubleshooting](#troubleshooting)
 - [Security model](#security-model)
 - [Development](#development)
+- [Support this project](#support-this-project)
 - [License](#license)
 
 ---
 
 ## Requirements
 
-- A WordPress site running one or more of: FluentCRM, FluentCart, Fluent
-  Forms, FluentCommunity, WP Social Ninja (free or Pro — Pro-only endpoints
-  simply return 404 without the Pro plugin).
+- A WordPress site running one or more of
+  [FluentCRM](https://fluentcrm.com/?ref=4618),
+  [FluentCart](https://fluentcart.com/?by=272),
+  [Fluent Forms](https://fluentforms.com/?ref=4618),
+  [FluentCommunity](https://fluentcommunity.co/?ref=4618),
+  [WP Social Ninja](https://wpsocialninja.com/?ref=4618) (free or Pro —
+  Pro-only endpoints simply return 404 without the Pro plugin).
 - A WordPress user with admin (or the plugin's manager) capabilities, and an
   **Application Password** for that user: *WP Admin → Users → your user →
   Application Passwords → Add New*. One password covers every product.
@@ -263,7 +271,7 @@ schemas in [`docs/api-reference/`](docs/api-reference/).
 | `verify_setup` | Checks site URL, each product's credentials and plugin, one harmless read per product |
 | `wp_media_upload_from_url` / `wp_media_get` / `wp_media_list` | The WordPress media library; sideload an image from a URL and get the attachment ID |
 
-### FluentCRM — `crm_*` (21 areas, 322 tools)
+### [FluentCRM](https://fluentcrm.com/?ref=4618) — `crm_*` (21 areas, 322 tools)
 
 | Area | What it manages |
 |------|-----------------|
@@ -282,7 +290,7 @@ absolute from enrolment, a common surprise); `crm_sequences_validate` lints
 timing configuration; `crm_sequences_bulk_update_emails` updates many emails
 in one call with per-row verification.
 
-### FluentCart — `cart_*` (22 areas, 381 tools)
+### [FluentCart](https://fluentcart.com/?by=272) — `cart_*` (22 areas, 381 tools)
 
 | Area | What it manages |
 |------|-----------------|
@@ -293,7 +301,7 @@ in one call with per-row verification.
 | `cart_reports` · `cart_utilities` · `cart_storefront` | Analytics, dashboard, public storefront |
 | `cart_checkout` · `cart_customer_portal` | Customer-session endpoints — need a browser cookie, mostly rejected under admin credentials ([why](docs/api-reference/auth.md)) |
 
-### Fluent Forms — `forms_*` (7 areas, 91 tools)
+### [Fluent Forms](https://fluentforms.com/?ref=4618) — `forms_*` (7 areas, 91 tools)
 
 | Area | What it manages |
 |------|-----------------|
@@ -304,7 +312,7 @@ in one call with per-row verification.
 | `forms_reports` | Read-only analytics |
 | `forms_admin` · `forms_utilities` | Global settings, licensing, managers, roles, logs, search |
 
-### FluentCommunity — `community_*` (8 areas, 274 tools)
+### [FluentCommunity](https://fluentcommunity.co/?ref=4618) — `community_*` (8 areas, 274 tools)
 
 | Area | What it manages |
 |------|-----------------|
@@ -320,7 +328,7 @@ in one call with per-row verification.
 > commenting, joining, messaging. Under an admin credential that is the
 > admin's own persona, publicly. See [auth.md](docs/api-reference/auth.md).
 
-### WP Social Ninja — `social_*` (9 areas, 126 tools)
+### [WP Social Ninja](https://wpsocialninja.com/?ref=4618) — `social_*` (9 areas, 126 tools)
 
 | Area | What it manages |
 |------|-----------------|
@@ -394,6 +402,29 @@ Design rationale: [`docs/TOOL_DESIGN.md`](docs/TOOL_DESIGN.md) ·
 Decision log: [`docs/DECISIONS.md`](docs/DECISIONS.md) ·
 Adding a product: [`docs/EXTENDING.md`](docs/EXTENDING.md) ·
 Contributing: [`CONTRIBUTING.md`](CONTRIBUTING.md)
+
+## Support this project
+
+fluentMCP is free and MIT-licensed, and will stay that way. If it saves you
+time, three things help keep it maintained:
+
+- **Buy the plugins through the links in this README.** The FluentCRM,
+  FluentCart, Fluent Forms, FluentCommunity and WP Social Ninja links above
+  are affiliate links: you pay the same price, and WPManageNinja pays the
+  maintainer a referral commission. That is the main way this project earns
+  anything. The same applies to the rest of their suite if you need it:
+  [Fluent Support](https://fluentsupport.com/?ref=4618),
+  [FluentBooking](https://fluentbooking.com/?ref=4618),
+  [FluentBoards](https://fluentboards.com/?ref=4618),
+  [Paymattic](https://paymattic.com/?ref=4618),
+  [Ninja Tables](https://ninjatables.com/?ref=4618),
+  [FluentAffiliate](https://fluentaffiliate.com/?ref=4618),
+  [FluentPlayer](https://fluentplayer.com/?ref=4618),
+  [AzonPress](https://azonpress.com/?ref=4618).
+- **Sponsor** via the *Sponsor* button at the top of the repository.
+- **Star the repo and report what breaks.** Field reports with a tool name
+  and the response you got are how most of the plugin-quirk guards in
+  `docs/DECISIONS.md` were found.
 
 ## License
 
