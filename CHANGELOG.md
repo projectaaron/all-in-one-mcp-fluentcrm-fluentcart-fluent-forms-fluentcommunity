@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.1.2 — 2026-09-21
+
+- Extension icon: bone four-point star with an up arrow and a comet trail of
+  stars on the site's black tile (`icon.svg`/`icon.png`, referenced by the
+  manifest, so Claude Desktop shows it).
+- Releases now also produce `all-in-one-mcp-for-fluent-suite-<version>.zip`
+  (the `.mcpb` plus a plain-text install readme and the license) and publish
+  it to the Freemius product automatically.
+
 ## 1.1.1 — 2026-09-21
 
 - **Renamed** to **All-In-One MCP for Fluent Suite**. Human-facing names only:
