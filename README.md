@@ -3,6 +3,7 @@
 [![Sponsored by upfluent.io](https://img.shields.io/badge/sponsored%20by-upfluent.io-2563eb)](https://upfluent.io)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Tools](https://img.shields.io/badge/tools-1%2C290-informational)](docs/TOOL_MAP.md)
+[![Latest release](https://img.shields.io/github/v/release/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity?label=download)](https://github.com/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity/releases/latest)
 
 **Let your AI assistant run your WordPress business** — the CRM, the store,
 the forms, the community — through one safe, complete
