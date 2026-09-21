@@ -11,11 +11,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/projectaaron/fluentMCP"
+    "url": "https://github.com/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity"
   },
   "homepage": "https://upfluent.io",
-  "documentation": "https://github.com/projectaaron/fluentMCP#readme",
-  "support": "https://github.com/projectaaron/fluentMCP/issues",
+  "documentation": "https://github.com/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity#readme",
+  "support": "https://github.com/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity/issues",
   "license": "MIT",
   "icon": "icon.png",
   "keywords": [
