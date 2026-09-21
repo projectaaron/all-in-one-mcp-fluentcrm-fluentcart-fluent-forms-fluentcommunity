@@ -5,11 +5,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/projectaaron/fluentMCP.git"
+    "url": "git+https://github.com/projectaaron/mcp-for-complete-fluent-suite.git"
   },
-  "homepage": "https://github.com/projectaaron/fluentMCP#readme",
+  "homepage": "https://github.com/projectaaron/mcp-for-complete-fluent-suite#readme",
   "bugs": {
-    "url": "https://github.com/projectaaron/fluentMCP/issues"
+    "url": "https://github.com/projectaaron/mcp-for-complete-fluent-suite/issues"
   },
   "author": "projectaaron",
   "keywords": [
