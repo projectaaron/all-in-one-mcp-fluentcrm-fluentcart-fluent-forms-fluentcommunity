@@ -1,6 +1,4 @@
-# Shows the "Sponsor" button on the repository once the account is enrolled
-# at https://github.com/sponsors. Add other platforms as needed, e.g.
-#   ko_fi: your-handle
-#   buy_me_a_coffee: your-handle
-#   custom: ["https://paypal.me/your-handle"]
+# Sponsor button. GitHub Sponsors shows once the account is enrolled at
+# https://github.com/sponsors; the custom link shows immediately.
 github: projectaaron
+custom: ["https://upfluent.io"]
