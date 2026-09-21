@@ -64,8 +64,8 @@ jobs:
         run: |
           node scripts/pack-download.mjs "fluentmcp-${VERSION}.mcpb"
           # Fixed-name copies so one URL always serves the newest version:
-          #   https://github.com/projectaaron/fluentMCP/releases/latest/download/all-in-one-mcp-for-fluent-suite-latest.zip
-          #   https://github.com/projectaaron/fluentMCP/releases/latest/download/fluentmcp-latest.mcpb
+          #   https://github.com/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity/releases/latest/download/all-in-one-mcp-for-fluent-suite-latest.zip
+          #   https://github.com/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity/releases/latest/download/fluentmcp-latest.mcpb
           # (Freemius "Download Links" and upfluent.io point at these.)
           cp "all-in-one-mcp-for-fluent-suite-${VERSION}.zip" all-in-one-mcp-for-fluent-suite-latest.zip
           cp "fluentmcp-${VERSION}.mcpb" fluentmcp-latest.mcpb

@@ -5,11 +5,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/projectaaron/fluentMCP.git"
+    "url": "git+https://github.com/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity.git"
   },
-  "homepage": "https://github.com/projectaaron/fluentMCP#readme",
+  "homepage": "https://github.com/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity#readme",
   "bugs": {
-    "url": "https://github.com/projectaaron/fluentMCP/issues"
+    "url": "https://github.com/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity/issues"
   },
   "author": "projectaaron",
   "keywords": [
