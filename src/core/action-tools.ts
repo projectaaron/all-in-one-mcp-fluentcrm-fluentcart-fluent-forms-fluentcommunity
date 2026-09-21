@@ -9,6 +9,7 @@ import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import {
   errResult,
   executeAction,
+  withDiagnostics,
   isListAction,
   lockedRefusal,
   placeholdersOf,
@@ -241,7 +242,7 @@ type ActionArgs = Record<string, unknown> & {
 export function makeActionHandler(spec: ToolSpec, action: string, runtime: ToolRuntime, label: string) {
   const def = spec.actions[action];
   const placeholders = placeholdersOf(def.path);
-  return async (args: ActionArgs) => {
+  return (args: ActionArgs) => withDiagnostics(runtime, def, label, async () => {
     if (runtime.lockedTools?.has(label)) return lockedRefusal(label);
     const path_params: Record<string, string | number> = {};
     for (const p of placeholders) {
@@ -274,7 +275,7 @@ export function makeActionHandler(spec: ToolSpec, action: string, runtime: ToolR
       if_unmodified_since: args.if_unmodified_since,
     };
     return executeAction(def, action, toolArgs, runtime, label, spec);
-  };
+  });
 }
 
 /** Register every action of a spec as its own tool. Returns the tool names. */

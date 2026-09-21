@@ -1,7 +1,7 @@
 # Tool map
 
 The fast map of this server: **every tool, one line each, grouped by area** —
-1298 tools in 73 areas. **Generated** by
+1299 tools in 73 areas. **Generated** by
 `scripts/gen-tool-catalog.mjs` from the live registry; regenerate after any
 tool-surface change. Sessions get the same map at runtime from the
 `tool_map` tool (no args = area overview, `{"area": …}` /
@@ -89,7 +89,7 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 | `community_analytics` | 12 | Read-only community analytics: activity over time, popular spaces, and top members. |
 | `community_settings` | 22 | Portal settings and runtime options: colours, features, menus, privacy, snippets, follower and player settings, and CRM tagging. |
 | `community_admin` | 44 | Site administration: licensing, managers, webhooks, topics, badges, onboarding, and the auth, email, push, PWA, storage and messaging settings. |
-| `server` | 5 | Built-in tools: this map, setup verification, and the WordPress media library. |
+| `server` | 6 | Built-in tools: this map, setup verification, a support report for bug reports, and the WordPress media library. |
 
 ## FluentCRM (`crm_*`)
 
@@ -1614,6 +1614,7 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 
 - `tool_map` — This map — overview, per-area drill-down, keyword search
 - `verify_setup` — Check credentials, connectivity, and plugin presence per product
+- `support_report` — Redacted diagnostic report (version, connection checks, recent errors) to paste into a support request or GitHub issue
 - `wp_media_upload_from_url(source_url)` — Upload an image from a URL (server-side fetch)
 - `wp_media_get(id)` — Get one media attachment
 - `wp_media_list` — List or search the media library (paginated)

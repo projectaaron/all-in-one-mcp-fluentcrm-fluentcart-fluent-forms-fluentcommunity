@@ -124,7 +124,7 @@ export function createRemoteServer(config: ServerConfig, token: string): Server 
       }
 
       // Fresh server + transport per request (stateless Streamable HTTP).
-      const built = buildServer(config);
+      const built = buildServer(config, { transport: 'remote-http' });
       const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined });
       res.on('close', () => {
         void transport.close();
