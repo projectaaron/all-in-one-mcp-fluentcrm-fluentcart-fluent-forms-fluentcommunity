@@ -36,10 +36,13 @@ Developers: clone this repo. Everyone else: grab the one-click Claude Desktop
 extension from [upfluent.io](https://upfluent.io) — it's the same code,
 already built.
 
-**Not affiliated with WPManageNinja.** This is an independent, community
-project. WPManageNinja also ships its own first-party MCP via
-[FluentHub](https://wpmanageninja.com/fluenthub-mcp/); see
-[How this differs](#how-this-differs-from-fluenthubs-mcp).
+**Not affiliated with WPManageNinja.** fluentMCP and upfluent.io are an
+independent community project, not associated with, endorsed by, or
+supported by WPManageNinja. It is offered free and in good faith to help
+Fluent users get more from the plugins they already own. You use it at your
+own risk — read the [Disclaimer](#disclaimer). WPManageNinja also ships its
+own first-party MCP via [FluentHub](https://wpmanageninja.com/fluenthub-mcp/);
+see [How this differs](#how-this-differs-from-fluenthubs-mcp).
 
 ---
 
@@ -55,6 +58,7 @@ project. WPManageNinja also ships its own first-party MCP via
 - [Security model](#security-model)
 - [Development](#development)
 - [Support this project](#support-this-project)
+- [Disclaimer](#disclaimer)
 - [License](#license)
 
 ---
@@ -438,8 +442,44 @@ help keep it maintained:
   most of the plugin-quirk guards in `docs/DECISIONS.md` were found.
 - **Sponsor** via the *Sponsor* button at the top of the repository.
 
+## Disclaimer
+
+**Independent project.** fluentMCP and [upfluent.io](https://upfluent.io)
+are not associated with, endorsed by, sponsored by, or supported by
+WPManageNinja or any of its products. FluentCRM, FluentCart, Fluent Forms,
+FluentCommunity, WP Social Ninja, FluentHub and the other WPManageNinja
+names are trademarks of their respective owners and are used here only to
+describe what this software connects to. If you have a problem with a
+WPManageNinja plugin itself, their support is the right place; if you have a
+problem with this connector, open an issue here.
+
+**Made in good faith, for the community.** This project exists to help
+Fluent users get more from the plugins they already own. It is built by
+reading the plugins' own public REST APIs and passing requests through to
+them. It does not modify, bypass or reverse-engineer the plugins, and every
+request runs under the WordPress permissions of the user you configure.
+
+**Use at your own risk.** This software gives an AI assistant the ability to
+read, create, change and delete real data on your WordPress site — contacts,
+orders, refunds, campaigns, form entries, community posts and settings. The
+confirm gates, locked tools and honest annotations described under
+[Safety](#safety) reduce the chance of an accident; they do not remove it.
+You are responsible for: the credentials you hand it and their scope; what
+you approve when your assistant asks; keeping backups; how you use the data
+you access through it; and compliance with the laws that apply to your
+business (email consent, privacy, payments and so on). Test against a
+staging site before pointing it at production.
+
+**No warranty, no liability.** The software is provided "as is", without
+warranty of any kind, as stated in the [MIT license](LICENSE). The authors,
+maintainers and sponsors are not responsible for any loss, damage, data
+change, or consequence arising from its use, and are not responsible for how
+others use, modify or redistribute it. If those terms don't work for you,
+don't use it.
+
 ## License
 
 [MIT](LICENSE). FluentCRM, FluentCart, Fluent Forms, FluentCommunity, WP
 Social Ninja and FluentHub are trademarks of their respective owners; this
-project is not affiliated with or endorsed by WPManageNinja.
+project is not affiliated with, endorsed by, or supported by WPManageNinja.
+See the [Disclaimer](#disclaimer).
