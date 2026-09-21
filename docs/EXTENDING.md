@@ -1,4 +1,4 @@
-# Extending fluentMCP with a new Fluent product
+# Extending All-In-One MCP for Fluent Suite with a new Fluent product
 
 A step-by-step playbook for adding any WPManageNinja product (FluentForms,
 FluentBooking, FluentSupport, FluentBoards, FluentSMTP, FluentCommunity, or

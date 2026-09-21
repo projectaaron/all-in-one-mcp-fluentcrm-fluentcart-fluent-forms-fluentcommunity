@@ -115,7 +115,7 @@ describe('tool_map tool', () => {
     registerToolMapTool(server, allAreas());
     const call = (args: Record<string, unknown>) => tools.tool_map.handler(args);
 
-    expect((await call({})).content[0].text).toContain('fluentMCP tool map');
+    expect((await call({})).content[0].text).toContain('All-In-One MCP for Fluent Suite tool map');
     expect((await call({ area: 'cart_orders' })).content[0].text).toContain('cart_orders_refund');
     expect((await call({ search: 'refund' })).content[0].text).toContain('cart_orders_refund');
     const unknown = (await call({ area: 'cart_order' })).content[0].text;

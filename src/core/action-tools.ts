@@ -83,7 +83,7 @@ const QUERY_FIELD = z
 const BODY_FIELD = z
   .record(z.unknown())
   .optional()
-  .describe('JSON request body, e.g. {"title": "Spring sale"} — schemas in docs/api-reference/');
+  .describe('JSON request body, e.g. {"title": "Spring sale"} — schemas are in the product\'s official developer docs (linked from docs/api-reference/<product>.md)');
 const PAGE_FIELD = z.number().int().min(1).optional().describe('Page number (default 1)');
 const PER_PAGE_FIELD = z.number().int().min(1).max(100).optional().describe('Items per page (default 20)');
 const FIELDS_FIELD = z

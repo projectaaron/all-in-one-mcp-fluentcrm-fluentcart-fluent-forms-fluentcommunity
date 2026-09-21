@@ -2,7 +2,7 @@
 
 ## What this server is
 
-fluentMCP is a thin, stateless proxy: an MCP client (Claude, Cursor, …) calls a
+All-In-One MCP for Fluent Suite is a thin, stateless proxy: an MCP client (Claude, Cursor, …) calls a
 tool, the server turns it into one authenticated request to your WordPress
 site's REST API, and returns the response. It stores nothing. It holds exactly
 one secret at runtime — the WordPress Application Password you configure — plus

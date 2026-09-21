@@ -7,7 +7,7 @@ repaired end to end).
 
 ## What this repo is
 
-**fluentMCP** — an MCP (Model Context Protocol) server, written in TypeScript
+**All-In-One MCP for Fluent Suite** (package `fluentmcp`) — an MCP (Model Context Protocol) server, written in TypeScript
 on the official `@modelcontextprotocol/sdk` (v1.x) with stdio transport, that
 gives an AI harness full CRUD control over WPManageNinja "Fluent" products on
 a WordPress site. Products ship as self-contained modules; FluentCRM
@@ -87,7 +87,8 @@ fluentMCP/
 │       ├── formatter-test.php    #   Formatting + caching, both plugins absent
 │       └── elementor-test.php    #   Tag registration + rendering, plugins stubbed
 ├── docs/
-│   ├── api-reference/            # GENERATED per-product references + endpoints.json
+│   ├── api-reference/            # GENERATED per-product endpoint inventories (endpoints.json + overview);
+│   │                         #   schemas live in WPManageNinja's own docs (see README → API references)
 │   │   ├── <product>.md          # Overviews (fluentcrm, fluentcart, wpsocialninja,
 │   │   │                         #   fluentforms, fluentcommunity)
 │   │   ├── <product>/            # Per-endpoint docs + endpoints.json

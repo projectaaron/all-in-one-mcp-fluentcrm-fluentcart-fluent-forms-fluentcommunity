@@ -14,48 +14,48 @@
 
 Credential setup for all products: [auth.md](./auth.md).
 
+Request/response schemas for every endpoint below are in FluentCRM's own developer documentation: <https://developers.fluentcrm.com/rest-api/> (source: <https://github.com/WPManageNinja>). This file is an inventory, not a copy of that documentation.
+
 ## Groups
 
-| Group | Endpoints | Full schemas |
-|-------|-----------|------|
-| Contacts (Subscribers) | 32 | [contacts.md](./fluentcrm/contacts.md) |
-| Lists | 7 | [lists.md](./fluentcrm/lists.md) |
-| Tags | 7 | [tags.md](./fluentcrm/tags.md) |
-| Dynamic Segments | 9 | [dynamic-segments.md](./fluentcrm/dynamic-segments.md) |
-| Custom Fields | 3 | [custom-fields.md](./fluentcrm/custom-fields.md) |
-| Companies | 21 | [companies.md](./fluentcrm/companies.md) |
-| Campaigns | 32 | [campaigns.md](./fluentcrm/campaigns.md) |
-| Campaign Actions (Pro) | 7 | [campaigns-pro.md](./fluentcrm/campaigns-pro.md) |
-| Recurring Campaigns (Pro) | 14 | [recurring-campaigns.md](./fluentcrm/recurring-campaigns.md) |
-| Email Sequences (Pro) | 19 | [sequences.md](./fluentcrm/sequences.md) |
-| Automations (Funnels) | 32 | [funnels.md](./fluentcrm/funnels.md) |
-| Email Templates | 12 | [templates.md](./fluentcrm/templates.md) |
-| Forms | 5 | [forms.md](./fluentcrm/forms.md) |
-| Incoming Webhooks | 4 | [webhooks.md](./fluentcrm/webhooks.md) |
-| Smart Links (Pro) | 5 | [smart-links.md](./fluentcrm/smart-links.md) |
-| SMS (Pro) | 25 | [sms.md](./fluentcrm/sms.md) |
-| Abandoned Carts (Pro) | 3 | [abandon-carts.md](./fluentcrm/abandon-carts.md) |
-| Commerce Reports (Pro) | 2 | [commerce-reports.md](./fluentcrm/commerce-reports.md) |
-| Reports | 25 | [reports.md](./fluentcrm/reports.md) |
-| Contact Import | 6 | [import.md](./fluentcrm/import.md) |
-| Migrators | 5 | [migrators.md](./fluentcrm/migrators.md) |
-| WordPress Users | 2 | [users.md](./fluentcrm/users.md) |
-| Labels | 4 | [labels.md](./fluentcrm/labels.md) |
-| Docs & Addons | 3 | [docs.md](./fluentcrm/docs.md) |
-| Global Search | 1 | [global-search.md](./fluentcrm/global-search.md) |
-| Settings | 41 | [settings.md](./fluentcrm/settings.md) |
-| Pro Settings | 11 | [pro-settings.md](./fluentcrm/pro-settings.md) |
-| Public Bounce Handlers | 2 | [public-bounce.md](./fluentcrm/public-bounce.md) |
-| ai | 7 | [ai.md](./fluentcrm/ai.md) |
-| email-patterns | 11 | [email-patterns.md](./fluentcrm/email-patterns.md) |
-| export | 2 | [export.md](./fluentcrm/export.md) |
-| mcp | 4 | [mcp.md](./fluentcrm/mcp.md) |
+| Group | Endpoints |
+|-------|-----------|
+| Contacts (Subscribers) | 32 |
+| Lists | 7 |
+| Tags | 7 |
+| Dynamic Segments | 9 |
+| Custom Fields | 3 |
+| Companies | 21 |
+| Campaigns | 32 |
+| Campaign Actions (Pro) | 7 |
+| Recurring Campaigns (Pro) | 14 |
+| Email Sequences (Pro) | 19 |
+| Automations (Funnels) | 32 |
+| Email Templates | 12 |
+| Forms | 5 |
+| Incoming Webhooks | 4 |
+| Smart Links (Pro) | 5 |
+| SMS (Pro) | 25 |
+| Abandoned Carts (Pro) | 3 |
+| Commerce Reports (Pro) | 2 |
+| Reports | 25 |
+| Contact Import | 6 |
+| Migrators | 5 |
+| WordPress Users | 2 |
+| Labels | 4 |
+| Docs & Addons | 3 |
+| Global Search | 1 |
+| Settings | 41 |
+| Pro Settings | 11 |
+| Public Bounce Handlers | 2 |
+| ai | 7 |
+| email-patterns | 11 |
+| export | 2 |
+| mcp | 4 |
 
 ## Endpoints by group
 
 ### Contacts (Subscribers)
-
-Full schemas: [`fluentcrm/contacts.md`](./fluentcrm/contacts.md)
 
 | Method | Path | Summary |
 |--------|------|---------|
@@ -94,8 +94,6 @@ Full schemas: [`fluentcrm/contacts.md`](./fluentcrm/contacts.md)
 
 ### Lists
 
-Full schemas: [`fluentcrm/lists.md`](./fluentcrm/lists.md)
-
 | Method | Path | Summary |
 |--------|------|---------|
 | POST | `/lists/do-bulk-action` | POST Bulk Action Lists |
@@ -108,8 +106,6 @@ Full schemas: [`fluentcrm/lists.md`](./fluentcrm/lists.md)
 
 ### Tags
 
-Full schemas: [`fluentcrm/tags.md`](./fluentcrm/tags.md)
-
 | Method | Path | Summary |
 |--------|------|---------|
 | POST | `/tags/do-bulk-action` | POST Bulk Action Tags |
@@ -121,8 +117,6 @@ Full schemas: [`fluentcrm/tags.md`](./fluentcrm/tags.md)
 | PUT | `/tags/{id}` | PUT Update Tag |
 
 ### Dynamic Segments
-
-Full schemas: [`fluentcrm/dynamic-segments.md`](./fluentcrm/dynamic-segments.md)
 
 | Method | Path | Summary |
 |--------|------|---------|
@@ -138,8 +132,6 @@ Full schemas: [`fluentcrm/dynamic-segments.md`](./fluentcrm/dynamic-segments.md)
 
 ### Custom Fields
 
-Full schemas: [`fluentcrm/custom-fields.md`](./fluentcrm/custom-fields.md)
-
 | Method | Path | Summary |
 |--------|------|---------|
 | GET | `/custom-fields/contacts` | GET Get Contact Custom Fields |
@@ -147,8 +139,6 @@ Full schemas: [`fluentcrm/custom-fields.md`](./fluentcrm/custom-fields.md)
 | PUT | `/custom-fields/contacts/update_group_name` | PUT Update Custom Field Group Name |
 
 ### Companies
-
-Full schemas: [`fluentcrm/companies.md`](./fluentcrm/companies.md)
 
 | Method | Path | Summary |
 |--------|------|---------|
@@ -175,8 +165,6 @@ Full schemas: [`fluentcrm/companies.md`](./fluentcrm/companies.md)
 | PUT | `/companies/custom-fields/update_group_name` | PUT Rename Company Custom Field Group |
 
 ### Campaigns
-
-Full schemas: [`fluentcrm/campaigns.md`](./fluentcrm/campaigns.md)
 
 | Method | Path | Summary |
 |--------|------|---------|
@@ -215,8 +203,6 @@ Full schemas: [`fluentcrm/campaigns.md`](./fluentcrm/campaigns.md)
 
 ### Campaign Actions (Pro)
 
-Full schemas: [`fluentcrm/campaigns-pro.md`](./fluentcrm/campaigns-pro.md)
-
 | Method | Path | Summary |
 |--------|------|---------|
 | POST | `/campaigns-pro/{id}/tag-actions` | POST Campaign Tag Actions |
@@ -228,8 +214,6 @@ Full schemas: [`fluentcrm/campaigns-pro.md`](./fluentcrm/campaigns-pro.md)
 | POST | `/campaigns-pro/{id}/resend-unopened-emails` | POST Resend Unopened Emails |
 
 ### Recurring Campaigns (Pro)
-
-Full schemas: [`fluentcrm/recurring-campaigns.md`](./fluentcrm/recurring-campaigns.md)
 
 | Method | Path | Summary |
 |--------|------|---------|
@@ -249,8 +233,6 @@ Full schemas: [`fluentcrm/recurring-campaigns.md`](./fluentcrm/recurring-campaig
 | POST | `/recurring-campaigns/{campaign_id}/update-settings` | POST Update Recurring Campaign Settings |
 
 ### Email Sequences (Pro)
-
-Full schemas: [`fluentcrm/sequences.md`](./fluentcrm/sequences.md)
 
 | Method | Path | Summary |
 |--------|------|---------|
@@ -275,8 +257,6 @@ Full schemas: [`fluentcrm/sequences.md`](./fluentcrm/sequences.md)
 | PATCH | `/sequences/{id}/email/{email_id}/delay` | PATCH Update Sequence Email Delay |
 
 ### Automations (Funnels)
-
-Full schemas: [`fluentcrm/funnels.md`](./fluentcrm/funnels.md)
 
 | Method | Path | Summary |
 |--------|------|---------|
@@ -315,8 +295,6 @@ Full schemas: [`fluentcrm/funnels.md`](./fluentcrm/funnels.md)
 
 ### Email Templates
 
-Full schemas: [`fluentcrm/templates.md`](./fluentcrm/templates.md)
-
 | Method | Path | Summary |
 |--------|------|---------|
 | POST | `/templates/do-bulk-action` | POST Bulk Action Templates |
@@ -334,8 +312,6 @@ Full schemas: [`fluentcrm/templates.md`](./fluentcrm/templates.md)
 
 ### Forms
 
-Full schemas: [`fluentcrm/forms.md`](./fluentcrm/forms.md)
-
 | Method | Path | Summary |
 |--------|------|---------|
 | POST | `/forms` | POST Create Form |
@@ -346,8 +322,6 @@ Full schemas: [`fluentcrm/forms.md`](./fluentcrm/forms.md)
 
 ### Incoming Webhooks
 
-Full schemas: [`fluentcrm/webhooks.md`](./fluentcrm/webhooks.md)
-
 | Method | Path | Summary |
 |--------|------|---------|
 | POST | `/webhooks` | POST Create Webhook |
@@ -356,8 +330,6 @@ Full schemas: [`fluentcrm/webhooks.md`](./fluentcrm/webhooks.md)
 | PUT | `/webhooks/{id}` | PUT Update Webhook |
 
 ### Smart Links (Pro)
-
-Full schemas: [`fluentcrm/smart-links.md`](./fluentcrm/smart-links.md)
 
 | Method | Path | Summary |
 |--------|------|---------|
@@ -368,8 +340,6 @@ Full schemas: [`fluentcrm/smart-links.md`](./fluentcrm/smart-links.md)
 | PUT | `/smart-links/{id}` | PUT Update Smart Link |
 
 ### SMS (Pro)
-
-Full schemas: [`fluentcrm/sms.md`](./fluentcrm/sms.md)
 
 | Method | Path | Summary |
 |--------|------|---------|
@@ -401,8 +371,6 @@ Full schemas: [`fluentcrm/sms.md`](./fluentcrm/sms.md)
 
 ### Abandoned Carts (Pro)
 
-Full schemas: [`fluentcrm/abandon-carts.md`](./fluentcrm/abandon-carts.md)
-
 | Method | Path | Summary |
 |--------|------|---------|
 | POST | `/abandon-carts/bulk-delete` | POST Bulk Delete Abandoned Carts |
@@ -411,16 +379,12 @@ Full schemas: [`fluentcrm/abandon-carts.md`](./fluentcrm/abandon-carts.md)
 
 ### Commerce Reports (Pro)
 
-Full schemas: [`fluentcrm/commerce-reports.md`](./fluentcrm/commerce-reports.md)
-
 | Method | Path | Summary |
 |--------|------|---------|
 | GET | `/commerce-reports/{provider}/report` | GET Commerce Report |
 | GET | `/commerce-reports/{provider}` | GET Commerce Reports |
 
 ### Reports
-
-Full schemas: [`fluentcrm/reports.md`](./fluentcrm/reports.md)
 
 | Method | Path | Summary |
 |--------|------|---------|
@@ -452,8 +416,6 @@ Full schemas: [`fluentcrm/reports.md`](./fluentcrm/reports.md)
 
 ### Contact Import
 
-Full schemas: [`fluentcrm/import.md`](./fluentcrm/import.md)
-
 | Method | Path | Summary |
 |--------|------|---------|
 | GET | `/import/drivers/{driver}` | GET Import Driver Details |
@@ -465,8 +427,6 @@ Full schemas: [`fluentcrm/import.md`](./fluentcrm/import.md)
 
 ### Migrators
 
-Full schemas: [`fluentcrm/migrators.md`](./fluentcrm/migrators.md)
-
 | Method | Path | Summary |
 |--------|------|---------|
 | GET | `/migrators` | GET Migrator Drivers |
@@ -477,16 +437,12 @@ Full schemas: [`fluentcrm/migrators.md`](./fluentcrm/migrators.md)
 
 ### WordPress Users
 
-Full schemas: [`fluentcrm/users.md`](./fluentcrm/users.md)
-
 | Method | Path | Summary |
 |--------|------|---------|
 | GET | `/users/roles` | GET WordPress User Roles |
 | GET | `/users` | GET List WordPress Users |
 
 ### Labels
-
-Full schemas: [`fluentcrm/labels.md`](./fluentcrm/labels.md)
 
 | Method | Path | Summary |
 |--------|------|---------|
@@ -497,8 +453,6 @@ Full schemas: [`fluentcrm/labels.md`](./fluentcrm/labels.md)
 
 ### Docs & Addons
 
-Full schemas: [`fluentcrm/docs.md`](./fluentcrm/docs.md)
-
 | Method | Path | Summary |
 |--------|------|---------|
 | GET | `/docs/{doc_id}` | GET Get Doc |
@@ -507,15 +461,11 @@ Full schemas: [`fluentcrm/docs.md`](./fluentcrm/docs.md)
 
 ### Global Search
 
-Full schemas: [`fluentcrm/global-search.md`](./fluentcrm/global-search.md)
-
 | Method | Path | Summary |
 |--------|------|---------|
 | GET | `/global-search` | GET Global Search |
 
 ### Settings
-
-Full schemas: [`fluentcrm/settings.md`](./fluentcrm/settings.md)
 
 | Method | Path | Summary |
 |--------|------|---------|
@@ -563,8 +513,6 @@ Full schemas: [`fluentcrm/settings.md`](./fluentcrm/settings.md)
 
 ### Pro Settings
 
-Full schemas: [`fluentcrm/pro-settings.md`](./fluentcrm/pro-settings.md)
-
 | Method | Path | Summary |
 |--------|------|---------|
 | POST | `/campaign-pro-settings/managers` | POST Add Manager |
@@ -581,16 +529,12 @@ Full schemas: [`fluentcrm/pro-settings.md`](./fluentcrm/pro-settings.md)
 
 ### Public Bounce Handlers
 
-Full schemas: [`fluentcrm/public-bounce.md`](./fluentcrm/public-bounce.md)
-
 | Method | Path | Summary |
 |--------|------|---------|
 | GET | `/public/bounce_handler/{service_name}/{security_code}` | GET Handle Bounce Webhook |
 | GET | `/public/bounce_handler/{service_name}/handle/{security_code}` | GET Handle Bounce Webhook |
 
 ### ai
-
-Full schemas: [`fluentcrm/ai.md`](./fluentcrm/ai.md)
 
 | Method | Path | Summary |
 |--------|------|---------|
@@ -603,8 +547,6 @@ Full schemas: [`fluentcrm/ai.md`](./fluentcrm/ai.md)
 | POST | `/ai/test` | POST Test AI Connection |
 
 ### email-patterns
-
-Full schemas: [`fluentcrm/email-patterns.md`](./fluentcrm/email-patterns.md)
 
 | Method | Path | Summary |
 |--------|------|---------|
@@ -622,16 +564,12 @@ Full schemas: [`fluentcrm/email-patterns.md`](./fluentcrm/email-patterns.md)
 
 ### export
 
-Full schemas: [`fluentcrm/export.md`](./fluentcrm/export.md)
-
 | Method | Path | Summary |
 |--------|------|---------|
 | POST | `/subscribers-export` | POST Fetch Contact Export Page |
 | GET | `/subscribers-export` | GET Fetch Contact Export Page |
 
 ### mcp
-
-Full schemas: [`fluentcrm/mcp.md`](./fluentcrm/mcp.md)
 
 | Method | Path | Summary |
 |--------|------|---------|
@@ -640,4 +578,4 @@ Full schemas: [`fluentcrm/mcp.md`](./fluentcrm/mcp.md)
 | POST | `/mcp/install-adapter` | POST Install MCP Adapter |
 | POST | `/mcp/toggle` | POST Toggle MCP Tools |
 
-_Generated by `scripts/gen-api-docs.mjs` from the per-operation OpenAPI specs; endpoints marked (Pro) require the product's Pro version._
+_Generated by `scripts/gen-api-docs.mjs` from the per-operation OpenAPI specs published at developers.fluentcrm.com; endpoints marked (Pro) require the product's Pro version._

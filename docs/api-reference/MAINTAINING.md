@@ -17,9 +17,22 @@ spec, and rewrites per product:
 
 | Output | Content |
 |--------|---------|
-| `docs/api-reference/<product>.md` | Overview: source URL, scrape date, auth model, one table per group |
-| `docs/api-reference/<product>/<group>.md` | Full per-endpoint request/response schemas |
+| `docs/api-reference/<product>.md` | Overview: source URL, scrape date, auth model, one table per group, link to the vendor's schema docs |
 | `docs/api-reference/<product>/endpoints.json` | Machine-readable inventory (drives the tool-coverage test) |
+
+Per-endpoint request/response schemas are **not** mirrored in this repository.
+They are WPManageNinja's documentation and live at the sources below (and in
+their GitHub organization, <https://github.com/WPManageNinja>); the overview
+links there. The inventory keeps only what the tool surface needs: group,
+slug, method, path, one-line summary, auth scheme, deprecation flag.
+
+| Product | Official developer docs |
+|---------|-------------------------|
+| FluentCRM | <https://developers.fluentcrm.com/rest-api/> · [WPManageNinja/fluentcrm-api-doc](https://github.com/WPManageNinja/fluentcrm-api-doc) |
+| FluentCart | <https://dev.fluentcart.com/restapi/> · [WPManageNinja/fluent-cart-dev-docs](https://github.com/WPManageNinja/fluent-cart-dev-docs) |
+| Fluent Forms | <https://developers.fluentforms.com/api/endpoints/> |
+| FluentCommunity | [WPManageNinja/fluent-community-developer-docs](https://github.com/WPManageNinja/fluent-community-developer-docs) |
+| WP Social Ninja | [WPManageNinja/wpsocialninja-docs](https://github.com/WPManageNinja/wpsocialninja-docs) |
 | `scripts/<product>-operations.txt` | Canonical operation list — ordering + offline fallback (auto-updated) |
 
 It prints **added/removed** operations so you can see what changed. Commit
