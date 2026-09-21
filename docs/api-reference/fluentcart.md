@@ -15,40 +15,40 @@
 
 Credential setup for all products: [auth.md](./auth.md).
 
+Request/response schemas for every endpoint below are in FluentCart's own developer documentation: <https://dev.fluentcart.com/restapi/> (source: <https://github.com/WPManageNinja>). This file is an inventory, not a copy of that documentation.
+
 ## Groups
 
-| Group | Endpoints | Full schemas |
-|-------|-----------|------|
-| Orders | 32 | [orders.md](./fluentcart/orders.md) |
-| Products | 63 | [products.md](./fluentcart/products.md) |
-| Customers | 18 | [customers.md](./fluentcart/customers.md) |
-| Coupons | 12 | [coupons.md](./fluentcart/coupons.md) |
-| Subscriptions | 19 | [subscriptions.md](./fluentcart/subscriptions.md) |
-| Tax | 27 | [tax.md](./fluentcart/tax.md) |
-| Shipping | 19 | [shipping.md](./fluentcart/shipping.md) |
-| Settings | 39 | [settings.md](./fluentcart/settings.md) |
-| Email Notifications | 15 | [email-notification.md](./fluentcart/email-notification.md) |
-| Reports | 43 | [reports.md](./fluentcart/reports.md) |
-| Integrations | 12 | [integration.md](./fluentcart/integration.md) |
-| Files | 5 | [files.md](./fluentcart/files.md) |
-| Labels & Attributes | 15 | [labels-attributes.md](./fluentcart/labels-attributes.md) |
-| Dashboard & Utilities | 22 | [dashboard.md](./fluentcart/dashboard.md) |
-| Public Shop | 3 | [public-shop.md](./fluentcart/public-shop.md) |
-| Checkout | 7 | [checkout.md](./fluentcart/checkout.md) |
-| Customer Profile | 18 | [customer-profile.md](./fluentcart/customer-profile.md) |
-| Licensing (Pro) | 26 | [licensing.md](./fluentcart/licensing.md) |
-| Roles & Permissions (Pro) | 7 | [roles-permissions.md](./fluentcart/roles-permissions.md) |
-| Order Bumps (Pro) | 5 | [order-bumps.md](./fluentcart/order-bumps.md) |
-| data-export | 8 | [data-export.md](./fluentcart/data-export.md) |
-| inventory | 6 | [inventory.md](./fluentcart/inventory.md) |
-| pdf-templates | 11 | [pdf-templates.md](./fluentcart/pdf-templates.md) |
-| saved-views | 4 | [saved-views.md](./fluentcart/saved-views.md) |
+| Group | Endpoints |
+|-------|-----------|
+| Orders | 32 |
+| Products | 63 |
+| Customers | 18 |
+| Coupons | 12 |
+| Subscriptions | 19 |
+| Tax | 27 |
+| Shipping | 19 |
+| Settings | 39 |
+| Email Notifications | 15 |
+| Reports | 43 |
+| Integrations | 12 |
+| Files | 5 |
+| Labels & Attributes | 15 |
+| Dashboard & Utilities | 22 |
+| Public Shop | 3 |
+| Checkout | 7 |
+| Customer Profile | 18 |
+| Licensing (Pro) | 26 |
+| Roles & Permissions (Pro) | 7 |
+| Order Bumps (Pro) | 5 |
+| data-export | 8 |
+| inventory | 6 |
+| pdf-templates | 11 |
+| saved-views | 4 |
 
 ## Endpoints by group
 
 ### Orders
-
-Full schemas: [`fluentcart/orders.md`](./fluentcart/orders.md)
 
 | Method | Path | Summary |
 |--------|------|---------|
@@ -86,8 +86,6 @@ Full schemas: [`fluentcart/orders.md`](./fluentcart/orders.md)
 | POST | `/renewals/{order}/void` | POST Void Renewal Invoice |
 
 ### Products
-
-Full schemas: [`fluentcart/products.md`](./fluentcart/products.md)
 
 | Method | Path | Summary |
 |--------|------|---------|
@@ -157,8 +155,6 @@ Full schemas: [`fluentcart/products.md`](./fluentcart/products.md)
 
 ### Customers
 
-Full schemas: [`fluentcart/customers.md`](./fluentcart/customers.md)
-
 | Method | Path | Summary |
 |--------|------|---------|
 | POST | `/customers/{customerId}/attachable-user` | POST Attach WordPress User |
@@ -182,8 +178,6 @@ Full schemas: [`fluentcart/customers.md`](./fluentcart/customers.md)
 
 ### Coupons
 
-Full schemas: [`fluentcart/coupons.md`](./fluentcart/coupons.md)
-
 | Method | Path | Summary |
 |--------|------|---------|
 | POST | `/coupons/apply` | POST Apply Coupon |
@@ -200,8 +194,6 @@ Full schemas: [`fluentcart/coupons.md`](./fluentcart/coupons.md)
 | PUT | `/coupons/{id}` | PUT Update Coupon |
 
 ### Subscriptions
-
-Full schemas: [`fluentcart/subscriptions.md`](./fluentcart/subscriptions.md)
 
 | Method | Path | Summary |
 |--------|------|---------|
@@ -226,8 +218,6 @@ Full schemas: [`fluentcart/subscriptions.md`](./fluentcart/subscriptions.md)
 | POST | `/orders/{order}/subscriptions/{subscription}/verify-vendor-ids` | POST Verify Vendor IDs |
 
 ### Tax
-
-Full schemas: [`fluentcart/tax.md`](./fluentcart/tax.md)
 
 | Method | Path | Summary |
 |--------|------|---------|
@@ -261,8 +251,6 @@ Full schemas: [`fluentcart/tax.md`](./fluentcart/tax.md)
 
 ### Shipping
 
-Full schemas: [`fluentcart/shipping.md`](./fluentcart/shipping.md)
-
 | Method | Path | Summary |
 |--------|------|---------|
 | POST | `/shipping/classes` | POST Create Shipping Class |
@@ -286,8 +274,6 @@ Full schemas: [`fluentcart/shipping.md`](./fluentcart/shipping.md)
 | POST | `/shipping/packages` | POST Save Shipping Packages |
 
 ### Settings
-
-Full schemas: [`fluentcart/settings.md`](./fluentcart/settings.md)
 
 | Method | Path | Summary |
 |--------|------|---------|
@@ -333,8 +319,6 @@ Full schemas: [`fluentcart/settings.md`](./fluentcart/settings.md)
 
 ### Email Notifications
 
-Full schemas: [`fluentcart/email-notification.md`](./fluentcart/email-notification.md)
-
 | Method | Path | Summary |
 |--------|------|---------|
 | POST | `/email-notification/enable-notification/{name}` | POST Enable/Disable Notification |
@@ -354,8 +338,6 @@ Full schemas: [`fluentcart/email-notification.md`](./fluentcart/email-notificati
 | POST | `/email-notification/send-manual-reminder` | POST Send Manual Reminder |
 
 ### Reports
-
-Full schemas: [`fluentcart/reports.md`](./fluentcart/reports.md)
 
 | Method | Path | Summary |
 |--------|------|---------|
@@ -405,8 +387,6 @@ Full schemas: [`fluentcart/reports.md`](./fluentcart/reports.md)
 
 ### Integrations
 
-Full schemas: [`fluentcart/integration.md`](./fluentcart/integration.md)
-
 | Method | Path | Summary |
 |--------|------|---------|
 | POST | `/integration/feed/chained` | POST Chained Data Request |
@@ -424,8 +404,6 @@ Full schemas: [`fluentcart/integration.md`](./fluentcart/integration.md)
 
 ### Files
 
-Full schemas: [`fluentcart/files.md`](./fluentcart/files.md)
-
 | Method | Path | Summary |
 |--------|------|---------|
 | DELETE | `/files/delete` | DELETE Delete File |
@@ -435,8 +413,6 @@ Full schemas: [`fluentcart/files.md`](./fluentcart/files.md)
 | POST | `/files/upload` | POST Upload File |
 
 ### Labels & Attributes
-
-Full schemas: [`fluentcart/labels-attributes.md`](./fluentcart/labels-attributes.md)
 
 | Method | Path | Summary |
 |--------|------|---------|
@@ -457,8 +433,6 @@ Full schemas: [`fluentcart/labels-attributes.md`](./fluentcart/labels-attributes
 | POST | `/options/attr/group/{group_id}/terms/reorder` | POST Reorder Attribute Terms |
 
 ### Dashboard & Utilities
-
-Full schemas: [`fluentcart/dashboard.md`](./fluentcart/dashboard.md)
 
 | Method | Path | Summary |
 |--------|------|---------|
@@ -487,8 +461,6 @@ Full schemas: [`fluentcart/dashboard.md`](./fluentcart/dashboard.md)
 
 ### Public Shop
 
-Full schemas: [`fluentcart/public-shop.md`](./fluentcart/public-shop.md)
-
 | Method | Path | Summary |
 |--------|------|---------|
 | GET | `/public/product-views` | GET Get Product Views |
@@ -496,8 +468,6 @@ Full schemas: [`fluentcart/public-shop.md`](./fluentcart/public-shop.md)
 | GET | `/public/product-search` | GET Search Products |
 
 ### Checkout
-
-Full schemas: [`fluentcart/checkout.md`](./fluentcart/checkout.md)
 
 | Method | Path | Summary |
 |--------|------|---------|
@@ -510,8 +480,6 @@ Full schemas: [`fluentcart/checkout.md`](./fluentcart/checkout.md)
 | POST | `/checkout/place-order` | POST Place Order |
 
 ### Customer Profile
-
-Full schemas: [`fluentcart/customer-profile.md`](./fluentcart/customer-profile.md)
 
 | Method | Path | Summary |
 |--------|------|---------|
@@ -535,8 +503,6 @@ Full schemas: [`fluentcart/customer-profile.md`](./fluentcart/customer-profile.m
 | POST | `/customer-profile/subscriptions/{subscription_uuid}/resume` | POST Resume Subscription |
 
 ### Licensing (Pro)
-
-Full schemas: [`fluentcart/licensing.md`](./fluentcart/licensing.md)
 
 | Method | Path | Summary |
 |--------|------|---------|
@@ -569,8 +535,6 @@ Full schemas: [`fluentcart/licensing.md`](./fluentcart/licensing.md)
 
 ### Roles & Permissions (Pro)
 
-Full schemas: [`fluentcart/roles-permissions.md`](./fluentcart/roles-permissions.md)
-
 | Method | Path | Summary |
 |--------|------|---------|
 | POST | `/roles` | POST Assign Role |
@@ -583,8 +547,6 @@ Full schemas: [`fluentcart/roles-permissions.md`](./fluentcart/roles-permissions
 
 ### Order Bumps (Pro)
 
-Full schemas: [`fluentcart/order-bumps.md`](./fluentcart/order-bumps.md)
-
 | Method | Path | Summary |
 |--------|------|---------|
 | POST | `/order_bump` | POST Create Order Bump |
@@ -594,8 +556,6 @@ Full schemas: [`fluentcart/order-bumps.md`](./fluentcart/order-bumps.md)
 | PUT | `/order_bump/{id}` | PUT Update Order Bump |
 
 ### data-export
-
-Full schemas: [`fluentcart/data-export.md`](./fluentcart/data-export.md)
 
 | Method | Path | Summary |
 |--------|------|---------|
@@ -610,8 +570,6 @@ Full schemas: [`fluentcart/data-export.md`](./fluentcart/data-export.md)
 
 ### inventory
 
-Full schemas: [`fluentcart/inventory.md`](./fluentcart/inventory.md)
-
 | Method | Path | Summary |
 |--------|------|---------|
 | POST | `/inventory/bulk-update` | POST Bulk Update Stock |
@@ -622,8 +580,6 @@ Full schemas: [`fluentcart/inventory.md`](./fluentcart/inventory.md)
 | POST | `/inventory/update-stock` | POST Update Stock |
 
 ### pdf-templates
-
-Full schemas: [`fluentcart/pdf-templates.md`](./fluentcart/pdf-templates.md)
 
 | Method | Path | Summary |
 |--------|------|---------|
@@ -641,8 +597,6 @@ Full schemas: [`fluentcart/pdf-templates.md`](./fluentcart/pdf-templates.md)
 
 ### saved-views
 
-Full schemas: [`fluentcart/saved-views.md`](./fluentcart/saved-views.md)
-
 | Method | Path | Summary |
 |--------|------|---------|
 | POST | `/saved-views` | POST Create Saved View |
@@ -650,4 +604,4 @@ Full schemas: [`fluentcart/saved-views.md`](./fluentcart/saved-views.md)
 | GET | `/saved-views` | GET List Saved Views |
 | PUT | `/saved-views/{id}` | PUT Update Saved View |
 
-_Generated by `scripts/gen-api-docs.mjs` from the per-operation OpenAPI specs; endpoints marked (Pro) require the product's Pro version._
+_Generated by `scripts/gen-api-docs.mjs` from the per-operation OpenAPI specs published at dev.fluentcart.com; endpoints marked (Pro) require the product's Pro version._

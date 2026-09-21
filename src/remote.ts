@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/** fluentMCP — remote entry point (MCP Streamable HTTP). Add it to claude.ai /
+/** All-In-One MCP for Fluent Suite — remote entry point (MCP Streamable HTTP). Add it to claude.ai /
  *  Claude apps as a custom connector URL; works on web, mobile, and desktop.
  *
  *  FLUENT_MCP_TOKEN is required: this server fronts your whole store/CRM, so

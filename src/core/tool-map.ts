@@ -159,7 +159,7 @@ export function renderOverview(areas: MapArea[]): string {
     ? `${callableCount(areas)} tools (${areas.reduce((n, a) => n + a.tools.length, 0)} operations)`
     : `${callableCount(areas)} tools`;
   const lines = [
-    `fluentMCP tool map — ${count} in ${areas.length} areas. ${productStatuses(areas, ' · ')}`,
+    `All-In-One MCP for Fluent Suite tool map — ${count} in ${areas.length} areas. ${productStatuses(areas, ' · ')}`,
     MAP_CONVENTIONS,
     'Drill down: tool_map {"area": "crm_contacts"} lists every tool in an area with its parameters; tool_map {"search": "refund"} finds tools by keyword.',
     ...(areas.some((a) => a.grouped) ? [GROUPED_NOTE] : []),
@@ -221,7 +221,7 @@ export function buildInstructions(areas: MapArea[], mode: ToolMode): string {
       ? 'Every tool does exactly one thing and is named <area>_<operation>: crm_contacts_list, crm_contacts_create, cart_orders_refund, …'
       : 'Tools are grouped per area; pass an `action` argument to pick the operation.';
   return [
-    `fluentMCP: ${toolCount} tools for the WordPress site's Fluent products (${productStatuses(areas, ', ', true)}).`,
+    `All-In-One MCP for Fluent Suite: ${toolCount} tools for the WordPress site's Fluent products (${productStatuses(areas, ', ', true)}).`,
     naming,
     'Fast map: call tool_map (no args) for a one-line overview of every area; tool_map {"area": "..."} or {"search": "..."} to find the exact tool.',
     MAP_CONVENTIONS,
