@@ -2,7 +2,9 @@
 
 ## 1.0.0 — 2026-09-18
 
-**First public release.** Five WPManageNinja products (FluentCRM, FluentCart,
+**First public release.** Source on GitHub under MIT, sponsored by
+upfluent.io; the ready-built Claude Desktop extension (`.mcpb`) is a free
+download from upfluent.io / Freemius. Five WPManageNinja products (FluentCRM, FluentCart,
 Fluent Forms, FluentCommunity, WP Social Ninja), 1,191 endpoint tools in 68
 areas, self-describing writes (merge mode, post-write verification,
 `dry_run`, read-back guards), confirm gates on 184 destructive operations and
