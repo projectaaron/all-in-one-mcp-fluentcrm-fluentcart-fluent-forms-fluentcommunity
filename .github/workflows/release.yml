@@ -61,7 +61,14 @@ jobs:
       - name: Pack the source bundle
         run: git archive --format=zip --prefix=fluentmcp/ -o "fluentmcp-${VERSION}-source.zip" HEAD
       - name: Pack the end-user download (mcpb + readme + license)
-        run: node scripts/pack-download.mjs "fluentmcp-${VERSION}.mcpb"
+        run: |
+          node scripts/pack-download.mjs "fluentmcp-${VERSION}.mcpb"
+          # Fixed-name copies so one URL always serves the newest version:
+          #   https://github.com/projectaaron/fluentMCP/releases/latest/download/all-in-one-mcp-for-fluent-suite-latest.zip
+          #   https://github.com/projectaaron/fluentMCP/releases/latest/download/fluentmcp-latest.mcpb
+          # (Freemius "Download Links" and upfluent.io point at these.)
+          cp "all-in-one-mcp-for-fluent-suite-${VERSION}.zip" all-in-one-mcp-for-fluent-suite-latest.zip
+          cp "fluentmcp-${VERSION}.mcpb" fluentmcp-latest.mcpb
       - name: Create the GitHub release with the assets
         env:
           GH_TOKEN: ${{ github.token }}
@@ -70,11 +77,16 @@ jobs:
             "fluentmcp-${VERSION}.mcpb" \
             "all-in-one-mcp-for-fluent-suite-${VERSION}.zip" \
             "fluentmcp-${VERSION}-source.zip" \
+            all-in-one-mcp-for-fluent-suite-latest.zip \
+            fluentmcp-latest.mcpb \
             --title "All-In-One MCP for Fluent Suite ${VERSION}" \
             --notes "See CHANGELOG.md for what changed. Download the .mcpb for Claude Desktop (or the all-in-one ZIP with a readme), or the source bundle for config-file and remote installs."
-      # Publishes the download package to the Freemius product so the free
-      # checkout hands out this version. Skipped (not failed) until the three
-      # FREEMIUS_DEV_* repository secrets exist.
+      # Freemius "Apps & Software" products have no version upload
+      # (app_deployment_not_supported); their download is a fixed link to the
+      # *-latest.zip asset above, set once under Product → Settings → Download
+      # Links. This step keeps the version upload for the day Freemius adds
+      # it, and until then reports the stable link. Skipped (not failed) until
+      # the three FREEMIUS_DEV_* repository secrets exist.
       - name: Publish to Freemius
         env:
           FREEMIUS_DEV_ID: ${{ secrets.FREEMIUS_DEV_ID }}
