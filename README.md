@@ -55,6 +55,7 @@ see [How this compares](#how-this-compares-to-the-native-fluent-mcps).
 - [How the tools work](#how-the-tools-work)
 - [Safety](#safety)
 - [The products and their tools](#the-products-and-their-tools)
+- [Roadmap: more Fluent products](#roadmap-more-fluent-products)
 - [API references](#api-references)
 - [Troubleshooting](#troubleshooting)
 - [Security model](#security-model)
@@ -361,6 +362,27 @@ in one call with per-row verification.
 
 ---
 
+## Roadmap: more Fluent products
+
+Covered today: FluentCRM, FluentCart, Fluent Forms, FluentCommunity and WP
+Social Ninja. The rest of the WPManageNinja lineup, in the order they are
+likely to land. Each product is a self-contained module (see
+[`docs/EXTENDING.md`](docs/EXTENDING.md)), so adding one never touches the
+core or the existing tools.
+
+| Product | Status | What it would cover |
+|---------|--------|---------------------|
+| **Fluent Support** | Coming soon | Tickets, customers, agents, workflows, saved replies, reports |
+| **FluentBooking** | Coming soon | Calendars, events, bookings, availability, hosts |
+| **FluentBoards** | Coming soon | Boards, stages, tasks, comments, members, time tracking |
+| **FluentAffiliate** | Coming soon | Affiliates, referrals, commissions, payouts |
+| **Paymattic** | Planned | Payment forms, submissions, subscriptions, donors |
+| **FluentSMTP** · **Ninja Tables** | Under consideration | Email log lookups; table data |
+| **FluentInvoice** · **FluentMembers** | When released | Invoices and clients; memberships and content access |
+
+Want one sooner? Open an issue and say which operations you need first; the
+products with a published REST reference go fastest.
+
 ## API references
 
 This project passes requests through to REST APIs that WPManageNinja
@@ -394,7 +416,7 @@ pages, since their coverage grows.
 | | Native Fluent MCPs (FluentHub / per-product) | All-In-One MCP for Fluent Suite |
 |---|---|---|
 | **Runs where** | Inside WordPress, as plugin code (FluentHub or the WordPress MCP Adapter; needs WordPress 6.9+ for the Abilities API) | Outside WordPress: Claude Desktop extension, local Node process, or a Cloudflare Worker. Nothing installed on the site. |
-| **Products covered** | FluentCRM, FluentCart, Fluent Forms, Fluent Support, FluentBoards. FluentCommunity and WP Social Ninja: none announced. | FluentCRM, FluentCart, Fluent Forms, FluentCommunity, WP Social Ninja. (Fluent Support and FluentBoards: not yet.) |
+| **Products covered** | FluentCRM, FluentCart, Fluent Forms, Fluent Support, FluentBoards. FluentCommunity and WP Social Ninja: none announced. | FluentCRM, FluentCart, Fluent Forms, FluentCommunity, WP Social Ninja. Fluent Support, FluentBooking, FluentBoards and FluentAffiliate coming soon (see [Roadmap](#roadmap-more-fluent-products)). |
 | **Servers to connect** | One per product (Fluent Forms has its own; CRM/Cart/Support/Boards go through FluentHub, each with its own enable switch and snippet) | One. All five products behind one connector, one credential. Products you don't have are simply off. |
 | **Tool count** | FluentCRM ~25 (some Pro-only) · FluentCart 30 · Fluent Forms 20 free / 23 Pro · Fluent Support ~20 | 1,290 endpoint tools plus a `tool_map` index: CRM 366 · Cart 436 · Forms 91 · Community 274 · Social Ninja 126 |
 | **Coverage model** | Curated: a hand-picked subset of common operations | Complete: every documented REST endpoint of each product, generated from the vendor's own API reference and re-checked weekly |
