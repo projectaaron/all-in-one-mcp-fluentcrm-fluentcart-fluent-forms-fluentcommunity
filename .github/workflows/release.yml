@@ -1,0 +1,53 @@
+# Build the two downloadable bundles on every version tag and attach them to
+# a GitHub release. Upload the .mcpb to the Freemius product / upfluent.io
+# afterwards so the one-click download matches the release.
+#
+#   git tag v1.0.0 && git push origin v1.0.0
+#
+# Produces:
+#   fluentmcp-<version>.mcpb          Claude Desktop extension (dist + prod deps)
+#   fluentmcp-<version>-source.zip    source bundle for config-file / remote installs
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - name: Check the tag matches package.json
+        run: |
+          PKG=$(node -p "require('./package.json').version")
+          TAG="${GITHUB_REF_NAME#v}"
+          if [ "$PKG" != "$TAG" ]; then
+            echo "::error::Tag v$TAG does not match package.json version $PKG — bump the version first."
+            exit 1
+          fi
+          echo "VERSION=$PKG" >> "$GITHUB_ENV"
+      - name: Pack the desktop extension
+        run: |
+          npm run pack:extension
+          mv fluentmcp.mcpb "fluentmcp-${VERSION}.mcpb"
+      - name: Pack the source bundle
+        run: git archive --format=zip --prefix=fluentmcp/ -o "fluentmcp-${VERSION}-source.zip" HEAD
+      - name: Create the GitHub release with both assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            "fluentmcp-${VERSION}.mcpb" \
+            "fluentmcp-${VERSION}-source.zip" \
+            --title "fluentMCP ${VERSION}" \
+            --notes "See CHANGELOG.md for what changed. Download the .mcpb for Claude Desktop, or the source bundle for config-file and remote installs."
