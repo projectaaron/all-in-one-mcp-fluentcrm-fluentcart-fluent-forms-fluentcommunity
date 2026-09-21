@@ -1,6 +1,6 @@
 # FluentCRM API — Email Sequences (Pro)
 
-18 endpoints. Base URL: `https://{website}/wp-json/fluent-crm/v2`. See the [FluentCRM overview](../fluentcrm.md) for auth and the full group list.
+19 endpoints. Base URL: `https://{website}/wp-json/fluent-crm/v2`. See the [FluentCRM overview](../fluentcrm.md) for auth and the full group list.
 
 _Generated from the FluentCRM OpenAPI specs (developers.fluentcrm.com)._
 
@@ -11,6 +11,16 @@ _Generated from the FluentCRM OpenAPI specs (developers.fluentcrm.com)._
 **POST Add Sequence Subscribers**
 
 Subscribe contacts to an email sequence. Supports filtering by lists, tags, dynamic segments, or advanced filters. Subscribers already enrolled in the sequence are automatically excluded. Processes subscribers in batches (default 200 per request) -- use pagination for large sets. Requires FluentCampaign Pro.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `SequencePolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -108,6 +118,16 @@ Example:
 
 Permanently delete multiple email sequences in bulk. Removes all associated sequence emails, campaign emails, URL metrics, and campaign metadata. Use `select_all` to delete all sequences. Requires FluentCampaign Pro.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `SequencePolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`, required)
@@ -168,6 +188,16 @@ Example:
 **POST Create or Update Sequence Email**
 
 A fallback route that creates or updates a sequence email based on the `route_method` parameter. Use `create` to create a new email or `update` to update an existing one. This endpoint exists as a workaround for routes that need to handle both operations. Requires FluentCampaign Pro.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `SequencePolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -271,6 +301,16 @@ Example:
 
 Create a new email sequence. The title must be unique across all campaigns. Requires FluentCampaign Pro.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `SequencePolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`, required)
@@ -355,6 +395,16 @@ Example:
 
 Create a new email within an email sequence. The email data is passed inside an `email` object. The title is automatically set from the email_subject. Mailer settings are inherited from the parent sequence. Requires FluentCampaign Pro.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `SequencePolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -388,6 +438,7 @@ Create a new email within an email sequence. The email data is passed inside an 
   - `utm_content` (string) — UTM content parameter.
   - `_visual_builder_design` (object) — Visual builder design data (only when `design_template` is `visual_builder`).
     - _(object)_
+  - `title` (string) — Accepted but ignored — the server overwrites `title` with `email_subject` before saving, so the email's title always mirrors its subject.
 
 Example:
 
@@ -468,6 +519,16 @@ Example:
 
 Permanently delete an email sequence by ID. This also deletes all associated sequence emails, campaign emails, URL metrics, sequence trackers, and campaign metadata. Requires FluentCampaign Pro.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_email_delete`
+
+_Enforced by `SequencePolicy::delete()`._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -502,6 +563,16 @@ Permanently delete an email sequence by ID. This also deletes all associated seq
 **DELETE Delete Sequence Email**
 
 Permanently delete a sequence email by ID. This also removes all associated campaign emails, URL metrics, and campaign metadata. Requires FluentCampaign Pro.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_email_delete`
+
+_Enforced by `SequencePolicy::delete()`._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -538,6 +609,16 @@ Permanently delete a sequence email by ID. This also removes all associated camp
 **POST Duplicate Sequence**
 
 Create a duplicate of an existing email sequence, including all its sequence emails and visual builder designs. The duplicated sequence title is prefixed with `[Duplicate]`. Requires FluentCampaign Pro.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `SequencePolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -594,6 +675,18 @@ Create a duplicate of an existing email sequence, including all its sequence ema
 
 Create a duplicate of an existing sequence email within the same sequence. The duplicated email title is prefixed with `[Duplicate]`. Visual builder designs are also copied. Requires FluentCampaign Pro.
 
+The duplicate is created from the stored record, not from the request: only `email_id` is read. The copy's title is the original's prefixed with `[Duplicate] `.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `SequencePolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -601,6 +694,19 @@ Create a duplicate of an existing sequence email within the same sequence. The d
 | Name | Type | Required | Description |
 |------|------|----------|-------------|
 | `id` | integer | yes | The sequence email ID to duplicate (note: despite the route parameter name, this is the email ID, not the sequence ID). |
+
+
+**Request body** (`application/json`, required)
+
+- `email_id` (integer) **required** — Id of the sequence email to duplicate. Required — a missing or zero value returns 422. The id is resolved scoped to the sequence in the path, so an email from another sequence returns 404.
+
+Example:
+
+```json
+{
+  "email_id": 41
+}
+```
 
 
 **Responses**
@@ -643,6 +749,16 @@ Create a duplicate of an existing sequence email within the same sequence. The d
 
 Retrieve a single email sequence by ID. Optionally include the sequence emails and their individual statistics. Requires FluentCampaign Pro.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+_Enforced by `SequencePolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -666,7 +782,7 @@ Retrieve a single email sequence by ID. Optionally include the sequence emails a
   Schema (`application/json`):
 
   - `sequence` (Sequence)
-  - `sequence_emails` (array<SequenceEmail>) — Sequence emails ordered by delay (only included when `with[]=sequence_emails`).
+  - `sequence_emails` (array<SequenceEmail>) — Sequence emails ordered by delay (only included when `with[]=sequence_emails`). Returned **only** when `with[]=sequence_emails` is requested.
 
   Example:
 
@@ -728,6 +844,16 @@ Retrieve a single email sequence by ID. Optionally include the sequence emails a
 **GET Get Sequence Email**
 
 Retrieve a single sequence email by ID within a sequence. Optionally include the parent sequence data. If email_id is 0, returns an empty template for creating a new email. For visual builder emails, the `_visual_builder_design` field is included. Requires FluentCampaign Pro.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+_Enforced by `SequencePolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -817,6 +943,16 @@ Retrieve a single sequence email by ID within a sequence. Optionally include the
 
 Retrieve a paginated list of subscribers enrolled in a specific email sequence. Each record includes the sequence tracker data and the associated subscriber. Requires FluentCampaign Pro.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+_Enforced by `SequencePolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -832,6 +968,10 @@ Retrieve a paginated list of subscribers enrolled in a specific email sequence. 
 |------|------|----------|-------------|
 | `per_page` | integer | no | Number of records per page. |
 | `page` | integer | no | Page number for pagination. |
+| `search` | string | no | Search the enrolled contacts. |
+| `status` | string | no | Filter by enrolment status. `all` is treated as no filter. |
+| `sort_by` | string | no | Column to sort by. Anything outside the allowed set falls back to `id`. |
+| `sort_type` | string | no | Sort direction. Anything other than `ASC` is treated as `DESC`. |
 
 
 **Responses**
@@ -849,6 +989,13 @@ Retrieve a paginated list of subscribers enrolled in a specific email sequence. 
   - `from` (integer)
   - `to` (integer)
   - `data` (array<SequenceTracker>)
+  - `first_page_url` (string) — URL of the first page.
+  - `last_page_url` (string) — URL of the last page.
+  - `path` (string) — Base path the paginator built its URLs from.
+  - `links` (array<object>) — Rendered pagination links.
+    - `url` (string,null) — Target page URL, or null for a disabled control.
+    - `label` (string) — Link label.
+    - `active` (boolean) — True for the current page.
 
   Example:
 
@@ -896,6 +1043,16 @@ Retrieve a paginated list of subscribers enrolled in a specific email sequence. 
 **GET Get Subscriber Sequences**
 
 Retrieve all email sequences that a specific subscriber is enrolled in, including their tracking status, last/next sequence email details. Returns paginated sequence tracker records. Requires FluentCampaign Pro.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+_Enforced by `SequencePolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -999,6 +1156,16 @@ Retrieve all email sequences that a specific subscriber is enrolled in, includin
 
 Retrieve a paginated list of email sequences. Optionally include statistics (email count, subscriber count, revenue) for each sequence. Requires FluentCampaign Pro.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+_Enforced by `SequencePolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Query parameters**
@@ -1086,6 +1253,16 @@ Retrieve a paginated list of email sequences. Optionally include statistics (ema
 **POST Reapply Sequence**
 
 Re-apply an email sequence to subscribers who have completed it. This finds the next unsent email after the last completed one and reactivates completed subscribers to receive it. Only reactivates subscribers whose contact status is `subscribed`. Requires FluentCampaign Pro.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `SequencePolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -1178,6 +1355,16 @@ Re-apply an email sequence to subscribers who have completed it. This finds the 
 
 Remove subscribers from an email sequence. Subscribers can be identified by tracker IDs or subscriber IDs. Removes the sequence tracker records for the specified subscribers. Requires FluentCampaign Pro.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_email_delete`
+
+_Enforced by `SequencePolicy::deleteSubscribes()`._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -1230,6 +1417,16 @@ Example:
 **PUT Update Sequence**
 
 Update an existing email sequence's title, settings, or mailer configuration. If mailer settings are changed, they are propagated to all sequence emails. Requires FluentCampaign Pro.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `SequencePolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -1321,6 +1518,16 @@ Example:
 
 Update an existing sequence email's subject, body, settings, and UTM parameters. The title is automatically set from the email_subject. Mailer settings are inherited from the parent sequence. Requires FluentCampaign Pro.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `SequencePolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -1355,6 +1562,7 @@ Update an existing sequence email's subject, body, settings, and UTM parameters.
   - `utm_content` (string) — UTM content parameter.
   - `_visual_builder_design` (object) — Visual builder design data (only when `design_template` is `visual_builder`).
     - _(object)_
+  - `title` (string) — Accepted but ignored — the server overwrites `title` with `email_subject` before saving, so the email's title always mirrors its subject.
 
 Example:
 
@@ -1426,5 +1634,113 @@ Example:
 ```
 
 
+
+---
+
+## PATCH `/sequences/{id}/email/{email_id}/delay`
+
+**PATCH Update Sequence Email Delay**
+
+<Badge type="warning" text="Pro" />
+
+Change only the wait time before a sequence email sends, without touching its subject, body, or any other setting. This is what drag-to-reorder in the sequence builder calls.
+
+The email is looked up scoped to the sequence in the path, so an id from another sequence returns 404 rather than being edited.
+
+An unrecognised `delay_unit` silently falls back to `days` rather than erroring. Note that `Months` is **capitalised** in the accepted list — `months` is not recognised and will be treated as `days`.
+
+The value is written to `settings.timings` on the email record.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `SequencePolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
+**Auth:** ApplicationPasswords
+
+**Path parameters**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `id` | integer | yes | Sequence id. |
+| `email_id` | integer | yes | Sequence email id. Must belong to the sequence above. |
+
+
+**Request body** (`application/json`, required)
+
+- `delay` (string) _(default: `0`)_ — How long to wait, as a number.
+- `delay_unit` (string) _(enum: `minutes`, `hours`, `days`, `weeks`, `Months`; default: `days`)_ — Unit for `delay`. Unrecognised values fall back to `days`. `Months` is capitalised.
+
+Example:
+
+```json
+{
+  "delay": "3",
+  "delay_unit": "days"
+}
+```
+
+
+**Responses**
+
+- **200** — Wait time updated.
+
+  Schema (`application/json`):
+
+  - `message` (string) — Confirmation message.
+  - `email` (object)
+    - `id` (integer) — Sequence email id.
+    - `parent_id` (integer) — Owning sequence id.
+    - `title` (string) — Email title.
+    - `settings` (object)
+      - `timings` (object)
+        - `delay` (string) — Stored delay value.
+        - `delay_unit` (string) — Stored delay unit.
+
+  Example:
+
+```json
+{
+  "message": "Wait time has been updated",
+  "email": {
+    "id": 41,
+    "parent_id": 38,
+    "title": "Day 5 follow-up",
+    "settings": {
+      "timings": {
+        "delay": "3",
+        "delay_unit": "days"
+      }
+    }
+  }
+}
+```
+
+
+- **401** — Not authenticated — missing or invalid credentials.
+
+  Schema (`application/json`):
+
+  - _$ref: Error_
+- **403** — Authenticated but the user lacks the capability this route requires.
+
+  Schema (`application/json`):
+
+  - _$ref: Error_
+- **404** — The requested resource does not exist.
+
+  Schema (`application/json`):
+
+  - _$ref: Error_
+- **422** — Validation failed — the response message names the offending field.
+
+  Schema (`application/json`):
+
+  - _$ref: Error_
 
 ---

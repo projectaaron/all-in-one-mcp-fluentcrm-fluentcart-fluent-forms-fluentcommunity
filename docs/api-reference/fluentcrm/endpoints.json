@@ -1,10 +1,10 @@
 {
   "product": "fluentcrm",
   "source": "https://developers.fluentcrm.com/rest-api/",
-  "scraped": "2026-07-29",
+  "scraped": "2026-09-21",
   "baseUrl": "https://{website}/wp-json/fluent-crm/v2",
   "namespace": "fluent-crm/v2",
-  "count": 319,
+  "count": 363,
   "endpoints": [
     {
       "group": "contacts",
@@ -373,6 +373,18 @@
       "method": "PUT",
       "path": "/subscribers/subscribers-property",
       "summary": "PUT Update Contacts Property",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "contacts",
+      "slug": "bulk-delete-contact-notes",
+      "operationId": "bulkDeleteContactNotes",
+      "method": "POST",
+      "path": "/subscribers/{id}/notes/bulk-delete",
+      "summary": "POST Bulk Delete Contact Notes",
       "security": [
         "ApplicationPasswords"
       ],
@@ -913,6 +925,30 @@
       "method": "PUT",
       "path": "/companies/{id}/notes/{note_id}",
       "summary": "PUT Update Company Note",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "companies",
+      "slug": "bulk-delete-company-notes",
+      "operationId": "bulkDeleteCompanyNotes",
+      "method": "POST",
+      "path": "/companies/{id}/notes/bulk-delete",
+      "summary": "POST Bulk Delete Company Notes",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "companies",
+      "slug": "update-company-custom-field-group-name",
+      "operationId": "updateCompanyCustomFieldGroupName",
+      "method": "PUT",
+      "path": "/companies/custom-fields/update_group_name",
+      "summary": "PUT Rename Company Custom Field Group",
       "security": [
         "ApplicationPasswords"
       ],
@@ -1771,6 +1807,18 @@
       "deprecated": false
     },
     {
+      "group": "sequences",
+      "slug": "update-sequence-email-delay",
+      "operationId": "updateSequenceEmailDelay",
+      "method": "PATCH",
+      "path": "/sequences/{id}/email/{email_id}/delay",
+      "summary": "PATCH Update Sequence Email Delay",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
       "group": "funnels",
       "slug": "bulk-action-funnels",
       "operationId": "bulkActionFunnels",
@@ -2143,6 +2191,18 @@
       "deprecated": false
     },
     {
+      "group": "funnels",
+      "slug": "update-funnel-sticky-note",
+      "operationId": "updateFunnelStickyNote",
+      "method": "PUT",
+      "path": "/funnels/{id}/sticky-note",
+      "summary": "PUT Update Automation Sticky Note",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
       "group": "templates",
       "slug": "bulk-action-templates",
       "operationId": "bulkActionTemplates",
@@ -2275,6 +2335,18 @@
       "deprecated": false
     },
     {
+      "group": "templates",
+      "slug": "get-built-in-template",
+      "operationId": "getBuiltInTemplate",
+      "method": "POST",
+      "path": "/templates/built-in-template",
+      "summary": "POST Fetch A Built-In Template",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
       "group": "forms",
       "slug": "create-form",
       "operationId": "createForm",
@@ -2353,18 +2425,6 @@
       "method": "DELETE",
       "path": "/webhooks/{id}",
       "summary": "DELETE Delete Webhook",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "webhooks",
-      "slug": "list-sms-webhooks",
-      "operationId": "listSmsWebhooks",
-      "method": "GET",
-      "path": "/webhooks/sms",
-      "summary": "GET List SMS Webhooks",
       "security": [
         "ApplicationPasswords"
       ],
@@ -2743,6 +2803,18 @@
       "deprecated": false
     },
     {
+      "group": "sms",
+      "slug": "unschedule-sms-campaign-legacy",
+      "operationId": "unscheduleSmsCampaignLegacy",
+      "method": "POST",
+      "path": "/sms/campaigns/{id}/un-schedule",
+      "summary": "POST Unschedule SMS Campaign (Legacy Path)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": true
+    },
+    {
       "group": "abandon-carts",
       "slug": "bulk-delete-abandoned-carts",
       "operationId": "bulkDeleteAbandonedCarts",
@@ -2965,6 +3037,138 @@
       "method": "GET",
       "path": "/reports/ping",
       "summary": "GET Ping Report",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "get-automation-reports",
+      "operationId": "getAutomationReports",
+      "method": "GET",
+      "path": "/reports/automations",
+      "summary": "GET Automation Reports",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "get-automation-step-report",
+      "operationId": "getAutomationStepReport",
+      "method": "GET",
+      "path": "/reports/automations/{id}/steps",
+      "summary": "GET Automation Step Report",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "get-campaign-options",
+      "operationId": "getCampaignOptions",
+      "method": "GET",
+      "path": "/reports/campaign-options",
+      "summary": "GET Campaign Options",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "get-campaigns-list-report",
+      "operationId": "getCampaignsListReport",
+      "method": "GET",
+      "path": "/reports/campaigns-list",
+      "summary": "GET Campaigns List Report",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "get-contacts-by-country",
+      "operationId": "getContactsByCountry",
+      "method": "GET",
+      "path": "/reports/contacts-by-country",
+      "summary": "GET Contacts By Country",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "get-contacts-by-lists",
+      "operationId": "getContactsByLists",
+      "method": "GET",
+      "path": "/reports/contacts-by-lists",
+      "summary": "GET Contacts By Lists",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "get-contacts-by-status",
+      "operationId": "getContactsByStatus",
+      "method": "GET",
+      "path": "/reports/contacts-by-status",
+      "summary": "GET Contacts By Status",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "get-contacts-by-tags",
+      "operationId": "getContactsByTags",
+      "method": "GET",
+      "path": "/reports/contacts-by-tags",
+      "summary": "GET Contacts By Tags",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "get-email-unsub-stats",
+      "operationId": "getEmailUnsubStats",
+      "method": "GET",
+      "path": "/reports/email-unsubs",
+      "summary": "GET Email Unsubscribe Stats",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "get-recent-tags",
+      "operationId": "getRecentTags",
+      "method": "GET",
+      "path": "/reports/recent-tags",
+      "summary": "GET Recently Created Tags",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "get-top-campaigns",
+      "operationId": "getTopCampaigns",
+      "method": "GET",
+      "path": "/reports/top-campaigns",
+      "summary": "GET Top Campaigns",
       "security": [
         "ApplicationPasswords"
       ],
@@ -3526,9 +3730,9 @@
       "group": "settings",
       "slug": "reset-system-logs",
       "operationId": "resetSystemLogs",
-      "method": "GET",
+      "method": "DELETE",
       "path": "/setting/system-logs/reset",
-      "summary": "GET Reset System Logs",
+      "summary": "DELETE Reset System Logs",
       "security": [
         "ApplicationPasswords"
       ],
@@ -3679,6 +3883,42 @@
       "deprecated": false
     },
     {
+      "group": "settings",
+      "slug": "export-system-logs",
+      "operationId": "exportSystemLogs",
+      "method": "GET",
+      "path": "/setting/system-logs/export",
+      "summary": "GET Export System Logs (CSV)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-db-index-health",
+      "operationId": "getDbIndexHealth",
+      "method": "GET",
+      "path": "/setting/db-index-health",
+      "summary": "GET Database Index Health",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "repair-db-indexes",
+      "operationId": "repairDbIndexes",
+      "method": "POST",
+      "path": "/setting/db-index-health/repair",
+      "summary": "POST Repair Database Indexes",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
       "group": "pro-settings",
       "slug": "add-manager",
       "operationId": "addManager",
@@ -3765,7 +4005,7 @@
     {
       "group": "pro-settings",
       "slug": "import-funnel",
-      "operationId": "importFunnel",
+      "operationId": "importFunnelProSettings",
       "method": "POST",
       "path": "/campaign-pro-settings/import_funnel",
       "summary": "POST Import Funnel",
@@ -3813,21 +4053,309 @@
     {
       "group": "public-bounce",
       "slug": "handle-bounce",
-      "operationId": "handleBounce",
-      "method": "POST",
+      "operationId": "handleBounceGet",
+      "method": "GET",
       "path": "/public/bounce_handler/{service_name}/{security_code}",
-      "summary": "POST Handle Bounce",
+      "summary": "GET Handle Bounce Webhook",
       "security": [],
       "deprecated": false
     },
     {
       "group": "public-bounce",
       "slug": "handle-bounce-with-handle",
-      "operationId": "handleBounceWithHandle",
-      "method": "POST",
+      "operationId": "handleBounceWithHandleGet",
+      "method": "GET",
       "path": "/public/bounce_handler/{service_name}/handle/{security_code}",
-      "summary": "POST Handle Bounce (with /handle/ path)",
+      "summary": "GET Handle Bounce Webhook",
       "security": [],
+      "deprecated": false
+    },
+    {
+      "group": "ai",
+      "slug": "generate-ai-content",
+      "operationId": "generateAiContent",
+      "method": "POST",
+      "path": "/ai/generate",
+      "summary": "POST Rewrite Or Generate Text",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "ai",
+      "slug": "generate-ai-email-body",
+      "operationId": "generateAiEmailBody",
+      "method": "POST",
+      "path": "/ai/generate-email-body",
+      "summary": "POST Generate Email Body",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "ai",
+      "slug": "get-ai-contact-summary",
+      "operationId": "getAiContactSummary",
+      "method": "POST",
+      "path": "/ai/contact-summary",
+      "summary": "POST Get Or Generate Contact Summary",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "ai",
+      "slug": "get-ai-models",
+      "operationId": "getAiModels",
+      "method": "POST",
+      "path": "/ai/models",
+      "summary": "POST List Models For Provider",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "ai",
+      "slug": "get-ai-settings",
+      "operationId": "getAiSettings",
+      "method": "GET",
+      "path": "/ai/settings",
+      "summary": "GET AI Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "ai",
+      "slug": "save-ai-settings",
+      "operationId": "saveAiSettings",
+      "method": "POST",
+      "path": "/ai/settings",
+      "summary": "POST Save AI Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "ai",
+      "slug": "test-ai-connection",
+      "operationId": "testAiConnection",
+      "method": "POST",
+      "path": "/ai/test",
+      "summary": "POST Test AI Connection",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "email-patterns",
+      "slug": "bulk-action-email-patterns",
+      "operationId": "bulkActionEmailPatterns",
+      "method": "POST",
+      "path": "/email-patterns/do-bulk-action",
+      "summary": "POST Bulk Delete Email Patterns",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "email-patterns",
+      "slug": "create-email-pattern",
+      "operationId": "createEmailPattern",
+      "method": "POST",
+      "path": "/email-patterns",
+      "summary": "POST Create Email Pattern",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "email-patterns",
+      "slug": "create-email-pattern-category",
+      "operationId": "createEmailPatternCategory",
+      "method": "POST",
+      "path": "/email-patterns/categories",
+      "summary": "POST Create Pattern Category",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "email-patterns",
+      "slug": "create-email-pattern-wp-format",
+      "operationId": "createEmailPatternWpFormat",
+      "method": "POST",
+      "path": "/email-patterns/wp-format",
+      "summary": "POST Create Pattern From wp_block Payload",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "email-patterns",
+      "slug": "delete-email-pattern",
+      "operationId": "deleteEmailPattern",
+      "method": "DELETE",
+      "path": "/email-patterns/{id}",
+      "summary": "DELETE Delete Email Pattern",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "email-patterns",
+      "slug": "delete-email-pattern-category",
+      "operationId": "deleteEmailPatternCategory",
+      "method": "DELETE",
+      "path": "/email-patterns/categories/{id}",
+      "summary": "DELETE Delete Pattern Category",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "email-patterns",
+      "slug": "get-email-pattern",
+      "operationId": "getEmailPattern",
+      "method": "GET",
+      "path": "/email-patterns/{id}",
+      "summary": "GET Single Email Pattern",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "email-patterns",
+      "slug": "list-email-pattern-categories",
+      "operationId": "listEmailPatternCategories",
+      "method": "GET",
+      "path": "/email-patterns/categories",
+      "summary": "GET List Pattern Categories",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "email-patterns",
+      "slug": "list-email-patterns",
+      "operationId": "listEmailPatterns",
+      "method": "GET",
+      "path": "/email-patterns",
+      "summary": "GET List Email Patterns",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "email-patterns",
+      "slug": "list-email-patterns-wp-format",
+      "operationId": "listEmailPatternsWpFormat",
+      "method": "GET",
+      "path": "/email-patterns/wp-format",
+      "summary": "GET List Patterns In wp_block Format",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "email-patterns",
+      "slug": "update-email-pattern",
+      "operationId": "updateEmailPattern",
+      "method": "PUT",
+      "path": "/email-patterns/{id}",
+      "summary": "PUT Update Email Pattern",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "export",
+      "slug": "export-contacts-page",
+      "operationId": "exportContactsPage",
+      "method": "POST",
+      "path": "/subscribers-export",
+      "summary": "POST Fetch Contact Export Page",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "export",
+      "slug": "export-contacts-page-get",
+      "operationId": "exportContactsPageGet",
+      "method": "GET",
+      "path": "/subscribers-export",
+      "summary": "GET Fetch Contact Export Page",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "mcp",
+      "slug": "get-mcp-config-snippet",
+      "operationId": "getMcpConfigSnippet",
+      "method": "GET",
+      "path": "/mcp/config-snippet",
+      "summary": "GET MCP Client Config Snippet",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "mcp",
+      "slug": "get-mcp-status",
+      "operationId": "getMcpStatus",
+      "method": "GET",
+      "path": "/mcp/status",
+      "summary": "GET MCP Status",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "mcp",
+      "slug": "install-mcp-adapter",
+      "operationId": "installMcpAdapter",
+      "method": "POST",
+      "path": "/mcp/install-adapter",
+      "summary": "POST Install MCP Adapter",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "mcp",
+      "slug": "toggle-mcp",
+      "operationId": "toggleMcp",
+      "method": "POST",
+      "path": "/mcp/toggle",
+      "summary": "POST Toggle MCP Tools",
+      "security": [
+        "ApplicationPasswords"
+      ],
       "deprecated": false
     }
   ]

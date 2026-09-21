@@ -12,6 +12,14 @@ _Generated from the FluentCRM OpenAPI specs (developers.fluentcrm.com)._
 
 Retrieve all editable WordPress user roles. Returns role keys and their capabilities. Useful for building role selection UIs for user import.
 
+<!-- fc:access -->
+
+**Required capability:** `list_users`
+
+_Enforced by `UsersPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Responses**
@@ -55,6 +63,14 @@ Retrieve all editable WordPress user roles. Returns role keys and their capabili
 **GET List WordPress Users**
 
 Retrieve a list of WordPress users filtered by role. Returns user ID, display name, and email by default. Useful for previewing users before importing them as contacts.
+
+<!-- fc:access -->
+
+**Required capability:** `list_users`
+
+_Enforced by `UsersPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 

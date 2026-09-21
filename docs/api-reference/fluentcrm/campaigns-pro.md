@@ -12,6 +12,16 @@ _Generated from the FluentCRM OpenAPI specs (developers.fluentcrm.com)._
 
 Add or remove tags from subscribers based on campaign activity (email opened, not opened, or link clicked). Only works on archived campaigns. Processes subscribers in paginated batches (default 50 per page) to handle large campaigns.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `CampaignPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -104,6 +114,16 @@ Example:
 
 Retrieve all public taxonomies and their terms for each registered public post type. Used by the email builder's dynamic post block to populate taxonomy filter options.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+_Enforced by `CampaignPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Responses**
@@ -161,6 +181,16 @@ Retrieve all public taxonomies and their terms for each registered public post t
 **GET Dynamic Posts**
 
 Retrieve WordPress posts for use in dynamic email content blocks. Supports filtering by post type, taxonomy terms, date range, and custom ordering. Returns post data along with available post types. Used by the email builder's dynamic post block.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+_Enforced by `CampaignPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -234,6 +264,16 @@ Retrieve WordPress posts for use in dynamic email content blocks. Supports filte
 
 Retrieve WooCommerce products for use in dynamic email content blocks. Supports filtering by product category. Returns product data along with available product taxonomies. Requires WooCommerce to be active.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+_Enforced by `CampaignPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Query parameters**
@@ -300,6 +340,16 @@ Retrieve WooCommerce products for use in dynamic email content blocks. Supports 
 **POST Resend Campaign Emails**
 
 Resend specific campaign emails by their IDs. Only emails with 'sent' or 'failed' status can be resent. Each email is set back to 'scheduled' status and the email processor is triggered for the associated subscriber.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `CampaignPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -373,6 +423,16 @@ Example:
 
 Reschedule all failed campaign emails for resending. Sets failed emails back to 'scheduled' status and changes the campaign status to 'working' so the email processor picks them up again.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `CampaignPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -427,6 +487,16 @@ Reschedule all failed campaign emails for resending. Sets failed emails back to 
 **POST Resend Unopened Emails**
 
 Reschedule all unopened campaign emails for resending. Finds emails with 'sent' or 'failed' status that have not been opened (is_open = 0), sets them back to 'scheduled' status, and triggers the email processor for each subscriber.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `CampaignPolicy::verifyRequest()`, the policy default for this route group._
+
+**Requires:** FluentCampaign Pro. Without it the route does not exist.
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 

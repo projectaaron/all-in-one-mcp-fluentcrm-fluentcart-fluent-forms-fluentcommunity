@@ -12,6 +12,14 @@ _Generated from the FluentCRM OpenAPI specs (developers.fluentcrm.com)._
 
 Create a new global label. Labels are stored in the `fc_terms` table with `taxonomy_name` of `global_label`. The `slug`, `title`, and `color` fields are sanitized server-side.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `CustomFieldsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`, required)
@@ -84,6 +92,14 @@ Example:
 
 Permanently delete a label by ID. This removes the label from the `fc_terms` table. Any funnel associations referencing this label are not automatically removed by this endpoint.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `CustomFieldsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -123,6 +139,16 @@ Permanently delete a label by ID. This removes the label from the `fc_terms` tab
 **GET List Labels**
 
 Retrieve all global labels ordered by their position. Labels are used to categorize and organize automation funnels and other objects within FluentCRM.
+
+<!-- fc:access -->
+
+**Required capability:** any FluentCRM permission — the route only checks that the user holds at least one.
+
+Gated on the user holding ANY FluentCRM permission, not one specific capability.
+
+_Enforced by `CustomFieldsPolicy::getlabels()`._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -178,6 +204,14 @@ Retrieve all global labels ordered by their position. Labels are used to categor
 **PUT Update Label**
 
 Update an existing label's slug, title, and color. The label must exist or a 404 error is returned. All fields are sanitized server-side.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `CustomFieldsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 

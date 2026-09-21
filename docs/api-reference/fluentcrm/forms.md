@@ -12,6 +12,14 @@ _Generated from the FluentCRM OpenAPI specs (developers.fluentcrm.com)._
 
 Create a new Fluent Form with FluentCRM integration pre-configured. The form is created from a template and automatically gets a FluentCRM integration feed with the specified tags and list. Requires Fluent Forms to be installed.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_forms`
+
+_Enforced by `FormsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`, required)
@@ -98,6 +106,14 @@ Example:
 **GET Form Entries**
 
 Retrieve a paginated list of form submission entries for a specific Fluent Form. Includes submission data, browser info, device info, and a link to view the entry in the Fluent Forms admin. Requires Fluent Forms to be installed and appropriate entry viewer permissions.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_forms`
+
+_Enforced by `FormsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -197,6 +213,14 @@ Retrieve a paginated list of form submission entries for a specific Fluent Form.
 
 Retrieve a single form entry by ID. Returns a dynamic HTML view of the entry data, rendered via the `fluent_crm/dynamic_contact_item_view_fluentform` filter.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_forms`
+
+_Enforced by `FormsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -235,6 +259,14 @@ Retrieve a single form entry by ID. Returns a dynamic HTML view of the entry dat
 **GET Form Templates**
 
 Retrieve available form templates for creating new Fluent Forms with FluentCRM integration. Default templates include Inline Opt-in, Simple Opt-in, and Subscription Form with name fields.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_forms`
+
+_Enforced by `FormsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -297,6 +329,14 @@ Retrieve available form templates for creating new Fluent Forms with FluentCRM i
 **GET List Forms**
 
 Retrieve a paginated list of Fluent Forms that are connected to FluentCRM (via integration feeds or automation funnels). Returns form details including associated tags, lists, shortcode, and links to edit/preview the form. Requires Fluent Forms to be installed.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_forms`
+
+_Enforced by `FormsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 

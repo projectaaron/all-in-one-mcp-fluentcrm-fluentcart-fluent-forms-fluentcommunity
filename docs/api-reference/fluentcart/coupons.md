@@ -12,6 +12,8 @@ _Generated from the FluentCart OpenAPI specs (dev.fluentcart.com)._
 
 Apply a coupon code to a set of order line items. This endpoint validates the coupon, checks eligibility for each line item, and returns the recalculated discount breakdown.
 
+**Required permissions:** all of `orders/create`, `orders/manage`
+
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`, required)
@@ -85,6 +87,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`orders/create, orders/manage`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -93,6 +141,8 @@ Example:
 **POST Cancel Coupon**
 
 Remove a coupon from an order and recalculate the remaining discounts. If an order_uuid is provided and the coupon was already persisted to the order, it is deleted from the fct_applied_coupons table and the coupon's use_count is decremented.
+
+**Required permissions:** all of `orders/create`, `orders/manage`
 
 **Auth:** ApplicationPasswords
 
@@ -168,6 +218,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`orders/create, orders/manage`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -176,6 +272,8 @@ Example:
 **POST Check Product Eligibility**
 
 Check whether a product is eligible for a set of applied coupons. This is used in the order form to validate that adding a product does not conflict with currently applied coupons.
+
+**Required permissions:** all of `orders/create`, `orders/manage`
 
 **Auth:** ApplicationPasswords
 
@@ -231,6 +329,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`orders/create, orders/manage`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -239,6 +383,8 @@ Example:
 **POST Create Coupon**
 
 Create a new discount coupon.
+
+**Required permission:** `coupons/manage`
 
 **Auth:** ApplicationPasswords
 
@@ -350,6 +496,36 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`coupons/manage`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 - **422** — Validation error.
 
   Schema (`application/json`):
@@ -386,6 +562,8 @@ Example:
 **DELETE Coupon**
 
 Permanently delete a coupon.
+
+**Required permission:** `coupons/delete`
 
 **Auth:** ApplicationPasswords
 
@@ -430,6 +608,21 @@ Permanently delete a coupon.
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
 - **403** — Invalid coupon ID.
 
   Schema (`application/json`):
@@ -460,6 +653,22 @@ Permanently delete a coupon.
 ```
 
 
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -468,6 +677,8 @@ Permanently delete a coupon.
 **GET Coupon Details**
 
 Retrieve detailed information about a specific coupon, including its activity log. The coupon status is automatically updated to expired if its end_date has passed.
+
+**Required permission:** `coupons/view`
 
 **Auth:** ApplicationPasswords
 
@@ -492,7 +703,6 @@ Retrieve detailed information about a specific coupon, including its activity lo
 {
   "coupon": {
     "id": 3,
-    "parent": null,
     "title": "Welcome Discount",
     "code": "WELCOME20",
     "status": "active",
@@ -553,6 +763,52 @@ Retrieve detailed information about a specific coupon, including its activity lo
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`coupons/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -561,6 +817,8 @@ Retrieve detailed information about a specific coupon, including its activity lo
 **GET Coupon Settings**
 
 Retrieve the global coupon settings (currently, whether coupon input is shown on the checkout page).
+
+**Required permission:** `coupons/view`
 
 **Auth:** ApplicationPasswords
 
@@ -576,9 +834,37 @@ Retrieve the global coupon settings (currently, whether coupon input is shown on
 
 ```json
 {
-  "show_on_checkout": 1,
-  "enable_coupons": true,
-  "auto_apply_coupons": false
+  "show_on_checkout": 1
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`coupons/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
 }
 ```
 
@@ -591,6 +877,8 @@ Retrieve the global coupon settings (currently, whether coupon input is shown on
 **GET List Coupon Codes**
 
 Retrieve a simple array of active coupon codes. This lightweight endpoint is designed for use in order creation forms and quick coupon lookups.
+
+**Required permissions:** all of `orders/create`, `orders/manage`, `coupons/view`
 
 **Auth:** ApplicationPasswords
 
@@ -616,6 +904,36 @@ Retrieve a simple array of active coupon codes. This lightweight endpoint is des
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`orders/create, orders/manage, coupons/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -624,6 +942,8 @@ Retrieve a simple array of active coupon codes. This lightweight endpoint is des
 **GET List Coupons**
 
 Retrieve a paginated list of coupons with optional filtering, sorting, and search. Coupon statuses are automatically updated based on their start/end dates before the response is returned.
+
+**Required permission:** `coupons/view`
 
 **Auth:** ApplicationPasswords
 
@@ -656,6 +976,17 @@ Retrieve a paginated list of coupons with optional filtering, sorting, and searc
     - `per_page` (integer)
     - `current_page` (integer)
     - `last_page` (integer)
+    - `first_page_url` (string) — URL to the first page of results
+    - `from` (integer) — Index of the first item on this page
+    - `last_page_url` (string) — URL to the last page of results
+    - `links` (array<object>) — Pagination links for previous, numbered pages, and next
+      - `url` (string)
+      - `label` (string)
+      - `active` (boolean)
+    - `next_page_url` (string) — URL to the next page of results
+    - `path` (string) — Base URL without query string
+    - `prev_page_url` (string) — URL to the previous page of results
+    - `to` (integer) — Index of the last item on this page
     - `data` (array<Coupon>)
 
   Example:
@@ -667,6 +998,40 @@ Retrieve a paginated list of coupons with optional filtering, sorting, and searc
     "per_page": 10,
     "current_page": 1,
     "last_page": 3,
+    "first_page_url": "https://yoursite.com/wp-json/fluent-cart/v2/coupons/?page=1",
+    "from": 1,
+    "last_page_url": "https://yoursite.com/wp-json/fluent-cart/v2/coupons/?page=3",
+    "links": [
+      {
+        "url": null,
+        "label": "pagination.previous",
+        "active": false
+      },
+      {
+        "url": "https://yoursite.com/wp-json/fluent-cart/v2/coupons/?page=1",
+        "label": "1",
+        "active": true
+      },
+      {
+        "url": "https://yoursite.com/wp-json/fluent-cart/v2/coupons/?page=2",
+        "label": "2",
+        "active": false
+      },
+      {
+        "url": "https://yoursite.com/wp-json/fluent-cart/v2/coupons/?page=3",
+        "label": "3",
+        "active": false
+      },
+      {
+        "url": "https://yoursite.com/wp-json/fluent-cart/v2/coupons/?page=2",
+        "label": "pagination.next",
+        "active": false
+      }
+    ],
+    "next_page_url": "https://yoursite.com/wp-json/fluent-cart/v2/coupons/?page=2",
+    "path": "https://yoursite.com/wp-json/fluent-cart/v2/coupons",
+    "prev_page_url": null,
+    "to": 10,
     "data": [
       {
         "id": 3,
@@ -742,6 +1107,36 @@ Retrieve a paginated list of coupons with optional filtering, sorting, and searc
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`coupons/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -750,6 +1145,8 @@ Retrieve a paginated list of coupons with optional filtering, sorting, and searc
 **POST Re-apply Coupons**
 
 Recalculate all previously applied coupons against the current order items. This is used when order items change (e.g., quantity update, item added/removed) and discounts need to be recalculated. If order_items is empty, all applied coupons on the order are deleted.
+
+**Required permissions:** all of `orders/create`, `orders/manage`
 
 **Auth:** ApplicationPasswords
 
@@ -835,6 +1232,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`orders/create, orders/manage`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -843,6 +1286,8 @@ Example:
 **POST Store Coupon Settings**
 
 Update the global coupon settings. Currently controls whether the coupon input field is displayed on the checkout page.
+
+**Required permission:** `coupons/manage`
 
 **Auth:** ApplicationPasswords
 
@@ -878,6 +1323,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`coupons/manage`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -886,6 +1377,8 @@ Example:
 **PUT Update Coupon**
 
 Update an existing coupon. Accepts the same fields as Create Coupon. The code uniqueness check excludes the current coupon.
+
+**Required permission:** `coupons/manage`
 
 **Auth:** ApplicationPasswords
 
@@ -993,6 +1486,21 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
 - **403** — Invalid coupon.
 
   Schema (`application/json`):
@@ -1019,6 +1527,22 @@ Example:
 ```json
 {
   "message": "Coupon not found, please reload the page and try again!"
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
 }
 ```
 

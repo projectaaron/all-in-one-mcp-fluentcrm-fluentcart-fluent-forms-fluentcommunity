@@ -1,6 +1,6 @@
 # FluentCart API — Dashboard & Utilities
 
-20 endpoints. Base URL: `https://{website}/wp-json/fluent-cart/v2`. See the [FluentCart overview](../fluentcart.md) for auth and the full group list.
+22 endpoints. Base URL: `https://{website}/wp-json/fluent-cart/v2`. See the [FluentCart overview](../fluentcart.md) for auth and the full group list.
 
 _Generated from the FluentCart OpenAPI specs (dev.fluentcart.com)._
 
@@ -11,6 +11,8 @@ _Generated from the FluentCart OpenAPI specs (dev.fluentcart.com)._
 **POST Attach Note to Order**
 
 Add or update a note on an order. The note is stored directly on the order record.
+
+**Access policy:** `AdminPolicy` — requires the `is_super_admin` FluentCart capability.
 
 **Auth:** ApplicationPasswords
 
@@ -46,6 +48,36 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 - **422** — Error response
 
   Schema (`application/json`):
@@ -69,6 +101,8 @@ Example:
 **POST Create All Pages**
 
 Create all required store pages (shop, checkout, customer profile, etc.) in bulk. Skips pages that already have valid page IDs assigned. After creation, returns the updated onboarding settings.
+
+**Access policy:** `AdminPolicy` — requires the `is_super_admin` FluentCart capability.
 
 **Auth:** ApplicationPasswords
 
@@ -125,6 +159,52 @@ Create all required store pages (shop, checkout, customer profile, etc.) in bulk
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -133,6 +213,8 @@ Create all required store pages (shop, checkout, customer profile, etc.) in bulk
 **POST Create Single Page**
 
 Create a single store page (e.g., shop, checkout, customer profile) and optionally save the page ID to store settings.
+
+**Access policy:** `AdminPolicy` — requires the `is_super_admin` FluentCart capability.
 
 **Auth:** ApplicationPasswords
 
@@ -174,6 +256,36 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 - **422** — Error response
 
   Schema (`application/json`):
@@ -197,6 +309,8 @@ Example:
 **DELETE Delete Activity**
 
 Delete a specific activity log entry.
+
+**Access policy:** `AdminPolicy` — requires the `is_super_admin` FluentCart capability.
 
 **Auth:** ApplicationPasswords
 
@@ -224,6 +338,36 @@ Delete a specific activity log entry.
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 - **404** — Activity not found
 
   Schema (`application/json`):
@@ -239,6 +383,22 @@ Delete a specific activity log entry.
 ```
 
 
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -247,6 +407,10 @@ Delete a specific activity log entry.
 **GET Get Country Info**
 
 Retrieve detailed information for a specific country including states/provinces and address locale formatting rules. Can identify the country from either a country code or a timezone string.
+
+**Access policy:** `UserPolicy`
+
+**Access policy:** `UserPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -308,6 +472,36 @@ Retrieve detailed information for a specific country including states/provinces 
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -316,6 +510,8 @@ Retrieve detailed information for a specific country including states/provinces 
 **GET Get Dashboard Stats**
 
 Retrieve dashboard statistics widgets including total products, orders, net revenue, and refunds for the last 30 days.
+
+**Required permission:** `dashboard_stats/view`
 
 **Auth:** ApplicationPasswords
 
@@ -363,6 +559,36 @@ Retrieve dashboard statistics widgets including total products, orders, net reve
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`dashboard_stats/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -371,6 +597,10 @@ Retrieve dashboard statistics widgets including total products, orders, net reve
 **GET Get Filter Options**
 
 Retrieve dynamic filter options for the advanced filter dropdowns. Supports loading product variations, labels, and extensible custom data keys via WordPress filters.
+
+**Access policy:** `AdvanceFilterPolicy`
+
+**Access policy:** `AdvanceFilterPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -416,6 +646,36 @@ Retrieve dynamic filter options for the advanced filter dropdowns. Supports load
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -424,6 +684,8 @@ Retrieve dynamic filter options for the advanced filter dropdowns. Supports load
 **GET Get Onboarding Data**
 
 Retrieve the onboarding checklist with completion status for each setup step. Used to display the getting-started wizard on the dashboard.
+
+**Access policy:** `AdminPolicy` — requires the `is_super_admin` FluentCart capability.
 
 **Auth:** ApplicationPasswords
 
@@ -479,6 +741,36 @@ Retrieve the onboarding checklist with completion status for each setup step. Us
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -488,6 +780,8 @@ Retrieve the onboarding checklist with completion status for each setup step. Us
 
 Retrieve the current store settings, available pages, and currency options for the onboarding wizard.
 
+**Access policy:** `AdminPolicy` — requires the `is_super_admin` FluentCart capability.
+
 **Auth:** ApplicationPasswords
 
 **Responses**
@@ -496,10 +790,10 @@ Retrieve the current store settings, available pages, and currency options for t
 
   Schema (`application/json`):
 
-  - `pages` (array<PageOption>)
-  - `currencies` (object) — Map of currency codes to display labels
-    - _(object)_
+  - `pages` (array<PageOption>) — Pages available for the onboarding wizard's page pickers (e.g. Privacy Policy, Terms & Conditions), formatted as label/value options.
+  - `currencies` (array<CurrencyOption>) — Available store currencies, formatted as label/value options.
   - `default_settings` (OnboardingDefaults)
+  - `tax_settings` (OnboardingTaxSettings)
 
   Example:
 
@@ -507,28 +801,125 @@ Retrieve the current store settings, available pages, and currency options for t
 {
   "pages": [
     {
-      "id": 10,
-      "title": "Shop",
-      "link": "https://example.com/shop/"
+      "label": "Shop( 10 )",
+      "value": "10"
     },
     {
-      "id": 12,
-      "title": "Checkout",
-      "link": "https://example.com/checkout/"
+      "label": "Checkout( 12 )",
+      "value": "12"
     }
   ],
-  "currencies": {
-    "USD": "United States Dollar ($)",
-    "EUR": "Euro (EUR)",
-    "GBP": "British Pound (GBP)"
-  },
+  "currencies": [
+    {
+      "label": "United States Dollar",
+      "value": "USD"
+    },
+    {
+      "label": "Euro",
+      "value": "EUR"
+    },
+    {
+      "label": "British Pound",
+      "value": "GBP"
+    }
+  ],
   "default_settings": {
+    "reminders_enabled": "no",
+    "yearly_renewal_reminders_enabled": "yes",
+    "yearly_renewal_reminder_days": "30",
+    "trial_end_reminders_enabled": "yes",
+    "trial_end_reminder_days": "3",
+    "monthly_renewal_reminders_enabled": "no",
+    "monthly_renewal_reminder_days": "7",
+    "quarterly_renewal_reminders_enabled": "no",
+    "quarterly_renewal_reminder_days": "14",
+    "half_yearly_renewal_reminders_enabled": "no",
+    "half_yearly_renewal_reminder_days": "21",
+    "renewal_reminders_enabled": "no",
+    "renewal_reminder_overdue_days": "1,3,7",
     "store_name": "My Store",
-    "store_logo": "",
+    "company_name": "",
+    "legal_registration_id": "",
+    "seller_vat_id": "",
+    "seller_tax_id": "",
+    "note_for_user_account_creation": "An user account will be created",
+    "checkout_button_text": "Checkout",
+    "view_cart_button_text": "View Cart",
+    "cart_button_text": "Add To Cart",
+    "popup_button_text": "View Product",
+    "out_of_stock_button_text": "Out of stock",
+    "currency_position": "before",
+    "decimal_separator": "dot",
+    "checkout_method_style": "logo",
+    "enable_modal_checkout": "no",
+    "require_logged_in": "no",
+    "show_cart_icon_in_nav": "no",
+    "show_cart_icon_in_body": "yes",
+    "additional_address_field": "yes",
+    "hide_coupon_field": "yes",
+    "user_account_creation_mode": "all",
+    "checkout_page_id": 12,
+    "custom_payment_page_id": "",
+    "registration_page_id": "",
+    "login_page_id": "",
+    "cart_page_id": 13,
+    "receipt_page_id": 14,
+    "shop_page_id": 10,
+    "customer_profile_page_id": 15,
+    "customer_profile_page_slug": "account",
     "currency": "USD",
-    "shop_page_id": "10",
-    "checkout_page_id": "12",
-    "customer_profile_page_id": ""
+    "store_address1": "",
+    "store_address2": "",
+    "store_city": "",
+    "store_country": "US",
+    "store_postcode": "",
+    "store_state": "",
+    "show_relevant_product_in_single_page": "no",
+    "show_relevant_product_in_modal": "no",
+    "order_mode": "live",
+    "variation_view": "both",
+    "variation_columns": "masonry",
+    "enable_early_payment_for_installment": "yes",
+    "subscription_management_mode": "gateway_managed",
+    "subscription_system_charge": "no",
+    "modules_settings": [],
+    "min_receipt_number": "1000"
+  },
+  "tax_settings": {
+    "enable_tax": "no",
+    "tax_inclusion": "excluded",
+    "eu_method": "oss",
+    "vat_number": ""
+  }
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
   }
 }
 ```
@@ -542,6 +933,8 @@ Retrieve the current store settings, available pages, and currency options for t
 **GET Get Print Templates**
 
 Retrieve all available print templates. Returns saved custom templates or falls back to default templates.
+
+**Access policy:** `AdminPolicy` — requires the `is_super_admin` FluentCart capability.
 
 **Auth:** ApplicationPasswords
 
@@ -588,6 +981,36 @@ Retrieve all available print templates. Returns saved custom templates or falls 
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -596,6 +1019,8 @@ Retrieve all available print templates. Returns saved custom templates or falls 
 **GET Get Search Options**
 
 Retrieve dynamic search/autocomplete options for form fields. Options are resolved via the fluent_cart/get_dynamic_search_{search_for} WordPress filter, allowing modules to provide context-specific search data.
+
+**Required permission:** `super_admin`
 
 **Auth:** ApplicationPasswords
 
@@ -630,6 +1055,36 @@ Retrieve dynamic search/autocomplete options for form fields. Options are resolv
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`super_admin`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -638,6 +1093,8 @@ Retrieve dynamic search/autocomplete options for form fields. Options are resolv
 **GET Get Widgets**
 
 Retrieve dynamic widget data for a specific context. Widgets are loaded via WordPress filters, allowing modules and extensions to register custom widgets.
+
+**Required permissions:** any one of `customers/view`, `orders/view`
 
 **Auth:** ApplicationPasswords
 
@@ -672,6 +1129,36 @@ Retrieve dynamic widget data for a specific context. Widgets are loaded via Word
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`customers/view, orders/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 - **404** — Order not found (when filter is single_order_page)
 
   Schema (`application/json`):
@@ -695,6 +1182,8 @@ Retrieve dynamic widget data for a specific context. Widgets are loaded via Word
 **GET Initialize App**
 
 Initialize the admin application by loading REST API configuration, asset URLs, translation strings, and shop configuration. This is the first call made when the admin SPA loads.
+
+**Access policy:** `AdminPolicy` — requires the `is_super_admin` FluentCart capability.
 
 **Auth:** ApplicationPasswords
 
@@ -741,6 +1230,36 @@ Initialize the admin application by loading REST API configuration, asset URLs, 
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -749,6 +1268,8 @@ Initialize the admin application by loading REST API configuration, asset URLs, 
 **GET List Activities**
 
 Retrieve a paginated list of activity log entries with filtering and sorting support.
+
+**Access policy:** `AdminPolicy` — requires the `is_super_admin` FluentCart capability.
 
 **Auth:** ApplicationPasswords
 
@@ -778,6 +1299,17 @@ Retrieve a paginated list of activity log entries with filtering and sorting sup
     - `current_page` (integer)
     - `last_page` (integer)
     - `data` (array<ActivityLogEntry>)
+    - `first_page_url` (string) — URL of the first page of results
+    - `from` (integer) — Starting record number on the current page
+    - `last_page_url` (string) — URL of the last page of results
+    - `links` (array<object>) — Laravel-style pagination links (previous, page numbers, next)
+      - `url` (string)
+      - `label` (string)
+      - `active` (boolean)
+    - `next_page_url` (string) — URL of the next page of results
+    - `path` (string) — Base URL of the endpoint without the query string
+    - `prev_page_url` (string) — URL of the previous page of results
+    - `to` (integer) — Ending record number on the current page
 
   Example:
 
@@ -800,7 +1332,61 @@ Retrieve a paginated list of activity log entries with filtering and sorting sup
         "created_at": "2025-06-15 14:30:00",
         "updated_at": "2025-06-15 14:30:00"
       }
-    ]
+    ],
+    "first_page_url": "https://yoursite.com/wp-json/fluent-cart/v2/activity/?page=1",
+    "from": 1,
+    "last_page_url": "https://yoursite.com/wp-json/fluent-cart/v2/activity/?page=16",
+    "links": [
+      {
+        "url": null,
+        "label": "pagination.previous",
+        "active": false
+      },
+      {
+        "url": "https://yoursite.com/wp-json/fluent-cart/v2/activity/?page=1",
+        "label": "1",
+        "active": true
+      },
+      {
+        "url": "https://yoursite.com/wp-json/fluent-cart/v2/activity/?page=2",
+        "label": "2",
+        "active": false
+      }
+    ],
+    "next_page_url": "https://yoursite.com/wp-json/fluent-cart/v2/activity/?page=2",
+    "path": "https://yoursite.com/wp-json/fluent-cart/v2/activity",
+    "prev_page_url": null,
+    "to": 10
+  }
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
   }
 }
 ```
@@ -814,6 +1400,8 @@ Retrieve a paginated list of activity log entries with filtering and sorting sup
 **GET List Attachments**
 
 Retrieve all image attachments from the WordPress media library. Used for the media picker in the admin interface.
+
+**Access policy:** `AdminPolicy` — requires the `is_super_admin` FluentCart capability.
 
 **Auth:** ApplicationPasswords
 
@@ -845,6 +1433,36 @@ Retrieve all image attachments from the WordPress media library. Used for the me
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 - **404** — No images found
 
   Schema (`application/json`):
@@ -869,6 +1487,8 @@ Retrieve all image attachments from the WordPress media library. Used for the me
 
 Retrieve a list of all available countries formatted as select options.
 
+**Access policy:** `UserPolicy`
+
 **Auth:** ApplicationPasswords
 
 **Responses**
@@ -885,18 +1505,48 @@ Retrieve a list of all available countries formatted as select options.
 {
   "data": [
     {
-      "label": "United States",
-      "value": "US"
+      "value": "US",
+      "name": "United States"
     },
     {
-      "label": "United Kingdom",
-      "value": "GB"
+      "value": "GB",
+      "name": "United Kingdom"
     },
     {
-      "label": "Canada",
-      "value": "CA"
+      "value": "CA",
+      "name": "Canada"
     }
   ]
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
 }
 ```
 
@@ -909,6 +1559,8 @@ Retrieve a list of all available countries formatted as select options.
 **PUT Mark Activity Read/Unread**
 
 Toggle the read status of an activity log entry.
+
+**Access policy:** `AdminPolicy` — requires the `is_super_admin` FluentCart capability.
 
 **Auth:** ApplicationPasswords
 
@@ -949,6 +1601,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -957,6 +1655,8 @@ Example:
 **POST Save Onboarding Settings**
 
 Save store settings during the onboarding process. Merges submitted values with existing store settings. If a category value is provided, dummy products are created asynchronously.
+
+**Access policy:** `AdminPolicy` — requires the `is_super_admin` FluentCart capability.
 
 **Auth:** ApplicationPasswords
 
@@ -995,6 +1695,36 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 - **422** — Validation error
 
   Schema (`application/json`):
@@ -1018,6 +1748,8 @@ Example:
 **PUT Save Print Templates**
 
 Save customized print templates. Each template's content is sanitized with wp_kses_post before saving.
+
+**Access policy:** `AdminPolicy` — requires the `is_super_admin` FluentCart capability.
 
 **Auth:** ApplicationPasswords
 
@@ -1058,6 +1790,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -1066,6 +1844,8 @@ Example:
 **POST Upload Attachment**
 
 Upload an image file to the WordPress media library.
+
+**Access policy:** `AdminPolicy` — requires the `is_super_admin` FluentCart capability.
 
 **Auth:** ApplicationPasswords
 
@@ -1106,6 +1886,233 @@ Upload an image file to the WordPress media library.
 ```json
 {
   "error": "Error Uploading File"
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
+
+---
+
+## POST `/data-backfills/run`
+
+**POST Run Pending Data Backfills**
+
+Run pending one-shot data backfills within this request's execution budget. The admin app silently re-calls this endpoint while the returned status is `running`; a status of `locked` means another request is already processing backfills.
+
+**Access policy:** `AdminPolicy`
+
+**Auth:** ApplicationPasswords
+
+**Responses**
+
+- **200** — Backfill processing status after this request's budget was spent.
+
+  Schema (`application/json`):
+
+  - `status` (string) — One of: completed, running, locked. Callers should re-call this endpoint while the status is running.
+  - `completed` (array<string>) — Slugs of backfills that finished during this request.
+  - `pending` (array<string>) — Slugs of backfills still pending after this request.
+
+  Example:
+
+```json
+{
+  "status": "completed",
+  "completed": [],
+  "pending": []
+}
+```
+
+
+- **401** — Unauthenticated.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — The authenticated user is not an admin.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
+
+---
+
+## POST `/onboarding/save-tax`
+
+**POST Save Onboarding Tax Settings**
+
+Save the store's tax configuration as part of onboarding. When `enable_tax` is "no", tax is simply switched off. When it is "yes", the store country is used to determine whether EU VAT handling applies; if it does, tax classes are generated for all EU countries and, for the OSS method, an EU VAT registration is upserted. For non-EU countries with a VAT number, a `fluent_cart_tax_id_{country}` meta record is created or updated instead.
+
+**Access policy:** `AdminPolicy`
+
+**Auth:** ApplicationPasswords
+
+**Request body** (`application/json`, required)
+
+- `enable_tax` (string) _(enum: `yes`, `no`)_ — "yes" or "no". Defaults to "no". Any other value returns a 422.
+- `tax_inclusion` (string) _(enum: `included`, `excluded`)_ — "included" or "excluded". Only read when enable_tax is "yes". Defaults to "excluded". Any other value returns a 422.
+- `store_country` (string) — Store's country code, uppercased server-side. Must be alphabetic and at most 3 characters, or a 422 is returned. Only read when enable_tax is "yes".
+- `eu_method` (string) _(enum: `oss`, `home`, `specific`)_ — "oss", "home", or "specific". Only required/validated when store_country resolves to an EU tax country. Defaults to "oss".
+- `vat_number` (string) — VAT number, truncated to 50 characters. Stored against the EU VAT registration for EU countries, or as tax meta for non-EU countries.
+
+Example:
+
+```json
+{
+  "enable_tax": "yes",
+  "tax_inclusion": "excluded",
+  "store_country": "DE",
+  "eu_method": "oss",
+  "vat_number": "DE123456789"
+}
+```
+
+
+**Responses**
+
+- **200** — Tax settings saved successfully.
+
+  Schema (`application/json`):
+
+  - `data` (object)
+    - `tax_enabled` (boolean)
+    - `classes_created` (boolean) — false if tax class generation threw an exception.
+    - `eu_rates_imported` (boolean) — true only when the store country is an EU tax country.
+  - `message` (string)
+
+  Example:
+
+```json
+{
+  "data": {
+    "tax_enabled": true,
+    "classes_created": true,
+    "eu_rates_imported": true
+  },
+  "message": "Tax settings saved"
+}
+```
+
+
+- **401** — Unauthenticated.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — The authenticated user is not an admin.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — An invalid enable_tax, tax_inclusion, store_country, or eu_method value was supplied.
+
+  Example:
+
+```json
+{
+  "message": "Invalid store_country value"
 }
 ```
 

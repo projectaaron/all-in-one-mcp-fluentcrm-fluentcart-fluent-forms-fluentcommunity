@@ -12,6 +12,16 @@ _Generated from the FluentCRM OpenAPI specs (developers.fluentcrm.com)._
 
 Retrieve all globally defined custom contact fields. Optionally include field type definitions and field group information by passing the `with[]` parameter.
 
+By default the response contains only `fields`. Request `field_types` and/or `field_groups` through `with[]` to get the metadata needed to render a field editor.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `CustomFieldsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Query parameters**
@@ -28,9 +38,9 @@ Retrieve all globally defined custom contact fields. Optionally include field ty
   Schema (`application/json`):
 
   - `fields` (array<CustomField>) — Array of custom field definitions.
-  - `field_types` (object) — Available field type definitions (only included when `with[]=field_types`).
+  - `field_types` (object) — Available field type definitions. Returned **only** when `with[]=field_types` is requested.
     - _(object)_
-  - `field_groups` (array<object>) — Available field groups (only included when `with[]=field_groups`).
+  - `field_groups` (array<object>) — Available field group definitions. Returned **only** when `with[]=field_groups` is requested.
     - `slug` (string) — Group slug identifier.
     - `title` (string) — Human-readable group title.
 
@@ -123,6 +133,14 @@ Retrieve all globally defined custom contact fields. Optionally include field ty
 **PUT Save Contact Custom Fields**
 
 Save (replace) all custom contact field definitions. This overwrites the entire set of custom fields. Each field without a `slug` will have one auto-generated from its label. Duplicate slugs are deduplicated automatically.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `CustomFieldsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -236,6 +254,14 @@ Example:
 **PUT Update Custom Field Group Name**
 
 Rename a custom field group. All custom fields currently assigned to the old group name will be updated to use the new group name. Both names are sanitized server-side.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `CustomFieldsPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 

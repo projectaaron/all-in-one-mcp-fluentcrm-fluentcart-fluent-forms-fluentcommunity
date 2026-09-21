@@ -12,6 +12,14 @@ _Generated from the FluentCRM OpenAPI specs (developers.fluentcrm.com)._
 
 Retrieve a single documentation article by its ID from the FluentCRM website.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_view_dashboard`
+
+_Enforced by `ReportPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -70,6 +78,14 @@ Retrieve a single documentation article by its ID from the FluentCRM website.
 
 Retrieve the list of recommended companion plugins (Fluent Forms, Fluent SMTP, Fluent Support) with their installation status. Optionally includes experimental feature settings.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_view_dashboard`
+
+_Enforced by `ReportPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Query parameters**
@@ -87,7 +103,7 @@ Retrieve the list of recommended companion plugins (Fluent Forms, Fluent SMTP, F
 
   - `addons` (object) — Map of addon slugs to addon details.
     - _(object)_
-  - `experimental_features` (object) — Only present when `with[]=experimental_features` is passed. Contains experimental feature settings.
+  - `experimental_features` (object) — Only present when `with[]=experimental_features` is passed. Contains experimental feature settings. Returned **only** when `with[]=experimental_features` is requested.
     - _(object)_
 
   Example:
@@ -135,6 +151,14 @@ Retrieve the list of recommended companion plugins (Fluent Forms, Fluent SMTP, F
 **GET List Docs**
 
 Retrieve the full list of documentation articles fetched from the FluentCRM website. Results are cached for one week.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_view_dashboard`
+
+_Enforced by `ReportPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 

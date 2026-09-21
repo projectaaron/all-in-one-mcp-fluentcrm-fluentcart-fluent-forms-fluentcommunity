@@ -12,6 +12,10 @@ _Generated from the FluentCart OpenAPI specs (dev.fluentcart.com)._
 
 Retrieve shipping methods available for a given country and state. The country can be auto-detected from the customer's timezone or provided directly via country code.
 
+**Access policy:** `PublicPolicy`
+
+**Access policy:** `PublicPolicy`
+
 **Auth:** ApplicationPasswords
 
 **Query parameters**
@@ -70,6 +74,36 @@ Retrieve shipping methods available for a given country and state. The country c
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -78,6 +112,10 @@ Retrieve shipping methods available for a given country and state. The country c
 **GET Get Checkout Summary**
 
 Retrieve a rendered HTML summary of the current cart along with pricing totals. Used to dynamically update the checkout page when the customer changes shipping methods or other options.
+
+**Access policy:** `PublicPolicy`
+
+**Access policy:** `PublicPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -122,6 +160,36 @@ Retrieve a rendered HTML summary of the current cart along with pricing totals. 
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -130,6 +198,10 @@ Retrieve a rendered HTML summary of the current cart along with pricing totals. 
 **GET Get Country Info**
 
 Retrieve localization details for a country including available states/provinces and address field configuration. Used by the checkout form to dynamically adjust address fields based on the selected country.
+
+**Access policy:** `PublicPolicy`
+
+**Access policy:** `PublicPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -206,6 +278,36 @@ Retrieve localization details for a country including available states/provinces
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -214,6 +316,10 @@ Retrieve localization details for a country including available states/provinces
 **GET Get Order Info**
 
 Retrieve payment-gateway-specific order information needed by the frontend to initialize payment UI elements. This is typically called after the checkout page loads to set up payment forms (e.g., Stripe Elements configuration, PayPal button setup).
+
+**Access policy:** `PublicPolicy`
+
+**Access policy:** `PublicPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -274,6 +380,36 @@ Retrieve payment-gateway-specific order information needed by the frontend to in
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -282,6 +418,10 @@ Retrieve payment-gateway-specific order information needed by the frontend to in
 **GET Get Shipping Methods List View**
 
 Retrieve a server-rendered HTML view of available shipping methods for the checkout page. This endpoint wraps get-available-shipping-methods and returns a pre-rendered HTML list suitable for direct insertion into the checkout form.
+
+**Access policy:** `PublicPolicy`
+
+**Access policy:** `PublicPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -329,6 +469,36 @@ Retrieve a server-rendered HTML view of available shipping methods for the check
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -337,6 +507,10 @@ Retrieve a server-rendered HTML view of available shipping methods for the check
 **POST Login**
 
 Authenticate a user during the checkout process. On success, sets the WordPress authentication cookie and returns a redirect URL to the customer profile page.
+
+**Access policy:** `PublicPolicy`
+
+**Access policy:** `PublicPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -441,6 +615,22 @@ Example:
 ```
 
 
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -449,6 +639,10 @@ Example:
 **POST Place Order**
 
 Submit a checkout order with billing/shipping details and payment method. This endpoint validates the cart, creates a customer (or matches an existing one), creates a draft order, and initiates the payment flow with the selected gateway.
+
+**Access policy:** `PublicPolicy`
+
+**Access policy:** `PublicPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -534,6 +728,36 @@ Example:
   },
   "redirect_url": "https://example.com/checkout/payment/a1b2c3d4",
   "message": "Order placed successfully."
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
 }
 ```
 

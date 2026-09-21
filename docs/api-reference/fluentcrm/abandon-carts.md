@@ -12,6 +12,14 @@ _Generated from the FluentCRM OpenAPI specs (developers.fluentcrm.com)._
 
 Delete multiple abandoned carts by their IDs. Each cart and its associated data are removed.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_write_funnels`
+
+_Enforced by `FunnelPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`, required)
@@ -71,6 +79,14 @@ Example:
 **GET Get Abandon Cart Report Summary**
 
 Retrieve a summary of abandoned cart metrics including recovered, processing, lost, draft, and opt-out revenue with counts. Also includes the overall recovery rate.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_funnels`
+
+_Enforced by `FunnelPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -143,6 +159,14 @@ Retrieve a summary of abandoned cart metrics including recovered, processing, lo
 **GET List Abandoned Carts**
 
 Retrieve a paginated list of abandoned carts with subscriber and automation data. Includes information about enabled cart-recovery drivers and whether automation funnels are configured.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_funnels`
+
+_Enforced by `FunnelPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 

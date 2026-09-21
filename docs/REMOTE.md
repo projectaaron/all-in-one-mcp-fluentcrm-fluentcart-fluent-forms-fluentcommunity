@@ -129,7 +129,7 @@ docker run -d -p 3000:3000 --env-file .env --restart unless-stopped fluentmcp
   restarts are invisible to clients and horizontal scaling is trivial.
 - `GET /healthz` is unauthenticated and reveals nothing but `{ok: true}`.
 - All the same safety behavior applies remotely: honest tool annotations and
-  `confirm: true` gates on all 184 destructive actions and the 12 locked tools
+  `confirm: true` gates on all 203 destructive actions and the 12 locked tools
   still refuse.
 - The token appears in the request path when clients use the `/mcp/<token>`
   form. Workers invocation logs are disabled in `wrangler.jsonc` for that

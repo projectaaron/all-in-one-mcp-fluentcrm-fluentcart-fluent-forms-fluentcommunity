@@ -2,7 +2,7 @@
 
 [![Sponsored by upfluent.io](https://img.shields.io/badge/sponsored%20by-upfluent.io-2563eb)](https://upfluent.io)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
-[![Tools](https://img.shields.io/badge/tools-1%2C191-informational)](docs/TOOL_MAP.md)
+[![Tools](https://img.shields.io/badge/tools-1%2C290-informational)](docs/TOOL_MAP.md)
 
 **Let your AI assistant run your WordPress business** — the CRM, the store,
 the forms, the community — through one safe, complete
@@ -13,7 +13,7 @@ suite on your WordPress site: **[FluentCRM](https://fluentcrm.com/?ref=4618)**,
 **[FluentCart](https://fluentcart.com/?by=272)**,
 **[Fluent Forms](https://fluentforms.com/?ref=4618)**,
 **[FluentCommunity](https://fluentcommunity.co/?ref=4618)**, and
-**[WP Social Ninja](https://wpsocialninja.com/?ref=4618)**. Every one of their **1,191
+**[WP Social Ninja](https://wpsocialninja.com/?ref=4618)**. Every one of their **1,290
 documented REST endpoints** is its own clearly named tool
 (`crm_contacts_list`, `cart_orders_refund`, `forms_submissions_list`,
 `community_spaces_list`, …), a built-in `tool_map` answers "which tool do I
@@ -243,7 +243,7 @@ closes that at the executor:
   plugin advertises *before* writing, and the stored record is returned
   *after* — if the plugin doesn't list it, the tool errors.
 
-**Nothing irreversible runs by accident.** 184 operations are classified
+**Nothing irreversible runs by accident.** 203 operations are classified
 destructive (⚠ in the map): deletes, refunds, cancels, bulk actions, resets,
 mass sends, plugin installs and activations, manager/permission grants,
 API-key minting, and the public form-submit that fires real notifications. Called without `confirm: true`, the tool refuses, does
@@ -272,7 +272,7 @@ human-in-the-loop is your MCP client's approval prompt.
 
 ## The products and their tools
 
-68 areas. Every individual tool is one line in
+73 areas. Every individual tool is one line in
 [`docs/TOOL_MAP.md`](docs/TOOL_MAP.md); area-level examples in
 [`docs/TOOL_CATALOG.md`](docs/TOOL_CATALOG.md); full request/response
 schemas in [`docs/api-reference/`](docs/api-reference/).
@@ -285,7 +285,7 @@ schemas in [`docs/api-reference/`](docs/api-reference/).
 | `verify_setup` | Checks site URL, each product's credentials and plugin, one harmless read per product |
 | `wp_media_upload_from_url` / `wp_media_get` / `wp_media_list` | The WordPress media library; sideload an image from a URL and get the attachment ID |
 
-### [FluentCRM](https://fluentcrm.com/?ref=4618) — `crm_*` (21 areas, 322 tools)
+### [FluentCRM](https://fluentcrm.com/?ref=4618) — `crm_*` (23 areas, 366 tools)
 
 | Area | What it manages |
 |------|-----------------|
@@ -295,8 +295,10 @@ schemas in [`docs/api-reference/`](docs/api-reference/).
 | `crm_campaigns` | One-off email campaigns: create, schedule⚠, send, pause, analyze, resend⚠ |
 | `crm_recurring_campaigns` · `crm_sequences` · `crm_templates` · `crm_sms` | Recurring campaigns, drip sequences, templates, SMS (Pro) |
 | `crm_automations` · `crm_forms` · `crm_webhooks` · `crm_smart_links` | Funnels, opt-in forms, incoming webhooks, smart links |
+| `crm_email_patterns` | Reusable email content patterns and categories |
+| `crm_ai` | FluentCRM's AI assistant: generate/rewrite text, email bodies, contact summaries; provider settings |
 | `crm_reports` · `crm_abandoned_carts` | Read-only analytics |
-| `crm_settings` · `crm_settings_pro` · `crm_utilities` | Settings, license, imports, migrations |
+| `crm_settings` · `crm_settings_pro` · `crm_utilities` | Settings, license, DB index health, MCP adapter, imports, exports, migrations |
 
 **Extras beyond the API:** `crm_sequences_preview_schedule` computes when
 every email in a sequence will send for a hypothetical enrolment (delays are
@@ -304,7 +306,7 @@ absolute from enrolment, a common surprise); `crm_sequences_validate` lints
 timing configuration; `crm_sequences_bulk_update_emails` updates many emails
 in one call with per-row verification.
 
-### [FluentCart](https://fluentcart.com/?by=272) — `cart_*` (22 areas, 381 tools)
+### [FluentCart](https://fluentcart.com/?by=272) — `cart_*` (25 areas, 436 tools)
 
 | Area | What it manages |
 |------|-----------------|
@@ -312,7 +314,8 @@ in one call with per-row verification.
 | `cart_orders` · `cart_subscriptions` · `cart_coupons` · `cart_customers` | Sales: orders, refunds⚠, subscriptions, coupons, customers |
 | `cart_tax` · `cart_shipping` · `cart_settings` · `cart_email_notifications` · `cart_integrations` | Configuration |
 | `cart_order_bumps` · `cart_roles` · `cart_licensing` | Pro: order bumps, shop roles, software licensing |
-| `cart_reports` · `cart_utilities` · `cart_storefront` | Analytics, dashboard, public storefront |
+| `cart_inventory` · `cart_data_export` · `cart_pdf_templates` | Stock levels and adjustments, batch data exports, PDF receipt templates |
+| `cart_reports` · `cart_utilities` · `cart_storefront` | Analytics, dashboard, saved views, public storefront |
 | `cart_checkout` · `cart_customer_portal` | Customer-session endpoints — need a browser cookie, mostly rejected under admin credentials ([why](docs/api-reference/auth.md)) |
 
 ### [Fluent Forms](https://fluentforms.com/?ref=4618) — `forms_*` (7 areas, 91 tools)
@@ -359,7 +362,7 @@ in one call with per-row verification.
 WPManageNinja's own [FluentHub MCP](https://wpmanageninja.com/fluenthub-mcp/)
 is a WordPress plugin exposing a curated set of tools (around 20 per
 product). fluentMCP runs outside WordPress and covers the **entire** REST
-surface of each product — 1,191 operations — with the write-safety machinery
+surface of each product — 1,290 operations — with the write-safety machinery
 above. Use FluentHub if you want the vendor-supported basics with no extra
 install; use fluentMCP if you want everything the admin UI can do, with
 merge/verify/dry-run guarantees and a per-operation safety policy you

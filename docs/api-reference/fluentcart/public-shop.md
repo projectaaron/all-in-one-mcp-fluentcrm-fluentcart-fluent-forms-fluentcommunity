@@ -12,6 +12,8 @@ _Generated from the FluentCart OpenAPI specs (dev.fluentcart.com)._
 
 Retrieve server-rendered HTML views of product listings. Used by Gutenberg blocks and shortcodes for AJAX-powered product grids.
 
+**Access policy:** `PublicPolicy`
+
 **Auth:** ApplicationPasswords
 
 **Query parameters**
@@ -43,6 +45,7 @@ Retrieve server-rendered HTML views of product listings. Used by Gutenberg block
     - `per_page` (integer)
     - `from` (integer)
     - `to` (integer)
+    - `page` (integer) — Current page number (duplicate of `current_page`)
 
   Example:
 
@@ -55,7 +58,38 @@ Retrieve server-rendered HTML views of product listings. Used by Gutenberg block
     "total": 24,
     "per_page": 10,
     "from": 1,
-    "to": 10
+    "to": 10,
+    "page": 1
+  }
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
   }
 }
 ```
@@ -69,6 +103,10 @@ Retrieve server-rendered HTML views of product listings. Used by Gutenberg block
 **GET List Products**
 
 Retrieve a paginated list of published products with optional filtering by taxonomy terms, price range, product type, and more. Only products with publish status are returned.
+
+**Access policy:** `PublicPolicy`
+
+**Access policy:** `PublicPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -145,6 +183,36 @@ Retrieve a paginated list of published products with optional filtering by taxon
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -153,6 +221,10 @@ Retrieve a paginated list of published products with optional filtering by taxon
 **GET Search Products**
 
 Search for published products by title and return server-rendered HTML search result items. Designed for use with the storefront search bar component.
+
+**Access policy:** `PublicPolicy`
+
+**Access policy:** `PublicPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -178,6 +250,36 @@ Search for published products by title and return server-rendered HTML search re
 ```json
 {
   "htmlView": "<div class=\"fct-search-result-item\"><a href=\"https://example.com/product/premium-t-shirt\">Premium T-Shirt</a></div>..."
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
 }
 ```
 
