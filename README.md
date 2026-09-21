@@ -91,7 +91,7 @@ Three ways to run it — pick by where you want to use your assistant:
    from the [Releases](../../releases) page, or build it yourself:
 
    ```bash
-   git clone https://github.com/projectaaron/mcp-for-complete-fluent-suite.git
+   git clone https://github.com/projectaaron/fluentMCP.git
    cd fluentMCP
    npm install
    npm run pack:extension      # produces fluentmcp.mcpb
@@ -106,8 +106,8 @@ Three ways to run it — pick by where you want to use your assistant:
 ### B — Any MCP client (config file)
 
 ```bash
-git clone https://github.com/projectaaron/mcp-for-complete-fluent-suite.git
-cd mcp-for-complete-fluent-suite
+git clone https://github.com/projectaaron/fluentMCP.git
+cd fluentMCP
 npm install && npm run build
 cp .env.example .env        # fill in FLUENT_SITE_URL, FLUENT_API_USERNAME, FLUENT_API_PASSWORD
 ```
