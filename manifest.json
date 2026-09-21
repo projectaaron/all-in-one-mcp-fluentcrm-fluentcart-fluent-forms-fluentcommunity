@@ -7,13 +7,13 @@
   "long_description": "Gives your AI assistant create/read/update/delete control over FluentCRM (email marketing & CRM), FluentCart (e-commerce), WP Social Ninja (reviews, social feeds, chat widgets), Fluent Forms (forms & submissions) and FluentCommunity (spaces, feeds, chat, courses) by WPManageNinja — 1,191 documented REST endpoints, each as its own individualized tool (crm_contacts_list, cart_orders_refund, social_reviews_list, forms_submissions_list, community_spaces_list, …), with a built-in tool_map index so the assistant finds the right tool in one call. Safe by default: every destructive tool (deletes, refunds, cancels, mass-sends, resets) is annotated and refuses to run without explicit confirmation. One WordPress Application Password runs everything; run the verify_setup tool after installing to check your connection. Prefer a small tool list? Set the Tool Surface option to \"grouped\".",
   "author": {
     "name": "projectaaron",
-    "url": "https://github.com/projectaaron"
+    "url": "https://upfluent.io"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/projectaaron/fluentMCP"
   },
-  "homepage": "https://github.com/projectaaron/fluentMCP",
+  "homepage": "https://upfluent.io",
   "documentation": "https://github.com/projectaaron/fluentMCP#readme",
   "support": "https://github.com/projectaaron/fluentMCP/issues",
   "license": "MIT",

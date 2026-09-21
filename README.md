@@ -1,5 +1,9 @@
 # fluentMCP
 
+[![Sponsored by upfluent.io](https://img.shields.io/badge/sponsored%20by-upfluent.io-2563eb)](https://upfluent.io)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![Tools](https://img.shields.io/badge/tools-1%2C191-informational)](docs/TOOL_MAP.md)
+
 **Let your AI assistant run your WordPress business** — the CRM, the store,
 the forms, the community — through one safe, complete
 [MCP](https://modelcontextprotocol.io) server.
@@ -26,6 +30,11 @@ operation is confirm-gated.
 
 Products you don't configure are simply switched off — run it with just
 FluentCRM, or all five.
+
+**Free, MIT-licensed, sponsored by [upfluent.io](https://upfluent.io).**
+Developers: clone this repo. Everyone else: grab the one-click Claude Desktop
+extension from [upfluent.io](https://upfluent.io) — it's the same code,
+already built.
 
 **Not affiliated with WPManageNinja.** This is an independent, community
 project. WPManageNinja also ships its own first-party MCP via
@@ -78,7 +87,8 @@ Three ways to run it — pick by where you want to use your assistant:
 
 ### A — Claude Desktop extension
 
-1. Get `fluentmcp.mcpb` from the [Releases](../../releases) page, or build it:
+1. Get `fluentmcp-<version>.mcpb` — free from [upfluent.io](https://upfluent.io),
+   from the [Releases](../../releases) page, or build it yourself:
 
    ```bash
    git clone https://github.com/projectaaron/fluentMCP.git
@@ -87,7 +97,7 @@ Three ways to run it — pick by where you want to use your assistant:
    npm run pack:extension      # produces fluentmcp.mcpb
    ```
 
-2. Claude Desktop → **Settings → Extensions** → drag `fluentmcp.mcpb` in.
+2. Claude Desktop → **Settings → Extensions** → drag the `.mcpb` file in.
 3. Fill in the form: site URL (the root, not `/wp-admin`), username,
    Application Password. Claude Desktop stores the password as a sensitive
    value.
@@ -125,7 +135,7 @@ smoke test: `node --env-file=.env scripts/smoke-test.mjs`.
 ### C — Remote connector (web, mobile, desktop)
 
 Host it once; every Claude surface gets the tools. The easiest host is
-**Cloudflare Workers** (free tier, nothing to keep running):
+**Cloudflare Workers** (free tier, nothing to keep running). From a clone:
 
 ```bash
 npm install
@@ -393,7 +403,7 @@ npm run build
 npm run gen:catalog            # regenerate TOOL_MAP.md / TOOL_CATALOG.md / manifest sync
 npm run gen:docs               # re-scrape the FluentCRM/FluentCart OpenAPI references
 node scripts/gen-<product>-docs.mjs --site https://your-site   # products without OpenAPI: live route check
-npm run pack:extension         # build fluentmcp.mcpb
+npm run pack:extension         # build fluentmcp.mcpb (the release workflow does this on every v* tag)
 npx @modelcontextprotocol/inspector node dist/index.js
 ```
 
@@ -405,8 +415,10 @@ Contributing: [`CONTRIBUTING.md`](CONTRIBUTING.md)
 
 ## Support this project
 
-fluentMCP is free and MIT-licensed, and will stay that way. If it saves you
-time, three things help keep it maintained:
+fluentMCP is free and MIT-licensed, and will stay that way. Development is
+sponsored by **[upfluent.io](https://upfluent.io)**, which also hosts the
+ready-built desktop extension. If the project saves you time, three things
+help keep it maintained:
 
 - **Buy the plugins through the links in this README.** The FluentCRM,
   FluentCart, Fluent Forms, FluentCommunity and WP Social Ninja links above
@@ -421,10 +433,10 @@ time, three things help keep it maintained:
   [FluentAffiliate](https://fluentaffiliate.com/?ref=4618),
   [FluentPlayer](https://fluentplayer.com/?ref=4618),
   [AzonPress](https://azonpress.com/?ref=4618).
+- **Star the repo and report what breaks.** An issue with the tool name,
+  the arguments (redact anything private) and the response you got is how
+  most of the plugin-quirk guards in `docs/DECISIONS.md` were found.
 - **Sponsor** via the *Sponsor* button at the top of the repository.
-- **Star the repo and report what breaks.** Field reports with a tool name
-  and the response you got are how most of the plugin-quirk guards in
-  `docs/DECISIONS.md` were found.
 
 ## License
 
