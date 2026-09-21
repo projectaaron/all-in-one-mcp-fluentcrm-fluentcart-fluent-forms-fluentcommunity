@@ -11,8 +11,12 @@
 # version in package.json / src/version.ts first.
 #
 # Produces:
-#   fluentmcp-<version>.mcpb          Claude Desktop extension (dist + prod deps)
-#   fluentmcp-<version>-source.zip    source bundle for config-file / remote installs
+#   fluentmcp-<version>.mcpb                          Claude Desktop extension (dist + prod deps)
+#   all-in-one-mcp-for-fluent-suite-<version>.zip     the .mcpb + readme.txt + LICENSE (Freemius / upfluent.io download)
+#   fluentmcp-<version>-source.zip                    source bundle for config-file / remote installs
+# and, when the FREEMIUS_DEV_ID / FREEMIUS_DEV_PUBLIC_KEY / FREEMIUS_DEV_SECRET_KEY
+# secrets are set, uploads the download ZIP to Freemius product 39849 as a
+# released version (scripts/publish-freemius.mjs).
 name: Release
 
 on:
@@ -56,12 +60,30 @@ jobs:
           mv fluentmcp.mcpb "fluentmcp-${VERSION}.mcpb"
       - name: Pack the source bundle
         run: git archive --format=zip --prefix=fluentmcp/ -o "fluentmcp-${VERSION}-source.zip" HEAD
-      - name: Create the GitHub release with both assets
+      - name: Pack the end-user download (mcpb + readme + license)
+        run: node scripts/pack-download.mjs "fluentmcp-${VERSION}.mcpb"
+      - name: Create the GitHub release with the assets
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release create "v${VERSION}" --target "$GITHUB_SHA" \
             "fluentmcp-${VERSION}.mcpb" \
+            "all-in-one-mcp-for-fluent-suite-${VERSION}.zip" \
             "fluentmcp-${VERSION}-source.zip" \
             --title "All-In-One MCP for Fluent Suite ${VERSION}" \
-            --notes "See CHANGELOG.md for what changed. Download the .mcpb for Claude Desktop, or the source bundle for config-file and remote installs."
+            --notes "See CHANGELOG.md for what changed. Download the .mcpb for Claude Desktop (or the all-in-one ZIP with a readme), or the source bundle for config-file and remote installs."
+      # Publishes the download package to the Freemius product so the free
+      # checkout hands out this version. Skipped (not failed) until the three
+      # FREEMIUS_DEV_* repository secrets exist.
+      - name: Publish to Freemius
+        env:
+          FREEMIUS_DEV_ID: ${{ secrets.FREEMIUS_DEV_ID }}
+          FREEMIUS_DEV_PUBLIC_KEY: ${{ secrets.FREEMIUS_DEV_PUBLIC_KEY }}
+          FREEMIUS_DEV_SECRET_KEY: ${{ secrets.FREEMIUS_DEV_SECRET_KEY }}
+          FREEMIUS_PRODUCT_ID: "39849"
+        run: |
+          if [ -z "$FREEMIUS_DEV_SECRET_KEY" ]; then
+            echo "::notice::FREEMIUS_DEV_* secrets not set — skipping the Freemius upload (upload all-in-one-mcp-for-fluent-suite-${VERSION}.zip in the Freemius dashboard instead)."
+            exit 0
+          fi
+          node scripts/publish-freemius.mjs --file "all-in-one-mcp-for-fluent-suite-${VERSION}.zip" --version "$VERSION" --release-mode released

@@ -32,11 +32,18 @@ stay in sync, and add a line to `CHANGELOG.md` under the next version.
    (a test keeps them equal), run `npm run gen:catalog` so `manifest.json`
    follows, and move the `CHANGELOG.md` entries under the new version.
 2. Merge to `main`, then tag: `git tag v1.2.3 && git push origin v1.2.3`.
-3. The **Release** workflow builds and tests, packs
-   `fluentmcp-1.2.3.mcpb` and `fluentmcp-1.2.3-source.zip`, and attaches
-   both to a GitHub release.
-4. Upload the `.mcpb` to the Freemius product / upfluent.io so the one-click
-   download stays on the same version as the release.
+3. The **Release** workflow (Actions tab → Release → Run workflow, or a
+   `v1.2.3` tag) builds and tests, packs `fluentmcp-1.2.3.mcpb`, the
+   end-user download `all-in-one-mcp-for-fluent-suite-1.2.3.zip` (the
+   `.mcpb` plus `packaging/readme.txt` and the license) and
+   `fluentmcp-1.2.3-source.zip`, and attaches all three to a GitHub release.
+4. The same run publishes the download ZIP to Freemius product 39849 as a
+   released version (`scripts/publish-freemius.mjs`) when the repository
+   secrets `FREEMIUS_DEV_ID`, `FREEMIUS_DEV_PUBLIC_KEY` and
+   `FREEMIUS_DEV_SECRET_KEY` are set (Freemius dashboard → My Profile →
+   developer keys). Without them the step is skipped with a notice and the
+   ZIP can be uploaded in the Freemius dashboard by hand. A version that
+   already exists on Freemius is never re-uploaded.
 
 ## Code of conduct
 
