@@ -1,0 +1,36 @@
+# Publish an existing GitHub release's download package to Freemius — for
+# re-publishing, or for a release cut before the FREEMIUS_DEV_* secrets
+# existed. The Release workflow does this automatically for new versions.
+#
+#   Actions tab → Publish to Freemius → Run workflow → version (e.g. 1.1.2)
+name: Publish to Freemius
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to publish (a GitHub release v<version> must exist)"
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Download the release asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release download "v${{ inputs.version }}" --pattern "all-in-one-mcp-for-fluent-suite-*.zip"
+      - name: Publish
+        env:
+          FREEMIUS_DEV_ID: ${{ secrets.FREEMIUS_DEV_ID }}
+          FREEMIUS_DEV_PUBLIC_KEY: ${{ secrets.FREEMIUS_DEV_PUBLIC_KEY }}
+          FREEMIUS_DEV_SECRET_KEY: ${{ secrets.FREEMIUS_DEV_SECRET_KEY }}
+          FREEMIUS_PRODUCT_ID: "39849"
+        run: node scripts/publish-freemius.mjs --file "all-in-one-mcp-for-fluent-suite-${{ inputs.version }}.zip" --version "${{ inputs.version }}" --release-mode released
