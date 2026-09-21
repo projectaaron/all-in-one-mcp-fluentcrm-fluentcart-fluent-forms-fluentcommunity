@@ -324,9 +324,8 @@ server-side, in both tool modes:
 
 ## 0.7.3 — 2026-07-17
 
-Recovered an unmerged field-reported fix (branch
-`claude/fluentmcp-image-attachments-nlaw7x`, 2026-07-16) and ported it to
-the individualized surface:
+Recovered an unmerged field-reported fix (image-attachments branch,
+2026-07-16) and ported it to the individualized surface:
 
 - **New tool: `cart_products_update`** — FluentCart's
   `POST /products/{postId}/pricing` is, despite the path, the FULL product
