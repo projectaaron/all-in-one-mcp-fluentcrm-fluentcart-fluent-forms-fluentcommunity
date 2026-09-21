@@ -1,6 +1,26 @@
 # Contributing
 
-Thanks for looking. The fastest way to be useful:
+Thanks for looking. `main` is protected: nobody pushes to it directly, every
+change arrives as a pull request, CI must pass, and the maintainer reviews
+and merges. That is not a gate to keep people out; it is how a connector
+that can refund orders and delete contacts stays trustworthy.
+
+## How to contribute a change
+
+1. **Fork** the repository and create a branch in your fork
+   (`fix/forms-integrations-readback`, `feat/fluentbooking`).
+2. Make the change, add or update a test, run `npm test`, and if you
+   touched `tool-map.json` or `endpoints.json`, run
+   `npm run gen:maps && npm run build && npm run gen:catalog` and commit
+   the regenerated files.
+3. Add a line to `CHANGELOG.md` under the next version.
+4. Open a pull request against `main`. The template asks for what changed
+   and why; CI runs the tests and checks the generated files are in sync.
+5. The maintainer reviews. Small, focused PRs get merged fastest; a PR that
+   adds a product or changes safety classification will get questions,
+   because those are the decisions recorded in `docs/DECISIONS.md`.
+
+The fastest way to be useful:
 
 1. **Bugs against a real site** — open an issue with the tool name, the exact
    arguments (redact anything private), the response, and what you expected.

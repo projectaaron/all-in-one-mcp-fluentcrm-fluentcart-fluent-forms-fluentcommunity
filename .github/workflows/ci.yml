@@ -1,0 +1,38 @@
+# Required status check for pull requests into main (see the branch ruleset
+# in Settings → Rules). Runs with a read-only token and no secrets, so it is
+# safe on pull requests from forks.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
+      # The tool surface, map and catalog are generated and committed. A PR
+      # that edits tool-map.json or endpoints.json without regenerating, or
+      # hand-edits a generated file, fails here instead of drifting.
+      - name: Generated files are in sync
+        run: |
+          npm run gen:maps
+          npm run gen:catalog
+          if ! git diff --quiet -- src/products docs/TOOL_MAP.md docs/TOOL_CATALOG.md manifest.json; then
+            echo "::error::Generated files are out of date. Run: npm run gen:maps && npm run build && npm run gen:catalog — then commit the result."
+            git --no-pager diff --stat
+            exit 1
+          fi
