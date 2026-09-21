@@ -3,7 +3,7 @@ import { FluentClient, type FetchLike } from '../src/core/http.js';
 import { PRODUCTS } from '../src/products/index.js';
 
 /** Built-in tools registered in every mode and configuration. */
-export const SERVER_TOOLS = ['verify_setup', 'tool_map', 'wp_media_upload_from_url', 'wp_media_get', 'wp_media_list'];
+export const SERVER_TOOLS = ['verify_setup', 'tool_map', 'support_report', 'wp_media_upload_from_url', 'wp_media_get', 'wp_media_list'];
 
 /** Endpoints documented across every product's api-reference inventory.
  *  Derived from the committed inventories rather than written as a literal:

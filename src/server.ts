@@ -12,6 +12,7 @@ import { individualNamesFor, registerActionTools } from './core/action-tools.js'
 import { loadConfig, productEnvStatus, type ServerConfig } from './core/config.js';
 import { FluentClient } from './core/http.js';
 import { registerWpMediaTool, registerWpMediaTools } from './core/media.js';
+import { DiagnosticsLog, registerSupportReport, type Transport } from './core/support.js';
 import { registerToolSpec } from './core/tool-factory.js';
 import { buildInstructions, mapAreasOf, registerToolMapTool, serverArea, type MapArea } from './core/tool-map.js';
 import { registerVerifySetup, type ProductEntry } from './core/verify.js';
@@ -23,14 +24,22 @@ export interface BuiltServer {
   entries: ProductEntry[];
   toolCount: number;
   config: ServerConfig;
+  /** Recent tool calls (feeds support_report). */
+  diagnostics: DiagnosticsLog;
+}
+
+export interface BuildOptions {
+  /** How this server is being served — reported by support_report. */
+  transport?: Transport;
 }
 
 export function readConfig(env: NodeJS.ProcessEnv = process.env): ServerConfig {
   return loadConfig(PRODUCTS.map((p) => p.envPrefix), env);
 }
 
-export function buildServer(config: ServerConfig): BuiltServer {
+export function buildServer(config: ServerConfig, options: BuildOptions = {}): BuiltServer {
   const mode = config.toolMode;
+  const diagnostics = new DiagnosticsLog();
 
   // The map covers every product (disabled ones are marked, not hidden) plus
   // the built-in server tools, and feeds both tool_map and `instructions`.
@@ -67,6 +76,7 @@ export function buildServer(config: ServerConfig): BuiltServer {
           client,
           summaryFields: module.summaryFields[spec.name],
           lockedTools: config.lockedTools,
+          diagnostics,
           // Grouped mode checks locks by each action's canonical individual name.
           ...(mode === 'grouped' ? { canonicalNames: individualNamesFor(spec) } : {}),
         };
@@ -90,6 +100,12 @@ export function buildServer(config: ServerConfig): BuiltServer {
   registerVerifySetup(server, entries, config);
   toolCount++;
 
+  // support_report needs the final tool count, so it registers last and
+  // reads the count lazily through the context object.
+  const supportCtx = { transport: options.transport ?? 'unknown', toolCount: 0, diagnostics };
+  registerSupportReport(server, entries, config, supportCtx);
+  toolCount++;
+
   // WordPress-core media tools (upload_from_url etc.) — need credentials, so
   // they register only when at least one product is configured.
   const firstClient = entries.find((e) => e.client)?.client;
@@ -102,7 +118,8 @@ export function buildServer(config: ServerConfig): BuiltServer {
     }
   }
 
-  return { server, entries, toolCount, config };
+  supportCtx.toolCount = toolCount;
+  return { server, entries, toolCount, config, diagnostics };
 }
 
 export function enablementSummary(built: BuiltServer): string {

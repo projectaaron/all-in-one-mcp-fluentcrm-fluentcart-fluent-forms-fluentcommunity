@@ -21,6 +21,9 @@ export interface ServerConfig {
   /** Tools that refuse unconditionally — confirm:true cannot override.
    *  Canonical individual tool names; enforced in both modes. */
   lockedTools: Set<string>;
+  /** Names (never values) of the FLUENT_* / <PREFIX>_* variables that were
+   *  set — so support_report can show what is configured without leaking it. */
+  presentEnv: string[];
 }
 
 /** Locked by default: operations no agent has any business executing —
@@ -95,6 +98,9 @@ export function loadConfig(envPrefixes: string[], env: NodeJS.ProcessEnv = proce
     credentials,
     toolMode: env.FLUENT_TOOL_MODE?.trim().toLowerCase() === 'grouped' ? 'grouped' : 'individual',
     lockedTools: parseLockedTools(env.FLUENT_LOCKED_TOOLS),
+    presentEnv: Object.keys(env)
+      .filter((k) => (k.startsWith('FLUENT_') || envPrefixes.some((p) => k.startsWith(`${p}_`))) && env[k] !== undefined && env[k] !== '')
+      .sort(),
   };
 }
 

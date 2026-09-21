@@ -198,12 +198,13 @@ Example calls:
 - `community_settings`: `{"name":"community_settings_list_menu_items","arguments":{"per_page":5}}`
 - `community_admin`: `{"name":"community_admin_list_custom_profile_fields","arguments":{"per_page":5}}`
 
-## Server built-ins (5 tools)
+## Server built-ins (6 tools)
 
 | Tool | Class | Description |
 |------|-------|-------------|
 | `tool_map` | read | This map — overview, per-area drill-down, keyword search. |
 | `verify_setup` | read | Check credentials, connectivity, and plugin presence per product. |
+| `support_report` | read | Redacted diagnostic report (version, connection checks, recent errors) to paste into a support request or GitHub issue. |
 | `wp_media_upload_from_url` | write | Upload an image from a URL (server-side fetch). |
 | `wp_media_get` | read | Get one media attachment. |
 | `wp_media_list` | read | List or search the media library. |
@@ -212,4 +213,4 @@ Examples: `{"name": "verify_setup", "arguments": {}}` ·
 `{"name": "tool_map", "arguments": {"search": "refund"}}` ·
 `{"name": "wp_media_upload_from_url", "arguments": {"source_url": "https://cdn.example.com/photo.jpg", "alt_text": "Product photo"}}`
 
-**Total: 1298 tools** (`FLUENT_TOOL_MODE=grouped` serves 75 instead).
+**Total: 1299 tools** (`FLUENT_TOOL_MODE=grouped` serves 75 instead).
