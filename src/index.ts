@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/** fluentMCP — stdio entry point (local install: Claude Desktop extension,
+/** All-In-One MCP for Fluent Suite — stdio entry point (local install: Claude Desktop extension,
  *  Claude Code, any stdio MCP client). Products with credentials present are
  *  enabled; the rest are skipped and reported by verify_setup as not
  *  configured. stdout is reserved for MCP JSON-RPC; logging goes to stderr. */
