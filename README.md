@@ -97,7 +97,7 @@ Three ways to run it — pick by where you want to use your assistant:
 
    ```bash
    git clone https://github.com/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity.git
-   cd fluentMCP
+   cd all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity
    npm install
    npm run pack:extension      # produces fluentmcp.mcpb
    ```
