@@ -12,6 +12,8 @@ _Generated from the FluentCart OpenAPI specs (dev.fluentcart.com)._
 
 Create a new order bump promotion. The order bump is created with minimal data (title and source variant) and can be fully configured via the Update endpoint.
 
+**Permission:** `store/sensitive` · **Policy:** `OrderBumpPolicy`
+
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`, required)
@@ -75,6 +77,8 @@ Example:
 
 Permanently delete an order bump.
 
+**Permission:** `store/sensitive` · **Policy:** `OrderBumpPolicy`
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -124,6 +128,8 @@ Permanently delete an order bump.
 **GET Get Order Bump**
 
 Retrieve detailed information about a specific order bump, including its configuration, conditions, and associated product variant.
+
+**Permission:** `store/sensitive` · **Policy:** `OrderBumpPolicy`
 
 **Auth:** ApplicationPasswords
 
@@ -218,6 +224,8 @@ Retrieve detailed information about a specific order bump, including its configu
 
 Retrieve a paginated list of order bumps with optional filtering, sorting, and search.
 
+**Permission:** `store/sensitive` · **Policy:** `OrderBumpPolicy`
+
 **Auth:** ApplicationPasswords
 
 **Query parameters**
@@ -244,6 +252,17 @@ Retrieve a paginated list of order bumps with optional filtering, sorting, and s
     - `current_page` (integer)
     - `last_page` (integer)
     - `data` (array<OrderBumpListItem>)
+    - `first_page_url` (string)
+    - `from` (integer)
+    - `last_page_url` (string)
+    - `links` (array<object>) — Rendered pagination links, including the `&laquo; Previous` / `Next &raquo;` entries.
+      - `url` (string)
+      - `label` (string)
+      - `active` (boolean)
+    - `next_page_url` (string)
+    - `path` (string)
+    - `prev_page_url` (string)
+    - `to` (integer)
 
   Example:
 
@@ -317,6 +336,8 @@ Retrieve a paginated list of order bumps with optional filtering, sorting, and s
 **PUT Update Order Bump**
 
 Update an existing order bump's configuration, conditions, status, and display settings.
+
+**Permission:** `store/sensitive` · **Policy:** `OrderBumpPolicy`
 
 **Auth:** ApplicationPasswords
 

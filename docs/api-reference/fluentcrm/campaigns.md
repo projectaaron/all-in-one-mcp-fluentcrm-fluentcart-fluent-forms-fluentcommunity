@@ -12,6 +12,14 @@ _Generated from the FluentCRM OpenAPI specs (developers.fluentcrm.com)._
 
 Perform a bulk action on multiple campaigns. Supported actions: `delete_campaigns` to permanently delete selected campaigns and all associated data, `apply_labels` to attach labels to selected campaigns. Use `select_all` to apply the action to all campaigns.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_email_delete`
+
+_Enforced by `CampaignPolicy::handleBulkAction()`._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`, required)
@@ -76,11 +84,20 @@ Example:
 
 Create a new email campaign. If no title is provided, an auto-generated unique title (e.g., 'Untitled', 'Untitled 2') is assigned. The campaign is created in draft status and returned with its template and subjects relations loaded.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `CampaignPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`)
 
 - `title` (string) — Campaign title. Must be unique across all campaigns. If omitted or empty, an auto-generated title is assigned.
+- `design_template` (string) _(enum: `simple`, `raw_classic`, `classic`, `visual_builder`)_ — Design engine for the new campaign. Falls back to the site default when omitted.
 
 Example:
 
@@ -151,6 +168,14 @@ Example:
 
 Permanently delete a campaign by ID. This removes the campaign and all associated data including campaign emails, URL metrics, and meta records.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_email_delete`
+
+_Enforced by `CampaignPolicy::delete()`._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -190,6 +215,14 @@ Permanently delete a campaign by ID. This removes the campaign and all associate
 **DELETE Delete Campaign Emails**
 
 Delete specific campaign email records by their IDs. After deletion, the campaign's `recipients_count` is updated to reflect the remaining emails.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_email_delete`
+
+_Enforced by `CampaignPolicy::deleteCampaignEmails()`._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -244,6 +277,14 @@ Example:
 **POST Draft Campaign Recipients**
 
 Save recipient selection settings for a campaign and calculate the estimated recipient count. Supports filtering by list/tag, dynamic segment, or advanced filters. Clears any previously processed campaign emails and resets the campaign to draft status.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `CampaignPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -335,6 +376,14 @@ Example:
 
 Create a duplicate of an existing campaign. The new campaign is created in draft status with a `[Duplicate]` title prefix. All email content, UTM settings, design template, settings, labels, and A/B test subjects are copied to the new campaign.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `CampaignPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -400,6 +449,14 @@ Create a duplicate of an existing campaign. The new campaign is created in draft
 **POST Estimate Campaign Contacts**
 
 Estimate the number of contacts that match the given segmentation settings. Supports filtering by list/tag, dynamic segment, or advanced filters. Useful for previewing audience size before sending a campaign.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `CampaignPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -468,6 +525,14 @@ Example:
 **GET Get Campaign**
 
 Retrieve a single campaign by ID. Optionally include related data (template, subjects) via the `with` parameter. When `viewCampaign` is set, returns the campaign with its paginated emails. Also returns available email templates and the server's current time.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+_Enforced by `CampaignPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -568,6 +633,14 @@ Retrieve a single campaign by ID. Optionally include related data (template, sub
 
 Get a paginated list of contacts that match the campaign's recipient segment settings. Supports searching by name/email and sorting. Each contact includes their associated lists and tags.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+_Enforced by `CampaignPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -665,6 +738,14 @@ Get a paginated list of contacts that match the campaign's recipient segment set
 
 Retrieve a paginated list of emails sent for a specific campaign. Supports filtering by engagement type (click, view, unopened, failed) and searching by subscriber details. Optionally includes the campaign data with tracking status.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+_Enforced by `CampaignPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -715,7 +796,7 @@ Retrieve a paginated list of emails sent for a specific campaign. Supports filte
         - `last_name` (string)
         - `status` (string)
   - `failed_counts` (integer) — Total number of failed emails for this campaign.
-  - `campaign` (object) — Included only when `with_campaign` is set.
+  - `campaign` (object) — Included only when `with_campaign` is set. Returned **only** when the request sends `with_campaign`.
     - `id` (integer)
     - `title` (string)
     - `open_tracking_status` (string)
@@ -766,6 +847,14 @@ Retrieve a paginated list of emails sent for a specific campaign. Supports filte
 **GET Get Campaign Link Report**
 
 Get a report of all tracked links in a campaign, including click counts for each URL. Also returns the click and open tracking status for the campaign.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+_Enforced by `CampaignPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -824,6 +913,14 @@ Get a report of all tracked links in a campaign, including click counts for each
 **GET Get Campaign Overview Stats**
 
 Get overview statistics for a campaign including sent count, email status breakdown, and open/click analytics. This is a lighter-weight alternative to the full campaign status endpoint, suitable for dashboard widgets or summary views.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+_Enforced by `CampaignPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -895,6 +992,20 @@ Get overview statistics for a campaign including sent count, email status breakd
 
 Get the current processing status and statistics of a campaign being sent. This endpoint is polled during campaign sending to track progress. It processes a chunk of emails on each call and returns the updated campaign state, including whether the campaign has finished processing.
 
+::: warning TWO RESPONSE SHAPES
+This endpoint returns different keys depending on campaign state. While the campaign is `processing` you get `campaign`, `didRun`, and `scheduling_method`. Once it is not, you get `reload: true` and `campaign` instead — and **no** `didRun` or `scheduling_method`. Branch on the presence of `reload`.
+:::
+
+Polling this endpoint is what advances the send: each call processes a chunk of emails (30 by default, for up to 10 seconds) before returning. It is a worker tick, not a read-only status probe.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+_Enforced by `CampaignPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -908,36 +1019,17 @@ Get the current processing status and statistics of a campaign being sent. This 
 
 - **200** — Processing statistics retrieved.
 
-  Schema (`application/json`):
-
-  - `campaign` (object)
-    - `id` (integer)
-    - `title` (string)
-    - `status` (string)
-    - `recipients_count` (integer)
-    - `scheduling_range` (object) — Range schedule dates if the campaign uses range scheduling.
-      - _(object)_
-    - `created_at` (string) _(format: date-time)_
-    - `updated_at` (string) _(format: date-time)_
-  - `reload` (boolean) — If true, the campaign is no longer processing and the UI should reload.
-  - `didRun` (boolean) — Whether email processing was executed on this request.
-  - `scheduling_method` (string) — The method used for scheduling (e.g., `wp_remote_post`, `action_scheduler`).
-
   Example:
 
 ```json
 {
   "campaign": {
-    "id": 12,
-    "title": "Spring Sale 2024",
+    "id": 3,
     "status": "processing",
-    "recipients_count": 850,
-    "scheduling_range": null,
-    "created_at": "2024-03-01 10:00:00",
-    "updated_at": "2024-03-02 14:05:00"
+    "recipients_count": 628
   },
   "didRun": true,
-  "scheduling_method": "wp_remote_post"
+  "scheduling_method": "action_scheduler"
 }
 ```
 
@@ -955,6 +1047,14 @@ Get the current processing status and statistics of a campaign being sent. This 
 **GET Get Campaign Recipients Count**
 
 Get the estimated number of recipients for a campaign. For draft, processing, or pending-scheduled campaigns, this dynamically counts matching subscribers. For sent/archived campaigns, it returns the stored `recipients_count` value.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+_Enforced by `CampaignPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -995,6 +1095,14 @@ Get the estimated number of recipients for a campaign. For draft, processing, or
 **GET Get Campaign Revenues**
 
 Get a paginated list of revenue (orders) attributed to a campaign. Supports WooCommerce and Easy Digital Downloads. Returns order details including buyer name, status, date, and formatted total. Returns an empty array if no e-commerce plugin is active.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+_Enforced by `CampaignPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -1067,6 +1175,14 @@ Get a paginated list of revenue (orders) attributed to a campaign. Supports WooC
 
 Get the public shareable URL for a campaign. This URL allows viewing the campaign email in a web browser without authentication.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+_Enforced by `CampaignPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -1106,6 +1222,14 @@ Get the public shareable URL for a campaign. This URL allows viewing the campaig
 **GET Get Campaign Status**
 
 Get the comprehensive status and analytics of a campaign. This is the primary endpoint for the campaign status/reporting page. Returns campaign details, email delivery statistics broken down by status, sent count, open/click analytics (for archived campaigns), and A/B subject line performance. For working campaigns, it also manages stuck email recovery and automatic archival.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+_Enforced by `CampaignPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -1217,6 +1341,14 @@ Get the comprehensive status and analytics of a campaign. This is the primary en
 
 Get a paginated list of contacts who unsubscribed as a result of this campaign. Each record includes the subscriber details and their unsubscribe reason.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+_Enforced by `CampaignPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -1298,6 +1430,14 @@ Get a paginated list of contacts who unsubscribed as a result of this campaign. 
 **GET List Campaigns**
 
 Retrieve a paginated list of email campaigns. Supports filtering by status, search term, labels, and sorting. Optionally includes campaign statistics.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+_Enforced by `CampaignPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -1389,6 +1529,14 @@ Retrieve a paginated list of email campaigns. Supports filtering by status, sear
 
 Pause a currently working campaign. Only campaigns with status `working` can be paused. All pending, scheduled, and scheduling emails are set to `paused` status.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `CampaignPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -1453,6 +1601,14 @@ Pause a currently working campaign. Only campaigns with status `working` can be 
 **GET Preview Campaign Email**
 
 Preview a specific sent campaign email by its email ID. Returns the rendered email data including subject, body, and click tracking information.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_emails`
+
+_Enforced by `CampaignPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -1534,6 +1690,14 @@ Preview a specific sent campaign email by its email ID. Returns the rendered ema
 
 Generate a rendered HTML preview of a campaign email. Can preview either a saved campaign (by campaign_id) or unsaved campaign data passed in the request body. SmartCodes and template rendering are applied. Optionally preview as a specific contact.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `CampaignPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`, required)
@@ -1584,6 +1748,14 @@ Example:
 **POST Resume Campaign**
 
 Resume a paused campaign. Only campaigns with status `paused` can be resumed. The campaign status is set back to `working` and all paused emails are rescheduled.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `CampaignPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -1650,6 +1822,14 @@ Resume a paused campaign. Only campaigns with status `paused` can be resumed. Th
 
 Re-synchronize the revenue data for a campaign by recalculating totals from WooCommerce orders. Updates the `_campaign_revenue` meta with fresh order totals. Only works with WooCommerce.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `CampaignPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -1686,6 +1866,14 @@ Re-synchronize the revenue data for a campaign by recalculating totals from WooC
 **POST Schedule Campaign**
 
 Schedule a campaign for sending. Supports three modes: instant sending (omit `scheduled_at`), scheduled sending (single datetime), and range-scheduled sending (array of two datetimes for staggered delivery). The campaign must be in draft status. Clears any previously processed emails before scheduling.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `CampaignPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -1778,6 +1966,14 @@ Example:
 
 Send a test email for a campaign. Can send a test from either a saved campaign (by campaign_id) or from unsaved campaign data passed in the request body. The email subject is prefixed with 'TEST: '. If no email address is provided, it sends to the current user's email.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `CampaignPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`, required)
@@ -1848,6 +2044,14 @@ Example:
 
 Cancel a scheduled campaign and revert it to draft status. Only campaigns with status `scheduled`, `pending-scheduled`, or `processing` (before the scheduled time) can be un-scheduled. All associated campaign emails are deleted.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `CampaignPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -1897,6 +2101,14 @@ Cancel a scheduled campaign and revert it to draft status. Only campaigns with s
 **PUT Update Campaign**
 
 Update an existing campaign. Supports updating title, email content, UTM parameters, template, settings, and A/B test subjects. When `next_step` is provided, it advances the campaign wizard and performs step-specific validation (e.g., compliance checks for unsubscribe links on step 2).
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `CampaignPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -2012,6 +2224,14 @@ Example:
 
 Update the labels (tags/categories) attached to a campaign. Currently supports the `detach` action to remove specified labels from the campaign.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `CampaignPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -2070,6 +2290,14 @@ Example:
 
 Update the current wizard step for a campaign. This sets the `_next_config_step` campaign meta value, which tracks how far the user has progressed through the campaign setup wizard.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `CampaignPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -2117,6 +2345,14 @@ Example:
 **PUT Update Campaign Title**
 
 Update only the title of a campaign. For scheduled campaigns, optionally update the scheduled time as well. When the scheduled time changes, all unsent email records are rescheduled to the new time.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `CampaignPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -2182,6 +2418,14 @@ Example:
 **POST Update Single Campaign (Simulate)**
 
 Update a campaign using a POST request instead of PUT. This is a convenience endpoint that internally delegates to the campaign update logic. The campaign ID is passed in the request body rather than the URL path. Useful when method override is not available.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_emails`
+
+_Enforced by `CampaignPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 

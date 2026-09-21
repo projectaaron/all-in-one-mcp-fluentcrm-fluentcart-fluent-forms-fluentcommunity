@@ -12,6 +12,14 @@ _Generated from the FluentCRM OpenAPI specs (developers.fluentcrm.com)._
 
 Perform a bulk action on multiple tags. Currently supports bulk deletion of tags by their IDs.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats_delete`
+
+_Enforced by `TagPolicy::handleBulkAction()`._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`, required)
@@ -56,6 +64,14 @@ Example:
 **POST Bulk Create Tags**
 
 Create or update multiple tags in a single request. Tags are matched by slug -- if a tag with the given slug already exists, its title is updated; otherwise a new tag is created. Tags without a `title` are skipped.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats`
+
+_Enforced by `TagPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -120,6 +136,14 @@ Example:
 **POST Create Tag**
 
 Create a new tag. The `title` field is required. If `slug` is omitted, it is auto-generated from the title. The slug must be unique across all tags.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats`
+
+_Enforced by `TagPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -209,6 +233,14 @@ Example:
 
 Permanently delete a tag by its ID. This removes the tag and its associations with contacts.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats_delete`
+
+_Enforced by `TagPolicy::remove()`._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -259,6 +291,14 @@ Permanently delete a tag by its ID. This removes the tag and its associations wi
 
 Retrieve a single tag by its ID.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats`
+
+_Enforced by `TagPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -301,6 +341,14 @@ Retrieve a single tag by its ID.
 
 Retrieve a paginated list of tags. Optionally includes subscriber counts and a separate array of all tags for dropdown/select usage.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats`
+
+_Enforced by `TagPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Query parameters**
@@ -332,7 +380,7 @@ Retrieve a paginated list of tags. Optionally includes subscriber counts and a s
     - `from` (integer) — Starting record index on this page.
     - `to` (integer) — Ending record index on this page.
     - `data` (array<Tag>)
-  - `all_tags` (array<object>) — Only present when `all_tags` query parameter is truthy. A flat array of all tags.
+  - `all_tags` (array<object>) — Only present when `all_tags` query parameter is truthy. A flat array of all tags. Returned **only** when the request sends `all_tags`. Contains every tag, unpaginated, for use in pickers.
     - `id` (string) — Tag ID as a string.
     - `title` (string)
     - `slug` (string)
@@ -383,6 +431,14 @@ Retrieve a paginated list of tags. Optionally includes subscriber counts and a s
 **PUT Update Tag**
 
 Update an existing tag by its ID. The `title` field is required. If `slug` is omitted, it is auto-generated from the title. Alternatively, set `id` to `0` and pass `update_by=slug` to find the tag by its slug instead.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contact_cats`
+
+_Enforced by `TagPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 

@@ -1,6 +1,6 @@
 # FluentCart API — Integrations
 
-17 endpoints. Base URL: `https://{website}/wp-json/fluent-cart/v2`. See the [FluentCart overview](../fluentcart.md) for auth and the full group list.
+12 endpoints. Base URL: `https://{website}/wp-json/fluent-cart/v2`. See the [FluentCart overview](../fluentcart.md) for auth and the full group list.
 
 _Generated from the FluentCart OpenAPI specs (dev.fluentcart.com)._
 
@@ -11,6 +11,8 @@ _Generated from the FluentCart OpenAPI specs (dev.fluentcart.com)._
 **POST Chained Data Request**
 
 Handle chained/dependent data requests for integration feeds. Used when selecting a value in one feed field needs to dynamically load options for another field. The behavior is entirely handled by the integration provider through the `fluent_cart/integration/chained_{route}` hook.
+
+**Required permission:** `integrations/manage`
 
 **Auth:** ApplicationPasswords
 
@@ -56,6 +58,52 @@ Example:
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`integrations/manage`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+
 
 ---
 
@@ -64,6 +112,8 @@ Example:
 **POST Change Feed Status**
 
 Toggle a global integration feed on or off without modifying its configuration.
+
+**Required permission:** `integrations/manage`
 
 **Auth:** ApplicationPasswords
 
@@ -107,73 +157,48 @@ Toggle a global integration feed on or off without modifying its configuration.
 ```
 
 
-
----
-
-## POST `/products/{product_id}/integrations/feed/change-status`
-
-**POST Change Product Feed Status**
-
-Toggle a product-level integration feed on or off.
-
-**Auth:** ApplicationPasswords
-
-**Path parameters**
-
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `product_id` | integer | yes | The product ID |
-
-
-**Request body** (`application/json`, required)
-
-- `product_id` (integer) **required** — The product ID (must also be provided in the request body)
-- `notification_id` (integer) **required** — The feed ID to toggle
-- `status` (string) **required** _(enum: `yes`, `no`)_ — New status: `yes` (enable) or `no` (disable)
-
-**Responses**
-
-- **200** — Successful response
-
-  Schema (`application/json`):
-
-  - `message` (string) — Success message
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
 
   Example:
 
 ```json
 {
-  "message": "Integration status has been updated"
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
 }
 ```
 
 
-- **400** — Missing required parameters
-
-  Schema (`application/json`):
-
-  - `message` (string)
+- **403** — Authenticated, but the user lacks the required capability (`integrations/manage`).
 
   Example:
 
 ```json
 {
-  "message": "Product ID and Notification ID are required"
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
 }
 ```
 
 
-- **404** — Notification not found
-
-  Schema (`application/json`):
-
-  - `message` (string)
+- **422** — Validation failed, or the referenced record does not exist.
 
   Example:
 
 ```json
 {
-  "message": "Notification not found"
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
 }
 ```
 
@@ -186,6 +211,8 @@ Toggle a product-level integration feed on or off.
 **DELETE Feed**
 
 Permanently delete a global integration feed.
+
+**Required permission:** `integrations/delete`
 
 **Auth:** ApplicationPasswords
 
@@ -215,38 +242,48 @@ Permanently delete a global integration feed.
 ```
 
 
-
----
-
-## DELETE `/products/{product_id}/integrations/{integration_id}`
-
-**DELETE Product Integration Feed**
-
-Permanently delete a product-level integration feed.
-
-**Auth:** ApplicationPasswords
-
-**Path parameters**
-
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `product_id` | integer | yes | The product ID |
-| `integration_id` | integer | yes | The feed ID to delete |
-
-
-**Responses**
-
-- **200** — Successful response
-
-  Schema (`application/json`):
-
-  - `message` (string) — Success message
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
 
   Example:
 
 ```json
 {
-  "message": "Integration deleted successfully"
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`integrations/delete`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
 }
 ```
 
@@ -259,6 +296,8 @@ Permanently delete a product-level integration feed.
 **GET Dynamic Options**
 
 Fetch dynamic select options for integration feed fields. Supports WordPress post type searches and provider-specific dynamic option lookups. Used by the feed editor to populate dropdown fields asynchronously.
+
+**Required permission:** `integrations/view`
 
 **Auth:** ApplicationPasswords
 
@@ -298,6 +337,36 @@ Fetch dynamic select options for integration feed fields. Supports WordPress pos
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`integrations/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -306,6 +375,8 @@ Fetch dynamic select options for integration feed fields. Supports WordPress pos
 **GET Feed Merge Fields (Lists)**
 
 Retrieve the merge fields (field mapping options) for a specific integration provider and list. Called when a user selects a target list in the feed editor to load the available mapping fields.
+
+**Required permission:** `integrations/view`
 
 **Auth:** ApplicationPasswords
 
@@ -353,6 +424,36 @@ Retrieve the merge fields (field mapping options) for a specific integration pro
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`integrations/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -361,6 +462,8 @@ Retrieve the merge fields (field mapping options) for a specific integration pro
 **GET Feed Settings**
 
 Retrieve the settings form schema, saved values, and available shortcodes for a specific integration feed. Used to populate the feed editor when creating or editing a global feed.
+
+**Required permission:** `integrations/view`
 
 **Auth:** ApplicationPasswords
 
@@ -382,88 +485,109 @@ Retrieve the settings form schema, saved values, and available shortcodes for a 
     - _(object)_
   - `settings_fields` (object) — Form schema defining the feed editor fields
     - `fields` (array<FeedSettingsField>)
-  - `shortcodes` (object) — Available shortcodes for dynamic field mapping
+  - `shortcodes` (object) — Available shortcodes for dynamic field mapping, grouped by category.
+    - `data` (array<ShortcodeGroup>)
+  - `inputs` (object) — Checkout input fields available for mapping, keyed by shortcode. Serializes as an empty array `[]` when no checkout fields are configured.
     - _(object)_
-  - `inputs` (object) — Checkout input fields available for mapping
-    - _(object)_
-  - `merge_fields` (any) — Merge fields for the selected list (if applicable)
+  - `merge_fields` (boolean) — `false` by default. When the selected integration list has custom merge fields, this becomes an object mapping merge field keys to labels.
 
   Example:
 
 ```json
 {
   "settings": {
-    "conditionals": {
-      "conditions": [
-        {
-          "field": "payment_status",
-          "operator": "is",
-          "value": "paid"
-        }
-      ],
-      "status": false,
-      "type": "all"
-    },
     "enabled": "yes",
-    "list_id": "",
     "list_name": "",
     "name": "",
-    "merge_fields": {
-      "first_name": "{customer.first_name}",
-      "last_name": "{customer.last_name}",
-      "email": "{customer.email}"
-    }
+    "list_ids": [],
+    "tag_ids": [],
+    "tag_ids_selection_type": "simple",
+    "double_opt_in": "yes",
+    "note": ""
   },
   "settings_fields": {
     "fields": [
       {
         "key": "name",
-        "label": "Feed Name",
-        "type": "text",
-        "required": true
+        "label": "Feed Title",
+        "required": true,
+        "placeholder": "Name",
+        "component": "text",
+        "inline_tip": "Name of this feed, it will be used to identify this feed in the list of feeds"
       },
       {
-        "key": "list_id",
-        "label": "Contact List",
-        "type": "select",
-        "required": true,
-        "options": [
-          {
-            "id": "1",
-            "label": "Newsletter Subscribers"
-          },
-          {
-            "id": "2",
-            "label": "Customers"
-          },
-          {
-            "id": "3",
-            "label": "VIP Customers"
-          }
-        ]
+        "key": "list_ids",
+        "label": "Add to Lists",
+        "placeholder": "Select FluentCRM Lists",
+        "inline_tip": "Select the FluentCRM Lists you would like to add your contact to.",
+        "component": "select",
+        "is_multiple": true,
+        "required": false,
+        "options": {
+          "1": "Newsletter Subscribers",
+          "2": "Customers",
+          "3": "VIP Customers"
+        }
+      }
+    ],
+    "button_require_list": false,
+    "integration_title": "FluentCRM"
+  },
+  "shortcodes": {
+    "data": [
+      {
+        "key": "customer",
+        "title": "Customer",
+        "shortcodes": {
+          "{{order.billing.full_name}}": "Full Name",
+          "{{order.billing.email}}": "Email",
+          "{{order.billing.city}}": "City",
+          "{{order.billing.country}}": "Country"
+        }
+      },
+      {
+        "key": "order",
+        "title": "Order",
+        "shortcodes": {
+          "{{order.id}}": "Order ID",
+          "{{order.invoice_no}}": "Order Number",
+          "{{order.total_amount}}": "Order Total Amount",
+          "{{order.currency}}": "Order Currency"
+        }
       }
     ]
   },
-  "shortcodes": {
-    "customer": {
-      "title": "Customer",
-      "shortcodes": {
-        "{customer.first_name}": "First Name",
-        "{customer.last_name}": "Last Name",
-        "{customer.email}": "Email"
-      }
-    }
-  },
-  "inputs": {
-    "billing_first_name": "Billing First Name",
-    "billing_last_name": "Billing Last Name",
-    "billing_email": "Billing Email",
-    "billing_phone": "Billing Phone"
-  },
-  "merge_fields": {
-    "first_name": "{customer.first_name}",
-    "last_name": "{customer.last_name}",
-    "email": "{customer.email}"
+  "inputs": [],
+  "merge_fields": false
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`integrations/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
   }
 }
 ```
@@ -477,6 +601,8 @@ Retrieve the settings form schema, saved values, and available shortcodes for a 
 **GET List Global Integration Feeds**
 
 Retrieve all configured global integration feeds along with the list of available integrations that support global scope.
+
+**Required permission:** `integrations/view`
 
 **Auth:** ApplicationPasswords
 
@@ -543,6 +669,36 @@ Retrieve all configured global integration feeds along with the list of availabl
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`integrations/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 
 ---
 
@@ -551,6 +707,8 @@ Retrieve all configured global integration feeds along with the list of availabl
 **GET Global Integration Settings**
 
 Retrieve global configuration settings for a specific integration provider. Used to get API key configuration, authentication fields, and current saved values.
+
+**Required permission:** `integrations/view`
 
 **Auth:** ApplicationPasswords
 
@@ -601,127 +759,32 @@ Retrieve global configuration settings for a specific integration provider. Used
 ```
 
 
-
----
-
-## GET `/products/{product_id}/integrations/{integration_name}/settings`
-
-**GET Product Integration Settings**
-
-Retrieve the feed editor settings for a specific integration provider, scoped to a product. Returns form schema, saved values, available shortcodes, and the product's variation list for conditional targeting.
-
-**Auth:** ApplicationPasswords
-
-**Path parameters**
-
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `product_id` | integer | yes | The product ID |
-| `integration_name` | string | yes | The integration provider key (e.g., `fluent-crm`) |
-
-
-**Query parameters**
-
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `integration_id` | integer | no | The existing feed ID to load for editing. Omit for new feed defaults. |
-
-
-**Responses**
-
-- **200** — Successful response
-
-  Schema (`application/json`):
-
-  - `settings` (object) — Current feed settings values (defaults for new, saved values for existing)
-    - _(object)_
-  - `settings_fields` (object) — Form schema defining the feed editor fields
-    - `fields` (array<object>)
-      - `key` (string)
-      - `label` (string)
-      - `type` (string)
-      - `required` (boolean)
-  - `shortcodes` (object) — Available shortcodes for dynamic field mapping
-    - _(object)_
-  - `inputs` (object) — Checkout input fields available for mapping
-    - _(object)_
-  - `merge_fields` (any) — Merge fields for the selected list (if applicable)
-  - `product_variations` (array<object>) — List of the product's variations, used for targeting specific variations
-    - `id` (integer) — Variation ID
-    - `title` (string) — Variation title
-  - `scope` (string) — Always 'product' for this endpoint
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
 
   Example:
 
 ```json
 {
-  "settings": {
-    "conditionals": {
-      "conditions": [
-        {
-          "field": "payment_status",
-          "operator": "is",
-          "value": "paid"
-        }
-      ],
-      "status": false,
-      "type": "all"
-    },
-    "enabled": "yes",
-    "list_id": "",
-    "list_name": "",
-    "name": "",
-    "merge_fields": {
-      "first_name": "{customer.first_name}",
-      "last_name": "{customer.last_name}",
-      "email": "{customer.email}"
-    },
-    "conditional_variation_ids": [
-      456,
-      457
-    ]
-  },
-  "settings_fields": {
-    "fields": [
-      {
-        "key": "name",
-        "label": "Feed Name",
-        "type": "text",
-        "required": true
-      }
-    ]
-  },
-  "shortcodes": {
-    "customer": {
-      "title": "Customer",
-      "shortcodes": {
-        "{customer.first_name}": "First Name",
-        "{customer.last_name}": "Last Name",
-        "{customer.email}": "Email"
-      }
-    }
-  },
-  "inputs": {
-    "billing_first_name": "Billing First Name",
-    "billing_last_name": "Billing Last Name",
-    "billing_email": "Billing Email"
-  },
-  "merge_fields": {
-    "first_name": "{customer.first_name}",
-    "last_name": "{customer.last_name}",
-    "email": "{customer.email}"
-  },
-  "product_variations": [
-    {
-      "id": 101,
-      "title": "Basic Plan"
-    },
-    {
-      "id": 102,
-      "title": "Pro Plan"
-    }
-  ],
-  "scope": "product"
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`integrations/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
 }
 ```
 
@@ -734,6 +797,8 @@ Retrieve the feed editor settings for a specific integration provider, scoped to
 **POST Install and Activate Add-on Plugin**
 
 Install and activate a supported integration plugin from the WordPress.org repository. Only whitelisted plugins can be installed through this endpoint.
+
+**Required permission:** `integrations/manage`
 
 **Auth:** ApplicationPasswords
 
@@ -756,6 +821,36 @@ Install and activate a supported integration plugin from the WordPress.org repos
 {
   "message": "Addon installation started successfully.",
   "redirect": "https://example.com/wp-admin/admin.php?page=fluent-cart#/integrations"
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`integrations/manage`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
 }
 ```
 
@@ -783,6 +878,8 @@ Install and activate a supported integration plugin from the WordPress.org repos
 **GET List Available Add-ons**
 
 Retrieve the list of all available integration add-ons, including their installation status and metadata.
+
+**Required permission:** `integrations/view`
 
 **Auth:** ApplicationPasswords
 
@@ -823,10 +920,65 @@ Retrieve the list of all available integration add-ons, including their installa
       ],
       "description": "A free WordPress SMTP plugin to send emails via multiple providers."
     },
+    "fluent-community": {
+      "installable": "fluent-community",
+      "enabled": false,
+      "title": "FluentCommunity",
+      "logo": "https://example.com/wp-content/plugins/fluent-cart/assets/images/integrations/fluent-community.svg",
+      "categories": [
+        "core",
+        "community",
+        "lms"
+      ],
+      "description": "Build a community, membership site, or online forum with FluentCart + FluentCommunity integration. Engage your customers and users right from your WordPress dashboard."
+    },
+    "fluent-security": {
+      "installable": "fluent-security",
+      "enabled": false,
+      "title": "FluentAuth",
+      "logo": "https://example.com/wp-content/plugins/fluent-cart/assets/images/integrations/fluent-auth.svg",
+      "categories": [
+        "core"
+      ],
+      "description": "Customize WordPress emails, customized login & signup forms with enhanced security and social logins. Enhance your site security with FluentCart + FluentSecurity integration."
+    },
+    "fluentform": {
+      "installable": "fluentform",
+      "enabled": false,
+      "title": "Fluent Forms",
+      "logo": "https://example.com/wp-content/plugins/fluent-cart/assets/images/integrations/fluent-form.svg",
+      "categories": [
+        "core",
+        "marketing"
+      ],
+      "description": "Create advanced forms and surveys with an easy-to-use drag & drop form builder."
+    },
+    "fluent-support": {
+      "installable": "fluent-support",
+      "enabled": false,
+      "title": "FluentSupport",
+      "logo": "https://example.com/wp-content/plugins/fluent-cart/assets/images/integrations/fluent-support.svg",
+      "categories": [
+        "core",
+        "marketing"
+      ],
+      "description": "A powerful helpdesk and customer support plugin for WordPress. Manage customer support tickets directly from your WordPress dashboard with FluentCart + FluentSupport integration."
+    },
     "webhook": {
       "title": "Webhook",
       "description": "Send data anywhere via webhook",
       "logo": "https://example.com/wp-content/plugins/fluent-cart/assets/images/integrations/webhook.svg",
+      "enabled": true,
+      "is_pro": true,
+      "is_pro_active": true,
+      "categories": [
+        "core"
+      ]
+    },
+    "wp_user": {
+      "title": "WP User Create/Update",
+      "description": "Create / Update WP User with Custom Roles on order events",
+      "logo": "https://example.com/wp-content/plugins/fluent-cart/assets/images/integrations/wp_user.svg",
       "enabled": true,
       "is_pro": true,
       "is_pro_active": true,
@@ -839,86 +991,32 @@ Retrieve the list of all available integration add-ons, including their installa
 ```
 
 
-
----
-
-## GET `/products/{productId}/integrations`
-
-**GET List Product Integration Feeds**
-
-Retrieve all integration feeds configured for a specific product, along with available product-scoped integrations.
-
-**Auth:** ApplicationPasswords
-
-**Path parameters**
-
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `productId` | integer | yes | The product ID |
-
-
-**Responses**
-
-- **200** — Successful response
-
-  Schema (`application/json`):
-
-  - `feeds` (array<ProductFeed>)
-  - `available_integrations` (object) — Available integrations that support product scope
-    - _(object)_
-  - `all_module_config_url` (string) _(format: uri)_ — URL to the integrations admin page
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
 
   Example:
 
 ```json
 {
-  "feeds": [
-    {
-      "id": 15,
-      "name": "Tag VIP buyers",
-      "enabled": "yes",
-      "provider": "fluent-crm",
-      "feed": {
-        "name": "Tag VIP buyers",
-        "enabled": "yes",
-        "list_id": "3",
-        "list_name": "VIP Customers",
-        "merge_fields": {
-          "first_name": "{customer.first_name}",
-          "last_name": "{customer.last_name}",
-          "email": "{customer.email}"
-        },
-        "conditional_variation_ids": [
-          101,
-          102
-        ],
-        "conditionals": {
-          "conditions": [
-            {
-              "field": "payment_status",
-              "operator": "is",
-              "value": "paid"
-            }
-          ],
-          "status": false,
-          "type": "all"
-        }
-      },
-      "scope": "product"
-    }
-  ],
-  "available_integrations": {
-    "fluent-crm": {
-      "title": "FluentCRM",
-      "logo": "https://example.com/wp-content/plugins/fluent-cart/assets/images/integrations/fluentcrm.svg",
-      "enabled": true,
-      "scopes": [
-        "global",
-        "product"
-      ]
-    }
-  },
-  "all_module_config_url": "https://example.com/wp-admin/admin.php?page=fluent-cart#/integrations"
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`integrations/view`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
 }
 ```
 
@@ -931,6 +1029,8 @@ Retrieve all integration feeds configured for a specific product, along with ava
 **POST Save Feed Settings**
 
 Create a new integration feed or update an existing one. Validates required fields defined by the integration provider before saving.
+
+**Required permission:** `integrations/manage`
 
 **Auth:** ApplicationPasswords
 
@@ -975,6 +1075,36 @@ Create a new integration feed or update an existing one. Validates required fiel
 ```
 
 
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`integrations/manage`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
 - **422** — Validation error
 
   Schema (`application/json`):
@@ -999,103 +1129,13 @@ Create a new integration feed or update an existing one. Validates required fiel
 
 ---
 
-## POST `/products/{product_id}/integrations`
-
-**POST Save Product Integration Feed**
-
-Create a new product-level integration feed or update an existing one. Validates required fields and associates the feed with the specified product.
-
-**Auth:** ApplicationPasswords
-
-**Path parameters**
-
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `product_id` | integer | yes | The product ID |
-
-
-**Request body** (`application/json`, required)
-
-- `integration_name` (string) **required** — The integration provider key (e.g., `fluent-crm`)
-- `integration_id` (integer) — Existing feed ID to update. Omit to create a new feed.
-- `integration` (string) **required** — JSON-encoded feed settings data
-
-**Responses**
-
-- **200** — Successful response
-
-  Schema (`application/json`):
-
-  - `message` (string) — Success message
-  - `integration_id` (integer) — The feed ID
-  - `integration_name` (string) — The integration provider key
-  - `created` (boolean) — true if a new feed was created, false if an existing one was updated
-  - `feedData` (object) — The validated and saved feed data
-    - _(object)_
-
-  Example:
-
-```json
-{
-  "message": "Integration has been successfully saved",
-  "integration_id": 15,
-  "integration_name": "fluent-crm",
-  "created": true,
-  "feedData": {
-    "name": "Tag VIP buyers",
-    "enabled": "yes",
-    "list_id": "3",
-    "conditional_variation_ids": [
-      101
-    ]
-  }
-}
-```
-
-
-- **404** — Product not found
-
-  Schema (`application/json`):
-
-  - `message` (string)
-
-  Example:
-
-```json
-{
-  "message": "Product not found"
-}
-```
-
-
-- **422** — Validation error
-
-  Schema (`application/json`):
-
-  - `message` (string)
-  - `errors` (object)
-    - _(object)_
-
-  Example:
-
-```json
-{
-  "message": "Please fill up the required fields:",
-  "errors": {
-    "name": "Feed Name is required."
-  }
-}
-```
-
-
-
----
-
 ## POST `/integration/global-settings`
 
 **POST Save Global Integration Settings**
 
 Save or update global configuration settings for a specific integration provider (e.g., API keys, authentication credentials).
+
+**Required permission:** `integrations/manage`
 
 **Auth:** ApplicationPasswords
 
@@ -1120,6 +1160,52 @@ Save or update global configuration settings for a specific integration provider
 {
   "message": "Settings saved successfully",
   "status": true
+}
+```
+
+
+- **401** — Not authenticated. The request carried no valid WordPress credentials.
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 401
+  }
+}
+```
+
+
+- **403** — Authenticated, but the user lacks the required capability (`integrations/manage`).
+
+  Example:
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to do that.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+
+- **422** — Validation failed, or the referenced record does not exist.
+
+  Example:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "field_name": [
+      "This field is required."
+    ]
+  }
 }
 ```
 

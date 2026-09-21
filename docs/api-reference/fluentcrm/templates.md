@@ -1,6 +1,6 @@
 # FluentCRM API — Email Templates
 
-11 endpoints. Base URL: `https://{website}/wp-json/fluent-crm/v2`. See the [FluentCRM overview](../fluentcrm.md) for auth and the full group list.
+12 endpoints. Base URL: `https://{website}/wp-json/fluent-crm/v2`. See the [FluentCRM overview](../fluentcrm.md) for auth and the full group list.
 
 _Generated from the FluentCRM OpenAPI specs (developers.fluentcrm.com)._
 
@@ -11,6 +11,14 @@ _Generated from the FluentCRM OpenAPI specs (developers.fluentcrm.com)._
 **POST Bulk Action Templates**
 
 Perform a bulk action on multiple email templates. Supports changing the status of templates or permanently deleting them. When `select_all` is 'true', the action is applied to all templates regardless of the provided IDs.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_email_delete`
+
+_Enforced by `TemplatePolicy::handleBulkAction()`._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -76,6 +84,14 @@ Example:
 **POST Create Template**
 
 Create a new email template. If `template_id` is provided, the request is forwarded to the update endpoint instead. The template data should be passed as a nested `template` object containing the post fields, email subject, edit type, design template, and settings.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_email_templates`
+
+_Enforced by `TemplatePolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -149,6 +165,14 @@ Example:
 
 Permanently delete a single email template by ID. This removes the template and all associated metadata.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_email_delete`
+
+_Enforced by `TemplatePolicy::delete()`._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -188,6 +212,14 @@ Permanently delete a single email template by ID. This removes the template and 
 **POST Duplicate Template**
 
 Create a duplicate of an existing email template. The new template title is prefixed with '[Duplicate]'. All template metadata is copied including email subject, edit type, design template, template config, and footer settings.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_email_templates`
+
+_Enforced by `TemplatePolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -230,6 +262,14 @@ Create a duplicate of an existing email template. The new template title is pref
 **GET Get Built-In Templates**
 
 Retrieve a collection of pre-designed email templates from the FluentCRM template library. Templates are fetched from a remote API and cached locally for 24 hours. Each template includes its design JSON, cover image, and metadata.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_email_templates`
+
+_Enforced by `TemplatePolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -279,6 +319,14 @@ Retrieve a collection of pre-designed email templates from the FluentCRM templat
 **GET Get Smart Codes**
 
 Retrieve all available smartcodes grouped by category. Smartcodes are placeholder tokens (e.g., `{{contact.first_name}}`) that get replaced with actual values when emails are sent. Groups include contact fields, custom fields, and general codes like business name and unsubscribe URLs.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_email_templates`
+
+_Enforced by `TemplatePolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -348,6 +396,14 @@ Retrieve all available smartcodes grouped by category. Smartcodes are placeholde
 
 Retrieve a single email template by ID. Returns the template content, email subject, edit type, design template, and settings including template configuration and footer settings. If the template ID does not exist, returns a blank template structure with defaults.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_email_templates`
+
+_Enforced by `TemplatePolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -398,6 +454,14 @@ Retrieve a single email template by ID. Returns the template content, email subj
 **GET List All Templates**
 
 Retrieve all published email templates (non-paginated) along with available smartcodes. Useful for template selection dropdowns where all published templates are needed at once.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_email_templates`
+
+_Enforced by `TemplatePolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -459,6 +523,14 @@ Retrieve all published email templates (non-paginated) along with available smar
 **GET List Templates**
 
 Retrieve a paginated list of email templates. Supports filtering by status types and searching by title. Each template in the response includes its design template identifier.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_email_templates`
+
+_Enforced by `TemplatePolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -531,6 +603,14 @@ Retrieve a paginated list of email templates. Supports filtering by status types
 
 Update the global email style configuration. These settings apply as defaults across all email templates. Each setting value is sanitized before being saved.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_email_templates`
+
+_Enforced by `TemplatePolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`, required)
@@ -580,6 +660,14 @@ Example:
 **PUT Update Template**
 
 Update an existing email template. The template data should be passed as a nested `template` object. If a custom footer is enabled, it must include `##crm.manage_subscription_url##` or `##crm.unsubscribe_url##` for compliance.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_email_templates`
+
+_Enforced by `TemplatePolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -670,5 +758,86 @@ Example:
 ```
 
 
+
+---
+
+## POST `/templates/built-in-template`
+
+**POST Fetch A Built-In Template**
+
+Download one of the hosted starter templates and return its content **without** saving it as a local template. Use it to preview or insert a design; persist it afterwards with `POST /templates` if the user keeps it.
+
+`file` is validated against an allowlist before any request is made: the URL must be **HTTPS** and its host must be `fluentcrm.com`, `wpmanageninja.com` (with or without `www.`), or the host named by the `FC_TEMPLATE_API_DOMAIN` constant. Anything else is rejected outright — this endpoint cannot be used to fetch arbitrary URLs.
+
+The outbound request enforces TLS verification, a 20-second timeout, **no redirects**, and a 1 MB response cap. The payload must declare `is_fc_template: "yes"` and carry usable content, or the call fails.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_email_templates`
+
+_Enforced by `TemplatePolicy::getBuiltInTemplate()`._
+
+<!-- /fc:access -->
+
+**Auth:** ApplicationPasswords
+
+**Request body** (`application/json`, required)
+
+- `file` (string) **required** _(format: uri)_ — HTTPS URL of the template JSON on an allowlisted host.
+
+Example:
+
+```json
+{
+  "file": "https://fluentcrm.com/templates/newsletter-basic.json"
+}
+```
+
+
+**Responses**
+
+- **200** — The downloaded template, not yet saved.
+
+  Schema (`application/json`):
+
+  - `message` (string) — Confirmation message.
+  - `template` (object)
+    - `post_title` (string) — Template name.
+    - `post_content` (string) — Email body markup.
+    - `email_subject` (string) — Default subject line.
+    - `design_template` (string) _(enum: `simple`, `raw_classic`, `classic`, `visual_builder`)_ — Design engine the template targets.
+    - `_visual_builder_design` (object)
+      - _(object)_
+
+  Example:
+
+```json
+{
+  "message": "Template has been inserted",
+  "template": {
+    "post_title": "Basic Newsletter",
+    "post_content": "<!-- wp:paragraph --><p>Hello {{contact.first_name}}</p><!-- /wp:paragraph -->",
+    "email_subject": "Your monthly update",
+    "design_template": "simple"
+  }
+}
+```
+
+
+- **401** — Not authenticated — missing or invalid credentials.
+
+  Schema (`application/json`):
+
+  - _$ref: Error_
+- **403** — Authenticated but the user lacks the capability this route requires.
+
+  Schema (`application/json`):
+
+  - _$ref: Error_
+- **422** — `file` was missing, not HTTPS, or not on an allowlisted host; the download failed; or the payload was not a valid FluentCRM template.
+
+  Schema (`application/json`):
+
+  - _$ref: Error_
 
 ---
