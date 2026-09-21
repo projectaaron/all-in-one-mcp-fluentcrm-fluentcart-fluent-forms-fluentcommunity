@@ -12,6 +12,14 @@ _Generated from the FluentCRM OpenAPI specs (developers.fluentcrm.com)._
 
 Retrieve configuration details for a specific import driver. For the `users` driver, returns available WordPress roles and configuration fields. When called with `summary=true`, returns a preview of matching users. For other drivers, the response is determined by the driver's filter hook.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contacts`
+
+_Enforced by `ImportUserPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -88,6 +96,14 @@ Retrieve configuration details for a specific import driver. For the `users` dri
 
 Retrieve the list of available import providers (drivers). Default drivers include CSV File and WordPress Users. Additional drivers may be available based on installed plugins (e.g., FluentCart, LifterLMS, LearnDash).
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contacts`
+
+_Enforced by `ImportUserPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Responses**
@@ -127,6 +143,14 @@ Retrieve the list of available import providers (drivers). Default drivers inclu
 **POST Import Contacts from CSV**
 
 Import contacts from a previously uploaded CSV file. Processes records in batches (default 100 per request). Supports pagination for large files -- call repeatedly with incrementing `importing_page` until `has_more` is `false`. Assigns tags, lists, and status to imported contacts.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contacts`
+
+_Enforced by `ImportUserPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -253,6 +277,14 @@ Example:
 
 Execute the import process for a specific driver. For the `users` driver, imports WordPress users as contacts in batches. For other drivers, the import behavior is determined by the driver's filter hook. Call repeatedly with incrementing `importing_page` until `has_more` is `false`.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contacts`
+
+_Enforced by `ImportUserPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -347,6 +379,14 @@ Example:
 
 Import WordPress users as FluentCRM contacts. Processes users in batches (default 100 per request). Call repeatedly with incrementing `page` until `has_more` is `false`. Assigns tags, lists, and status to imported contacts.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contacts`
+
+_Enforced by `ImportUserPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Request body** (`application/json`, required)
@@ -420,6 +460,14 @@ Example:
 **POST Upload CSV for Import**
 
 Upload a CSV file for contact or company import. Returns the parsed CSV headers, mappable subscriber/company fields, and auto-matched column mappings. The uploaded file is stored temporarily for the subsequent import step.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_contacts`
+
+_Enforced by `ImportUserPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 

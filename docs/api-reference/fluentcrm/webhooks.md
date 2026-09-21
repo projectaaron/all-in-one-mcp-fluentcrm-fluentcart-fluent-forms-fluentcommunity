@@ -1,6 +1,6 @@
 # FluentCRM API — Incoming Webhooks
 
-5 endpoints. Base URL: `https://{website}/wp-json/fluent-crm/v2`. See the [FluentCRM overview](../fluentcrm.md) for auth and the full group list.
+4 endpoints. Base URL: `https://{website}/wp-json/fluent-crm/v2`. See the [FluentCRM overview](../fluentcrm.md) for auth and the full group list.
 
 _Generated from the FluentCRM OpenAPI specs (developers.fluentcrm.com)._
 
@@ -11,6 +11,14 @@ _Generated from the FluentCRM OpenAPI specs (developers.fluentcrm.com)._
 **POST Create Webhook**
 
 Create a new webhook for receiving contact data. Supports both standard contact webhooks and SMS webhooks (requires Fluent Campaign Pro). For standard webhooks, `name` and `status` are required. For SMS webhooks, set `type` to `sms_webhook` and provide `sms_provider`. A unique URL is generated automatically.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `WebhookPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -133,6 +141,14 @@ Example:
 
 Permanently delete a webhook by ID. This removes the webhook and its configuration. The webhook URL will no longer accept incoming data.
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `WebhookPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Path parameters**
@@ -176,61 +192,19 @@ Permanently delete a webhook by ID. This removes the webhook and its configurati
 
 ---
 
-## GET `/webhooks/sms`
-
-**GET List SMS Webhooks**
-
-Retrieve all SMS-type webhooks. Returns only webhooks with `object_type` starting with `webhook_` (i.e., SMS provider webhooks). Requires Fluent Campaign Pro with the SMS module enabled.
-
-**Auth:** ApplicationPasswords
-
-**Responses**
-
-- **200** — List of SMS webhooks.
-
-  Schema (`application/json`):
-
-  - `sms_webhooks` (array<object>) — Array of SMS webhook objects.
-    - `id` (integer) — Unique identifier.
-    - `key` (string) — UUID key used in the webhook URL.
-    - `object_type` (string) — Type discriminator, e.g., `webhook_twilio`.
-    - `value` (object) — SMS webhook configuration data.
-      - `name` (string) — Human-readable webhook name.
-      - `sms_provider` (string) — SMS provider identifier.
-      - `object_type` (string) — Echoed object_type from the parent record.
-      - `url` (string) — The SMS webhook endpoint URL.
-  - `message` (string) — Success message.
-
-  Example:
-
-```json
-{
-  "sms_webhooks": [
-    {
-      "id": 5,
-      "key": "f1e2d3c4-b5a6-7890-abcd-ef1234567890",
-      "object_type": "webhook_twilio",
-      "value": {
-        "name": "Twilio SMS Webhook",
-        "sms_provider": "twilio",
-        "object_type": "webhook_twilio",
-        "url": "https://example.com/?fluentcrm=1&fc_s_webhook=twilio&hash=f1e2d3c4-b5a6-7890-abcd-ef1234567890"
-      }
-    }
-  ],
-  "message": "SMS webhooks retrieved successfully"
-}
-```
-
-
-
----
-
 ## GET `/webhooks`
 
 **GET List Webhooks**
 
 Retrieve all webhooks along with available contact fields, custom fields, lists, and tags. Optionally filter webhooks by name using a search query. If the Companies module is enabled, company data is also included.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `WebhookPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 
@@ -337,6 +311,14 @@ Retrieve all webhooks along with available contact fields, custom fields, lists,
 **PUT Update Webhook**
 
 Update an existing webhook's configuration. SMS webhooks cannot be edited; they must be deleted and recreated instead. The webhook's `id` and `url` fields are immutable and cannot be changed through this endpoint.
+
+<!-- fc:access -->
+
+**Required capability:** `fcrm_manage_settings`
+
+_Enforced by `WebhookPolicy::verifyRequest()`, the policy default for this route group._
+
+<!-- /fc:access -->
 
 **Auth:** ApplicationPasswords
 

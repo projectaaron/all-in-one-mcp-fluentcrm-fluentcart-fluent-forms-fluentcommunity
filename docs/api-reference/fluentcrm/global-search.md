@@ -12,6 +12,14 @@ _Generated from the FluentCRM OpenAPI specs (developers.fluentcrm.com)._
 
 Search across subscribers, campaigns, funnels, and companies simultaneously. Results are permission-scoped: only entities the current user has access to are returned. Returns up to 100 results per category by default (filterable via hook).
 
+<!-- fc:access -->
+
+**Required capability:** `fcrm_read_contacts` or `fcrm_read_emails` or `fcrm_read_funnels` or `fcrm_manage_contact_cats` — which one applies depends on the action being performed.
+
+No route policy; each result section is filtered by its own capability inside the controller.
+
+<!-- /fc:access -->
+
 **Auth:** ApplicationPasswords
 
 **Query parameters**
