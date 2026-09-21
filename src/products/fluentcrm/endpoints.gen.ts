@@ -219,6 +219,13 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "path": "/subscribers/subscribers-property",
       "summary": "Update Contacts Property",
       "destructive": false
+    },
+    "bulk_delete_contact_notes": {
+      "op": "contacts/bulk-delete-contact-notes",
+      "method": "POST",
+      "path": "/subscribers/{id}/notes/bulk-delete",
+      "summary": "Bulk Delete Contact Notes",
+      "destructive": true
     }
   },
   "crm_lists": {
@@ -573,6 +580,20 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "PUT",
       "path": "/companies/{id}/notes/{note_id}",
       "summary": "Update Company Note",
+      "destructive": false
+    },
+    "bulk_delete_company_notes": {
+      "op": "companies/bulk-delete-company-notes",
+      "method": "POST",
+      "path": "/companies/{id}/notes/bulk-delete",
+      "summary": "Bulk Delete Company Notes",
+      "destructive": true
+    },
+    "update_company_custom_field_group_name": {
+      "op": "companies/update-company-custom-field-group-name",
+      "method": "PUT",
+      "path": "/companies/custom-fields/update_group_name",
+      "summary": "Rename Company Custom Field Group",
       "destructive": false
     }
   },
@@ -1091,6 +1112,13 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
         "email"
       ],
       "bodyNote": "Body shape: {\"email\": {\"email_subject\", \"email_body\", \"email_pre_header\"?, \"design_template\"?, \"template_id\"?, \"settings\": {\"timings\": {\"delay\", \"delay_unit\", \"is_anytime\"}}}} — every field nests under the top-level \"email\" object (the plugin silently ignores flat body fields). The row title is set from email_subject. TIMING SEMANTICS: settings.timings.delay × delay_unit is recomputed into the row's delay column (seconds) on save, and that delay is an ABSOLUTE offset from the contact's enrollment — NOT relative to the previous email. delay 172800 sends 2 days after enrollment regardless of what comes before; emails sharing the same delay send together as one group. sending_time (with is_anytime:\"no\") is a [start,end] time-of-day window applied on the target day; it is silently ignored while is_anytime is \"yes\". Preview the computed timetable with crm_sequences_preview_schedule and sanity-check with crm_sequences_validate."
+    },
+    "update_sequence_email_delay": {
+      "op": "sequences/update-sequence-email-delay",
+      "method": "PATCH",
+      "path": "/sequences/{id}/email/{email_id}/delay",
+      "summary": "Update Sequence Email Delay",
+      "destructive": false
     }
   },
   "crm_automations": {
@@ -1310,6 +1338,13 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "path": "/funnels/funnel/{id}/title",
       "summary": "Update Funnel Title",
       "destructive": false
+    },
+    "update_funnel_sticky_note": {
+      "op": "funnels/update-funnel-sticky-note",
+      "method": "PUT",
+      "path": "/funnels/{id}/sticky-note",
+      "summary": "Update Automation Sticky Note",
+      "destructive": false
     }
   },
   "crm_templates": {
@@ -1389,6 +1424,13 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "path": "/templates/{id}",
       "summary": "Update Template",
       "destructive": false
+    },
+    "get_built_in_template": {
+      "op": "templates/get-built-in-template",
+      "method": "POST",
+      "path": "/templates/built-in-template",
+      "summary": "Fetch A Built-In Template",
+      "destructive": false
     }
   },
   "crm_forms": {
@@ -1442,13 +1484,6 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "path": "/webhooks/{id}",
       "summary": "Delete Webhook",
       "destructive": true
-    },
-    "list_sms_webhooks": {
-      "op": "webhooks/list-sms-webhooks",
-      "method": "GET",
-      "path": "/webhooks/sms",
-      "summary": "List SMS Webhooks",
-      "destructive": false
     },
     "list_webhooks": {
       "op": "webhooks/list-webhooks",
@@ -1670,6 +1705,13 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "path": "/sms/{id}/update-labels",
       "summary": "Update SMS Campaign Labels",
       "destructive": false
+    },
+    "unschedule_sms_campaign_legacy": {
+      "op": "sms/unschedule-sms-campaign-legacy",
+      "method": "POST",
+      "path": "/sms/campaigns/{id}/un-schedule",
+      "summary": "Unschedule SMS Campaign (Legacy Path)",
+      "destructive": false
     }
   },
   "crm_reports": {
@@ -1776,6 +1818,83 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "GET",
       "path": "/reports/ping",
       "summary": "Ping Report",
+      "destructive": false
+    },
+    "get_automation_reports": {
+      "op": "reports/get-automation-reports",
+      "method": "GET",
+      "path": "/reports/automations",
+      "summary": "Automation Reports",
+      "destructive": false
+    },
+    "get_automation_step_report": {
+      "op": "reports/get-automation-step-report",
+      "method": "GET",
+      "path": "/reports/automations/{id}/steps",
+      "summary": "Automation Step Report",
+      "destructive": false
+    },
+    "get_campaign_options": {
+      "op": "reports/get-campaign-options",
+      "method": "GET",
+      "path": "/reports/campaign-options",
+      "summary": "Campaign Options",
+      "destructive": false
+    },
+    "get_campaigns_list_report": {
+      "op": "reports/get-campaigns-list-report",
+      "method": "GET",
+      "path": "/reports/campaigns-list",
+      "summary": "Campaigns List Report",
+      "destructive": false
+    },
+    "get_contacts_by_country": {
+      "op": "reports/get-contacts-by-country",
+      "method": "GET",
+      "path": "/reports/contacts-by-country",
+      "summary": "Contacts By Country",
+      "destructive": false
+    },
+    "get_contacts_by_lists": {
+      "op": "reports/get-contacts-by-lists",
+      "method": "GET",
+      "path": "/reports/contacts-by-lists",
+      "summary": "Contacts By Lists",
+      "destructive": false
+    },
+    "get_contacts_by_status": {
+      "op": "reports/get-contacts-by-status",
+      "method": "GET",
+      "path": "/reports/contacts-by-status",
+      "summary": "Contacts By Status",
+      "destructive": false
+    },
+    "get_contacts_by_tags": {
+      "op": "reports/get-contacts-by-tags",
+      "method": "GET",
+      "path": "/reports/contacts-by-tags",
+      "summary": "Contacts By Tags",
+      "destructive": false
+    },
+    "get_email_unsub_stats": {
+      "op": "reports/get-email-unsub-stats",
+      "method": "GET",
+      "path": "/reports/email-unsubs",
+      "summary": "Email Unsubscribe Stats",
+      "destructive": false
+    },
+    "get_recent_tags": {
+      "op": "reports/get-recent-tags",
+      "method": "GET",
+      "path": "/reports/recent-tags",
+      "summary": "Recently Created Tags",
+      "destructive": false
+    },
+    "get_top_campaigns": {
+      "op": "reports/get-top-campaigns",
+      "method": "GET",
+      "path": "/reports/top-campaigns",
+      "summary": "Top Campaigns",
       "destructive": false
     },
     "global_search": {
@@ -1995,7 +2114,7 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
     },
     "reset_system_logs": {
       "op": "settings/reset-system-logs",
-      "method": "GET",
+      "method": "DELETE",
       "path": "/setting/system-logs/reset",
       "summary": "Reset System Logs",
       "destructive": true
@@ -2083,6 +2202,58 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "path": "/setting/experiments",
       "summary": "Update Experimental Settings",
       "destructive": false
+    },
+    "export_system_logs": {
+      "op": "settings/export-system-logs",
+      "method": "GET",
+      "path": "/setting/system-logs/export",
+      "summary": "Export System Logs (CSV)",
+      "destructive": false
+    },
+    "get_db_index_health": {
+      "op": "settings/get-db-index-health",
+      "method": "GET",
+      "path": "/setting/db-index-health",
+      "summary": "Database Index Health",
+      "destructive": false
+    },
+    "repair_db_indexes": {
+      "op": "settings/repair-db-indexes",
+      "method": "POST",
+      "path": "/setting/db-index-health/repair",
+      "summary": "Repair Database Indexes",
+      "destructive": true,
+      "bodyNote": "Rewrites database indexes on the FluentCRM tables. Run get_db_index_health first; requires confirm:true."
+    },
+    "get_mcp_config_snippet": {
+      "op": "mcp/get-mcp-config-snippet",
+      "method": "GET",
+      "path": "/mcp/config-snippet",
+      "summary": "MCP Client Config Snippet",
+      "destructive": false
+    },
+    "get_mcp_status": {
+      "op": "mcp/get-mcp-status",
+      "method": "GET",
+      "path": "/mcp/status",
+      "summary": "MCP Status",
+      "destructive": false
+    },
+    "install_mcp_adapter": {
+      "op": "mcp/install-mcp-adapter",
+      "method": "POST",
+      "path": "/mcp/install-adapter",
+      "summary": "Install MCP Adapter",
+      "destructive": true,
+      "bodyNote": "Installs and activates the WordPress MCP Adapter plugin on the site (adds and runs new code). Requires confirm:true."
+    },
+    "toggle_mcp": {
+      "op": "mcp/toggle-mcp",
+      "method": "POST",
+      "path": "/mcp/toggle",
+      "summary": "Toggle MCP Tools",
+      "destructive": true,
+      "bodyNote": "Enables/disables FluentCRM's own MCP tools on the site — a second AI control surface. Requires confirm:true."
     }
   },
   "crm_settings_pro": {
@@ -2281,16 +2452,164 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
     },
     "handle_bounce": {
       "op": "public-bounce/handle-bounce",
-      "method": "POST",
+      "method": "GET",
       "path": "/public/bounce_handler/{service_name}/{security_code}",
-      "summary": "Handle Bounce",
+      "summary": "Handle Bounce Webhook",
       "destructive": false
     },
     "handle_bounce_with_handle": {
       "op": "public-bounce/handle-bounce-with-handle",
-      "method": "POST",
+      "method": "GET",
       "path": "/public/bounce_handler/{service_name}/handle/{security_code}",
-      "summary": "Handle Bounce (with /handle/ path)",
+      "summary": "Handle Bounce Webhook",
+      "destructive": false
+    },
+    "export_contacts_page": {
+      "op": "export/export-contacts-page",
+      "method": "POST",
+      "path": "/subscribers-export",
+      "summary": "Fetch Contact Export Page",
+      "destructive": false,
+      "toolName": "crm_utilities_export_contacts",
+      "bodyNote": "Returns one page of the contact export (paged by page/per_page in the body; filters mirror crm_contacts_list). Loop pages to export everything."
+    },
+    "export_contacts_page_get": {
+      "op": "export/export-contacts-page-get",
+      "method": "GET",
+      "path": "/subscribers-export",
+      "summary": "Fetch Contact Export Page",
+      "destructive": false,
+      "toolName": "crm_utilities_export_contacts_get"
+    }
+  },
+  "crm_ai": {
+    "generate_ai_content": {
+      "op": "ai/generate-ai-content",
+      "method": "POST",
+      "path": "/ai/generate",
+      "summary": "Rewrite Or Generate Text",
+      "destructive": false
+    },
+    "generate_ai_email_body": {
+      "op": "ai/generate-ai-email-body",
+      "method": "POST",
+      "path": "/ai/generate-email-body",
+      "summary": "Generate Email Body",
+      "destructive": false
+    },
+    "get_ai_contact_summary": {
+      "op": "ai/get-ai-contact-summary",
+      "method": "POST",
+      "path": "/ai/contact-summary",
+      "summary": "Get Or Generate Contact Summary",
+      "destructive": false
+    },
+    "get_ai_models": {
+      "op": "ai/get-ai-models",
+      "method": "POST",
+      "path": "/ai/models",
+      "summary": "List Models For Provider",
+      "destructive": false
+    },
+    "get_ai_settings": {
+      "op": "ai/get-ai-settings",
+      "method": "GET",
+      "path": "/ai/settings",
+      "summary": "AI Settings",
+      "destructive": false
+    },
+    "save_ai_settings": {
+      "op": "ai/save-ai-settings",
+      "method": "POST",
+      "path": "/ai/settings",
+      "summary": "Save AI Settings",
+      "destructive": false
+    },
+    "test_ai_connection": {
+      "op": "ai/test-ai-connection",
+      "method": "POST",
+      "path": "/ai/test",
+      "summary": "Test AI Connection",
+      "destructive": false
+    }
+  },
+  "crm_email_patterns": {
+    "bulk_action_email_patterns": {
+      "op": "email-patterns/bulk-action-email-patterns",
+      "method": "POST",
+      "path": "/email-patterns/do-bulk-action",
+      "summary": "Bulk Delete Email Patterns",
+      "destructive": true,
+      "bodyNote": "Bulk delete of email patterns by id list. Requires confirm:true."
+    },
+    "create_email_pattern": {
+      "op": "email-patterns/create-email-pattern",
+      "method": "POST",
+      "path": "/email-patterns",
+      "summary": "Create Email Pattern",
+      "destructive": false
+    },
+    "create_email_pattern_category": {
+      "op": "email-patterns/create-email-pattern-category",
+      "method": "POST",
+      "path": "/email-patterns/categories",
+      "summary": "Create Pattern Category",
+      "destructive": false
+    },
+    "create_email_pattern_wp_format": {
+      "op": "email-patterns/create-email-pattern-wp-format",
+      "method": "POST",
+      "path": "/email-patterns/wp-format",
+      "summary": "Create Pattern From wp_block Payload",
+      "destructive": false
+    },
+    "delete_email_pattern": {
+      "op": "email-patterns/delete-email-pattern",
+      "method": "DELETE",
+      "path": "/email-patterns/{id}",
+      "summary": "Delete Email Pattern",
+      "destructive": true
+    },
+    "delete_email_pattern_category": {
+      "op": "email-patterns/delete-email-pattern-category",
+      "method": "DELETE",
+      "path": "/email-patterns/categories/{id}",
+      "summary": "Delete Pattern Category",
+      "destructive": true
+    },
+    "get_email_pattern": {
+      "op": "email-patterns/get-email-pattern",
+      "method": "GET",
+      "path": "/email-patterns/{id}",
+      "summary": "Single Email Pattern",
+      "destructive": false
+    },
+    "list_email_pattern_categories": {
+      "op": "email-patterns/list-email-pattern-categories",
+      "method": "GET",
+      "path": "/email-patterns/categories",
+      "summary": "List Pattern Categories",
+      "destructive": false
+    },
+    "list_email_patterns": {
+      "op": "email-patterns/list-email-patterns",
+      "method": "GET",
+      "path": "/email-patterns",
+      "summary": "List Email Patterns",
+      "destructive": false
+    },
+    "list_email_patterns_wp_format": {
+      "op": "email-patterns/list-email-patterns-wp-format",
+      "method": "GET",
+      "path": "/email-patterns/wp-format",
+      "summary": "List Patterns In wp_block Format",
+      "destructive": false
+    },
+    "update_email_pattern": {
+      "op": "email-patterns/update-email-pattern",
+      "method": "PUT",
+      "path": "/email-patterns/{id}",
+      "summary": "Update Email Pattern",
       "destructive": false
     }
   }
@@ -2359,7 +2678,14 @@ export const TOOL_META: Record<string, { description: string; note?: string; ide
     "description": "Read or update FluentCRM Pro settings such as the plugin license and Pro-only features."
   },
   "crm_utilities": {
-    "description": "Administrative utilities: import contacts from CSV or WordPress users, migrate from other tools, list WordPress users and roles, browse in-app docs, and receive bounce webhooks.",
+    "description": "Administrative utilities: import contacts from CSV or WordPress users, export contacts, migrate from other tools, list WordPress users and roles, browse in-app docs, and receive bounce webhooks.",
     "note": "The two handle_bounce actions are webhook receivers meant to be called by email services, not by API clients."
+  },
+  "crm_ai": {
+    "description": "FluentCRM's AI assistant: generate or rewrite text and email bodies, summarize a contact, list provider models, and manage the AI provider settings and connection test.",
+    "note": "Generation calls are billed by your configured AI provider. save_settings stores the provider API key on the site."
+  },
+  "crm_email_patterns": {
+    "description": "Reusable email content patterns and their categories: list, create (incl. from wp_block payloads), update, delete, and bulk actions."
   }
 };

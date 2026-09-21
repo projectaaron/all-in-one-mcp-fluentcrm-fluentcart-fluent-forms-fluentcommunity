@@ -9,9 +9,9 @@ const spec = (product: string, tool: string) => {
 
 /** Regressions from the final adversarial verification — keep these pinned. */
 describe('safety regressions', () => {
-  it('reset_system_logs (a GET that deletes all logs) is confirm-gated', () => {
+  it('reset_system_logs (deletes all logs; was a GET upstream until 2026-09) is confirm-gated', () => {
     const def = spec('fluentcrm', 'crm_settings').actions.reset_system_logs;
-    expect(def.method).toBe('GET');
+    expect(['GET', 'DELETE']).toContain(def.method);
     expect(def.destructive).toBe(true);
   });
 
