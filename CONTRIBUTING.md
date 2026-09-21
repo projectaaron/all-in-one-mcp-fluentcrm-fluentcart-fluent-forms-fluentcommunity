@@ -37,13 +37,16 @@ stay in sync, and add a line to `CHANGELOG.md` under the next version.
    end-user download `all-in-one-mcp-for-fluent-suite-1.2.3.zip` (the
    `.mcpb` plus `packaging/readme.txt` and the license) and
    `fluentmcp-1.2.3-source.zip`, and attaches all three to a GitHub release.
-4. The same run publishes the download ZIP to Freemius product 39849 as a
-   released version (`scripts/publish-freemius.mjs`) when the repository
-   secrets `FREEMIUS_DEV_ID`, `FREEMIUS_DEV_PUBLIC_KEY` and
-   `FREEMIUS_DEV_SECRET_KEY` are set (Freemius dashboard → My Profile →
-   developer keys). Without them the step is skipped with a notice and the
-   ZIP can be uploaded in the Freemius dashboard by hand. A version that
-   already exists on Freemius is never re-uploaded.
+4. Every release also uploads two fixed-name copies,
+   `all-in-one-mcp-for-fluent-suite-latest.zip` and `fluentmcp-latest.mcpb`,
+   so these URLs always serve the newest version:
+   `https://github.com/projectaaron/fluentMCP/releases/latest/download/all-in-one-mcp-for-fluent-suite-latest.zip`
+   and `.../fluentmcp-latest.mcpb`. The Freemius product (39849, type
+   "Apps & Software") hands out the first one through its **Download Links**
+   setting; Freemius has no version upload for app products, so nothing on
+   the Freemius side changes per release. `scripts/publish-freemius.mjs` and
+   the **Publish to Freemius** workflow exist for the day Freemius adds
+   version uploads for apps; today they report the stable link and exit.
 
 ## Code of conduct
 
