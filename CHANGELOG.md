@@ -5,7 +5,7 @@
 **Upstream API refresh: FluentCRM 319 → 363 endpoints, FluentCart 381 → 436.**
 The scheduled docs refresh (PR #12) recorded both vendors' API growth since
 July; this release wires it into tools. Totals: 1,191 → 1,290 endpoint tools
-(1,298 registered), 68 → 72 areas, 184 → 203 confirm-gated operations.
+(1,298 registered), 68 → 73 areas, 184 → 203 confirm-gated operations.
 
 FluentCRM (+45, −1):
 - New areas `crm_ai` (generate/rewrite text and email bodies, contact

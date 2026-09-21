@@ -272,7 +272,7 @@ human-in-the-loop is your MCP client's approval prompt.
 
 ## The products and their tools
 
-72 areas. Every individual tool is one line in
+73 areas. Every individual tool is one line in
 [`docs/TOOL_MAP.md`](docs/TOOL_MAP.md); area-level examples in
 [`docs/TOOL_CATALOG.md`](docs/TOOL_CATALOG.md); full request/response
 schemas in [`docs/api-reference/`](docs/api-reference/).
