@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.1.1 — 2026-09-21
+
+- **Renamed** to **All-In-One MCP for Fluent Suite**. Human-facing names only:
+  the package id `fluentmcp`, the `.mcpb` filename, the binaries, the
+  `FLUENT_*` environment variables, the Worker name and every tool name are
+  unchanged, so existing installs and configs keep working.
+- **WPManageNinja's API documentation is no longer mirrored.** The 56
+  per-endpoint schema files under `docs/api-reference/fluentcrm/` and
+  `docs/api-reference/fluentcart/` are removed; the generator now writes only
+  the endpoint inventory (`endpoints.json`) and an overview that links to
+  each product's official developer docs and to
+  <https://github.com/WPManageNinja>. The README gains an "API references"
+  section. Tool descriptions and error hints point at the vendor docs.
+
 ## 1.1.0 — 2026-09-21
 
 **Upstream API refresh: FluentCRM 319 → 363 endpoints, FluentCart 381 → 436.**

@@ -63,5 +63,5 @@ jobs:
           gh release create "v${VERSION}" --target "$GITHUB_SHA" \
             "fluentmcp-${VERSION}.mcpb" \
             "fluentmcp-${VERSION}-source.zip" \
-            --title "fluentMCP ${VERSION}" \
+            --title "All-In-One MCP for Fluent Suite ${VERSION}" \
             --notes "See CHANGELOG.md for what changed. Download the .mcpb for Claude Desktop, or the source bundle for config-file and remote installs."

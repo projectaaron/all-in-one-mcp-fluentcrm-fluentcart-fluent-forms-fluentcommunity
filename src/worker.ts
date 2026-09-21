@@ -1,4 +1,4 @@
-/** fluentMCP — Cloudflare Workers entry point (MCP Streamable HTTP).
+/** All-In-One MCP for Fluent Suite — Cloudflare Workers entry point (MCP Streamable HTTP).
  *
  *  Same endpoints and auth as the Node remote server (src/remote.ts):
  *    POST /mcp/<token>   token in the URL path (claude.ai connector form)

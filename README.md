@@ -1,4 +1,4 @@
-# fluentMCP
+# All-In-One MCP for Fluent Suite
 
 [![Sponsored by upfluent.io](https://img.shields.io/badge/sponsored%20by-upfluent.io-2563eb)](https://upfluent.io)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
@@ -8,7 +8,7 @@
 the forms, the community — through one safe, complete
 [MCP](https://modelcontextprotocol.io) server.
 
-fluentMCP connects Claude (or any MCP client) to the WPManageNinja plugin
+All-In-One MCP for Fluent Suite connects Claude (or any MCP client) to the WPManageNinja plugin
 suite on your WordPress site: **[FluentCRM](https://fluentcrm.com/?ref=4618)**,
 **[FluentCart](https://fluentcart.com/?by=272)**,
 **[Fluent Forms](https://fluentforms.com/?ref=4618)**,
@@ -36,7 +36,7 @@ Developers: clone this repo. Everyone else: grab the one-click Claude Desktop
 extension from [upfluent.io](https://upfluent.io) — it's the same code,
 already built.
 
-**Not affiliated with WPManageNinja.** fluentMCP and upfluent.io are an
+**Not affiliated with WPManageNinja.** All-In-One MCP for Fluent Suite and upfluent.io are an
 independent community project, not associated with, endorsed by, or
 supported by WPManageNinja. It is offered free and in good faith to help
 Fluent users get more from the plugins they already own. You use it at your
@@ -54,6 +54,7 @@ see [How this differs](#how-this-differs-from-fluenthubs-mcp).
 - [How the tools work](#how-the-tools-work)
 - [Safety](#safety)
 - [The products and their tools](#the-products-and-their-tools)
+- [API references](#api-references)
 - [Troubleshooting](#troubleshooting)
 - [Security model](#security-model)
 - [Development](#development)
@@ -223,7 +224,7 @@ reaches every session automatically through the MCP `instructions` field.
 This is the part that makes it usable for real operations rather than demos.
 
 **Writes describe what they did.** The Fluent plugins treat updates as full
-replaces — omit a field and it's cleared, with a 200 either way. fluentMCP
+replaces — omit a field and it's cleared, with a 200 either way. All-In-One MCP for Fluent Suite
 closes that at the executor:
 
 - **Merge mode (default)** on every update that has a matching read
@@ -274,8 +275,10 @@ human-in-the-loop is your MCP client's approval prompt.
 
 73 areas. Every individual tool is one line in
 [`docs/TOOL_MAP.md`](docs/TOOL_MAP.md); area-level examples in
-[`docs/TOOL_CATALOG.md`](docs/TOOL_CATALOG.md); full request/response
-schemas in [`docs/api-reference/`](docs/api-reference/).
+[`docs/TOOL_CATALOG.md`](docs/TOOL_CATALOG.md); the endpoint inventory per
+product in [`docs/api-reference/`](docs/api-reference/). Request/response
+schemas are WPManageNinja's own documentation and are not mirrored here —
+see [API references](#api-references).
 
 ### Built-in
 
@@ -357,14 +360,31 @@ in one call with per-row verification.
 
 ---
 
+## API references
+
+This project passes requests through to REST APIs that WPManageNinja
+documents publicly. The schemas live with them, not here:
+
+| Product | Developer docs |
+|---------|----------------|
+| FluentCRM | [developers.fluentcrm.com/rest-api](https://developers.fluentcrm.com/rest-api/) · [GitHub](https://github.com/WPManageNinja/fluentcrm-api-doc) |
+| FluentCart | [dev.fluentcart.com/restapi](https://dev.fluentcart.com/restapi/) · [GitHub](https://github.com/WPManageNinja/fluent-cart-dev-docs) |
+| Fluent Forms | [developers.fluentforms.com/api/endpoints](https://developers.fluentforms.com/api/endpoints/) |
+| FluentCommunity | [GitHub: fluent-community-developer-docs](https://github.com/WPManageNinja/fluent-community-developer-docs) |
+| WP Social Ninja | [GitHub: wpsocialninja-docs](https://github.com/WPManageNinja/wpsocialninja-docs) |
+
+All of WPManageNinja's public repositories: <https://github.com/WPManageNinja>.
+`docs/api-reference/<product>.md` in this repo is an inventory (method, path,
+one-line summary per endpoint) that the tool surface is generated from.
+
 ## How this differs from FluentHub's MCP
 
 WPManageNinja's own [FluentHub MCP](https://wpmanageninja.com/fluenthub-mcp/)
 is a WordPress plugin exposing a curated set of tools (around 20 per
-product). fluentMCP runs outside WordPress and covers the **entire** REST
+product). All-In-One MCP for Fluent Suite runs outside WordPress and covers the **entire** REST
 surface of each product — 1,290 operations — with the write-safety machinery
 above. Use FluentHub if you want the vendor-supported basics with no extra
-install; use fluentMCP if you want everything the admin UI can do, with
+install; use All-In-One MCP for Fluent Suite if you want everything the admin UI can do, with
 merge/verify/dry-run guarantees and a per-operation safety policy you
 control.
 
@@ -422,7 +442,7 @@ Contributing: [`CONTRIBUTING.md`](CONTRIBUTING.md)
 
 ## Support this project
 
-fluentMCP is free and MIT-licensed, and will stay that way. Development is
+All-In-One MCP for Fluent Suite is free and MIT-licensed, and will stay that way. Development is
 sponsored by **[upfluent.io](https://upfluent.io)**, which also hosts the
 ready-built desktop extension. If the project saves you time, three things
 help keep it maintained:
@@ -447,7 +467,7 @@ help keep it maintained:
 
 ## Disclaimer
 
-**Independent project.** fluentMCP and [upfluent.io](https://upfluent.io)
+**Independent project.** All-In-One MCP for Fluent Suite and [upfluent.io](https://upfluent.io)
 are not associated with, endorsed by, sponsored by, or supported by
 WPManageNinja or any of its products. FluentCRM, FluentCart, Fluent Forms,
 FluentCommunity, WP Social Ninja, FluentHub and the other WPManageNinja

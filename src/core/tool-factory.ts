@@ -122,7 +122,7 @@ export function buildInputShape(spec: ToolSpec) {
     body: z
       .record(z.unknown())
       .optional()
-      .describe('JSON request body for create/update actions, e.g. {"title": "Spring sale"} — schemas in docs/api-reference/'),
+      .describe('JSON request body for create/update actions, e.g. {"title": "Spring sale"} — schemas are in the product\'s official developer docs (linked from docs/api-reference/<product>.md)'),
     page: z.number().int().min(1).optional().describe('Page number for list actions (default 1)'),
     per_page: z.number().int().min(1).max(100).optional().describe('Items per page for list actions (default 20)'),
     fields: z.array(z.string()).optional().describe('Return only these fields per record, e.g. ["id","status","total_amount"]'),
@@ -450,7 +450,7 @@ export async function executeAction(
     if (verification?.rejected) {
       return err(
         `${label} returned HTTP ${response.status} but the record did not change — none of your supplied fields landed. ` +
-          `The endpoint most likely ignored the request body. ${def.bodyNote ?? 'Check the expected body shape in docs/api-reference/.'}`
+          `The endpoint most likely ignored the request body. ${def.bodyNote ?? 'Check the expected body shape in the product\'s official developer docs (linked from docs/api-reference/<product>.md).'}`
       );
     }
 

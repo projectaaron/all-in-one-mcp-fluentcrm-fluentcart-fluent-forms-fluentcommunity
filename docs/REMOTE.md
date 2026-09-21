@@ -1,4 +1,4 @@
-# Running fluentMCP as a remote connector
+# Running All-In-One MCP for Fluent Suite as a remote connector
 
 The remote entry point (`dist/remote.js`) speaks MCP **Streamable HTTP**, so
 you can add it to claude.ai under **Settings → Connectors → Add custom

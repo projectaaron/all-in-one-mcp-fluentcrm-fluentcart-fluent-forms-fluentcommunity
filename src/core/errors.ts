@@ -36,7 +36,7 @@ function hintFor(status: number, productTitle: string, envPrefix: string): strin
       return `Could not reach the site. Check FLUENT_SITE_URL (is it the WordPress site root, reachable from this machine?)`;
     case 400:
     case 422:
-      return `The request body or parameters were rejected — compare against the endpoint schema in docs/api-reference/`;
+      return `The request body or parameters were rejected — compare against the endpoint schema in the product's official developer docs (linked from docs/api-reference/<product>.md)`;
     case 401:
       return `Authentication failed — check FLUENT_API_USERNAME / FLUENT_API_PASSWORD (or the ${envPrefix}_API_* overrides) and that the Application Password hasn't been revoked (create one under WP Admin → Users → your user → Application Passwords)`;
     case 403:
