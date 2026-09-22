@@ -32,14 +32,19 @@ operation is confirm-gated.
 Products you don't configure are simply switched off — run it with just
 FluentCRM, or all five.
 
-**Free, MIT-licensed, sponsored by [upfluent.io](https://upfluent.io).**
+**Open source (MIT), sponsored by [upfluent.io](https://upfluent.io).**
 Developers: clone this repo. Everyone else: grab the one-click Claude Desktop
 extension from [upfluent.io](https://upfluent.io) — it's the same code,
 already built.
 
+> **Free for a limited time.** The ready-built extension is being given away
+> during the early-access period while the project finds its footing. It will
+> not stay free forever — a paid license is planned once it leaves early
+> access. Grab it now and the build you download is yours to keep.
+
 **Not affiliated with WPManageNinja.** All-In-One MCP for Fluent Suite and upfluent.io are an
 independent community project, not associated with, endorsed by, or
-supported by WPManageNinja. It is offered free and in good faith to help
+supported by WPManageNinja. It is offered in good faith to help
 Fluent users get more from the plugins they already own. You use it at your
 own risk — read the [Disclaimer](#disclaimer). WPManageNinja also ships its
 own first-party MCP via [FluentHub](https://wpmanageninja.com/fluenthub-mcp/);
@@ -95,8 +100,9 @@ Three ways to run it — pick by where you want to use your assistant:
 
 ### A — Claude Desktop extension
 
-1. Get `fluentmcp-<version>.mcpb` — free from [upfluent.io](https://upfluent.io),
-   from the [Releases](../../releases) page, or build it yourself:
+1. Get `fluentmcp-<version>.mcpb` — free for a limited time from
+   [upfluent.io](https://upfluent.io), from the [Releases](../../releases)
+   page, or build it yourself:
 
    ```bash
    git clone https://github.com/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity.git
@@ -428,7 +434,7 @@ pages, since their coverage grows.
 | **Safety** | Preview-then-confirm on selected sensitive actions (refunds, cancellations); permissions inherited from the WordPress user | `confirm:true` gate on 203 destructive or privilege-changing operations, 12 locked outright, `dry_run` on every write, post-write verification, read-back guards, per-operation policy you control via `FLUENT_LOCKED_TOOLS`; permissions likewise inherited from the WordPress user |
 | **Auth** | WordPress Application Password | WordPress Application Password (per product overrides optional) |
 | **Where you can use it** | Claude Desktop, Claude Code, Cursor, Codex via HTTP to your site | Same clients, plus claude.ai web and mobile through the remote connector |
-| **Price / license** | Free with the plugins (some tools Pro-only) | Free, MIT, open source |
+| **Price / license** | Free with the plugins (some tools Pro-only) | Source is MIT and open. The ready-built extension is free for a limited time during early access; a paid license is planned afterwards |
 | **Support** | Vendor | Community; issues on GitHub |
 
 ### When to use which
@@ -640,10 +646,13 @@ Contributing: [`CONTRIBUTING.md`](CONTRIBUTING.md)
 
 ## Support this project
 
-All-In-One MCP for Fluent Suite is free and MIT-licensed, and will stay that way. Development is
-sponsored by **[upfluent.io](https://upfluent.io)**, which also hosts the
-ready-built desktop extension. If the project saves you time, three things
-help keep it maintained:
+All-In-One MCP for Fluent Suite is open source under the MIT license, and the
+source stays that way. The **ready-built desktop extension is free for a
+limited time** while the project is in early access; a paid license is planned
+once that period ends, and anything you have already downloaded keeps working.
+Development is sponsored by **[upfluent.io](https://upfluent.io)**, which also
+hosts the build. If the project saves you time, three things help keep it
+maintained:
 
 - **Buy the plugins through the links in this README.** The FluentCRM,
   FluentCart, Fluent Forms, FluentCommunity and WP Social Ninja links above

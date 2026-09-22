@@ -8,6 +8,11 @@ Connect Claude to FluentCRM, FluentCart, Fluent Forms, FluentCommunity and
 WP Social Ninja on your WordPress site: every documented REST endpoint as an
 individual tool, with confirm gates on every destructive operation.
 
+FREE FOR A LIMITED TIME. This build is being given away during the
+early-access period. It will not stay free forever -- a paid license is
+planned once early access ends. The copy you have downloaded is yours to
+keep and keeps working.
+
 == What is in this download ==
 
 fluentmcp-{{VERSION}}.mcpb   Claude Desktop extension (drag-and-drop install)
