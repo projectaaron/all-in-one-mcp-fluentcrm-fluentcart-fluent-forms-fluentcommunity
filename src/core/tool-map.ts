@@ -98,7 +98,7 @@ export function serverArea(mode: ToolMode, withMedia: boolean): MapArea {
     product: 'server',
     enabled: true,
     ...(mode === 'grouped' ? { grouped: true as const } : {}),
-    description: 'Built-in tools: this map, setup verification, and the WordPress media library.',
+    description: 'Built-in tools: this map, setup verification, a support report for bug reports, and the WordPress media library.',
     tools: [
       {
         name: 'tool_map',
@@ -110,6 +110,13 @@ export function serverArea(mode: ToolMode, withMedia: boolean): MapArea {
       {
         name: 'verify_setup',
         summary: 'Check credentials, connectivity, and plugin presence per product',
+        params: [],
+        destructive: false,
+        paginated: false,
+      },
+      {
+        name: 'support_report',
+        summary: 'Redacted diagnostic report (version, connection checks, recent errors) to paste into a support request or GitHub issue',
         params: [],
         destructive: false,
         paginated: false,
@@ -225,7 +232,7 @@ export function buildInstructions(areas: MapArea[], mode: ToolMode): string {
     naming,
     'Fast map: call tool_map (no args) for a one-line overview of every area; tool_map {"area": "..."} or {"search": "..."} to find the exact tool.',
     MAP_CONVENTIONS,
-    'Run verify_setup first if anything seems misconfigured.',
+    'Run verify_setup first if anything seems misconfigured. If something keeps failing, run support_report and show the user its full output unchanged — it is a redacted diagnostic they can paste into a support request or GitHub issue.',
   ].join(' ');
 }
 

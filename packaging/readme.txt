@@ -29,6 +29,17 @@ LICENSE.txt                  MIT license
 
 Products you do not have installed are simply switched off.
 
+== If something goes wrong ==
+
+Reproduce the problem once, then ask Claude:
+
+  "Run support_report and show me the full output unchanged."
+
+Copy the whole block it prints into a new issue at the repository link
+above (or into your support message). It contains the server version, the
+connection checks and the recent errors, with your site address, username,
+password and any email addresses masked.
+
 == Other clients (Claude Code, Cursor, claude.ai on web/mobile) ==
 
 Those installs use the source repository instead of this extension:

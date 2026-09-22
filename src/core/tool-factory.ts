@@ -16,6 +16,7 @@ import {
   type Verification,
 } from './merge.js';
 import { shapeResponse, textSummary } from './shape.js';
+import { classifyResult, type DiagnosticsLog } from './support.js';
 import type { EndpointDef, ToolSpec } from './types.js';
 
 const PLACEHOLDER_RE = /\{([^}]+)\}/g;
@@ -96,6 +97,8 @@ export interface ToolRuntime {
   lockedTools?: Set<string>;
   /** action → canonical individual tool name, for grouped-mode lock checks. */
   canonicalNames?: Record<string, string>;
+  /** Recent-call log feeding support_report. Optional so tests can omit it. */
+  diagnostics?: DiagnosticsLog;
 }
 
 export function buildInputShape(spec: ToolSpec) {
@@ -206,6 +209,36 @@ function allowedKeys(registry: unknown): string[] {
   }
   return isPlainRecord(registry) ? Object.keys(registry) : [];
 }
+
+/** Run a tool handler and log its outcome — success, API error, refusal
+ *  (lock / missing confirm / bad arguments) or unexpected throw — to the
+ *  support_report buffer, with the endpoint *template* only (never ids,
+ *  query strings or bodies). No-op when the runtime carries no log. */
+export async function withDiagnostics<T extends ToolResult>(
+  runtime: ToolRuntime,
+  def: EndpointDef | undefined,
+  label: string,
+  run: () => Promise<T>
+): Promise<T> {
+  if (!runtime.diagnostics) return run();
+  const started = Date.now();
+  let result: T;
+  try {
+    result = await run();
+  } catch (e) {
+    result = err(`${label} failed unexpectedly: ${e instanceof Error ? e.message : String(e)}`) as T;
+  }
+  runtime.diagnostics.record({
+    at: new Date().toISOString(),
+    tool: label,
+    endpoint: def ? `${def.method.toUpperCase()} ${def.path}` : undefined,
+    ms: Date.now() - started,
+    ...classifyResult(result),
+  });
+  return result;
+}
+
+type ToolResult = { isError?: boolean; content?: Array<{ type: string; text?: string }>; structuredContent?: Record<string, unknown> };
 
 /** Core execution shared by the grouped and individual registrations.
  *  `label` is the caller-facing name used in messages — `crm_contacts.list_contacts`
@@ -502,16 +535,17 @@ export async function executeAction(
 
 /** The grouped-mode tool handler, exported separately so tests can drive it directly. */
 export function makeHandler(spec: ToolSpec, runtime: ToolRuntime) {
-  return async (args: ToolArgs) => {
-    const def = spec.actions[args.action];
-    if (!def) {
-      return err(`Unknown action "${args.action}" for ${spec.name}. Valid: ${Object.keys(spec.actions).join(', ')}`);
-    }
-    const canonical = runtime.canonicalNames?.[args.action];
-    if (canonical && runtime.lockedTools?.has(canonical)) {
-      return lockedRefusal(`${spec.name}.${args.action}`);
-    }
-    return executeAction(def, args.action, args, runtime, `${spec.name}.${args.action}`, spec);
+  return (args: ToolArgs) => {
+    const def = spec.actions[args.action] as EndpointDef | undefined;
+    const label = `${spec.name}.${args.action}`;
+    return withDiagnostics(runtime, def, label, async () => {
+      if (!def) {
+        return err(`Unknown action "${args.action}" for ${spec.name}. Valid: ${Object.keys(spec.actions).join(', ')}`);
+      }
+      const canonical = runtime.canonicalNames?.[args.action];
+      if (canonical && runtime.lockedTools?.has(canonical)) return lockedRefusal(label);
+      return executeAction(def, args.action, args, runtime, label, spec);
+    });
   };
 }
 

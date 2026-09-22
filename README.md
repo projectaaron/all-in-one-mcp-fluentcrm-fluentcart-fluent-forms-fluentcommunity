@@ -288,6 +288,7 @@ see [API references](#api-references).
 |------|--------------|
 | `tool_map` | The fast map — call this first when unsure |
 | `verify_setup` | Checks site URL, each product's credentials and plugin, one harmless read per product |
+| `support_report` | A redacted, paste-ready diagnostic (version, transport, connection checks, the recent tool-call log with every error) for support requests and bug reports — see [Getting help](#getting-help) |
 | `wp_media_upload_from_url` / `wp_media_get` / `wp_media_list` | The WordPress media library; sideload an image from a URL and get the attachment ID |
 
 ### [FluentCRM](https://fluentcrm.com/?ref=4618) — `crm_*` (23 areas, 366 tools)
@@ -465,6 +466,27 @@ Sources: [FluentHub MCP](https://wpmanageninja.com/fluenthub-mcp/),
 | 429 | The server retries with backoff; persistent 429s mean the site's limits need raising |
 | A write returned an error saying the record "did not change" | The plugin ignored the body — read the tool's description for the expected shape (`bodyNote`), read the record first, and mirror it |
 | Extension won't start | Rebuild after changes: `npm run pack:extension`, remove and re-add |
+
+### Getting help
+
+If something keeps failing, reproduce it once, then ask your assistant:
+
+> **Run support_report and show me the full output unchanged.**
+
+The built-in `support_report` tool prints a Markdown block with the server
+version and transport, the tool mode, which environment variables are set
+(names only), the same connection checks as `verify_setup`, and the last 25
+tool calls with their HTTP status, WordPress error code and message. Your
+site's host name, usernames, passwords, tokens and email addresses are
+masked before the report is produced, so it is safe to paste into a public
+issue. Copy the whole block into a
+[new issue](https://github.com/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity/issues/new)
+together with what you asked the assistant to do and what you expected.
+
+Options: `{"probe": false}` skips the live connection checks when the site
+is unreachable; `{"calls": 100}` includes up to 100 recent calls. On the
+Cloudflare Worker the log covers only the current request, so reproduce
+the problem and ask for the report in the same message.
 
 ---
 
