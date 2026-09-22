@@ -1,5 +1,7 @@
-# Deploy the Worker to Cloudflare on demand (Actions tab → Deploy to
-# Cloudflare Workers → Run workflow, or via the API).
+# Deploy the Worker to Cloudflare. Runs automatically at the end of every
+# successful Release (release.yml calls this workflow), and on demand from
+# the Actions tab (Deploy to Cloudflare Workers → Run workflow, or via the
+# API) for a hotfix or a rollback to an older tag.
 #
 # NOTE: GitHub only registers workflow_dispatch workflows that exist on the
 # repository's DEFAULT branch — this file must be merged there before the
@@ -20,6 +22,9 @@ name: Deploy to Cloudflare Workers
 
 on:
   workflow_dispatch:
+  # Called by release.yml after the release job succeeds; secrets: inherit
+  # passes the Cloudflare credentials through.
+  workflow_call:
 
 permissions:
   contents: read

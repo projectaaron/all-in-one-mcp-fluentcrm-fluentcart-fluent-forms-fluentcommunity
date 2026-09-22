@@ -67,6 +67,13 @@ stay in sync, and add a line to `CHANGELOG.md` under the next version.
    the Freemius side changes per release. `scripts/publish-freemius.mjs` and
    the **Publish to Freemius** workflow exist for the day Freemius adds
    version uploads for apps; today they report the stable link and exit.
+5. When the release job succeeds, the same run deploys that commit to the
+   Cloudflare Worker (it calls `deploy-cloudflare.yml`), so the hosted
+   connector and the download always match. Untick **Deploy the Cloudflare
+   Worker** when running the workflow by hand for a download-only release.
+   The deploy workflow still runs on its own from the Actions tab for a
+   hotfix or a rollback: run it on an older `v*` tag to put that version
+   back.
 
 ## Code of conduct
 
