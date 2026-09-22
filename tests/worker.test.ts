@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import worker from '../src/worker.js';
-import { INDIVIDUAL_TOOL_COUNT } from './helpers.js';
+import { GROUPED_TOOL_COUNT, INDIVIDUAL_TOOL_COUNT } from './helpers.js';
 
 const TOKEN = 'test-secret-token-0123456789abcdef';
 const env = {
@@ -68,6 +68,19 @@ describe('cloudflare worker entry', () => {
       await post('/mcp', { jsonrpc: '2.0', id: 3, method: 'tools/list', params: {} }, { Authorization: `Bearer ${TOKEN}` })
     ).json()) as any;
     expect(list.result.tools.length).toBe(INDIVIDUAL_TOOL_COUNT);
+  });
+
+  it('switches to grouped mode from the URL for URL-only clients', async () => {
+    const list = (await (
+      await post(`/mcp/${TOKEN}/grouped`, { jsonrpc: '2.0', id: 4, method: 'tools/list', params: {} })
+    ).json()) as any;
+    expect(list.result.tools.length).toBe(GROUPED_TOOL_COUNT);
+    expect(list.result.tools.map((t: { name: string }) => t.name)).toContain('cart_orders');
+    const bearer = (await (
+      await post('/mcp/grouped', { jsonrpc: '2.0', id: 5, method: 'tools/list', params: {} }, { Authorization: `Bearer ${TOKEN}` })
+    ).json()) as any;
+    expect(bearer.result.tools.length).toBe(GROUPED_TOOL_COUNT);
+    expect((await post('/mcp/grouped', { jsonrpc: '2.0', id: 6, method: 'tools/list', params: {} })).status).toBe(401);
   });
 
   it('returns 202 for notification-only bodies and 400 for bad JSON', async () => {
