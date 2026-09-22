@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.2.2 — 2026-09-22
 
 - The Release workflow now deploys the released commit to the Cloudflare
   Worker as its final job (`deploy-cloudflare.yml` became callable), so the
