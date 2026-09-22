@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+- The Release workflow now deploys the released commit to the Cloudflare
+  Worker as its final job (`deploy-cloudflare.yml` became callable), so the
+  download and the hosted connector never drift apart. A deploy failure does
+  not unpublish the release. Manual runs can untick "Deploy the Cloudflare
+  Worker"; tag pushes always deploy. The deploy workflow still runs on its
+  own for hotfixes and rollbacks.
+
 ## 1.2.1 — 2026-09-22
 
 - **Tool mode per URL for remote clients.** `/mcp/<token>/grouped` (or
