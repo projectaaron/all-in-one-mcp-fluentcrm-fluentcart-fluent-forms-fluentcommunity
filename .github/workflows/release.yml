@@ -1,6 +1,7 @@
-# Build the two downloadable bundles and attach them to a GitHub release.
-# Upload the .mcpb to the Freemius product / upfluent.io afterwards so the
-# one-click download matches the release.
+# Build the downloadable bundles, attach them to a GitHub release, then
+# deploy the same commit to the Cloudflare Worker (deploy-cloudflare.yml) so
+# the download and the hosted connector never drift apart. The Freemius
+# Download Link serves the refreshed `latest` asset automatically.
 #
 # Two ways to run it — no terminal required for the first:
 #   • Actions tab → Release → Run workflow (uses the version in package.json
@@ -21,6 +22,11 @@ name: Release
 
 on:
   workflow_dispatch:
+    inputs:
+      deploy_worker:
+        description: 'Deploy the Cloudflare Worker after the release'
+        type: boolean
+        default: true
   push:
     tags: ['v*']
 
@@ -99,3 +105,14 @@ jobs:
             exit 0
           fi
           node scripts/publish-freemius.mjs --file "all-in-one-mcp-for-fluent-suite-${VERSION}.zip" --version "$VERSION" --release-mode released
+
+  # The Worker deploy is a separate job so a deploy failure never unpublishes
+  # the release, and so it can be skipped (deploy_worker: false) for a
+  # download-only release. Tag pushes always deploy.
+  deploy:
+    needs: release
+    if: ${{ github.event_name == 'push' || inputs.deploy_worker }}
+    uses: ./.github/workflows/deploy-cloudflare.yml
+    secrets: inherit
+    permissions:
+      contents: read
