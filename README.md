@@ -57,6 +57,7 @@ see [How this compares](#how-this-compares-to-the-native-fluent-mcps).
 - [The products and their tools](#the-products-and-their-tools)
 - [Roadmap: more Fluent products](#roadmap-more-fluent-products)
 - [API references](#api-references)
+- [Other AI clients](#other-ai-clients)
 - [Troubleshooting](#troubleshooting)
 - [Security model](#security-model)
 - [Development](#development)
@@ -172,7 +173,7 @@ All settings are environment variables (`.env.example` documents every one).
 | `FLUENT_SITE_URL` | yes | Your WordPress site root, e.g. `https://example.com` |
 | `FLUENT_API_USERNAME` / `FLUENT_API_PASSWORD` | yes | The WordPress user and its Application Password — enables every installed product |
 | `FLUENTCRM_API_*`, `FLUENTCART_API_*`, `FLUENTFORMS_API_*`, `FLUENTCOMMUNITY_API_*`, `WPSOCIALNINJA_API_*` | no | Per-product credential overrides (a different, more limited user per product) |
-| `FLUENT_TOOL_MODE` | no | `individual` (default, one tool per operation) or `grouped` (one tool per area with an `action` parameter — for clients that struggle with large tool lists) |
+| `FLUENT_TOOL_MODE` | no | `individual` (default, one tool per operation) or `grouped` (one tool per area with an `action` parameter — for clients that cap the tool list, see [Other AI clients](#other-ai-clients)). Remote clients can also pick a mode per URL: `/mcp/<token>/grouped` |
 | `FLUENT_LOCKED_TOOLS` | no | Admin-locked tools that refuse unconditionally: `default` (see [Safety](#safety)), a replacement list, `default,extra_tool`, or `none` |
 | `FLUENT_MCP_TOKEN` | remote only | Shared secret for remote mode, 16+ characters |
 | `PORT`, `FLUENT_MCP_HOST` | remote only | Listen port (3000) and bind address (0.0.0.0) |
@@ -452,6 +453,117 @@ Sources: [FluentHub MCP](https://wpmanageninja.com/fluenthub-mcp/),
 [Fluent Forms MCP server](https://fluentforms.com/fluent-forms-mcp-server/),
 [FluentCart: Connecting AI assistants](https://docs.fluentcart.com/guide/settings-configuration/mcp),
 [FluentCRM MCP](https://fluentcrm.com/blog/fluentcrm-mcp-and-what-it-means/).
+
+---
+
+## Other AI clients
+
+This is a standard [Model Context Protocol](https://modelcontextprotocol.io)
+server, so it works with every MCP-capable harness, not only Claude. Only
+the `.mcpb` extension file is Claude Desktop-specific; the config-file
+install ([B](#b--any-mcp-client-config-file)) and the remote connector
+([C](#c--remote-connector-web-mobile-desktop)) work everywhere.
+
+**Pick the tool mode for your client.** The default surface is 1,299 small
+tools, which Claude handles well but many other clients cap or truncate.
+`grouped` mode collapses the same operations into 73 area tools (one tool
+per area, an `action` parameter picks the operation) with identical
+confirm gates, locks, `tool_map` and `support_report`.
+
+| Client | Mode | How to connect |
+|--------|------|----------------|
+| Claude Desktop, Claude Code, claude.ai | `individual` (default) | See [Install](#install) |
+| Cursor | `grouped` | `~/.cursor/mcp.json` (global) or `.cursor/mcp.json` (project); Cursor warns above ~40 tools per server |
+| VS Code (Copilot agent mode) | `grouped` | `.vscode/mcp.json`; Copilot caps a request at 128 tools |
+| Windsurf, Cline, Roo Code, Continue | `grouped` | Their MCP settings file; same `mcpServers` shape as Cursor |
+| ChatGPT (connectors / developer mode) | `grouped` | Remote URL ending in `/grouped`, see below |
+| Gemini CLI | `grouped` | `~/.gemini/settings.json`, same `mcpServers` shape |
+| Codex CLI | `grouped` | `~/.codex/config.toml`, see below |
+| Zed, JetBrains AI, other stdio clients | try `individual`, fall back to `grouped` | The `command`/`args`/`env` block below |
+
+Local clients set the mode with the `FLUENT_TOOL_MODE` variable. Remote
+clients that only take a URL append `/grouped` to the connector URL
+instead.
+
+**Cursor, Windsurf, Cline, Gemini CLI** (`mcpServers` shape):
+
+```json
+{
+  "mcpServers": {
+    "fluentmcp": {
+      "command": "node",
+      "args": ["/absolute/path/to/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity/dist/index.js"],
+      "env": {
+        "FLUENT_SITE_URL": "https://example.com",
+        "FLUENT_API_USERNAME": "your-wp-user",
+        "FLUENT_API_PASSWORD": "xxxx xxxx xxxx xxxx xxxx xxxx",
+        "FLUENT_TOOL_MODE": "grouped"
+      }
+    }
+  }
+}
+```
+
+**VS Code** (`.vscode/mcp.json`, note `servers` and `type`):
+
+```json
+{
+  "servers": {
+    "fluentmcp": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["/absolute/path/to/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity/dist/index.js"],
+      "env": {
+        "FLUENT_SITE_URL": "https://example.com",
+        "FLUENT_API_USERNAME": "your-wp-user",
+        "FLUENT_API_PASSWORD": "xxxx xxxx xxxx xxxx xxxx xxxx",
+        "FLUENT_TOOL_MODE": "grouped"
+      }
+    }
+  }
+}
+```
+
+**Codex CLI** (`~/.codex/config.toml`):
+
+```toml
+[mcp_servers.fluentmcp]
+command = "node"
+args = ["/absolute/path/to/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity/dist/index.js"]
+
+[mcp_servers.fluentmcp.env]
+FLUENT_SITE_URL = "https://example.com"
+FLUENT_API_USERNAME = "your-wp-user"
+FLUENT_API_PASSWORD = "xxxx xxxx xxxx xxxx xxxx xxxx"
+FLUENT_TOOL_MODE = "grouped"
+```
+
+**ChatGPT and other URL-only clients** — host the remote connector
+([C](#c--remote-connector-web-mobile-desktop)), then add the URL with the
+mode suffix:
+
+```
+https://fluentmcp.<your-subdomain>.workers.dev/mcp/<token>/grouped
+```
+
+In ChatGPT: **Settings → Connectors → Create** (developer mode must be
+enabled on the workspace), paste the URL, authentication "none" (the token
+is in the URL). Clients that send the token as a `Bearer` header use
+`https://…/mcp/grouped` instead. Without a suffix the URL serves the
+default mode, so existing claude.ai connectors are unaffected.
+
+**What to expect outside Claude**
+
+- The confirm gate, locked tools and dry runs are enforced by the server,
+  so they hold in every client. Some clients only show that a call failed
+  rather than the refusal text; ask the assistant to read the tool result.
+- The server's usage hints (`instructions`) are honoured by Claude, Cursor
+  and VS Code; other clients rely on the tool descriptions alone, which
+  are written to stand on their own.
+- Every result carries its data as text as well as structured content, so
+  clients on older protocol versions lose nothing.
+- Ask the assistant to run `verify_setup` after connecting, and
+  `support_report` if something misbehaves.
 
 ---
 

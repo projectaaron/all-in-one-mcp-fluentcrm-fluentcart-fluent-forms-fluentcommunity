@@ -66,6 +66,29 @@ export function pathToken(segment: string | undefined): string | undefined {
   }
 }
 
+/** Route shape: `/mcp`, `/mcp/<token>`, and an optional trailing tool-mode
+ *  segment — `/mcp/<token>/grouped` or `/mcp/grouped` (Bearer auth) — for
+ *  URL-only clients (ChatGPT, Cursor's remote config) that cannot set
+ *  FLUENT_TOOL_MODE. A token is ≥16 chars, so the literal words can never be
+ *  mistaken for one. */
+export const MCP_PATH_RE = /^\/mcp(?:\/([^/]+))?(?:\/(grouped|individual))?\/?$/;
+
+export interface McpRoute {
+  /** Raw token path segment (undefined when auth must come from the header). */
+  tokenSegment?: string;
+  /** Tool-mode override requested in the URL, if any. */
+  toolMode?: 'grouped' | 'individual';
+}
+
+export function parseMcpPath(pathname: string): McpRoute | undefined {
+  const m = MCP_PATH_RE.exec(pathname);
+  if (!m) return undefined;
+  const [, first, second] = m;
+  if (second) return { tokenSegment: first, toolMode: second as McpRoute['toolMode'] };
+  if (first === 'grouped' || first === 'individual') return { toolMode: first };
+  return { tokenSegment: first };
+}
+
 const CORS_HEADERS: Record<string, string> = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'POST, GET, DELETE, OPTIONS',
@@ -82,7 +105,7 @@ export function createRemoteServer(config: ServerConfig, token: string): Server 
   return createServer(async (req, res) => {
     for (const [k, v] of Object.entries(CORS_HEADERS)) res.setHeader(k, v);
     const url = new URL(req.url ?? '/', `http://${req.headers.host ?? 'localhost'}`);
-    const match = /^\/mcp(?:\/([^/]+))?\/?$/.exec(url.pathname);
+    const route = parseMcpPath(url.pathname);
 
     try {
       if (req.method === 'OPTIONS') {
@@ -93,11 +116,11 @@ export function createRemoteServer(config: ServerConfig, token: string): Server 
         json(res, 200, { ok: true });
         return;
       }
-      if (!match) {
+      if (!route) {
         json(res, 404, rpcError(-32000, 'Not found — the MCP endpoint is /mcp'));
         return;
       }
-      if (!tokenOk(req, pathToken(match[1]), token)) {
+      if (!tokenOk(req, pathToken(route.tokenSegment), token)) {
         json(res, 401, rpcError(-32000, 'Unauthorized: present FLUENT_MCP_TOKEN as "Authorization: Bearer <token>" or in the URL path /mcp/<token>'));
         return;
       }
@@ -124,7 +147,7 @@ export function createRemoteServer(config: ServerConfig, token: string): Server 
       }
 
       // Fresh server + transport per request (stateless Streamable HTTP).
-      const built = buildServer(config, { transport: 'remote-http' });
+      const built = buildServer(route.toolMode ? { ...config, toolMode: route.toolMode } : config, { transport: 'remote-http' });
       const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined });
       res.on('close', () => {
         void transport.close();

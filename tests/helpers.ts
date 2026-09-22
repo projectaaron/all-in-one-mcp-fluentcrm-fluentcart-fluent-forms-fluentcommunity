@@ -24,6 +24,8 @@ export const PRODUCT_EXTRA_TOOLS = PRODUCTS.reduce((n, p) => n + (p.extras?.mapT
 /** What `tools/list` returns in individual mode: one tool per documented
  *  endpoint, plus product extras, plus the built-ins. */
 export const INDIVIDUAL_TOOL_COUNT = DOCUMENTED_ENDPOINTS + PRODUCT_EXTRA_TOOLS + SERVER_TOOLS.length;
+/** Grouped mode: one tool per area + extras + tool_map, verify_setup, support_report, wp_media. */
+export const GROUPED_TOOL_COUNT = PRODUCTS.reduce((n, p) => n + p.tools.length, 0) + PRODUCT_EXTRA_TOOLS + 4;
 
 export interface CapturedRequest {
   url: string;
