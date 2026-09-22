@@ -45,6 +45,19 @@ const isMalformed = (m: unknown): boolean =>
   !m || typeof m !== 'object' || ('id' in m && !('method' in m) && !('result' in m) && !('error' in m));
 
 /** Percent-decode the `/mcp/<token>` path segment; undecodable → ''. */
+/** `/mcp`, `/mcp/<token>`, optionally followed by `/grouped` or `/individual`
+ *  (a tool-mode override for URL-only clients). Mirrors remote-server.ts;
+ *  duplicated so the Worker bundle stays free of Node's http module. */
+const MCP_PATH_RE = /^\/mcp(?:\/([^/]+))?(?:\/(grouped|individual))?\/?$/;
+function parseMcpPath(pathname: string): { tokenSegment?: string; toolMode?: 'grouped' | 'individual' } | undefined {
+  const m = MCP_PATH_RE.exec(pathname);
+  if (!m) return undefined;
+  const [, first, second] = m;
+  if (second) return { tokenSegment: first, toolMode: second as 'grouped' | 'individual' };
+  if (first === 'grouped' || first === 'individual') return { toolMode: first };
+  return { tokenSegment: first };
+}
+
 function pathToken(segment: string | undefined): string {
   if (segment === undefined) return '';
   try {
@@ -115,18 +128,18 @@ const rpcError = (code: number, message: string) => ({ jsonrpc: '2.0', error: { 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
-    const match = /^\/mcp(?:\/([^/]+))?\/?$/.exec(url.pathname);
+    const route = parseMcpPath(url.pathname);
 
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS_HEADERS });
     if (url.pathname === '/healthz') return json(200, { ok: true });
-    if (!match) return json(404, rpcError(-32000, 'Not found — the MCP endpoint is /mcp'));
+    if (!route) return json(404, rpcError(-32000, 'Not found — the MCP endpoint is /mcp'));
 
     const token = env.FLUENT_MCP_TOKEN?.trim() ?? '';
     if (token.length < MIN_TOKEN_LENGTH) {
       return json(500, rpcError(-32000, `Server misconfigured: set the FLUENT_MCP_TOKEN secret (${MIN_TOKEN_LENGTH}+ chars) — npx wrangler secret put FLUENT_MCP_TOKEN`));
     }
     const auth = request.headers.get('authorization');
-    const presented = match[1] !== undefined ? pathToken(match[1]) : auth?.startsWith('Bearer ') ? auth.slice(7).trim() : '';
+    const presented = route.tokenSegment !== undefined ? pathToken(route.tokenSegment) : auth?.startsWith('Bearer ') ? auth.slice(7).trim() : '';
     if (!presented || !safeEqual(presented, token)) {
       return json(401, rpcError(-32000, 'Unauthorized: present FLUENT_MCP_TOKEN as "Authorization: Bearer <token>" or in the URL path /mcp/<token>'));
     }
@@ -149,6 +162,7 @@ export default {
     const messages = incoming.filter((m) => !isMalformed(m)) as JSONRPCMessage[];
 
     const config = loadConfig(PRODUCTS.map((p) => p.envPrefix), env as NodeJS.ProcessEnv);
+    if (route.toolMode) config.toolMode = route.toolMode;
     const built = buildServer(config, { transport: 'cloudflare-worker' });
     const transport = new SingleExchangeTransport();
     try {

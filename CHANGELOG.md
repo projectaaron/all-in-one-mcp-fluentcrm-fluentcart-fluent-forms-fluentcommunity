@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.2.1 — 2026-09-22
+
+- **Tool mode per URL for remote clients.** `/mcp/<token>/grouped` (or
+  `/mcp/grouped` with Bearer auth) serves the 73-tool grouped surface from
+  the same deployment, so URL-only clients such as ChatGPT connectors and
+  editors that cap the tool list can use the server without a separate
+  host. `/individual` forces the default; no suffix keeps existing
+  connectors unchanged. Both the Node remote server and the Cloudflare
+  Worker support it.
+- README: new "Other AI clients" section with config snippets for Cursor,
+  Windsurf/Cline/Gemini CLI, VS Code, Codex CLI and ChatGPT, and a
+  per-client mode recommendation.
+
 ## 1.2.0 — 2026-09-21
 
 - **New built-in tool `support_report`** for support requests and bug

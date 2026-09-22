@@ -2,7 +2,7 @@
   "manifest_version": "0.3",
   "name": "fluentmcp",
   "display_name": "All-In-One MCP for Fluent Suite",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Full control of FluentCRM, FluentCart, WP Social Ninja, Fluent Forms, and FluentCommunity on your WordPress site: contacts, campaigns, orders, products, reviews, forms, spaces, courses, and more.",
   "long_description": "Gives your AI assistant create/read/update/delete control over FluentCRM (email marketing & CRM), FluentCart (e-commerce), WP Social Ninja (reviews, social feeds, chat widgets), Fluent Forms (forms & submissions) and FluentCommunity (spaces, feeds, chat, courses) by WPManageNinja — 1,290 documented REST endpoints, each as its own individualized tool (crm_contacts_list, cart_orders_refund, social_reviews_list, forms_submissions_list, community_spaces_list, …), with a built-in tool_map index so the assistant finds the right tool in one call. Safe by default: every destructive tool (deletes, refunds, cancels, mass-sends, resets) is annotated and refuses to run without explicit confirmation. One WordPress Application Password runs everything; run the verify_setup tool after installing to check your connection. Prefer a small tool list? Set the Tool Surface option to \"grouped\".",
   "author": {
