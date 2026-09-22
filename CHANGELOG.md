@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.3 — 2026-09-22
+
+- README and the packaged `readme.txt` now state that the ready-built
+  extension is **free for a limited time** during early access rather than
+  free forever; a paid license is planned once early access ends. The source
+  stays MIT-licensed and open, and downloaded builds keep working.
+
 ## 1.2.2 — 2026-09-22
 
 - The Release workflow now deploys the released commit to the Cloudflare
