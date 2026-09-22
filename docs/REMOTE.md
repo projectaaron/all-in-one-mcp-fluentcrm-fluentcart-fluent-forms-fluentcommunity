@@ -67,8 +67,9 @@ Notes:
 - No machine with `wrangler login` handy? The repo ships a GitHub Actions
   deploy (`.github/workflows/deploy-cloudflare.yml`): add
   `CLOUDFLARE_API_TOKEN` (+ optionally `CLOUDFLARE_ACCOUNT_ID`) as repo
-  secrets once, then Run workflow from the Actions tab deploys the current
-  code.
+  secrets once. Every successful **Release** run then deploys the released
+  commit automatically, and Run workflow from the Actions tab deploys any
+  branch or tag on demand (hotfix, or a rollback to an older `v*` tag).
 
 ### B. Cloudflare Tunnel (run it on your own machine instead)
 
