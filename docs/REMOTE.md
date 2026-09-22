@@ -131,6 +131,11 @@ docker run -d -p 3000:3000 --env-file .env --restart unless-stopped fluentmcp
 - All the same safety behavior applies remotely: honest tool annotations and
   `confirm: true` gates on all 203 destructive actions and the 12 locked tools
   still refuse.
+- Tool mode per URL: append `/grouped` (or `/individual`) to either form —
+  `https://your-host/mcp/<token>/grouped`, or `https://your-host/mcp/grouped`
+  with a Bearer header — to override `FLUENT_TOOL_MODE` for that client. Use
+  it for ChatGPT and other clients that cap the tool list; see the README's
+  "Other AI clients" section.
 - The token appears in the request path when clients use the `/mcp/<token>`
   form. Workers invocation logs are disabled in `wrangler.jsonc` for that
   reason; redact the path in any reverse-proxy access log in front of the

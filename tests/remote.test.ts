@@ -1,9 +1,9 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import type { Server } from 'node:http';
 import { loadConfig } from '../src/core/config.js';
-import { createRemoteServer, MAX_BODY_BYTES, MIN_TOKEN_LENGTH, pathToken } from '../src/remote-server.js';
+import { createRemoteServer, MAX_BODY_BYTES, MIN_TOKEN_LENGTH, parseMcpPath, pathToken } from '../src/remote-server.js';
 import { PRODUCTS } from '../src/products/index.js';
-import { INDIVIDUAL_TOOL_COUNT } from './helpers.js';
+import { GROUPED_TOOL_COUNT, INDIVIDUAL_TOOL_COUNT } from './helpers.js';
 
 const TOKEN = 'test-secret-token-0123456789abcdef';
 const env = {
@@ -85,6 +85,33 @@ describe('remote streamable-http server', () => {
   it('accepts the token as a Bearer header too', async () => {
     const list = await rpcResult(await post('/mcp', LIST, { Authorization: `Bearer ${TOKEN}` }));
     expect(list.result.tools.length).toBe(INDIVIDUAL_TOOL_COUNT);
+  });
+
+  it('switches to grouped mode from the URL (/mcp/<token>/grouped and /mcp/grouped + Bearer)', async () => {
+    const viaPath = await rpcResult(await post(`/mcp/${TOKEN}/grouped`, LIST));
+    expect(viaPath.result.tools.length).toBe(GROUPED_TOOL_COUNT);
+    const names = viaPath.result.tools.map((t: { name: string }) => t.name);
+    expect(names).toContain('crm_contacts');
+    expect(names).not.toContain('crm_contacts_list');
+
+    const viaBearer = await rpcResult(await post('/mcp/grouped', LIST, { Authorization: `Bearer ${TOKEN}` }));
+    expect(viaBearer.result.tools.length).toBe(GROUPED_TOOL_COUNT);
+
+    const explicit = await rpcResult(await post(`/mcp/${TOKEN}/individual`, LIST));
+    expect(explicit.result.tools.length).toBe(INDIVIDUAL_TOOL_COUNT);
+
+    // The mode word is never accepted as the token itself.
+    expect((await post('/mcp/grouped', LIST)).status).toBe(401);
+    expect((await post(`/mcp/${TOKEN}/nonsense`, LIST)).status).toBe(404);
+  });
+
+  it('parses the route shapes', () => {
+    expect(parseMcpPath('/mcp')).toEqual({ tokenSegment: undefined });
+    expect(parseMcpPath('/mcp/abc')).toEqual({ tokenSegment: 'abc' });
+    expect(parseMcpPath('/mcp/abc/grouped')).toEqual({ tokenSegment: 'abc', toolMode: 'grouped' });
+    expect(parseMcpPath('/mcp/individual/')).toEqual({ toolMode: 'individual' });
+    expect(parseMcpPath('/mcp/abc/def')).toBeUndefined();
+    expect(parseMcpPath('/other')).toBeUndefined();
   });
 
   it('rejects non-POST on the MCP endpoint (stateless mode)', async () => {
