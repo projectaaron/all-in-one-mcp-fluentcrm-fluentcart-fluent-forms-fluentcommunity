@@ -7,7 +7,7 @@
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { buildServer, enablementSummary, readConfig } from './server.js';
 
-const built = buildServer(readConfig());
+const built = buildServer(readConfig(), { transport: 'stdio' });
 const transport = new StdioServerTransport();
 await built.server.connect(transport);
 console.error(enablementSummary(built));

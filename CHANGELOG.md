@@ -1,5 +1,25 @@
 # Changelog
 
+## 1.2.0 — 2026-09-21
+
+- **New built-in tool `support_report`** for support requests and bug
+  reports. Reproduce a problem, ask the assistant to "run support_report and
+  show me the full output unchanged", and paste the result into an issue. The
+  report carries the server version, transport (stdio / remote HTTP /
+  Cloudflare Worker), tool mode and count, the locked-tool summary, which
+  `FLUENT_*` variables are set (names only), the same per-product checks as
+  `verify_setup`, and the recent tool-call log (endpoint template, HTTP
+  status, WordPress error code, message, duration). The site host, every
+  configured username and password, Authorization headers,
+  application-password and token-shaped strings, and email addresses are
+  redacted before the text is produced. Options: `probe:false` skips the
+  live checks, `calls` (1–100, default 25) sets the log depth.
+- Every tool call now lands in an in-memory ring buffer (100 entries per
+  server instance) that feeds the report. Only the endpoint *template* is
+  recorded — never record ids, query strings or bodies.
+- `ServerConfig.presentEnv` lists the names of the configuration variables
+  that were set; `buildServer` takes an optional `{ transport }`.
+
 ## 1.1.2 — 2026-09-21
 
 - Extension icon: bone four-point star with an up arrow and a comet trail of

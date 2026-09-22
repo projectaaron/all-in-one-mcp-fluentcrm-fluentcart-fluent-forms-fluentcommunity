@@ -149,7 +149,7 @@ export default {
     const messages = incoming.filter((m) => !isMalformed(m)) as JSONRPCMessage[];
 
     const config = loadConfig(PRODUCTS.map((p) => p.envPrefix), env as NodeJS.ProcessEnv);
-    const built = buildServer(config);
+    const built = buildServer(config, { transport: 'cloudflare-worker' });
     const transport = new SingleExchangeTransport();
     try {
       await built.server.connect(transport);
