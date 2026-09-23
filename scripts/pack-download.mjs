@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /* Build the end-user download package: a ZIP holding the Claude Desktop
    extension (.mcpb), a plain-text readme and the license. This is what
-   Freemius / upfluent.io hand out.
+   upfluent.io hands out.
 
    Usage: node scripts/pack-download.mjs <path/to/fluentmcp-<version>.mcpb>
    Writes: all-in-one-mcp-for-fluent-suite-<version>.zip (cwd)          */
