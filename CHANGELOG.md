@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.2.5 — 2026-09-23
+
+- **Fix: a Freemius problem no longer fails the release or blocks the Worker
+  deploy.** The 1.2.4 run published its GitHub release and then died on the
+  Freemius step, which marked the job failed and skipped the chained deploy.
+  The publish step is now best-effort (`|| ::warning::`), and
+  `scripts/publish-freemius.mjs` exits cleanly when the product does not
+  exist under the developer account, instead of throwing on the tag lookup
+  that ran outside the existing error handling.
+
 ## 1.2.4 — 2026-09-23
 
 - README: the remote-connector section now says plainly that the server does
