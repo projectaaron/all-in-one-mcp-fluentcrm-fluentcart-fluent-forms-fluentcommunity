@@ -104,7 +104,12 @@ jobs:
             echo "::notice::FREEMIUS_DEV_* secrets not set — skipping the Freemius upload (upload all-in-one-mcp-for-fluent-suite-${VERSION}.zip in the Freemius dashboard instead)."
             exit 0
           fi
-          node scripts/publish-freemius.mjs --file "all-in-one-mcp-for-fluent-suite-${VERSION}.zip" --version "$VERSION" --release-mode released
+          # Best-effort by design: Freemius has no version upload for
+          # "Apps & Software" products, and the Download Link already serves
+          # the refreshed `latest` asset. A Freemius-side problem must never
+          # fail the release or block the Worker deploy that follows.
+          node scripts/publish-freemius.mjs --file "all-in-one-mcp-for-fluent-suite-${VERSION}.zip" --version "$VERSION" --release-mode released \
+            || echo "::warning::Freemius publish failed (non-fatal). The GitHub release and its latest assets are published; see the step log above."
 
   # The Worker deploy is a separate job so a deploy failure never unpublishes
   # the release, and so it can be skipped (deploy_worker: false) for a

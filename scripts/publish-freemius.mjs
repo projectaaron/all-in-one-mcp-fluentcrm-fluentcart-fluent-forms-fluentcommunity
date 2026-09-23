@@ -70,7 +70,21 @@ async function call(method, relPath, { json, file, data } = {}) {
   return parsed;
 }
 
-const existing = await call('GET', `/plugins/${productId}/tags.json?count=50`);
+let existing;
+try {
+  existing = await call('GET', `/plugins/${productId}/tags.json?count=50`);
+} catch (e) {
+  // The product was deleted, moved to another developer, or the id is stale.
+  // Nothing to publish to, and the GitHub release is already out — say so
+  // plainly and exit clean rather than failing the release.
+  if (String(e.message).includes('plugin_not_found')) {
+    console.log(`Freemius product ${productId} does not exist under this developer account — skipping.`);
+    console.log('Either it was deleted, or FREEMIUS_PRODUCT_ID in .github/workflows/release.yml is stale.');
+    console.log('The GitHub release and its fixed-name `latest` assets are published regardless.');
+    process.exit(0);
+  }
+  throw e;
+}
 const dup = (existing.tags || []).find((t) => t.version === args.version);
 if (dup) { console.log(`Version ${args.version} already on Freemius (tag ${dup.id}); nothing uploaded.`); process.exit(0); }
 
