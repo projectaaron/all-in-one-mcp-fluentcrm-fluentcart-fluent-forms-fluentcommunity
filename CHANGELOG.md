@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.2.6 — 2026-09-23
+
+- **Freemius removed from the release pipeline.** Freemius is no longer part
+  of the distribution flow and the product has been deleted, so the
+  Release workflow's "Publish to Freemius" step, the standalone
+  `publish-freemius.yml` workflow and `scripts/publish-freemius.mjs` are
+  gone. Releases now go straight from creating the GitHub release to the
+  Worker deploy. The fixed-name `*-latest` assets stay, since the
+  upfluent.io download links to that stable URL. Docs updated to match.
+
 ## 1.2.5 — 2026-09-23
 
 - **Fix: a Freemius problem no longer fails the release or blocks the Worker

@@ -1,7 +1,8 @@
 # Build the downloadable bundles, attach them to a GitHub release, then
 # deploy the same commit to the Cloudflare Worker (deploy-cloudflare.yml) so
-# the download and the hosted connector never drift apart. The Freemius
-# Download Link serves the refreshed `latest` asset automatically.
+# the download and the hosted connector never drift apart. The fixed-name
+# `latest` assets mean the download link on upfluent.io serves the new
+# version as soon as this finishes.
 #
 # Two ways to run it — no terminal required for the first:
 #   • Actions tab → Release → Run workflow (uses the version in package.json
@@ -13,11 +14,9 @@
 #
 # Produces:
 #   fluentmcp-<version>.mcpb                          Claude Desktop extension (dist + prod deps)
-#   all-in-one-mcp-for-fluent-suite-<version>.zip     the .mcpb + readme.txt + LICENSE (Freemius / upfluent.io download)
+#   all-in-one-mcp-for-fluent-suite-<version>.zip     the .mcpb + readme.txt + LICENSE (the upfluent.io download)
 #   fluentmcp-<version>-source.zip                    source bundle for config-file / remote installs
-# and, when the FREEMIUS_DEV_ID / FREEMIUS_DEV_PUBLIC_KEY / FREEMIUS_DEV_SECRET_KEY
-# secrets are set, uploads the download ZIP to Freemius product 39849 as a
-# released version (scripts/publish-freemius.mjs).
+# plus fixed-name `*-latest` copies of the first two (see below).
 name: Release
 
 on:
@@ -72,7 +71,7 @@ jobs:
           # Fixed-name copies so one URL always serves the newest version:
           #   https://github.com/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity/releases/latest/download/all-in-one-mcp-for-fluent-suite-latest.zip
           #   https://github.com/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity/releases/latest/download/fluentmcp-latest.mcpb
-          # (Freemius "Download Links" and upfluent.io point at these.)
+          # (upfluent.io points at these.)
           cp "all-in-one-mcp-for-fluent-suite-${VERSION}.zip" all-in-one-mcp-for-fluent-suite-latest.zip
           cp "fluentmcp-${VERSION}.mcpb" fluentmcp-latest.mcpb
       - name: Create the GitHub release with the assets
@@ -87,29 +86,6 @@ jobs:
             fluentmcp-latest.mcpb \
             --title "All-In-One MCP for Fluent Suite ${VERSION}" \
             --notes "See CHANGELOG.md for what changed. Download the .mcpb for Claude Desktop (or the all-in-one ZIP with a readme), or the source bundle for config-file and remote installs."
-      # Freemius "Apps & Software" products have no version upload
-      # (app_deployment_not_supported); their download is a fixed link to the
-      # *-latest.zip asset above, set once under Product → Settings → Download
-      # Links. This step keeps the version upload for the day Freemius adds
-      # it, and until then reports the stable link. Skipped (not failed) until
-      # the three FREEMIUS_DEV_* repository secrets exist.
-      - name: Publish to Freemius
-        env:
-          FREEMIUS_DEV_ID: ${{ secrets.FREEMIUS_DEV_ID }}
-          FREEMIUS_DEV_PUBLIC_KEY: ${{ secrets.FREEMIUS_DEV_PUBLIC_KEY }}
-          FREEMIUS_DEV_SECRET_KEY: ${{ secrets.FREEMIUS_DEV_SECRET_KEY }}
-          FREEMIUS_PRODUCT_ID: "39849"
-        run: |
-          if [ -z "$FREEMIUS_DEV_SECRET_KEY" ]; then
-            echo "::notice::FREEMIUS_DEV_* secrets not set — skipping the Freemius upload (upload all-in-one-mcp-for-fluent-suite-${VERSION}.zip in the Freemius dashboard instead)."
-            exit 0
-          fi
-          # Best-effort by design: Freemius has no version upload for
-          # "Apps & Software" products, and the Download Link already serves
-          # the refreshed `latest` asset. A Freemius-side problem must never
-          # fail the release or block the Worker deploy that follows.
-          node scripts/publish-freemius.mjs --file "all-in-one-mcp-for-fluent-suite-${VERSION}.zip" --version "$VERSION" --release-mode released \
-            || echo "::warning::Freemius publish failed (non-fatal). The GitHub release and its latest assets are published; see the step log above."
 
   # The Worker deploy is a separate job so a deploy failure never unpublishes
   # the release, and so it can be skipped (deploy_worker: false) for a
