@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.2.4 — 2026-09-23
+
+- README: the remote-connector section now says plainly that the server does
+  not go on WordPress hosting, and why — it is a Node app that only makes
+  HTTPS calls to the site's REST API. Covers managed WP hosts (not
+  supported), cPanel's Node.js app tool (works), a VPS, and Cloudflare
+  Workers (recommended), and points anyone wanting an in-WordPress MCP at
+  the vendor's own FluentHub adapter.
+
 ## 1.2.3 — 2026-09-22
 
 - README and the packaged `readme.txt` now state that the ready-built

@@ -168,6 +168,26 @@ Then claude.ai → **Settings → Connectors → Add custom connector** →
 Cloudflare Tunnel, Docker, any Node host, and a GitHub Actions deploy are
 covered in **[docs/REMOTE.md](docs/REMOTE.md)**.
 
+> **This does not go on your WordPress hosting.** The server is a Node.js
+> app, and WordPress hosting runs PHP. It also never touches your database
+> or files — it makes authenticated HTTPS calls to your site's REST API, the
+> same way Claude Desktop does. Running it beside WordPress buys you nothing
+> and adds a process next to your store.
+>
+> - **Managed WordPress hosts** (WP Engine, Kinsta's WP plans, Pressable,
+>   Flywheel, SiteGround): not supported — PHP only, no long-running Node
+>   process.
+> - **cPanel shared hosting** with "Setup Node.js App": works. Point it at
+>   `dist/remote.js`, set the four environment variables, serve it on a
+>   subdomain. Watch the memory limit; the server registers ~1,300 tools.
+> - **A VPS or any Node host**: works, and you maintain it.
+> - **Cloudflare Workers**: free, nothing to keep running, recommended.
+>
+> If what you want is "runs inside WordPress with nothing else to host",
+> that means a PHP plugin rather than this server — which is what
+> WPManageNinja's own [FluentHub](https://wpmanageninja.com/fluenthub-mcp/)
+> adapter does. See [How this compares](#how-this-compares-to-the-native-fluent-mcps).
+
 ---
 
 ## Configuration
