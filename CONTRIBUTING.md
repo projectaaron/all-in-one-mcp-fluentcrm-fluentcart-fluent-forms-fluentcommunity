@@ -61,12 +61,8 @@ stay in sync, and add a line to `CHANGELOG.md` under the next version.
    `all-in-one-mcp-for-fluent-suite-latest.zip` and `fluentmcp-latest.mcpb`,
    so these URLs always serve the newest version:
    `https://github.com/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity/releases/latest/download/all-in-one-mcp-for-fluent-suite-latest.zip`
-   and `.../fluentmcp-latest.mcpb`. The Freemius product (39849, type
-   "Apps & Software") hands out the first one through its **Download Links**
-   setting; Freemius has no version upload for app products, so nothing on
-   the Freemius side changes per release. `scripts/publish-freemius.mjs` and
-   the **Publish to Freemius** workflow exist for the day Freemius adds
-   version uploads for apps; today they report the stable link and exit.
+   and `.../fluentmcp-latest.mcpb`. The download on upfluent.io links to the
+   first one, so it serves each new release with nothing to update by hand.
 5. When the release job succeeds, the same run deploys that commit to the
    Cloudflare Worker (it calls `deploy-cloudflare.yml`), so the hosted
    connector and the download always match. Untick **Deploy the Cloudflare
