@@ -20,3 +20,18 @@ package-lock.json
 CHANGELOG.md
 *.mcpb
 Dockerfile
+# Not needed by the extension: the vitest cache, the download readme
+# template (unrendered {{VERSION}}), the Cloudflare Worker build and config,
+# contributor docs, the SVG source of the icon, and release/deploy leftovers.
+node_modules/.vite
+node_modules/.cache
+packaging
+wrangler.jsonc
+dist/worker.js
+dist/worker.d.ts
+CONTRIBUTING.md
+icon.svg
+.wrangler
+.dev.vars
+all-in-one-mcp-for-fluent-suite*
+fluentmcp-*-source.zip

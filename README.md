@@ -2,7 +2,7 @@
 
 [![Sponsored by upfluent.io](https://img.shields.io/badge/sponsored%20by-upfluent.io-2563eb)](https://upfluent.io)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
-[![Tools](https://img.shields.io/badge/tools-1%2C290-informational)](docs/TOOL_MAP.md)
+[![Tools](https://img.shields.io/badge/tools-1%2C299-informational)](docs/TOOL_MAP.md)
 [![Latest release](https://img.shields.io/github/v/release/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity?label=download)](https://github.com/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity/releases/latest)
 
 **Let your AI assistant run your WordPress business** — the CRM, the store,
@@ -62,6 +62,7 @@ see [How this compares](#how-this-compares-to-the-native-fluent-mcps).
 - [The products and their tools](#the-products-and-their-tools)
 - [Roadmap: more Fluent products](#roadmap-more-fluent-products)
 - [API references](#api-references)
+- [How this compares to the native Fluent MCPs](#how-this-compares-to-the-native-fluent-mcps)
 - [Other AI clients](#other-ai-clients)
 - [Troubleshooting](#troubleshooting)
 - [Security model](#security-model)
@@ -81,10 +82,19 @@ see [How this compares](#how-this-compares-to-the-native-fluent-mcps).
   [FluentCommunity](https://fluentcommunity.co/?ref=4618),
   [WP Social Ninja](https://wpsocialninja.com/?ref=4618) (free or Pro —
   Pro-only endpoints simply return 404 without the Pro plugin).
-- A WordPress user with admin (or the plugin's manager) capabilities, and an
-  **Application Password** for that user: *WP Admin → Users → your user →
-  Application Passwords → Add New*. One password covers every product.
-- For options B and C: **Node 20.6+**.
+- Your site must use **https://** (WordPress only offers Application
+  Passwords over HTTPS) and **Settings → Permalinks** must not be "Plain".
+- A WordPress user who can manage the Fluent plugins you use, and an
+  **Application Password** for that user: in WordPress go to *Users →
+  Profile*, scroll to **Application Passwords**, type a name such as
+  *Claude*, click **Add New Application Password**, and copy the password
+  shown (it is shown once; the spaces are fine). One password covers every
+  product. If you can, create a separate WordPress user just for this, give
+  it only the Fluent permissions it needs, and create the password on that
+  user — you can revoke it in one click.
+- **Option A needs nothing else installed** — Claude Desktop (current
+  version, macOS or Windows) runs the extension with its own built-in
+  Node.js. Options B and C need **Node 20.6+**.
 
 ---
 
@@ -96,26 +106,25 @@ Three ways to run it — pick by where you want to use your assistant:
 |---|----------|-------|
 | **A. Desktop extension** (`.mcpb`) | Claude **Desktop** conversations | Drag & drop, fill in a form |
 | **B. Config file** | Claude Code, Cursor, any local MCP client | JSON snippet + `.env` |
-| **C. Remote connector** | **Everywhere** — claude.ai web, mobile, desktop | Host it once (free on Cloudflare), add the URL under Settings → Connectors |
+| **C. Remote connector** | **Everywhere** — claude.ai web, mobile, desktop | Host it once (Cloudflare Workers Paid, $5/month), add the URL under Settings → Connectors |
 
 ### A — Claude Desktop extension
 
-1. Get `fluentmcp-<version>.mcpb` — free for a limited time from
-   [upfluent.io](https://upfluent.io), from the [Releases](../../releases)
-   page, or build it yourself:
-
-   ```bash
-   git clone https://github.com/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity.git
-   cd all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity
-   npm install
-   npm run pack:extension      # produces fluentmcp.mcpb
-   ```
-
-2. Claude Desktop → **Settings → Extensions** → drag the `.mcpb` file in.
-3. Fill in the form: site URL (the root, not `/wp-admin`), username,
-   Application Password. Claude Desktop stores the password as a sensitive
-   value.
-4. Ask Claude: *"Run verify_setup."*
+1. Download it — free for a limited time — from
+   [upfluent.io](https://upfluent.io/all-in-one-mcp-for-fluent-suite/), or
+   `all-in-one-mcp-for-fluent-suite-latest.zip` from the
+   [latest release](https://github.com/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity/releases/latest).
+   Double-click the ZIP to unzip it and find `fluentmcp-<version>.mcpb`
+   inside. (Developers can build it instead — see [Development](#development).)
+2. In Claude Desktop open **Settings → Extensions**, drag the `.mcpb` file
+   into the window, and click **Install**.
+3. Fill in the form: your site URL **including https://** (the home page
+   address, e.g. `https://example.com` — not the `/wp-admin` address), your
+   WordPress username, and the Application Password. Claude Desktop stores
+   the password as a sensitive value.
+4. Start a new chat and ask Claude: *"Run verify_setup."* You should see ✅
+   next to each Fluent plugin you have; plugins you don't have show ⏭️ and
+   are simply skipped.
 
 ### B — Any MCP client (config file)
 
@@ -149,20 +158,32 @@ smoke test: `node --env-file=.env scripts/smoke-test.mjs`.
 ### C — Remote connector (web, mobile, desktop)
 
 Host it once; every Claude surface gets the tools. The easiest host is
-**Cloudflare Workers** (free tier, nothing to keep running). From a clone:
+**Cloudflare Workers** — nothing to keep running. It needs the **Workers
+Paid plan ($5/month)**: each request builds the full tool set, which takes
+well over the Free plan's 10 ms CPU limit (a live deployment measured a
+95 ms median), so on the Free plan requests fail with error 1102.
+
+This path uses a terminal. You need Node 20.6+ and a Cloudflare account:
 
 ```bash
+git clone https://github.com/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity.git
+cd all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity
 npm install
 npx wrangler login
 npx wrangler secret put FLUENT_SITE_URL
 npx wrangler secret put FLUENT_API_USERNAME
 npx wrangler secret put FLUENT_API_PASSWORD
-npx wrangler secret put FLUENT_MCP_TOKEN     # paste the output of: openssl rand -hex 32
+npx wrangler secret put FLUENT_MCP_TOKEN     # paste a long random string, see below
 npm run deploy:cloudflare
 ```
 
+For the token, generate a random string with
+`node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`
+(works on macOS, Windows and Linux) and paste it when asked.
+
 Then claude.ai → **Settings → Connectors → Add custom connector** →
-`https://fluentmcp.<your-subdomain>.workers.dev/mcp/<token>`.
+`https://fluentmcp.<your-subdomain>.workers.dev/mcp/<token>`, where
+`<token>` is the value you entered for `FLUENT_MCP_TOKEN`.
 **The URL contains your secret — treat it like a password.**
 
 Cloudflare Tunnel, Docker, any Node host, and a GitHub Actions deploy are
@@ -181,7 +202,8 @@ covered in **[docs/REMOTE.md](docs/REMOTE.md)**.
 >   `dist/remote.js`, set the four environment variables, serve it on a
 >   subdomain. Watch the memory limit; the server registers ~1,300 tools.
 > - **A VPS or any Node host**: works, and you maintain it.
-> - **Cloudflare Workers**: free, nothing to keep running, recommended.
+> - **Cloudflare Workers**: nothing to keep running, recommended (Workers
+>   Paid plan, $5/month — see above).
 >
 > If what you want is "runs inside WordPress with nothing else to host",
 > that means a PHP plugin rather than this server — which is what
@@ -273,7 +295,7 @@ closes that at the executor:
   plugin advertises *before* writing, and the stored record is returned
   *after* — if the plugin doesn't list it, the tool errors.
 
-**Nothing irreversible runs by accident.** 203 operations are classified
+**Nothing irreversible runs by accident.** 230 operations are classified
 destructive (⚠ in the map): deletes, refunds, cancels, bulk actions, resets,
 mass sends, plugin installs and activations, manager/permission grants,
 API-key minting, and the public form-submit that fires real notifications. Called without `confirm: true`, the tool refuses, does
@@ -446,12 +468,12 @@ pages, since their coverage grows.
 | **Runs where** | Inside WordPress, as plugin code (FluentHub or the WordPress MCP Adapter; needs WordPress 6.9+ for the Abilities API) | Outside WordPress: Claude Desktop extension, local Node process, or a Cloudflare Worker. Nothing installed on the site. |
 | **Products covered** | FluentCRM, FluentCart, Fluent Forms, Fluent Support, FluentBoards. FluentCommunity and WP Social Ninja: none announced. | FluentCRM, FluentCart, Fluent Forms, FluentCommunity, WP Social Ninja. Fluent Support, FluentBooking, FluentBoards and FluentAffiliate coming soon (see [Roadmap](#roadmap-more-fluent-products)). |
 | **Servers to connect** | One per product (Fluent Forms has its own; CRM/Cart/Support/Boards go through FluentHub, each with its own enable switch and snippet) | One. All five products behind one connector, one credential. Products you don't have are simply off. |
-| **Tool count** | FluentCRM ~25 (some Pro-only) · FluentCart 30 · Fluent Forms 20 free / 23 Pro · Fluent Support ~20 | 1,290 endpoint tools plus a `tool_map` index: CRM 366 · Cart 436 · Forms 91 · Community 274 · Social Ninja 126 |
+| **Tool count** | FluentCRM ~25 (some Pro-only) · FluentCart 30 · Fluent Forms 20 free / 23 Pro · Fluent Support ~20 | 1,299 tools: every one of the 1,290 documented endpoints plus 9 built-ins and helpers. CRM 366 (363 endpoints + 3 sequence helpers) · Cart 436 · Forms 91 · Community 274 · Social Ninja 126 |
 | **Coverage model** | Curated: a hand-picked subset of common operations | Complete: every documented REST endpoint of each product, generated from the vendor's own API reference and re-checked weekly |
 | **Writes** | Selected writes per product (e.g. Cart: order status, notes, refunds, customer create/update, subscription cancel, coupons, labels) | Every write the admin UI can do: create, update, delete, bulk actions, settings, automations, sequences, templates, integrations, licensing, courses, spaces, chat, reviews, and so on |
 | **Explicitly not exposed natively** | FluentCart: settings, shipping, tax, licensing administration, email templates. FluentCRM: templates, forms, webhooks, settings, SMS, reports (per the vendor's own write-ups). Fluent Forms: form settings beyond styling and notifications, integrations beyond listing | All of those, plus the rest of each REST surface |
 | **Partial updates** | Tool-specific | Merge by default on every update: the record is read, your fields are merged in, written, re-read and diffed. Omitted fields survive. `mode:"replace"` is explicit and confirm-gated. |
-| **Safety** | Preview-then-confirm on selected sensitive actions (refunds, cancellations); permissions inherited from the WordPress user | `confirm:true` gate on 203 destructive or privilege-changing operations, 12 locked outright, `dry_run` on every write, post-write verification, read-back guards, per-operation policy you control via `FLUENT_LOCKED_TOOLS`; permissions likewise inherited from the WordPress user |
+| **Safety** | Preview-then-confirm on selected sensitive actions (refunds, cancellations); permissions inherited from the WordPress user | `confirm:true` gate on 230 destructive or privilege-changing operations, 12 locked outright, `dry_run` on every write, post-write verification, read-back guards, per-operation policy you control via `FLUENT_LOCKED_TOOLS`; permissions likewise inherited from the WordPress user |
 | **Auth** | WordPress Application Password | WordPress Application Password (per product overrides optional) |
 | **Where you can use it** | Claude Desktop, Claude Code, Cursor, Codex via HTTP to your site | Same clients, plus claude.ai web and mobile through the remote connector |
 | **Price / license** | Free with the plugins (some tools Pro-only) | Source is MIT and open. The ready-built extension is free for a limited time during early access; a paid license is planned afterwards |
@@ -492,8 +514,8 @@ install ([B](#b--any-mcp-client-config-file)) and the remote connector
 
 **Pick the tool mode for your client.** The default surface is 1,299 small
 tools, which Claude handles well but many other clients cap or truncate.
-`grouped` mode collapses the same operations into 73 area tools (one tool
-per area, an `action` parameter picks the operation) with identical
+`grouped` mode collapses the same operations into 79 tools (one per area,
+an `action` parameter picks the operation, plus the built-ins) with identical
 confirm gates, locks, `tool_map` and `support_report`.
 
 | Client | Mode | How to connect |
@@ -597,13 +619,18 @@ default mode, so existing claude.ai connectors are unaffected.
 
 | Symptom | Likely cause / fix |
 |---------|--------------------|
+| `verify_setup` shows ⏭️ `not_installed` | That Fluent plugin isn't installed or active on your site. Expected — its tools are skipped |
 | `verify_setup` says `not configured` | Credentials blank for that product |
+| Every product fails, or "No Fluent plugin answered" | The site URL is wrong — use the home page address including `https://` — or **Settings → Permalinks** is set to "Plain" (pick any other option) |
+| No **Application Passwords** section on your WordPress profile | The site must use `https://`. A security plugin may have turned them off — in Wordfence: *Login Security → Settings*, uncheck "Disable WordPress application passwords"; Solid Security and All-In-One WP Security have similar options. Some hosts turn them off too, so ask your host |
 | 401 | Wrong or revoked credentials — create a fresh Application Password |
+| 401 even with a fresh Application Password | Your host or firewall is stripping the `Authorization` header, or a security plugin blocks REST API logins. Ask your host to pass the header through |
 | 403 | The user lacks the plugin capability — or it's a customer-session tool (`cart_checkout_*`, `cart_customer_portal_*`) |
 | 404 | Plugin not active, wrong site URL (use the root), or a Pro endpoint without Pro |
 | 429 | The server retries with backoff; persistent 429s mean the site's limits need raising |
 | A write returned an error saying the record "did not change" | The plugin ignored the body — read the tool's description for the expected shape (`bodyNote`), read the record first, and mirror it |
-| Extension won't start | Rebuild after changes: `npm run pack:extension`, remove and re-add |
+| Extension won't start | Update Claude Desktop, then check **Settings → Extensions → All-In-One MCP for Fluent Suite** is enabled. If it still won't start, remove it and drag the `.mcpb` in again. (Built it yourself? Rerun `npm run pack:extension`.) |
+| Error 1102 on the Cloudflare Worker | The Workers Free plan's 10 ms CPU limit — the remote connector needs Workers Paid |
 
 ### Getting help
 
@@ -620,6 +647,10 @@ masked before the report is produced, so it is safe to paste into a public
 issue. Copy the whole block into a
 [new issue](https://github.com/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity/issues/new)
 together with what you asked the assistant to do and what you expected.
+
+No GitHub account? Send the same block through the
+[support form](https://upfluent.io/support/) or by email to
+**support@upfluent.io**.
 
 Options: `{"probe": false}` skips the live connection checks when the site
 is unreachable; `{"calls": 100}` includes up to 100 recent calls. On the
@@ -648,8 +679,17 @@ Full notes and how to report a vulnerability: [SECURITY.md](SECURITY.md).
 
 ## Development
 
+Build the Claude Desktop extension yourself:
+
 ```bash
-npm test                       # 380+ unit tests, mocked HTTP — no site needed
+git clone https://github.com/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity.git
+cd all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity
+npm install
+npm run pack:extension      # produces fluentmcp.mcpb
+```
+
+```bash
+npm test                       # 440+ unit tests, mocked HTTP — no site needed
 npm run build
 npm run gen:catalog            # regenerate TOOL_MAP.md / TOOL_CATALOG.md / manifest sync
 npm run gen:docs               # re-scrape the FluentCRM/FluentCart OpenAPI references

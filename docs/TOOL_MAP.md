@@ -96,7 +96,7 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 ### crm_contacts — Look up, create, update, delete, and manage CRM contacts (subscribers), including their notes, tags, lists, and email history.
 
 - `crm_contacts_bulk_action` ⚠ — Bulk Action Contacts
-- `crm_contacts_bulk_add_update` — Bulk Add/Update Contacts
+- `crm_contacts_bulk_add_update` ⚠ — Bulk Add/Update Contacts
 - `crm_contacts_create` — Create Contact
 - `crm_contacts_create_note(id)` — Create Contact Note
 - `crm_contacts_delete_contact(id)` ⚠ — Delete Contact
@@ -119,7 +119,7 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `crm_contacts_list` — List Contacts (paginated)
 - `crm_contacts_save_external_view(id)` — Save Contact External View
 - `crm_contacts_search` — Search Contacts (paginated)
-- `crm_contacts_send_custom_email(id)` — Send Contact Custom Email
+- `crm_contacts_send_custom_email(id)` ⚠ — Send Contact Custom Email
 - `crm_contacts_send_double_optin(id)` — Send Contact Double Opt-in
 - `crm_contacts_sync_segments` — Sync Contact Segments
 - `crm_contacts_track_event` — Track Contact Event
@@ -373,10 +373,10 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `crm_sms_list_campaigns` — List SMS Campaigns (paginated)
 - `crm_sms_list_messages` — List All SMS Messages (paginated)
 - `crm_sms_pause_campaign(id)` — Pause SMS Campaign
-- `crm_sms_resend_message(id)` — Resend SMS Message
+- `crm_sms_resend_message(id)` ⚠ — Resend SMS Message
 - `crm_sms_resume_campaign(id)` ⚠ — Resume SMS Campaign
 - `crm_sms_schedule_campaign(id)` ⚠ — Schedule SMS Campaign
-- `crm_sms_send_subscriber_custom(id)` — Send Custom SMS to Subscriber
+- `crm_sms_send_subscriber_custom(id)` ⚠ — Send Custom SMS to Subscriber
 - `crm_sms_unschedule_campaign(id)` — Unschedule SMS Campaign
 - `crm_sms_update_campaign(id)` — Update SMS Campaign
 - `crm_sms_update_campaign_labels(id)` — Update SMS Campaign Labels
@@ -437,13 +437,13 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `crm_settings_get_rest_keys` — REST API Keys
 - `crm_settings_get` — Global Settings
 - `crm_settings_get_system_logs` — System Logs
-- `crm_settings_install_fluent_boards` — Install Fluent Boards Plugin
-- `crm_settings_install_fluent_booking` — Install Fluent Booking Plugin
-- `crm_settings_install_fluent_cart` — Install FluentCart Plugin
-- `crm_settings_install_fluent_community` — Install Fluent Community Plugin
-- `crm_settings_install_fluent_form` — Install Fluent Forms Plugin
-- `crm_settings_install_fluent_smtp` — Install FluentSMTP Plugin
-- `crm_settings_install_fluent_support` — Install Fluent Support Plugin
+- `crm_settings_install_fluent_boards` ⚠ — Install Fluent Boards Plugin
+- `crm_settings_install_fluent_booking` ⚠ — Install Fluent Booking Plugin
+- `crm_settings_install_fluent_cart` ⚠ — Install FluentCart Plugin
+- `crm_settings_install_fluent_community` ⚠ — Install Fluent Community Plugin
+- `crm_settings_install_fluent_form` ⚠ — Install Fluent Forms Plugin
+- `crm_settings_install_fluent_smtp` ⚠ — Install FluentSMTP Plugin
+- `crm_settings_install_fluent_support` ⚠ — Install Fluent Support Plugin
 - `crm_settings_remove_old_logs` ⚠ — Remove Old Logs
 - `crm_settings_reset_database` ⚠ 🔒 — Reset Database
 - `crm_settings_reset_system_logs` ⚠ — Reset System Logs
@@ -485,14 +485,14 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 
 - `crm_utilities_get_import_driver(driver)` — Import Driver Details
 - `crm_utilities_get_import_drivers` — Import Drivers
-- `crm_utilities_import_csv_contacts` — Import Contacts from CSV
+- `crm_utilities_import_csv_contacts` ⚠ — Import Contacts from CSV
 - `crm_utilities_import_driver_data(driver)` — Import Data via Driver
-- `crm_utilities_import_wp_users` — Import WordPress Users
+- `crm_utilities_import_wp_users` ⚠ — Import WordPress Users
 - `crm_utilities_upload_csv_import` — Upload CSV for Import
 - `crm_utilities_get_migrator_drivers` — Migrator Drivers
 - `crm_utilities_get_migrator_import_summary` — Get Migrator Import Summary
 - `crm_utilities_get_migrator_list_tag_mappings` — Migrator List/Tag Mappings
-- `crm_utilities_handle_migrator_import` — Execute Migrator Import
+- `crm_utilities_handle_migrator_import` ⚠ — Execute Migrator Import
 - `crm_utilities_verify_migrator_credential` — Verify Migrator Credential
 - `crm_utilities_get_user_roles` — WordPress User Roles
 - `crm_utilities_list_users` — List WordPress Users (paginated)
@@ -535,8 +535,8 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `cart_orders_accept_dispute(order, transaction_id)` ⚠ — Accept Dispute
 - `cart_orders_bulk_actions` ⚠ — Bulk Actions
 - `cart_orders_calculate_shipping` — Calculate Shipping
-- `cart_orders_change_customer(order_id)` — Change Customer
-- `cart_orders_create_and_change_customer(order_id)` — Create and Change Customer
+- `cart_orders_change_customer(order_id)` ⚠ — Change Customer
+- `cart_orders_create_and_change_customer(order_id)` ⚠ — Create and Change Customer
 - `cart_orders_create_custom_item(order)` — Create Custom Order Item
 - `cart_orders_create` — Create Order
 - `cart_orders_delete(order_id)` ⚠ — Delete Order
@@ -546,7 +546,7 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `cart_orders_get_shipping_methods` — Get Shipping Methods
 - `cart_orders_get_single_transaction(id, transaction_id)` — Get Single Transaction
 - `cart_orders_list` — List Orders (paginated)
-- `cart_orders_mark_as_paid(order)` — Mark Order as Paid
+- `cart_orders_mark_as_paid(order)` ⚠ — Mark Order as Paid
 - `cart_orders_refund(order_id)` ⚠ — Refund Order
 - `cart_orders_sync_statuses(order)` — Sync Order Statuses
 - `cart_orders_update(order_id)` — Update Order
@@ -569,8 +569,8 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 
 - `cart_products_add_terms` — Add Product Terms
 - `cart_products_bulk_edit_fetch` — Bulk Edit Fetch
-- `cart_products_bulk_insert` — Bulk Insert Products
-- `cart_products_bulk_update` — Bulk Update Products
+- `cart_products_bulk_insert` ⚠ — Bulk Insert Products
+- `cart_products_bulk_update` ⚠ — Bulk Update Products
 - `cart_products_create_dummy` — Create Dummy Products
 - `cart_products_create` — Create Product
 - `cart_products_delete(product)` ⚠ — Delete Product
@@ -773,7 +773,7 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `cart_settings_save_confirmation` — Save Confirmation Settings
 - `cart_settings_save_module` — Save Module Settings
 - `cart_settings_save_payment_method_design` — Save Payment Method Design
-- `cart_settings_save_payment_method` — Save Payment Method Settings
+- `cart_settings_save_payment_method` ⚠ — Save Payment Method Settings
 - `cart_settings_save_permissions` ⚠ — Save Permissions
 - `cart_settings_save_storage_driver` — Save Storage Driver Settings
 - `cart_settings_save_store` — Save Store Settings
@@ -805,7 +805,7 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `cart_email_notifications_get_digest_settings` — Get Store Digest Settings
 - `cart_email_notifications_save_digest_settings` — Save Store Digest Settings
 - `cart_email_notifications_send_digest_test` — Send Test Digest Email
-- `cart_email_notifications_send_manual_reminder` — Send Manual Reminder
+- `cart_email_notifications_send_manual_reminder` ⚠ — Send Manual Reminder
 
 ### cart_reports — Read-only store analytics: revenue, orders, products, customers, subscriptions, refunds, licenses, and dashboard summaries.
 
@@ -968,7 +968,7 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `cart_licensing_deactivate_site_admin(id)` ⚠ — Deactivate Site (Admin)
 - `cart_licensing_deactivate_site_customer(license_key)` ⚠ — Deactivate Site (Customer)
 - `cart_licensing_delete_license(id)` ⚠ — Delete License
-- `cart_licensing_extend_license_validity(id)` — Extend License Validity
+- `cart_licensing_extend_license_validity(id)` ⚠ — Extend License Validity
 - `cart_licensing_get_customer_license_details(license_key)` — Get Customer License Details
 - `cart_licensing_get_customer_licenses_admin(id)` — Get Customer Licenses (Admin)
 - `cart_licensing_get_license_activations(license_key)` — Get License Activations
@@ -984,20 +984,20 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `cart_licensing_public_get_license_version` — Get License Version
 - `cart_licensing_regenerate_license_key(id)` ⚠ 🔒 — Regenerate License Key
 - `cart_licensing_save_product_license_settings(id)` — Save Product License Settings
-- `cart_licensing_update_license_activation_limit(id)` — Update License Activation Limit
-- `cart_licensing_update_license_status(id)` — Update License Status
+- `cart_licensing_update_license_activation_limit(id)` ⚠ — Update License Activation Limit
+- `cart_licensing_update_license_status(id)` ⚠ — Update License Status
 - `cart_licensing_get_license_site(id)` — Get License Site
 - `cart_licensing_list_license_sites` — List License Sites (paginated)
 
 ### cart_roles — Manage FluentCart shop roles, permissions, and user assignments (FluentCart Pro).
 
-- `cart_roles_assign` — Assign Role
+- `cart_roles_assign` ⚠ — Assign Role
 - `cart_roles_delete_assignment(key)` ⚠ — Delete Role Assignment
 - `cart_roles_get(key)` — Get Role
 - `cart_roles_list_managers` — List Managers (paginated)
 - `cart_roles_list` — List Roles (paginated)
 - `cart_roles_search_users` — Search Users (paginated)
-- `cart_roles_update(key)` — Update Role
+- `cart_roles_update(key)` ⚠ — Update Role
 
 ### cart_order_bumps — Manage checkout order bumps: list, create, update, and delete (FluentCart Pro).
 
@@ -1508,7 +1508,7 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `community_profiles_update(username)` — Update Profile
 - `community_profiles_block(username)` — Block Profile
 - `community_profiles_list_blocked_users(username)` — List Profile Blocked Users (paginated)
-- `community_profiles_change_password(username)` — Change Profile Password
+- `community_profiles_change_password(username)` ⚠ — Change Profile Password
 - `community_profiles_list_comments(username)` — List Profile Comments (paginated)
 - `community_profiles_list_courses(username)` — List Profile Courses (paginated)
 - `community_profiles_follow(username)` — Follow Profile

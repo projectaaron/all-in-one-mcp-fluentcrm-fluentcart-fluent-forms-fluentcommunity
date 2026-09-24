@@ -56,8 +56,28 @@ describe('buildMergedBody', () => {
   });
 
   it('passes the body through untouched when shapes do not line up', () => {
-    expect(buildMergedBody({ something: [1, 2] }, { other: 1 }).strategy).toBe('none');
+    // A wrapper whose inner records carry none of the supplied keys.
+    expect(buildMergedBody({ wrapper: { a: 1 } }, { other: 1 }).strategy).toBe('none');
     expect(buildMergedBody('not a record', { other: 1 }).strategy).toBe('none');
+  });
+
+  it('treats a flat object without an id as the record, so other settings survive', () => {
+    const m = buildMergedBody({ enabled: 'yes', from_name: 'Store', reply_to: 'a@b.c' }, { enabled: 'no' });
+    expect(m.strategy).toBe('record');
+    expect(m.body).toEqual({ enabled: 'no', from_name: 'Store', reply_to: 'a@b.c' });
+  });
+
+  it('keeps the top level as the record when a nested object merely shares a key name', () => {
+    const m = buildMergedBody({ status: 'published', title: 'T', meta: { status: 'x', color: 'red' } }, { status: 'draft' });
+    expect(m.strategy).toBe('record');
+    expect(m.body).toEqual({ status: 'draft', title: 'T', meta: { status: 'x', color: 'red' } });
+  });
+
+  it('unwraps into a nested record with an id when the top level is just a wrapper', () => {
+    const m = buildMergedBody({ status: 'success', data: { id: 5, status: 'draft', title: 'T' } }, { status: 'published' });
+    expect(m.strategy).toBe('unwrapped');
+    expect(m.body).toEqual({ id: 5, status: 'published', title: 'T' });
+    expect(m.toRecordPath('status')).toBe('data.status');
   });
 });
 

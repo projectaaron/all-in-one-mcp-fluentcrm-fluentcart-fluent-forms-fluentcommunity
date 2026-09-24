@@ -54,10 +54,20 @@ describe('tool factory', () => {
   });
 
   it('substitutes id and path_params, URL-encoding values', async () => {
-    const { calls, result } = run({ action: 'move_thing', id: 'a/b', path_params: { target: 9 }, body: { x: 1 } });
+    const { calls, result } = run({ action: 'move_thing', id: 'a b?c#d', path_params: { target: 9 }, body: { x: 1 } });
     await result;
-    expect(calls[0].url).toContain('/things/a%2Fb/move/9');
+    expect(calls[0].url).toContain('/things/a%20b%3Fc%23d/move/9');
     expect(calls[0].method).toBe('POST');
+  });
+
+  it('refuses path values that would change the endpoint (slash, dot segments) without calling the API', async () => {
+    for (const id of ['a/b', '..', '.', '%2e%2e', 'a%2Fb']) {
+      const { calls, result } = run({ action: 'move_thing', id, path_params: { target: 9 }, body: { x: 1 } });
+      const res = await result;
+      expect(res.isError, id).toBe(true);
+      expect(res.content[0].text, id).toContain('not allowed');
+      expect(calls, id).toHaveLength(0);
+    }
   });
 
   it('errors helpfully on missing path params without calling the API', async () => {

@@ -53,6 +53,35 @@ function looseEqual(a: unknown, b: unknown): boolean {
   return String(a) === String(b);
 }
 
+const TRUTHY = new Set(['true', 'yes', '1', 'on']);
+const FALSY = new Set(['false', 'no', '0', 'off', '']);
+function boolish(v: unknown): boolean | undefined {
+  if (typeof v === 'boolean') return v;
+  if (typeof v === 'number') return v === 1 ? true : v === 0 ? false : undefined;
+  if (typeof v === 'string') {
+    const s = v.trim().toLowerCase();
+    return TRUTHY.has(s) ? true : FALSY.has(s) ? false : undefined;
+  }
+  return undefined;
+}
+const idOf = (v: unknown) => (isRec(v) && 'id' in v ? String(v.id) : String(v));
+
+/** Equality that tolerates the normalizations plugins apply on save:
+ *  `true` stored as "yes"/"1", and `[1, 2]` echoed back as `[{id:1}, {id:2}]`.
+ *  Used only to judge whether a supplied value LANDED — diffs stay literal. */
+function sameValue(a: unknown, b: unknown): boolean {
+  if (looseEqual(a, b)) return true;
+  const ba = boolish(a);
+  const bb = boolish(b);
+  if (ba !== undefined && bb !== undefined && typeof a !== typeof b) return ba === bb;
+  if (Array.isArray(a) && Array.isArray(b) && a.length === b.length) {
+    const sa = a.map(idOf).sort();
+    const sb = b.map(idOf).sort();
+    return sa.every((x, i) => x === sb[i]);
+  }
+  return false;
+}
+
 function display(v: unknown): unknown {
   if (typeof v === 'string') return v.length > MAX_DIFF_VALUE ? v.slice(0, MAX_DIFF_VALUE) + `… [${v.length} chars]` : v;
   if (v !== null && typeof v === 'object') {
@@ -103,11 +132,10 @@ export interface MergedBody {
 export function buildMergedBody(baseRaw: unknown, supplied: Rec): MergedBody {
   const identity = (p: string) => p;
   if (!isRec(baseRaw)) return { body: supplied, strategy: 'none', toRecordPath: identity };
+  const asRecord = (): MergedBody => ({ body: deepMerge(baseRaw, supplied) as Rec, strategy: 'record', base: baseRaw, toRecordPath: identity });
 
   // GET returned the record itself (has an id at the top level).
-  if ('id' in baseRaw) {
-    return { body: deepMerge(baseRaw, supplied) as Rec, strategy: 'record', base: baseRaw, toRecordPath: identity };
-  }
+  if ('id' in baseRaw) return asRecord();
 
   // Wrapper-shaped GET ({email: {...}}) with a matching wrapped body.
   const suppliedKeys = Object.keys(supplied);
@@ -121,19 +149,37 @@ export function buildMergedBody(baseRaw: unknown, supplied: Rec): MergedBody {
     return { body, strategy: 'wrapped', base, toRecordPath: identity };
   }
 
-  // Flat body against a wrapper-shaped GET: find the inner record that
-  // carries the supplied fields and hydrate from it.
-  for (const [wrapper, inner] of Object.entries(baseRaw)) {
-    if (isRec(inner) && suppliedKeys.some((k) => k in inner)) {
-      return {
-        body: deepMerge(inner, supplied) as Rec,
-        strategy: 'unwrapped',
-        base: inner,
-        toRecordPath: (p) => `${wrapper}.${p}`,
-      };
-    }
+  // A flat object with no nested records (a settings object, say — no id)
+  // IS the record. Sending only the supplied keys would let a
+  // replace-semantics endpoint wipe every other setting.
+  const nested = Object.entries(baseRaw).filter((e): e is [string, Rec] => isRec(e[1]));
+  if (nested.length === 0) return asRecord();
+
+  // Rank the inner records by how many supplied keys they carry, preferring
+  // one with an id (the actual record) on ties.
+  const candidates = nested
+    .map(([wrapper, inner]) => ({ wrapper, inner, hits: suppliedKeys.filter((k) => k in inner).length, hasId: 'id' in inner }))
+    .filter((c) => c.hits > 0)
+    .sort((a, b) => b.hits - a.hits || Number(b.hasId) - Number(a.hasId));
+  const best = candidates[0];
+  const unwrapped = (c: { wrapper: string; inner: Rec }): MergedBody => ({
+    body: deepMerge(c.inner, supplied) as Rec,
+    strategy: 'unwrapped',
+    base: c.inner,
+    toRecordPath: (p) => `${c.wrapper}.${p}`,
+  });
+
+  const atTop = suppliedKeys.filter((k) => k in baseRaw);
+  if (atTop.length === 0) {
+    // Flat body against a wrapper-shaped GET ({sequence: {...}}).
+    return best ? unwrapped(best) : { body: supplied, strategy: 'none', toRecordPath: identity };
   }
-  return { body: supplied, strategy: 'none', toRecordPath: identity };
+  // Supplied keys exist at the top level too. Unwrap only when a nested
+  // record with an id clearly is the record ({status:"success", data:{id,…}});
+  // otherwise the top level is the record and a nested object merely shares
+  // a key name ({status, title, meta:{status}}).
+  if (best && best.hasId && best.hits >= atTop.length) return unwrapped(best);
+  return asRecord();
 }
 
 export interface Verification {
@@ -171,19 +217,23 @@ export function verifyWrite(
 
   let verifiable = 0;
   let landed = 0;
+  let wantedChange = false;
   for (const { supplied, record } of suppliedLeaves) {
     const want = getPath(suppliedBody, supplied);
     const got = getPath(afterRaw, record);
     if (got === undefined && !(isRec(afterRaw) && record.split('.')[0] in afterRaw)) continue; // not echoed by the API — unverifiable
     verifiable++;
-    if (looseEqual(want, got)) {
+    // Asking for the value the record already had is not a change request —
+    // a no-op write the plugin normalized ("yes" for true) is not a rejection.
+    if (!sameValue(want, getPath(beforeRaw, record))) wantedChange = true;
+    if (sameValue(want, got)) {
       landed++;
     } else {
       warnings.push(`${record}: you sent ${JSON.stringify(display(want))} but the record now has ${JSON.stringify(display(got))}`);
     }
   }
 
-  const rejected = verifiable > 0 && landed === 0 && Object.keys(changed).length === 0;
+  const rejected = verifiable > 0 && wantedChange && landed === 0 && Object.keys(changed).length === 0;
   return { changed, warnings, rejected };
 }
 

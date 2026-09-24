@@ -27,7 +27,7 @@ community.** Read the notes below before exposing it anywhere.
   built-in rate limit — put one at the edge (Cloudflare rule, nginx
   `limit_req`) if the endpoint is reachable from the open internet.
 - **Keep your MCP client on "ask" for writes.** The server annotates every tool
-  honestly (`readOnlyHint`, `destructiveHint`) and gates 203 destructive
+  honestly (`readOnlyHint`, `destructiveHint`) and gates 230 destructive
   operations behind `confirm: true` — including every operation that installs
   or activates plugin code, grants a user manager rights or permissions, or
   mints an API key — but the human approval prompt is your client's. Twelve
@@ -38,18 +38,30 @@ community.** Read the notes below before exposing it anywhere.
   is written by other people and reaches your assistant's context. A hostile
   note can ask the assistant to call a tool. The confirm gate, the locked
   list and your client's approval prompt are the defence — keep them on.
+  The gates are keyed on the endpoint actually reached, not just the tool
+  name: path values that would reroute a call (`.`/`..` segments, slashes,
+  or a sibling route's literal segment such as `do-bulk-action`) are
+  refused, and so is WordPress's `_method` method-override query key. The
+  lock list applies to every tool, including the hand-written helpers and
+  the media tools, and names that match no tool are reported at startup and
+  in `support_report`.
 - **Media sideloading (`wp_media_upload_from_url`)** fetches a URL the caller
   supplies. IPv4 and IPv6 literals in private, loopback, link-local, CGNAT,
   multicast and cloud-metadata ranges are refused (including IPv4-mapped and
-  NAT64 forms), as are `localhost`, `.internal`, `.local` and wildcard-DNS
-  metadata aliases; redirects are followed by hand and every hop is
-  re-checked; the body is streamed and aborted above 15 MB; the site
-  credentials are never sent to that URL. **Known limit:** hostnames are not
-  DNS-resolved before fetching, so a public name that resolves to a private
-  address (attacker-controlled DNS) is not caught. If the server runs next to
-  sensitive internal services, lock the tool
+  NAT64, 6to4 and Teredo forms), as are `localhost`, `.internal`, `.local`
+  and wildcard-DNS metadata aliases, with or without a trailing dot. On
+  Node, hostnames are DNS-resolved and refused if any address is private;
+  redirects are followed by hand and every hop is re-checked; the body is
+  streamed and aborted above 15 MB; only raster images (PNG, JPEG, GIF,
+  WebP, AVIF) are accepted — never SVG — and the stored file extension
+  comes from the verified content type; the site credentials are never sent
+  to that URL. **Known limit:** the address is checked before the fetch, not
+  pinned for it, so a DNS-rebinding host that answers differently between
+  the two lookups can still reach an internal address. If the server runs
+  next to sensitive internal services, lock the tool
   (`FLUENT_LOCKED_TOOLS=default,wp_media_upload_from_url`) or run it in an
-  egress-restricted network.
+  egress-restricted network. (Cloudflare Workers cannot reach private
+  networks at all.)
 - **Some read tools return stored third-party secrets** by design — payment
   gateway keys (`cart_settings_get_payment_method`), storage-driver
   credentials, REST keys (`crm_settings_get_rest_keys`), review-platform
@@ -60,8 +72,8 @@ community.** Read the notes below before exposing it anywhere.
 ## Reporting a vulnerability
 
 Please do **not** open a public issue for security problems. Use GitHub's
-private vulnerability reporting on this repository, or contact the maintainer
-privately through [upfluent.io](https://upfluent.io). Include the affected
+private vulnerability reporting on this repository, or email
+**support@upfluent.io** with "Security" in the subject. Include the affected
 file/tool, a reproduction, and the impact. You will
 get an acknowledgement within a few days and credit in the changelog once
 fixed, if you want it.

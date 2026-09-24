@@ -107,6 +107,14 @@ export function isBlockedIPv6(host: string): boolean {
   if ((first & 0xffc0) === 0xfe80) return true; // fe80::/10 link-local
   if ((first & 0xff00) === 0xff00) return true; // ff00::/8 multicast
   if (first === 0x2001 && h.startsWith('2001:db8')) return true; // documentation
+  if (first === 0x2001 && /^2001:0*:/.test(h)) return true; // 2001::/32 Teredo (embeds an IPv4 address)
+  if (first === 0x2002) {
+    // 2002::/16 6to4 — the next 32 bits are an IPv4 address
+    const [, a = '0', b = '0'] = h.split(':');
+    const hi = Number.parseInt(a, 16);
+    const lo = Number.parseInt(b, 16);
+    return !Number.isFinite(hi) || !Number.isFinite(lo) || isBlockedIPv4(`${hi >> 8}.${hi & 255}.${lo >> 8}.${lo & 255}`);
+  }
   return (first & 0xe000) !== 0x2000; // anything outside 2000::/3 global unicast
 }
 
@@ -126,7 +134,9 @@ export function assertSafeSourceUrl(raw: string): URL {
     throw new Error(`source_url must be http(s), got ${url.protocol}`);
   }
   if (url.username || url.password) throw new Error('source_url may not embed credentials');
-  const host = url.hostname.toLowerCase();
+  // A trailing dot (fully-qualified form, "localhost.") names the same host
+  // but slipped past every suffix check below.
+  const host = url.hostname.toLowerCase().replace(/\.+$/, '');
   if (!host) throw new Error('source_url has no host');
   if (
     host === 'localhost' ||
@@ -146,14 +156,45 @@ export function assertSafeSourceUrl(raw: string): URL {
   return url;
 }
 
+/** Raster images only. SVG (and any other image/* type) can carry script,
+ *  and an admin credential may be allowed to store it on the site's origin. */
+const RASTER_EXTENSIONS: Record<string, string> = {
+  'image/png': 'png',
+  'image/jpeg': 'jpg',
+  'image/gif': 'gif',
+  'image/webp': 'webp',
+  'image/avif': 'avif',
+};
+
+/** The extension always comes from the verified content type — a caller's
+ *  "photo.html" is stored as "photo.png" when the bytes are a PNG. */
 function filenameFor(url: URL, explicit: string | undefined, contentType: string): string {
   let name = explicit?.trim() || url.pathname.split('/').filter(Boolean).pop() || '';
   name = name.split('?')[0].replace(/[^A-Za-z0-9._-]/g, '_').slice(0, 120);
-  if (!name || !name.includes('.')) {
-    const ext = contentType.split('/')[1]?.split('+')[0] || 'jpg';
-    name = `${name || 'upload'}.${ext}`;
+  const stem = name.replace(/\.[^.]*$/, '').replace(/^\.+/, '') || 'upload';
+  return `${stem}.${RASTER_EXTENSIONS[contentType] ?? 'jpg'}`;
+}
+
+/** On Node, resolve the host and refuse when any address is private — a
+ *  public-looking name (localtest.me, a rebinding service) pointing inward
+ *  is otherwise invisible to the literal checks. Cloudflare Workers cannot
+ *  reach private networks at all, and have no resolver to ask, so the check
+ *  is skipped there. Resolution failures are left to the fetch itself. */
+async function assertResolvesPublic(url: URL): Promise<void> {
+  const g = globalThis as { navigator?: { userAgent?: string }; process?: { versions?: { node?: string } } };
+  if (!g.process?.versions?.node || /Cloudflare-Workers/i.test(g.navigator?.userAgent ?? '')) return;
+  const host = url.hostname.replace(/^\[|\]$/g, '').replace(/\.+$/, '');
+  if (/^[\d.]+$/.test(host) || host.includes(':')) return; // IP literal — already checked
+  let addresses: Array<{ address: string }>;
+  try {
+    const dns = await import('node:dns/promises');
+    addresses = await dns.lookup(host, { all: true, verbatim: true });
+  } catch {
+    return;
   }
-  return name;
+  if (addresses.some(({ address }) => isBlockedIPv4(address) || isBlockedIPv6(address))) {
+    throw new Error('source_url resolves to a private, loopback or link-local address');
+  }
 }
 
 function err(text: string) {
@@ -214,6 +255,7 @@ async function runUploadFromUrl(
   args: { source_url: string; filename?: string; title?: string; alt_text?: string } & Shaping
 ) {
   let source = assertSafeSourceUrl(args.source_url);
+  await assertResolvesPublic(source);
   let fetched = await client.fetchUrl(source.toString());
   // Follow redirects by hand so every hop is re-validated — a public URL
   // must not be allowed to bounce the server onto a private address.
@@ -221,13 +263,16 @@ async function runUploadFromUrl(
     const location = fetched.headers.get('location');
     if (!location) break;
     source = assertSafeSourceUrl(new URL(location, source).toString());
+    await assertResolvesPublic(source);
     fetched = await client.fetchUrl(source.toString());
   }
   if (fetched.status >= 300 && fetched.status < 400) return err('source_url redirected too many times');
   if (!fetched.ok) return err(`Fetching source_url failed: HTTP ${fetched.status} from ${source.hostname}`);
   const contentType = (fetched.headers.get('content-type') ?? '').split(';')[0].trim().toLowerCase();
-  if (!contentType.startsWith('image/')) {
-    return err(`source_url returned "${contentType || 'unknown'}" — only image/* content can be uploaded with this tool.`);
+  if (!(contentType in RASTER_EXTENSIONS)) {
+    return err(
+      `source_url returned "${contentType || 'unknown'}" — only image/* raster images (${Object.keys(RASTER_EXTENSIONS).join(', ')}) can be uploaded with this tool. SVG is refused because it can carry script.`
+    );
   }
   const declared = Number(fetched.headers.get('content-length') ?? '');
   if (Number.isFinite(declared) && declared > MAX_BYTES) {

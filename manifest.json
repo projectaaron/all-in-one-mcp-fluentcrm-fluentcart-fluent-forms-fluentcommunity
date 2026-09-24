@@ -2,11 +2,12 @@
   "manifest_version": "0.3",
   "name": "fluentmcp",
   "display_name": "All-In-One MCP for Fluent Suite",
-  "version": "1.2.6",
+  "version": "1.3.0",
   "description": "Full control of FluentCRM, FluentCart, WP Social Ninja, Fluent Forms, and FluentCommunity on your WordPress site: contacts, campaigns, orders, products, reviews, forms, spaces, courses, and more.",
   "long_description": "Gives your AI assistant create/read/update/delete control over FluentCRM (email marketing & CRM), FluentCart (e-commerce), WP Social Ninja (reviews, social feeds, chat widgets), Fluent Forms (forms & submissions) and FluentCommunity (spaces, feeds, chat, courses) by WPManageNinja — 1,290 documented REST endpoints, each as its own individualized tool (crm_contacts_list, cart_orders_refund, social_reviews_list, forms_submissions_list, community_spaces_list, …), with a built-in tool_map index so the assistant finds the right tool in one call. Safe by default: every destructive tool (deletes, refunds, cancels, mass-sends, resets) is annotated and refuses to run without explicit confirmation. One WordPress Application Password runs everything; run the verify_setup tool after installing to check your connection. Prefer a small tool list? Set the Tool Surface option to \"grouped\".",
   "author": {
-    "name": "projectaaron",
+    "name": "upfluent.io",
+    "email": "support@upfluent.io",
     "url": "https://upfluent.io"
   },
   "repository": {
@@ -15,7 +16,7 @@
   },
   "homepage": "https://upfluent.io",
   "documentation": "https://github.com/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity#readme",
-  "support": "https://github.com/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity/issues",
+  "support": "https://upfluent.io/support/",
   "license": "MIT",
   "icon": "icon.png",
   "keywords": [
@@ -49,26 +50,26 @@
     "site_url": {
       "type": "string",
       "title": "WordPress Site URL",
-      "description": "Your WordPress site root, e.g. https://example.com (not the /wp-admin URL).",
+      "description": "Your site's home page address including https://, e.g. https://example.com (not the /wp-admin address).",
       "required": true
     },
     "api_username": {
       "type": "string",
       "title": "WordPress Username",
-      "description": "The WordPress admin user the server acts as (needs manager permissions for the Fluent products you use).",
+      "description": "Your WordPress login name or email — a user who can manage the Fluent plugins you use.",
       "required": true
     },
     "api_password": {
       "type": "string",
       "title": "Application Password",
-      "description": "Create under WP Admin → Users → your user → Application Passwords → Add New. One password runs every product's tools.",
+      "description": "In WordPress go to Users → Profile, scroll to Application Passwords, type a name such as Claude, click Add New Application Password and paste the password shown here (spaces are fine). One password runs every product's tools.",
       "sensitive": true,
       "required": true
     },
     "tool_mode": {
       "type": "string",
       "title": "Tool Surface",
-      "description": "individual (default): one tool per operation, ~1,200 small tools plus a tool_map index. grouped: the legacy ~70-tool surface (one tool per area, an action parameter picks the operation) for clients that struggle with large tool lists.",
+      "description": "individual (default): one tool per operation — 1,299 small tools plus a tool_map index. grouped: about 80 tools (one per area, an action parameter picks the operation) for clients that struggle with large tool lists.",
       "default": "individual",
       "required": false
     }
