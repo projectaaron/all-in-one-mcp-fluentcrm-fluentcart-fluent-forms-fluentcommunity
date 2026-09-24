@@ -104,10 +104,19 @@ export function createRemoteServer(config: ServerConfig, token: string): Server 
 
   return createServer(async (req, res) => {
     for (const [k, v] of Object.entries(CORS_HEADERS)) res.setHeader(k, v);
-    const url = new URL(req.url ?? '/', `http://${req.headers.host ?? 'localhost'}`);
-    const route = parseMcpPath(url.pathname);
-
     try {
+      // Fixed base, inside the try: a malformed Host header (or request
+      // target) used to throw here — outside any handler — and an
+      // unauthenticated request could take the whole process down.
+      let url: URL;
+      try {
+        url = new URL(req.url ?? '/', 'http://localhost');
+      } catch {
+        json(res, 400, rpcError(-32600, 'Bad request target'));
+        return;
+      }
+      const route = parseMcpPath(url.pathname);
+
       if (req.method === 'OPTIONS') {
         res.writeHead(204).end();
         return;

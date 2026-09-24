@@ -84,6 +84,10 @@
     "admin/add-manager": {
       "destructive": true,
       "bodyNote": "Privilege/code change: Grants a WordPress user FluentCommunity manager access. Requires confirm:true."
+    },
+    "profile/change-profile-password": {
+      "destructive": true,
+      "bodyNote": "Account security: changes a member's password. Requires confirm:true."
     }
   }
 }

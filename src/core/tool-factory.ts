@@ -17,6 +17,7 @@ import {
 } from './merge.js';
 import { shapeResponse, textSummary } from './shape.js';
 import { classifyResult, type DiagnosticsLog } from './support.js';
+import { METHOD_OVERRIDE_REFUSAL, methodOverrideKey, siblingRouteFor, unsafePathValue, type RouteRef } from './path-safety.js';
 import type { EndpointDef, ToolSpec } from './types.js';
 
 const PLACEHOLDER_RE = /\{([^}]+)\}/g;
@@ -99,6 +100,9 @@ export interface ToolRuntime {
   canonicalNames?: Record<string, string>;
   /** Recent-call log feeding support_report. Optional so tests can omit it. */
   diagnostics?: DiagnosticsLog;
+  /** Every route this product serves — used to refuse a path value that
+   *  would land on a sibling route (see path-safety.ts). */
+  routes?: readonly RouteRef[];
 }
 
 export function buildInputShape(spec: ToolSpec) {
@@ -228,12 +232,18 @@ export async function withDiagnostics<T extends ToolResult>(
   } catch (e) {
     result = err(`${label} failed unexpectedly: ${e instanceof Error ? e.message : String(e)}`) as T;
   }
+  const classified = classifyResult(result);
+  // Error text names the filled-in path (ids, license keys) — log the
+  // endpoint template instead, as the record's endpoint field promises.
+  if (classified.message && def) {
+    classified.message = classified.message.replace(/ on (GET|POST|PUT|PATCH|DELETE|HEAD) \S+?:/, ` on ${def.method.toUpperCase()} ${def.path}:`);
+  }
   runtime.diagnostics.record({
     at: new Date().toISOString(),
     tool: label,
     endpoint: def ? `${def.method.toUpperCase()} ${def.path}` : undefined,
     ms: Date.now() - started,
-    ...classifyResult(result),
+    ...classified,
   });
   return result;
 }
@@ -293,8 +303,30 @@ export async function executeAction(
         `Pass the primary one as id (or all of them in path_params). Endpoint: ${def.method} ${def.path}`
     );
   }
+  for (const p of placeholders) {
+    const why = unsafePathValue(supplied[p]);
+    if (why) {
+      return err(`Refused (nothing was sent): ${label} path parameter ${p}=${JSON.stringify(String(supplied[p]))} is not allowed — ${why}.`);
+    }
+  }
+  const overrideKey = methodOverrideKey(args.query);
+  if (overrideKey) return err(`Refused (nothing was sent): ${label} query key "${overrideKey}" — ${METHOD_OVERRIDE_REFUSAL}.`);
+
   let path = def.path;
   for (const p of placeholders) path = path.replaceAll(`{${p}}`, encodeURIComponent(String(supplied[p])));
+
+  // A value equal to a sibling route's literal segment would reach THAT
+  // endpoint (e.g. order_id "do-bulk-action"), without its lock or confirm.
+  if (runtime.routes) {
+    const sibling = siblingRouteFor(def, path, runtime.routes);
+    if (sibling) {
+      return err(
+        `Refused (nothing was sent): ${label} with those path values resolves to ${sibling.method} ${sibling.path}` +
+          `${sibling.tool ? `, which is the ${sibling.tool} tool` : ''} — a different endpoint. ` +
+          `Call that tool directly if that is what you meant; otherwise check the id you passed.`
+      );
+    }
+  }
 
   // Wrapper-key endpoints: verify the required top-level body keys before
   // calling — the plugin silently ignores flat fields and then fails with an
@@ -317,7 +349,9 @@ export async function executeAction(
   // Validate the body against what the plugin advertises BEFORE writing, and
   // read the stored record back AFTER, so the caller never trusts a bare 200.
   let readbackPath: string | undefined;
-  if (def.readback && isWrite && !dryRun) {
+  // Validation runs in dry runs too (it is a read), so a dry run never
+  // reports ok for a body the real call would refuse.
+  if (def.readback && isWrite) {
     readbackPath = def.readback.path;
     for (const p of placeholders) readbackPath = readbackPath.replaceAll(`{${p}}`, encodeURIComponent(String(supplied[p])));
     const allow = def.readback.allow;
@@ -375,10 +409,22 @@ export async function executeAction(
         }
         notes.push('pre-write read failed — post-write verification unavailable');
       }
+      if (beforeRaw === undefined && args.if_unmodified_since) {
+        return err(
+          `Refused (nothing was changed): ${label} could not read the current record, so the if_unmodified_since precondition cannot be checked. ` +
+            `Retry once the record is readable, or drop if_unmodified_since to write without it.`
+        );
+      }
       if (beforeRaw !== undefined) {
         if (args.if_unmodified_since) {
           const current = recordUpdatedAt(beforeRaw);
-          if (current && current !== args.if_unmodified_since) {
+          if (!current) {
+            return err(
+              `Refused (nothing was changed): ${label} cannot check if_unmodified_since — the current record has no updated_at to compare. ` +
+                `Drop if_unmodified_since to write without the precondition.`
+            );
+          }
+          if (current !== args.if_unmodified_since) {
             return err(
               `Refused (nothing was changed): ${label} precondition failed — the record's updated_at is now "${current}", not "${args.if_unmodified_since}". ` +
                 `Someone else modified it since you read it. Re-read the record and retry with the fresh timestamp.`
@@ -387,9 +433,18 @@ export async function executeAction(
         }
         merged = buildMergedBody(beforeRaw, args.body as Record<string, unknown>);
         if (!wantReplace) {
+          if (merged.strategy === 'none' && !dryRun) {
+            // Sending a partial body as-is to a replace-semantics endpoint
+            // wipes every omitted field — only on explicit request.
+            return err(
+              `Refused (nothing was changed): ${label} could not line your partial body up with the current record's shape to merge it safely. ` +
+                `Sending it as-is may clear every field you omitted. Read the record, send the complete body with mode:"replace" and confirm:true, ` +
+                `or use dry_run:true to see the record shape.`
+            );
+          }
           bodyToSend = merged.body;
           if (merged.strategy === 'none') {
-            notes.push('merge unavailable — the body shape did not line up with the record; body sent as supplied');
+            notes.push('merge unavailable — the body shape did not line up with the record; a real call will be refused unless mode:"replace" with confirm:true');
           }
         }
       }

@@ -84,6 +84,29 @@ const pair = (env: NodeJS.ProcessEnv, prefix: string): ProductCredentials | unde
   return username && password ? { username, password } : undefined;
 };
 
+/** Clean up the site address people actually type or paste: add https://
+ *  when the scheme is missing ("mysite.com"), drop a pasted admin/login/
+ *  REST path, the query and fragment, and any user:password@ — which would
+ *  otherwise end up verbatim in error text shown to the model. Anything that
+ *  still isn't a URL is returned trimmed, so the connection check can say so. */
+export function normalizeSiteUrl(raw: string | undefined): string | undefined {
+  let v = raw?.trim();
+  if (!v) return undefined;
+  if (!/^[a-z][a-z0-9+.-]*:\/\//i.test(v)) v = `https://${v}`;
+  let url: URL;
+  try {
+    url = new URL(v);
+  } catch {
+    return v.replace(/\/+$/, '');
+  }
+  url.username = '';
+  url.password = '';
+  url.search = '';
+  url.hash = '';
+  url.pathname = url.pathname.replace(/\/(wp-admin|wp-login\.php|wp-json)(\/.*)?$/i, '');
+  return url.toString().replace(/\/+$/, '');
+}
+
 /** Read configuration for the given env prefixes (one per product). */
 export function loadConfig(envPrefixes: string[], env: NodeJS.ProcessEnv = process.env): ServerConfig {
   const shared = pair(env, 'FLUENT');
@@ -92,7 +115,7 @@ export function loadConfig(envPrefixes: string[], env: NodeJS.ProcessEnv = proce
     credentials[prefix] = pair(env, prefix) ?? shared;
   }
   return {
-    siteUrl: env.FLUENT_SITE_URL?.trim().replace(/\/+$/, '') || undefined,
+    siteUrl: normalizeSiteUrl(env.FLUENT_SITE_URL),
     timeoutMs: int(env.FLUENT_HTTP_TIMEOUT_MS, 30000),
     maxRetries: int(env.FLUENT_HTTP_MAX_RETRIES, 3, 0), // 0 disables retries
     credentials,

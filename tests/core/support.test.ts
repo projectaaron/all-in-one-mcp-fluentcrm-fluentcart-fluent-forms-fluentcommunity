@@ -24,7 +24,7 @@ const prefixes = PRODUCTS.map((p) => p.envPrefix);
 
 const env = {
   FLUENT_SITE_URL: 'https://shop.example-store.com/blog',
-  FLUENT_API_USERNAME: 'aaron',
+  FLUENT_API_USERNAME: 'project',
   FLUENT_API_PASSWORD: 'abcd EFGH 1234 ijkl MNOP 5678',
   FLUENTCRM_API_USERNAME: 'crm-manager',
   FLUENTCRM_API_PASSWORD: 'crm-secret-pass',
@@ -36,10 +36,10 @@ describe('makeRedactor', () => {
   it('masks the site host, usernames and passwords wherever they appear', () => {
     const out = redact(
       'FluentCRM API error [401 rest_forbidden] on GET https://shop.example-store.com/blog/wp-json/fluent-crm/v2/tags: ' +
-        'user aaron / crm-manager with abcd EFGH 1234 ijkl MNOP 5678 and crm-secret-pass'
+        'user Project / crm-manager with abcd EFGH 1234 ijkl MNOP 5678 and crm-secret-pass'
     );
     expect(out).not.toContain('example-store');
-    expect(out).not.toContain('aaron');
+    expect(out.toLowerCase()).not.toContain('project');
     expect(out).not.toContain('crm-manager');
     expect(out).not.toContain('crm-secret-pass');
     expect(out).not.toContain('abcd EFGH');
@@ -63,8 +63,8 @@ describe('makeRedactor', () => {
     expect(out).toContain('[token]');
   });
 
-  it('masks usernames as whole words only, so the issues URL survives a user called "aaron"', () => {
-    const out = redact('open https://github.com/projectaaron/x/issues/new as aaron (aaron@x.io) — /author/aaron/');
+  it('masks usernames as whole words only, so the issues URL survives a user called "project"', () => {
+    const out = redact('open https://github.com/projectaaron/x/issues/new as project (project@x.io) — /author/project/');
     expect(out).toContain('github.com/projectaaron/x/issues/new');
     expect(out).toContain('as [redacted] ([email]) — /author/[redacted]/');
   });
@@ -72,6 +72,23 @@ describe('makeRedactor', () => {
   it('leaves long tool names and ordinary text alone', () => {
     const text = 'cart_customer_portal_get_transaction_billing_address failed: Endpoint not found — is FluentCart installed?';
     expect(redact(text)).toBe(text);
+  });
+
+  it('masks the bare hostname when the site URL has a port, the apex of a www host, and %40 emails', () => {
+    const r = makeRedactor(loadConfig(prefixes, { ...env, FLUENT_SITE_URL: 'https://www.shop.example.com:8443' } as NodeJS.ProcessEnv));
+    const out = r('getaddrinfo ENOTFOUND www.shop.example.com; apex shop.example.com; mail jane%40doe.com');
+    expect(out).not.toContain('shop.example.com');
+    expect(out).not.toContain('doe.com');
+    expect(out).toContain('[email]');
+  });
+
+  it('masks an Application Password written without its spaces', () => {
+    expect(redact('pw=abcdEFGH1234ijklMNOP5678')).not.toContain('abcdEFGH1234');
+  });
+
+  it('does not shred the report when a password is very short', () => {
+    const r = makeRedactor(loadConfig(prefixes, { FLUENT_SITE_URL: 'https://x.example', FLUENT_API_USERNAME: 'u', FLUENT_API_PASSWORD: 'p' } as NodeJS.ProcessEnv));
+    expect(r('https://[site] help spelling; pw p')).toBe('https://[site] help spelling; pw [redacted]');
   });
 
   it('works without a site URL or credentials', () => {
@@ -159,7 +176,7 @@ describe('support_report', () => {
     const { fetchImpl } = mockFetch((req) =>
       req.url.includes('_fields=namespaces')
         ? { status: 200, body: { namespaces: ['wp/v2', 'fluent-crm/v2'] } }
-        : { status: 401, body: { code: 'rest_not_logged_in', message: 'Sorry, you are not allowed — user aaron at https://shop.example-store.com' } }
+        : { status: 401, body: { code: 'rest_not_logged_in', message: 'Sorry, you are not allowed — user project at https://shop.example-store.com' } }
     );
     const client = makeClient(fetchImpl, { credentials: { username: 'crm-manager', password: 'crm-secret-pass' }, siteUrl: config.siteUrl! });
     const entries: ProductEntry[] = [
@@ -193,9 +210,9 @@ describe('support_report', () => {
     expect(md).toMatch(/\| crm_tags\.list_tags \| GET \/tags \| 401 \| error \(rest_not_logged_in\) \|/);
 
     // …but nothing identifying leaks, not even through the upstream error text.
-    // (the repository owner in the issues URL is the one legitimate "aaron")
+    // (the repository owner in the issues URL is the one legitimate "project")
     const outsideUrl = md.replaceAll('github.com/projectaaron/', '');
-    for (const secret of ['example-store', 'aaron', 'crm-manager', 'crm-secret-pass', 'abcd EFGH']) {
+    for (const secret of ['example-store', 'project', 'crm-manager', 'crm-secret-pass', 'abcd EFGH']) {
       expect(outsideUrl).not.toContain(secret);
     }
   });
@@ -210,6 +227,9 @@ describe('support_report', () => {
     expect(md).toContain('plain HTTP');
     expect(md).toContain('No tool calls yet in this session');
     expect(md).toContain('FluentCRM: not configured (missing');
+    // The contact address is ours, not the user's — it must not be redacted.
+    expect(md).toContain('support@upfluent.io');
+    expect(md).toContain('https://upfluent.io/support/');
   });
 
   it('flags a missing site URL and honours the calls limit', async () => {
