@@ -29,17 +29,18 @@ keep and keeps working.
 
 == Install (Claude Desktop, about two minutes) ==
 
-1. In WordPress go to Users -> Profile, scroll to Application Passwords,
-   type a name such as "Claude", click Add New Application Password, and
-   copy the password shown (it is shown once; the spaces are fine).
-   If you can, create a separate WordPress user just for this, give it
-   only the Fluent permissions it needs, and create the password on that
-   user -- you can revoke it in one click.
+1. In WordPress create a separate user just for Claude (recommended):
+   Users -> Add New User, username such as "claude", role Administrator.
+   Then Users -> All Users, edit that user, scroll to Application
+   Passwords, type a name such as "Claude", click Add New Application
+   Password, and copy the password shown (it is shown once; the spaces
+   are fine). If you ever need to cut off access, revoke that password or
+   delete the user -- your own login is untouched.
 2. In Claude Desktop open Settings -> Extensions, drag the .mcpb file into
    the window, and click Install.
 3. Fill in the form: your site URL including https:// (the home page
    address, e.g. https://example.com -- not the /wp-admin address), your
-   WordPress username, and the Application Password.
+   Claude user's username, and its Application Password.
 4. Start a new chat and ask Claude: "Run verify_setup." You should see a
    check mark next to each Fluent plugin you have. Plugins you don't have
    show as not_installed and are simply skipped.
