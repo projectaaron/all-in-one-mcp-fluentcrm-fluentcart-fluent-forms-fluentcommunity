@@ -1,5 +1,85 @@
 # Changelog
 
+## 1.3.0 — 2026-09-24
+
+Security and correctness release from a full audit. **Upgrade recommended.**
+
+### Security
+- **Path values can no longer reroute a call to another endpoint (high).**
+  A `.` or `..` path parameter survived URL encoding and was collapsed by URL
+  parsing, so an unlocked tool could reach a locked one — for example
+  `crm_sequences_remove_subscribers` with `id: ".."` sent the locked
+  audience-wide `DELETE /subscribers`. Such values, slashes, and values that
+  land on a sibling route's literal segment (`order_id: "do-bulk-action"`
+  reaching the bulk-action endpoint without its confirm gate) are refused,
+  naming the tool that actually serves that route.
+- **WordPress's `_method` override is refused (high).** A caller-supplied
+  `?_method=DELETE` could turn a harmless POST into a DELETE on a locked
+  route. The key is refused in every spelling PHP normalizes, in the tools
+  and again in the HTTP client as a backstop.
+- **The Node remote server no longer crashes on a malformed Host header
+  (high).** One unauthenticated request could exit the process.
+- **Locks cover every tool.** The hand-written sequence helper and the
+  wp_media tools now honour `FLUENT_LOCKED_TOOLS`; lock names that match no
+  tool are reported at startup and in `support_report`.
+- **Media sideloading:** trailing-dot hostnames (`localhost.`) no longer
+  slip past the block list; hostnames are DNS-resolved on Node and refused
+  when private; 6to4 and Teredo addresses are checked; only raster images
+  are accepted (never SVG), with the extension taken from the real type.
+- **Worker:** request bodies capped at 4 MB, batches at 32 messages, and
+  duplicate request ids rejected.
+- **Site URL:** `user:password@`, query strings and pasted `/wp-admin`,
+  `/wp-login.php` or `/wp-json` paths are stripped, and `https://` is added
+  when missing — credentials in the URL can no longer leak into error text.
+- **support_report redaction:** also masks the bare hostname when the URL
+  has a port, the apex of a `www.` host, usernames in any case, an
+  Application Password written without spaces, and `%40`-encoded emails; the
+  call log records endpoint templates instead of filled-in paths.
+- **27 more operations need `confirm: true` (230 in total):** role and
+  permission changes, a member password change, the FluentCRM plugin
+  installers, marking an order paid or moving it to another customer, bulk
+  product writes, license status/limit/expiry changes, contact imports,
+  reconfiguring a payment method, and one-off emails or SMS to a customer.
+- CI and deploy checkouts no longer persist the Git token, and the Worker
+  deploys only from `main` or a release tag.
+- Dev dependencies updated (`npm audit fix`); production dependencies have
+  no known vulnerabilities.
+
+### Fixes
+- Merge mode no longer silently acts as replace: a settings object without
+  an `id` is merged as a record, and a body that can't be lined up with the
+  record is refused unless `mode:"replace"` with `confirm:true`.
+- `if_unmodified_since` is refused when it can't be checked, instead of
+  being skipped while the write goes ahead.
+- Writes never follow redirects (a 301 turned a POST into a GET that
+  reported success); the timeout now covers the response body; a timed-out
+  write says it may have been applied rather than "could not reach the
+  site".
+- Dry runs validate integration names against the site's registry, so they
+  no longer report ok for a body the real call refuses.
+- A write the plugin normalized (`true` stored as `"yes"`, `[1]` echoed as
+  `[{id:1}]`) is no longer reported as ignored.
+- Summaries project the real record instead of a wrapper that shares a
+  field name; a single record with a list beside it is no longer counted as
+  a list; a pagination total of `"0"` is kept.
+- `verify_setup` reports Fluent plugins that aren't installed as ⏭️
+  `not_installed` (skipped) instead of ❌, and says so when no plugin
+  answers at all.
+
+### Docs
+- README: install steps for non-technical users (unzip, click Install,
+  https://), prerequisites, where to find Application Passwords,
+  troubleshooting for disabled Application Passwords, stripped
+  Authorization headers and Plain permalinks, a support email, and correct
+  tool counts. The remote connector needs **Cloudflare Workers Paid** — a
+  live deployment measured a 95 ms median CPU per request against the Free
+  plan's 10 ms limit.
+- The extension form, the bundled readme, SECURITY.md and REMOTE.md
+  updated to match; contacts now point to support@upfluent.io and
+  upfluent.io/support.
+- The extension bundle no longer ships a vitest cache, the readme template
+  or the Worker build.
+
 ## 1.2.6 — 2026-09-23
 
 - **Freemius removed from the release pipeline.** Freemius is no longer part

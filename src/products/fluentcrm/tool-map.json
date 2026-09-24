@@ -235,6 +235,62 @@
     },
     "export/export-contacts-page-get": {
       "toolName": "crm_utilities_export_contacts_get"
+    },
+    "contacts/bulk-add-update-contacts": {
+      "destructive": true,
+      "bodyNote": "Bulk import: creates or overwrites many contacts at once. Requires confirm:true."
+    },
+    "contacts/send-contact-custom-email": {
+      "destructive": true,
+      "bodyNote": "Sends a message to a real customer that cannot be recalled. Requires confirm:true."
+    },
+    "sms/resend-sms-message": {
+      "destructive": true,
+      "bodyNote": "Sends a message to a real customer that cannot be recalled. Requires confirm:true."
+    },
+    "sms/send-subscriber-custom-sms": {
+      "destructive": true,
+      "bodyNote": "Sends a message to a real customer that cannot be recalled. Requires confirm:true."
+    },
+    "settings/install-fluent-boards": {
+      "destructive": true,
+      "bodyNote": "Code change: installs and activates a plugin on the site. Requires confirm:true."
+    },
+    "settings/install-fluent-booking": {
+      "destructive": true,
+      "bodyNote": "Code change: installs and activates a plugin on the site. Requires confirm:true."
+    },
+    "settings/install-fluent-cart": {
+      "destructive": true,
+      "bodyNote": "Code change: installs and activates a plugin on the site. Requires confirm:true."
+    },
+    "settings/install-fluent-community": {
+      "destructive": true,
+      "bodyNote": "Code change: installs and activates a plugin on the site. Requires confirm:true."
+    },
+    "settings/install-fluent-form": {
+      "destructive": true,
+      "bodyNote": "Code change: installs and activates a plugin on the site. Requires confirm:true."
+    },
+    "settings/install-fluent-smtp": {
+      "destructive": true,
+      "bodyNote": "Code change: installs and activates a plugin on the site. Requires confirm:true."
+    },
+    "settings/install-fluent-support": {
+      "destructive": true,
+      "bodyNote": "Code change: installs and activates a plugin on the site. Requires confirm:true."
+    },
+    "import/import-csv-contacts": {
+      "destructive": true,
+      "bodyNote": "Bulk import: creates or overwrites many contacts at once. Requires confirm:true."
+    },
+    "import/import-wp-users": {
+      "destructive": true,
+      "bodyNote": "Bulk import: creates or overwrites many contacts at once. Requires confirm:true."
+    },
+    "migrators/handle-migrator-import": {
+      "destructive": true,
+      "bodyNote": "Bulk import: creates or overwrites many contacts at once. Requires confirm:true."
     }
   }
 }

@@ -103,11 +103,17 @@ describe('read-back guard', () => {
     expect(res.content[0].text).toContain('does not list that record');
   });
 
-  it('dry_run reports the request without touching the registry or writing', async () => {
+  it('dry_run validates against the registry (a read) but never writes', async () => {
     const api = integrationApi();
-    const res = await run(api, { form_id: 21, dry_run: true, body: { integration_name: 'nope', integration: { name: 'x' } } });
-    expect(res.isError).toBeUndefined();
-    expect(api.calls.length).toBe(0);
-    expect((res.structuredContent!.would_send as { method: string }).method).toBe('POST');
+    // An unregistered name is refused in a dry run too — a dry run must not
+    // report ok for a body the real call would refuse.
+    const bad = await run(api, { form_id: 21, dry_run: true, body: { integration_name: 'nope', integration: { name: 'x' } } });
+    expect(bad.isError).toBe(true);
+    expect(api.calls.map((c) => c.method)).toEqual(['GET']);
+
+    const good = await run(api, { form_id: 21, dry_run: true, body: { integration_name: 'fluentcrm', integration: { name: 'x' } } });
+    expect(good.isError).toBeUndefined();
+    expect((good.structuredContent!.would_send as { method: string }).method).toBe('POST');
+    expect(api.calls.every((c) => c.method === 'GET')).toBe(true);
   });
 });

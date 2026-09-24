@@ -29,14 +29,16 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/orders/{order_id}/change-customer",
       "summary": "Change Customer",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Money/ownership: changes who an order belongs to or marks it paid without a payment. Requires confirm:true."
     },
     "create_and_change_customer": {
       "op": "orders/create-and-change-customer",
       "method": "POST",
       "path": "/orders/{order_id}/create-and-change-customer",
       "summary": "Create and Change Customer",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Money/ownership: changes who an order belongs to or marks it paid without a payment. Requires confirm:true."
     },
     "create_custom_order_item": {
       "op": "orders/create-custom-order-item",
@@ -106,7 +108,8 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/orders/{order}/mark-as-paid",
       "summary": "Mark Order as Paid",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Money/ownership: changes who an order belongs to or marks it paid without a payment. Requires confirm:true."
     },
     "refund_order": {
       "op": "orders/refund-order",
@@ -252,14 +255,16 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/products/bulk-insert",
       "summary": "Bulk Insert Products",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Bulk write: changes many products at once. Requires confirm:true."
     },
     "bulk_update_products": {
       "op": "products/bulk-update-products",
       "method": "POST",
       "path": "/products/bulk-update",
       "summary": "Bulk Update Products",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Bulk write: changes many products at once. Requires confirm:true."
     },
     "create_dummy_products": {
       "op": "products/create-dummy-products",
@@ -1535,7 +1540,8 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/settings/payment-methods",
       "summary": "Save Payment Method Settings",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Checkout change: reconfigures a live payment method. Requires confirm:true."
     },
     "save_permissions": {
       "op": "settings/save-permissions",
@@ -1743,7 +1749,8 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/email-notification/send-manual-reminder",
       "summary": "Send Manual Reminder",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Sends a message to a real customer that cannot be recalled. Requires confirm:true."
     }
   },
   "cart_reports": {
@@ -2716,7 +2723,8 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/licensing/licenses/{id}/extend-validity",
       "summary": "Extend License Validity",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Licensing: changes a customer's license status, activation limit or expiry. Requires confirm:true."
     },
     "get_customer_license_details": {
       "op": "licensing/get-customer-license-details",
@@ -2833,14 +2841,16 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/licensing/licenses/{id}/update_limit",
       "summary": "Update License Activation Limit",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Licensing: changes a customer's license status, activation limit or expiry. Requires confirm:true."
     },
     "update_license_status": {
       "op": "licensing/update-license-status",
       "method": "POST",
       "path": "/licensing/licenses/{id}/update_status",
       "summary": "Update License Status",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Licensing: changes a customer's license status, activation limit or expiry. Requires confirm:true."
     },
     "get_license_site": {
       "op": "licensing/get-license-site",
@@ -2863,7 +2873,8 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/roles",
       "summary": "Assign Role",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Privilege change: grants or changes a store manager role. Requires confirm:true."
     },
     "delete_role_assignment": {
       "op": "roles-permissions/delete-role-assignment",
@@ -2905,7 +2916,8 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/roles/{key}",
       "summary": "Update Role",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Privilege change: grants or changes a store manager role. Requires confirm:true."
     }
   },
   "cart_order_bumps": {

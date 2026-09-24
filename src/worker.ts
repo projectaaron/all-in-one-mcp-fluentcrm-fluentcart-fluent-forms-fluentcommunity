@@ -125,6 +125,40 @@ const json = (status: number, body: unknown): Response =>
 
 const rpcError = (code: number, message: string) => ({ jsonrpc: '2.0', error: { code, message }, id: null });
 
+/** Same cap as the Node remote server. */
+const MAX_BODY_BYTES = 4 * 1024 * 1024;
+/** One exchange builds a whole server; a huge batch is only abuse. */
+const MAX_BATCH = 32;
+
+/** Read the body as text, giving up (undefined) past `max` bytes — checked
+ *  against Content-Length first, then while streaming, so a chunked body
+ *  can't be buffered to the platform limit. */
+async function readCappedText(request: Request, max: number): Promise<string | undefined> {
+  const declared = Number(request.headers.get('content-length'));
+  if (Number.isFinite(declared) && declared > max) return undefined;
+  if (!request.body) return '';
+  const reader = request.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let size = 0;
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    size += value.byteLength;
+    if (size > max) {
+      await reader.cancel();
+      return undefined;
+    }
+    chunks.push(value);
+  }
+  const all = new Uint8Array(size);
+  let offset = 0;
+  for (const c of chunks) {
+    all.set(c, offset);
+    offset += c.byteLength;
+  }
+  return new TextDecoder().decode(all);
+}
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
@@ -148,12 +182,26 @@ export default {
     }
 
     let body: unknown;
+    const text = await readCappedText(request, MAX_BODY_BYTES);
+    if (text === undefined) {
+      return json(413, rpcError(-32000, `Payload too large — requests are capped at ${MAX_BODY_BYTES / 1048576} MB`));
+    }
     try {
-      body = await request.json();
+      body = JSON.parse(text);
     } catch {
       return json(400, rpcError(-32700, 'Parse error: invalid JSON'));
     }
     const incoming = Array.isArray(body) ? body : [body];
+    if (incoming.length > MAX_BATCH) {
+      return json(400, rpcError(-32600, `Invalid Request: batches are capped at ${MAX_BATCH} messages`));
+    }
+    // Two requests with the same id would share one pending slot: the first
+    // response would end the exchange and the other's write would run with
+    // its result dropped.
+    const ids = incoming.filter((m) => m !== null && typeof m === 'object' && isRequest(m as JSONRPCMessage)).map((m) => (m as { id: unknown }).id);
+    if (new Set(ids.map((i) => JSON.stringify(i))).size !== ids.length) {
+      return json(400, rpcError(-32600, 'Invalid Request: duplicate request ids in one batch'));
+    }
     const invalid = incoming.filter(isMalformed).map((m) => ({
       jsonrpc: '2.0',
       error: { code: -32600, message: 'Invalid Request: a message with an id needs a method (request) or result/error (response)' },

@@ -333,6 +333,54 @@
     "customer-profile/pause-subscription": {
       "destructive": true,
       "bodyNote": "Pauses the customer's subscription (stops renewals until resumed). Acts as the configured user's customer profile. Requires confirm:true."
+    },
+    "orders/change-customer": {
+      "destructive": true,
+      "bodyNote": "Money/ownership: changes who an order belongs to or marks it paid without a payment. Requires confirm:true."
+    },
+    "orders/create-and-change-customer": {
+      "destructive": true,
+      "bodyNote": "Money/ownership: changes who an order belongs to or marks it paid without a payment. Requires confirm:true."
+    },
+    "orders/mark-as-paid": {
+      "destructive": true,
+      "bodyNote": "Money/ownership: changes who an order belongs to or marks it paid without a payment. Requires confirm:true."
+    },
+    "products/bulk-insert-products": {
+      "destructive": true,
+      "bodyNote": "Bulk write: changes many products at once. Requires confirm:true."
+    },
+    "products/bulk-update-products": {
+      "destructive": true,
+      "bodyNote": "Bulk write: changes many products at once. Requires confirm:true."
+    },
+    "settings/save-payment-method-settings": {
+      "destructive": true,
+      "bodyNote": "Checkout change: reconfigures a live payment method. Requires confirm:true."
+    },
+    "email-notification/send-manual-reminder": {
+      "destructive": true,
+      "bodyNote": "Sends a message to a real customer that cannot be recalled. Requires confirm:true."
+    },
+    "licensing/extend-license-validity": {
+      "destructive": true,
+      "bodyNote": "Licensing: changes a customer's license status, activation limit or expiry. Requires confirm:true."
+    },
+    "licensing/update-license-activation-limit": {
+      "destructive": true,
+      "bodyNote": "Licensing: changes a customer's license status, activation limit or expiry. Requires confirm:true."
+    },
+    "licensing/update-license-status": {
+      "destructive": true,
+      "bodyNote": "Licensing: changes a customer's license status, activation limit or expiry. Requires confirm:true."
+    },
+    "roles-permissions/assign-role": {
+      "destructive": true,
+      "bodyNote": "Privilege change: grants or changes a store manager role. Requires confirm:true."
+    },
+    "roles-permissions/update-role": {
+      "destructive": true,
+      "bodyNote": "Privilege change: grants or changes a store manager role. Requires confirm:true."
     }
   }
 }

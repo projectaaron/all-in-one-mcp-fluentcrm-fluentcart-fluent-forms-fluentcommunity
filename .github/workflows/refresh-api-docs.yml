@@ -43,9 +43,8 @@ jobs:
           # Who to notify (review request + assignee + @mention). GitHub emails
           # these by default per the recipient's notification settings.
           NOTIFY_USER: projectaaron
-          # Read the base off the repo rather than hardcoding it — this repo's
-          # default branch is not `main`, and a hardcoded base breaks silently
-          # if it is ever renamed.
+          # Read the base off the repo rather than hardcoding it, so the PR
+          # still targets the right branch if the default is ever renamed.
           BASE_BRANCH: ${{ github.event.repository.default_branch }}
         run: |
           set -euo pipefail

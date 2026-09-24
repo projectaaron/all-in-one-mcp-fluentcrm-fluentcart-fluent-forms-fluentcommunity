@@ -13,6 +13,8 @@ import { runVerify, type ProductEntry } from './verify.js';
 import { SERVER_VERSION } from '../version.js';
 
 export const ISSUES_URL = 'https://github.com/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity/issues';
+export const SUPPORT_URL = 'https://upfluent.io/support/';
+export const SUPPORT_EMAIL = 'support@upfluent.io';
 
 /** How the server was started — shapes what the call log can cover. */
 export type Transport = 'stdio' | 'remote-http' | 'cloudflare-worker' | 'unknown';
@@ -93,10 +95,14 @@ export function classifyResult(result: {
 export function makeRedactor(config: Pick<ServerConfig, 'siteUrl' | 'credentials'>): (text: string) => string {
   const secrets = new Set<string>();
   const names = new Set<string>();
-  let host: string | undefined;
+  const hosts = new Set<string>();
   if (config.siteUrl) {
     try {
-      host = new URL(config.siteUrl).host;
+      // hostname, not host: with a port in the URL, `host` is "shop.com:8443"
+      // and the bare "shop.com" in a DNS error would slip through.
+      const hostname = new URL(config.siteUrl).hostname;
+      hosts.add(hostname);
+      if (hostname.startsWith('www.')) hosts.add(hostname.slice(4));
     } catch {
       secrets.add(config.siteUrl);
     }
@@ -104,22 +110,32 @@ export function makeRedactor(config: Pick<ServerConfig, 'siteUrl' | 'credentials
   for (const cred of Object.values(config.credentials)) {
     if (!cred) continue;
     if (cred.username) names.add(cred.username);
-    if (cred.password) secrets.add(cred.password);
+    if (cred.password) {
+      // Long secrets are masked wherever they appear; a very short one can
+      // only be masked as a whole word, or every "p" in the report would go.
+      if (cred.password.length >= 6) secrets.add(cred.password);
+      else names.add(cred.password);
+      // Application Passwords work with or without their spaces.
+      const compact = cred.password.replace(/\s+/g, '');
+      if (compact.length >= 8) secrets.add(compact);
+    }
   }
   const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const longestFirst = (set: Set<string>) => [...set].sort((a, b) => b.length - a.length).map(escape);
   // Passwords are masked wherever they occur, even inside a longer string.
   const secretRe = secrets.size ? new RegExp(longestFirst(secrets).join('|'), 'g') : undefined;
-  // Usernames are masked as whole words: "aaron" must not eat "projectaaron"
-  // in a URL, and a short username like "wp" must not shred every sentence.
-  const nameRe = names.size ? new RegExp(`(?<![A-Za-z0-9_])(?:${longestFirst(names).join('|')})(?![A-Za-z0-9_])`, 'g') : undefined;
-  const hostRe = host ? new RegExp(escape(host), 'gi') : undefined;
+  // Usernames are masked as whole words, case-insensitively: a username that
+  // also sits inside a longer word (the repository owner in the issues URL)
+  // is left alone, and a short username like "wp" can't shred every sentence.
+  const nameRe = names.size ? new RegExp(`(?<![A-Za-z0-9_])(?:${longestFirst(names).join('|')})(?![A-Za-z0-9_])`, 'gi') : undefined;
+  const hostRe = hosts.size ? new RegExp(longestFirst(hosts).join('|'), 'gi') : undefined;
 
   return (text: string) => {
     let out = text;
     if (secretRe) out = out.replace(secretRe, '[redacted]');
-    // Emails before usernames, so "aaron@site.com" becomes [email] rather
-    // than "[redacted]@site.com".
+    // Emails before usernames, so "jane@site.com" becomes [email] rather
+    // than "[redacted]@site.com". URL-encoded "@" (%40) counts too.
+    out = out.replace(/%40/gi, '@');
     out = out.replace(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g, '[email]');
     if (nameRe) out = out.replace(nameRe, '[redacted]');
     if (hostRe) out = out.replace(hostRe, '[site]');
@@ -139,6 +155,8 @@ export interface SupportContext {
   /** Total registered tools, for the header. */
   toolCount: number;
   diagnostics: DiagnosticsLog;
+  /** FLUENT_LOCKED_TOOLS entries that match no tool — they lock nothing. */
+  unknownLocks?: string[];
 }
 
 function runtimeLine(): string {
@@ -190,7 +208,7 @@ export async function buildSupportReport(
   lines.push('');
   lines.push(
     `Generated ${new Date().toISOString()}. Site host, usernames, passwords, tokens and email addresses have been redacted. ` +
-      `Paste this whole block into your support message or a new issue: ${ISSUES_URL}/new`
+      `Paste this whole block into a new issue (${ISSUES_URL}/new) or send it to ${SUPPORT_EMAIL}.`
   );
   lines.push('');
   lines.push('### Server');
@@ -199,6 +217,9 @@ export async function buildSupportReport(
   lines.push(`- Runtime: ${runtimeLine()}`);
   lines.push(`- Tool mode: ${config.toolMode} (${ctx.toolCount} tools registered)`);
   lines.push(`- Locked tools: ${lockedSummary(config)}`);
+  if (ctx.unknownLocks?.length) {
+    lines.push(`- ⚠ FLUENT_LOCKED_TOOLS names that match no tool (they lock nothing — check the spelling): ${ctx.unknownLocks.join(', ')}`);
+  }
   lines.push(`- HTTP: timeout ${config.timeoutMs} ms, retries ${config.maxRetries}`);
   lines.push(`- Site URL: ${siteDesc}`);
   const sharedCreds = config.presentEnv.includes('FLUENT_API_USERNAME') && config.presentEnv.includes('FLUENT_API_PASSWORD');
@@ -248,10 +269,15 @@ export async function buildSupportReport(
   lines.push('');
   lines.push('### Next steps');
   lines.push(`1. Describe what you asked the assistant to do and what you expected.`);
-  lines.push(`2. Paste this report into a new issue: ${ISSUES_URL}/new — or send it to whoever is helping you.`);
-  lines.push('3. If a product shows auth_failed or plugin_missing, the Troubleshooting table in the README covers the usual fixes.');
+  lines.push(`2. Paste this report into a new issue: ${ISSUES_URL}/new — or, without a GitHub account, send it through ${SUPPORT_URL} or to ${SUPPORT_EMAIL}.`);
+  lines.push('3. If a product shows auth_failed or plugin_missing, the Troubleshooting table in the README covers the usual fixes. not_installed just means that Fluent plugin is not on your site.');
 
-  return { markdown: redact(lines.join('\n')), errorCount: errors.length, ok };
+  // Our own support address must survive the email redactor: swap it for a
+  // token that no redaction pattern matches, then put it back.
+  const markdown = redact(lines.join('\n').split(SUPPORT_EMAIL).join('\u0000\u0001\u0000')).split(
+    '\u0000\u0001\u0000'
+  ).join(SUPPORT_EMAIL);
+  return { markdown, errorCount: errors.length, ok };
 }
 
 export function registerSupportReport(server: McpServer, entries: ProductEntry[], config: ServerConfig, ctx: SupportContext): void {

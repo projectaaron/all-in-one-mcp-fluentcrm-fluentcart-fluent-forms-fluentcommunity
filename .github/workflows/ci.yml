@@ -17,6 +17,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # This job never pushes with git, so the token is not left in .git/config.
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: 22
