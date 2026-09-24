@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.1 — 2026-09-24
+
+- The LICENSE copyright holder is now upfluent.io. No code changes.
+
 ## 1.3.0 — 2026-09-24
 
 Security and correctness release from a full audit. **Upgrade recommended.**
