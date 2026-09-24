@@ -20,7 +20,8 @@ function isPaginator(v: unknown): v is Rec & { data: unknown[] } {
 }
 
 function paginationOf(p: Rec): Shaped['pagination'] {
-  const num = (x: unknown) => (typeof x === 'number' ? x : typeof x === 'string' ? Number(x) || undefined : undefined);
+  const num = (x: unknown) =>
+    typeof x === 'number' ? x : typeof x === 'string' && x.trim() !== '' && Number.isFinite(Number(x)) ? Number(x) : undefined;
   return {
     page: num(p.current_page),
     per_page: num(p.per_page),
@@ -83,7 +84,10 @@ export function shapeResponse(
         break;
       }
     }
-    if (!container) {
+    // A single record (top-level id, or a wrapped record with an id beside
+    // the array) is not a list: {order:{…}, activities:[…]} is one order.
+    const isSingleRecord = 'id' in raw || Object.values(raw).some((v) => isRec(v) && 'id' in v);
+    if (!container && !isSingleRecord) {
       for (const [key, value] of Object.entries(raw)) {
         if (Array.isArray(value) && value.length && isRec(value[0])) {
           container = { items: value, replace: (items) => ({ ...raw, [key]: items }) };
@@ -113,21 +117,26 @@ export function shapeResponse(
   // record one level down ({subscriber: {...}}, {order: {...}}) — project the
   // record, not the wrapper, and never project down to an empty object.
   if (wantProjection && isRec(raw)) {
-    if (matchesProjection(raw, wantProjection)) {
-      return { data: prune(projectItem(raw, wantProjection)), summarized: true };
-    }
+    // Pick the object that best looks like the record: an id wins, then the
+    // most projection fields. The top level wins ties, but a wrapper like
+    // {status:"success", data:{id,…}} must not be projected down to {status}.
+    const score = (rec: Rec) => ('id' in rec ? 1000 : 0) + wantProjection.filter((f) => f in rec).length;
+    let bestKey: string | undefined;
+    let best = score(raw);
     for (const [key, value] of Object.entries(raw)) {
-      if (isRec(value) && matchesProjection(value, wantProjection)) {
-        return { data: { [key]: prune(projectItem(value, wantProjection)) }, summarized: true };
+      if (isRec(value) && score(value) > best) {
+        best = score(value);
+        bestKey = key;
       }
+    }
+    if (best > 0) {
+      return bestKey === undefined
+        ? { data: prune(projectItem(raw, wantProjection)), summarized: true }
+        : { data: { [bestKey]: prune(projectItem(raw[bestKey], wantProjection)) }, summarized: true };
     }
     // No projection field matches anywhere — pruning beats returning {}.
   }
   return { data: prune(raw), summarized: true };
-}
-
-function matchesProjection(rec: Rec, fields: string[]): boolean {
-  return fields.some((f) => f in rec) || 'id' in rec;
 }
 
 /** One-line human text summary for the text content block. */

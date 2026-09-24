@@ -11,9 +11,11 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { individualNamesFor, registerActionTools } from './core/action-tools.js';
 import { loadConfig, productEnvStatus, type ServerConfig } from './core/config.js';
 import { FluentClient } from './core/http.js';
-import { registerWpMediaTool, registerWpMediaTools } from './core/media.js';
+import { registerWpMediaTool, registerWpMediaTools, wpMediaMapTools } from './core/media.js';
+import type { RouteRef } from './core/path-safety.js';
 import { DiagnosticsLog, registerSupportReport, type Transport } from './core/support.js';
-import { registerToolSpec } from './core/tool-factory.js';
+import { lockedRefusal, registerToolSpec, withDiagnostics, type ToolRuntime } from './core/tool-factory.js';
+import type { ProductModule } from './core/types.js';
 import { buildInstructions, mapAreasOf, registerToolMapTool, serverArea, type MapArea } from './core/tool-map.js';
 import { registerVerifySetup, type ProductEntry } from './core/verify.js';
 import { PRODUCTS } from './products/index.js';
@@ -26,6 +28,65 @@ export interface BuiltServer {
   config: ServerConfig;
   /** Recent tool calls (feeds support_report). */
   diagnostics: DiagnosticsLog;
+  /** FLUENT_LOCKED_TOOLS entries that match no tool (typos lock nothing). */
+  unknownLocks: string[];
+}
+
+/** Every route a product serves, with the tool that serves it — built once
+ *  per module and shared by all its tools for the sibling-route check. */
+const ROUTE_CACHE = new WeakMap<ProductModule, RouteRef[]>();
+function routesOf(module: ProductModule): RouteRef[] {
+  let routes = ROUTE_CACHE.get(module);
+  if (!routes) {
+    routes = module.tools.flatMap((spec) => {
+      const names = individualNamesFor(spec);
+      return Object.entries(spec.actions).map(([action, d]) => ({
+        method: d.method,
+        path: d.path,
+        siteRoot: d.siteRoot,
+        tool: names[action],
+      }));
+    });
+    ROUTE_CACHE.set(module, routes);
+  }
+  return routes;
+}
+
+/** Every canonical tool name an admin may put in FLUENT_LOCKED_TOOLS. */
+export function knownToolNames(): Set<string> {
+  const names = new Set<string>(['tool_map', 'verify_setup', 'support_report']);
+  for (const module of PRODUCTS) {
+    for (const spec of module.tools) for (const n of Object.values(individualNamesFor(spec))) names.add(n);
+    for (const t of module.extras?.mapTools ?? []) names.add(t.name);
+  }
+  for (const t of wpMediaMapTools('individual')) names.add(t.name);
+  return names;
+}
+
+/** Hand-written tools (product extras, wp_media) register through this
+ *  wrapper so they honour FLUENT_LOCKED_TOOLS exactly like generated tools
+ *  and land in the support_report call log. */
+function guardedServer(server: McpServer, locked: Set<string>, diagnostics: DiagnosticsLog): McpServer {
+  const runtime = { diagnostics } as unknown as ToolRuntime;
+  return new Proxy(server, {
+    get(target, prop, receiver) {
+      if (prop === 'registerTool') {
+        return (name: string, config: { description?: string }, cb: (...a: unknown[]) => unknown) => {
+          const isLocked = locked.has(name);
+          const cfg = isLocked
+            ? { ...config, description: `${config.description ?? ''} 🔒 Locked by the server admin — always refuses.`.trim() }
+            : config;
+          const handler = (...a: unknown[]) =>
+            withDiagnostics(runtime, undefined, name, async () =>
+              isLocked ? lockedRefusal(name) : ((await cb(...a)) as ReturnType<typeof lockedRefusal>)
+            );
+          return (target.registerTool as (...x: unknown[]) => unknown)(name, cfg, handler);
+        };
+      }
+      const value = Reflect.get(target, prop, receiver);
+      return typeof value === 'function' ? value.bind(target) : value;
+    },
+  });
 }
 
 export interface BuildOptions {
@@ -39,6 +100,7 @@ export function readConfig(env: NodeJS.ProcessEnv = process.env): ServerConfig {
 
 export function buildServer(config: ServerConfig, options: BuildOptions = {}): BuiltServer {
   const mode = config.toolMode;
+  const lockedTools = config.lockedTools ?? new Set<string>();
   const diagnostics = new DiagnosticsLog();
 
   // The map covers every product (disabled ones are marked, not hidden) plus
@@ -77,6 +139,7 @@ export function buildServer(config: ServerConfig, options: BuildOptions = {}): B
           summaryFields: module.summaryFields[spec.name],
           lockedTools: config.lockedTools,
           diagnostics,
+          routes: routesOf(module),
           // Grouped mode checks locks by each action's canonical individual name.
           ...(mode === 'grouped' ? { canonicalNames: individualNamesFor(spec) } : {}),
         };
@@ -89,7 +152,7 @@ export function buildServer(config: ServerConfig, options: BuildOptions = {}): B
       }
       // Hand-written product extras (e.g. the sequence schedule preview) —
       // standalone tools in both modes.
-      if (module.extras) toolCount += module.extras.register(server, client).length;
+      if (module.extras) toolCount += module.extras.register(guardedServer(server, lockedTools, diagnostics), client).length;
     }
     return { module, status, client };
   });
@@ -102,7 +165,9 @@ export function buildServer(config: ServerConfig, options: BuildOptions = {}): B
 
   // support_report needs the final tool count, so it registers last and
   // reads the count lazily through the context object.
-  const supportCtx = { transport: options.transport ?? 'unknown', toolCount: 0, diagnostics };
+  const known = knownToolNames();
+  const unknownLocks = [...lockedTools].filter((n) => !known.has(n)).sort();
+  const supportCtx = { transport: options.transport ?? 'unknown', toolCount: 0, diagnostics, unknownLocks };
   registerSupportReport(server, entries, config, supportCtx);
   toolCount++;
 
@@ -110,21 +175,24 @@ export function buildServer(config: ServerConfig, options: BuildOptions = {}): B
   // they register only when at least one product is configured.
   const firstClient = entries.find((e) => e.client)?.client;
   if (firstClient) {
+    const media = guardedServer(server, lockedTools, diagnostics);
     if (mode === 'individual') {
-      toolCount += registerWpMediaTools(server, firstClient).length;
+      toolCount += registerWpMediaTools(media, firstClient).length;
     } else {
-      registerWpMediaTool(server, firstClient);
+      registerWpMediaTool(media, firstClient);
       toolCount++;
     }
   }
 
   supportCtx.toolCount = toolCount;
-  return { server, entries, toolCount, config, diagnostics };
+  return { server, entries, toolCount, config, diagnostics, unknownLocks };
 }
 
 export function enablementSummary(built: BuiltServer): string {
-  return (
+  const summary =
     `fluentmcp: ${built.toolCount} tools registered (${built.config.toolMode} mode) — ` +
-    built.entries.map((e) => `${e.module.key}: ${e.status.configured ? 'enabled' : 'not configured'}`).join(', ')
-  );
+    built.entries.map((e) => `${e.module.key}: ${e.status.configured ? 'enabled' : 'not configured'}`).join(', ');
+  return built.unknownLocks.length
+    ? `${summary}\nfluentmcp: WARNING — FLUENT_LOCKED_TOOLS names match no tool and lock nothing: ${built.unknownLocks.join(', ')}`
+    : summary;
 }

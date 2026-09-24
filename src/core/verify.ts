@@ -18,7 +18,7 @@ export interface ProductEntry {
 export interface ProductReport {
   product: string;
   title: string;
-  status: 'ok' | 'not_configured' | 'auth_failed' | 'plugin_missing' | 'error';
+  status: 'ok' | 'not_configured' | 'not_installed' | 'auth_failed' | 'plugin_missing' | 'error';
   api_namespace: string;
   namespace_detected?: boolean;
   test_read?: string;
@@ -85,22 +85,42 @@ export async function runVerify(entries: ProductEntry[], config: ServerConfig): 
       });
     } catch (e) {
       const err = e instanceof FluentApiError ? e : undefined;
+      // A 404 for a plugin whose namespace the site doesn't list (or, with no
+      // REST index to consult, a plain "no route") means it isn't installed —
+      // the normal case for a store using part of the suite: skipped, not a
+      // failure. The read still runs first, because security plugins can
+      // filter the public index, and a 401 must never be hidden as "skipped".
+      const notInstalled =
+        err?.status === 404 && (namespaceDetected === false || (namespaceDetected === undefined && err.code === 'rest_no_route'));
       reports.push({
         ...base,
-        status: err?.status === 401 || err?.status === 403 ? 'auth_failed' : err?.status === 404 ? 'plugin_missing' : 'error',
+        status: notInstalled
+          ? 'not_installed'
+          : err?.status === 401 || err?.status === 403
+            ? 'auth_failed'
+            : err?.status === 404
+              ? 'plugin_missing'
+              : 'error',
         namespace_detected: namespaceDetected,
         test_read: `${module.verifyRead.label} — failed`,
-        detail: err?.message ?? (e instanceof Error ? e.message : String(e)),
+        detail: notInstalled
+          ? `${module.title} is not installed or not active on this site, so its tools are skipped. Install and activate ${module.title} to use them.`
+          : (err?.message ?? (e instanceof Error ? e.message : String(e))),
       });
     }
   }
 
   const ok = reports.some((r) => r.status === 'ok') && !reports.some((r) => ['auth_failed', 'plugin_missing', 'error'].includes(r.status));
   const lines = reports.map((r) => {
-    const mark = r.status === 'ok' ? '✅' : r.status === 'not_configured' ? '⏭️' : '❌';
+    const mark = r.status === 'ok' ? '✅' : r.status === 'not_configured' || r.status === 'not_installed' ? '⏭️' : '❌';
     return `${mark} ${r.title}: ${r.status}${r.tools ? ` (${r.tools} tools in ${r.areas} areas)` : ''}${r.detail ? ` — ${r.detail}` : ''}`;
   });
   if (!config.siteUrl) lines.unshift('❌ FLUENT_SITE_URL is not set — no product can connect.');
+  else if (reports.length && reports.every((r) => r.status === 'not_installed' || r.status === 'not_configured')) {
+    lines.unshift(
+      `❌ No Fluent plugin answered at ${config.siteUrl}. Check the site URL is your WordPress home page address (including https://), and that Settings → Permalinks is not set to "Plain".`
+    );
+  }
   return { ok, reports, lines };
 }
 
@@ -118,7 +138,7 @@ export function registerVerifySetup(server: McpServer, entries: ProductEntry[], 
           z.object({
             product: z.string(),
             title: z.string(),
-            status: z.enum(['ok', 'not_configured', 'auth_failed', 'plugin_missing', 'error']),
+            status: z.enum(['ok', 'not_configured', 'not_installed', 'auth_failed', 'plugin_missing', 'error']),
             api_namespace: z.string(),
             namespace_detected: z.boolean().optional(),
             test_read: z.string().optional(),

@@ -14,11 +14,13 @@ without one, minimum 16 characters). Every request must present it, either:
   into claude.ai's custom-connector form (it can't set headers), or
 - as a header — `Authorization: Bearer <token>` — for clients that can.
 
-Generate a good one:
+Generate a good one (works on macOS, Windows and Linux):
 
 ```bash
-openssl rand -hex 32
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```
+
+(`openssl rand -hex 32` does the same where OpenSSL is installed.)
 
 **Treat the URL as a password.** Anyone holding it controls your store and
 CRM. Always serve over HTTPS (both hosting recipes below give you TLS for
@@ -37,10 +39,15 @@ Same variables as the local install (`.env.example`), plus:
 
 ## Hosting recipes
 
-### A. Cloudflare Workers (recommended — free tier, no server to run)
+### A. Cloudflare Workers (recommended — no server to run)
+
+**Plan:** use **Workers Paid ($5/month)**. Each request builds the full tool
+set, which takes well over the Free plan's 10 ms CPU limit (a live
+deployment measured a 95 ms median and 450 ms at the 99th percentile), so
+on the Free plan requests fail with error 1102.
 
 The repo ships a Worker entry (`src/worker.ts`) and `wrangler.jsonc`. Deploy
-from your machine in four commands:
+from a clone of the repo in a few commands:
 
 ```bash
 npm install
@@ -48,7 +55,7 @@ npx wrangler login                          # opens your browser once
 npx wrangler secret put FLUENT_SITE_URL     # e.g. https://your-site.com
 npx wrangler secret put FLUENT_API_USERNAME
 npx wrangler secret put FLUENT_API_PASSWORD
-npx wrangler secret put FLUENT_MCP_TOKEN    # paste output of: openssl rand -hex 32
+npx wrangler secret put FLUENT_MCP_TOKEN    # paste the token generated above
 npm run deploy:cloudflare
 ```
 
@@ -130,7 +137,7 @@ docker run -d -p 3000:3000 --env-file .env --restart unless-stopped fluentmcp
   restarts are invisible to clients and horizontal scaling is trivial.
 - `GET /healthz` is unauthenticated and reveals nothing but `{ok: true}`.
 - All the same safety behavior applies remotely: honest tool annotations and
-  `confirm: true` gates on all 203 destructive actions and the 12 locked tools
+  `confirm: true` gates on all 230 destructive actions and the 12 locked tools
   still refuse.
 - Tool mode per URL: append `/grouped` (or `/individual`) to either form —
   `https://your-host/mcp/<token>/grouped`, or `https://your-host/mcp/grouped`

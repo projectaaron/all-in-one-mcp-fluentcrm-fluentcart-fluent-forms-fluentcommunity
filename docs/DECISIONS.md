@@ -718,3 +718,37 @@ redirect hop, but does *not* pre-resolve DNS — doing that portably across
 Node and the Worker would need a resolver hook and a pinned connection, and
 the honest mitigation (lock the tool or restrict egress) is documented in
 SECURITY.md instead of a half-measure that claims more than it checks.
+
+## 1.3.0 — security and correctness audit
+
+- **Path values can no longer steer a call to another endpoint.** `.`/`..`
+  path parameters were collapsed by URL parsing, so an unlocked tool could
+  reach a locked one (`crm_sequences_remove_subscribers` with `id: ".."`
+  sent the locked audience-wide `DELETE /subscribers`). A value equal to a
+  sibling route's literal segment (`order_id: "do-bulk-action"`) reached
+  that route without its confirm gate. Both are refused now, a `_method`
+  query key (WordPress's method override) is refused everywhere, and the
+  HTTP client refuses dot segments as a backstop for hand-written paths.
+- **Locks cover every tool.** Product extras and the wp_media tools now
+  honour `FLUENT_LOCKED_TOOLS`, and lock names that match no tool are
+  reported at startup and in `support_report` instead of silently locking
+  nothing.
+- **Gating widened by 27 operations to 230.** Role and permission changes,
+  a member password change, the seven FluentCRM plugin installers, marking
+  an order paid or moving it to another customer, bulk product writes,
+  license status/limit/expiry changes, contact imports, reconfiguring a
+  live payment method, and one-off messages to real customers. This
+  revises the earlier "single-recipient sends stay ungated" call (made
+  without the safety review that was meant to inform it): a message to a
+  customer can't be recalled, and a prompt-injected note could otherwise
+  have the assistant send many from the store's own address. Test sends to
+  the admin stay ungated; community chat messages stay ungated because
+  gating every reply would make the chat tools unusable.
+- **Merge never silently becomes replace.** A flat record without an `id`
+  (a settings object) is merged as a record instead of passing the partial
+  body through; when the body can't be lined up with the record's shape,
+  the write is refused unless `mode:"replace"` with `confirm:true`.
+- **Writes never follow redirects**, the timeout covers the response body,
+  and a timed-out write says it may have been applied instead of "could not
+  reach the site".
+

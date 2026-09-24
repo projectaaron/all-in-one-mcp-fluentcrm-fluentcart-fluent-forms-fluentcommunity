@@ -38,7 +38,7 @@ instead (an `action` parameter selects the operation).
 | `crm_abandoned_carts` | read/write/delete | 3 | View abandoned-cart records and their report summary, and delete records in bulk (FluentCRM Pro commerce feature). |
 | `crm_settings` | read/write/delete | 46 | Read or update FluentCRM settings such as double opt-in, business info, email preferences, compliance, and experimental features. |
 | `crm_settings_pro` | read/write/delete | 11 | Read or update FluentCRM Pro settings such as the plugin license and Pro-only features. |
-| `crm_utilities` | read/write | 20 | Administrative utilities: import contacts from CSV or WordPress users, export contacts, migrate from other tools, list WordPress users and roles, browse in-app docs, and receive bounce webhooks. |
+| `crm_utilities` | read/write/delete | 20 | Administrative utilities: import contacts from CSV or WordPress users, export contacts, migrate from other tools, list WordPress users and roles, browse in-app docs, and receive bounce webhooks. |
 | `crm_ai` | read/write | 7 | FluentCRM's AI assistant: generate or rewrite text and email bodies, summarize a contact, list provider models, and manage the AI provider settings and connection test. |
 | `crm_email_patterns` | read/write/delete | 11 | Reusable email content patterns and their categories: list, create (incl. from wp_block payloads), update, delete, and bulk actions. |
 
@@ -82,7 +82,7 @@ Example calls:
 | `cart_tax` | read/write/delete | 27 | Manage tax classes, tax rates, per-country configuration, EU VAT/OSS overrides, and order tax records. |
 | `cart_shipping` | read/write/delete | 19 | Manage shipping zones, shipping methods, and shipping classes. |
 | `cart_settings` | read/write/delete | 39 | Read or update store settings: general store options, modules and addons, permissions, payment methods, storage drivers, and checkout fields. |
-| `cart_email_notifications` | read/write | 15 | Manage the store's transactional email templates, global email settings, reminders, and previews. |
+| `cart_email_notifications` | read/write/delete | 15 | Manage the store's transactional email templates, global email settings, reminders, and previews. |
 | `cart_reports` | read | 41 | Read-only store analytics: revenue, orders, products, customers, subscriptions, refunds, licenses, and dashboard summaries. |
 | `cart_integrations` | read/write/delete | 12 | Manage global integration feeds and provider settings, and install or activate integration addons. |
 | `cart_files` | read/write/delete | 5 | List, upload, and delete files in the store's configured storage drivers. |

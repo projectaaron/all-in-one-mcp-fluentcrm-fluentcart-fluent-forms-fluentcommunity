@@ -15,8 +15,10 @@ export class FluentApiError extends Error {
     productTitle: string;
     envPrefix: string;
     endpoint: string;
+    /** Overrides the status-derived hint (timeouts, refused redirects). */
+    hint?: string;
   }) {
-    const hint = hintFor(args.status, args.productTitle, args.envPrefix);
+    const hint = args.hint ?? hintFor(args.status, args.productTitle, args.envPrefix);
     super(
       `${args.productTitle} API error [${args.status}${args.code ? ` ${args.code}` : ''}] on ${args.endpoint}: ` +
         `${args.message || `HTTP ${args.status}`}${hint ? ` — ${hint}` : ''}`
@@ -33,12 +35,12 @@ export class FluentApiError extends Error {
 function hintFor(status: number, productTitle: string, envPrefix: string): string {
   switch (status) {
     case 0:
-      return `Could not reach the site. Check FLUENT_SITE_URL (is it the WordPress site root, reachable from this machine?)`;
+      return `Could not reach the site. Check the site URL — the WordPress home page address including https:// (FLUENT_SITE_URL; in Claude Desktop: Settings → Extensions → All-In-One MCP for Fluent Suite → Configure)`;
     case 400:
     case 422:
       return `The request body or parameters were rejected — compare against the endpoint schema in the product's official developer docs (linked from docs/api-reference/<product>.md)`;
     case 401:
-      return `Authentication failed — check FLUENT_API_USERNAME / FLUENT_API_PASSWORD (or the ${envPrefix}_API_* overrides) and that the Application Password hasn't been revoked (create one under WP Admin → Users → your user → Application Passwords)`;
+      return `Authentication failed — check the WordPress username and Application Password (FLUENT_API_USERNAME / FLUENT_API_PASSWORD, or the ${envPrefix}_API_* overrides; in Claude Desktop: Settings → Extensions → All-In-One MCP for Fluent Suite → Configure) and that the Application Password hasn't been revoked (WP Admin → Users → Profile → Application Passwords). If a fresh password still fails, your host or a security plugin may be stripping the Authorization header`;
     case 403:
       return `Authenticated but not allowed — the ${productTitle} user behind the API credentials lacks the capability/permission for this endpoint (or the endpoint needs a customer browser session, see docs/api-reference/auth.md)`;
     case 404:

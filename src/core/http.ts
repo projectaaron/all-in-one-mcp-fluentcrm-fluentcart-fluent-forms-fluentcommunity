@@ -2,6 +2,7 @@
  *  rate-limit handling, normalized errors. No other module performs HTTP. */
 
 import { FluentApiError, parseWpError } from './errors.js';
+import { METHOD_OVERRIDE_REFUSAL, methodOverrideKey } from './path-safety.js';
 import type { FluentResponse, ProductCredentials, RequestOptions } from './types.js';
 
 export type FetchLike = (url: string, init: RequestInit) => Promise<Response>;
@@ -43,6 +44,7 @@ export class FluentClient {
   /** Build the absolute URL incl. WP-style query serialization (arr -> k[]=v). */
   buildUrl(path: string, query?: Record<string, unknown>, siteRoot = false): string {
     const root = siteRoot ? this.baseUrl.slice(0, this.baseUrl.indexOf('/wp-json/')) : this.baseUrl;
+    assertSafeRequest(path, query);
     const url = new URL(root + (path.startsWith('/') ? path : `/${path}`));
     if (query) {
       for (const [key, value] of Object.entries(query)) {
@@ -64,49 +66,73 @@ export class FluentClient {
       bodyText = JSON.stringify(options.body);
     }
 
+    const isRead = method === 'GET' || method === 'HEAD';
     const maxAttempts = this.opts.maxRetries + 1;
     let lastError: unknown;
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
       if (attempt > 0) await this.sleep(this.backoffMs(attempt));
+      // One deadline covers the whole exchange — headers AND body — so a
+      // site that stalls mid-response can't hang the call forever.
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), this.opts.timeoutMs);
       let response: Response;
+      let data: unknown;
       try {
-        const controller = new AbortController();
-        const timer = setTimeout(() => controller.abort(), this.opts.timeoutMs);
         try {
-          response = await this.fetchImpl(url, { method, headers, body: bodyText, signal: controller.signal });
-        } finally {
-          clearTimeout(timer);
+          response = await this.fetchImpl(url, {
+            method,
+            headers,
+            body: bodyText,
+            signal: controller.signal,
+            // A redirect turns a write into a GET (301/302), which would then
+            // report ok for a write that never happened. Writes never follow.
+            redirect: isRead ? 'follow' : 'manual',
+          });
+        } catch (err) {
+          // Network-level failure. Retry only when we know the request never
+          // mutated anything (GET/HEAD, and not flagged noRetry — some Fluent
+          // endpoints mutate via GET) — a dropped response on a write could
+          // otherwise double-apply.
+          lastError = err;
+          if (isRead && !options.noRetry && attempt < maxAttempts - 1) continue;
+          throw this.transportError(method, options.path, err, controller.signal.aborted);
         }
-      } catch (err) {
-        // Network-level failure. Retry only when we know the request never
-        // mutated anything (GET/HEAD, and not flagged noRetry — some Fluent
-        // endpoints mutate via GET) — a dropped response on a write could
-        // otherwise double-apply.
-        lastError = err;
-        if ((method === 'GET' || method === 'HEAD') && !options.noRetry && attempt < maxAttempts - 1) continue;
-        throw new FluentApiError({
-          status: 0,
-          message: err instanceof Error ? err.message : String(err),
-          product: this.opts.product,
-          productTitle: this.opts.productTitle,
-          envPrefix: this.opts.envPrefix,
-          endpoint: `${method} ${options.path}`,
-        });
-      }
 
-      if (RETRYABLE_STATUS.has(response.status) && attempt < maxAttempts - 1) {
-        // 429 is always safe to retry (the server refused before executing);
-        // 5xx only for reads that can't mutate (not noRetry).
-        if (response.status === 429 || ((method === 'GET' || method === 'HEAD') && !options.noRetry)) {
-          const retryAfter = Number.parseFloat(response.headers.get('retry-after') ?? '');
-          if (Number.isFinite(retryAfter) && retryAfter > 0) {
-            await this.sleep(Math.min(retryAfter * 1000, 30000));
+        if (RETRYABLE_STATUS.has(response.status) && attempt < maxAttempts - 1) {
+          // 429 is always safe to retry (the server refused before executing);
+          // 5xx only for reads that can't mutate (not noRetry).
+          if (response.status === 429 || (isRead && !options.noRetry)) {
+            const retryAfter = Number.parseFloat(response.headers.get('retry-after') ?? '');
+            if (Number.isFinite(retryAfter) && retryAfter > 0) {
+              await this.sleep(Math.min(retryAfter * 1000, 30000));
+            }
+            continue;
           }
-          continue;
         }
+
+        if (!isRead && response.status >= 300 && response.status < 400) {
+          throw new FluentApiError({
+            status: response.status,
+            message: `the site redirected the request to ${response.headers.get('location') ?? '(no Location header)'} — the write was NOT re-sent`,
+            product: this.opts.product,
+            productTitle: this.opts.productTitle,
+            envPrefix: this.opts.envPrefix,
+            endpoint: `${method} ${options.path}`,
+            hint: 'Set the site URL to the exact address the site redirects to (https vs http, www vs no-www), then retry.',
+          });
+        }
+
+        try {
+          data = await parseBody(response);
+        } catch (err) {
+          lastError = err;
+          if (isRead && !options.noRetry && attempt < maxAttempts - 1) continue;
+          throw this.transportError(method, options.path, err, controller.signal.aborted);
+        }
+      } finally {
+        clearTimeout(timer);
       }
 
-      const data = await parseBody(response);
       if (response.ok) return { status: response.status, data };
 
       const { code, message } = parseWpError(data);
@@ -142,6 +168,7 @@ export class FluentClient {
     tolerant?: boolean;
   }): Promise<FluentResponse> {
     const site = this.baseUrl.slice(0, this.baseUrl.indexOf('/wp-json/'));
+    assertSafeRequest(options.path, options.query);
     const url = new URL(`${site}/wp-json${options.path.startsWith('/') ? options.path : `/${options.path}`}`);
     if (options.query) {
       for (const [k, v] of Object.entries(options.query)) {
@@ -150,20 +177,40 @@ export class FluentClient {
     }
     const headers: Record<string, string> = { Accept: 'application/json', ...(options.headers ?? {}) };
     if (this.authHeader) headers.Authorization = this.authHeader;
+    const method = options.method.toUpperCase();
+    const isRead = method === 'GET' || method === 'HEAD';
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), this.opts.timeoutMs);
     let response: Response;
+    let data: unknown;
     try {
-      response = await this.fetchImpl(url.toString(), {
-        method: options.method,
-        headers,
-        body: options.body,
-        signal: controller.signal,
-      });
+      try {
+        response = await this.fetchImpl(url.toString(), {
+          method: options.method,
+          headers,
+          body: options.body,
+          signal: controller.signal,
+          redirect: isRead ? 'follow' : 'manual',
+        });
+        if (!isRead && response.status >= 300 && response.status < 400) {
+          throw new FluentApiError({
+            status: response.status,
+            message: `the site redirected the request to ${response.headers.get('location') ?? '(no Location header)'} — the write was NOT re-sent`,
+            product: 'wordpress',
+            productTitle: 'WordPress',
+            envPrefix: 'FLUENT',
+            endpoint: `${options.method} ${options.path}`,
+            hint: 'Set the site URL to the exact address the site redirects to (https vs http, www vs no-www), then retry.',
+          });
+        }
+        data = await parseBody(response);
+      } catch (err) {
+        if (err instanceof FluentApiError) throw err;
+        throw this.transportError(method, options.path, err, controller.signal.aborted, 'wordpress');
+      }
     } finally {
       clearTimeout(timer);
     }
-    const data = await parseBody(response);
     if (!response.ok && !options.tolerant) {
       const { code, message } = parseWpError(data);
       throw new FluentApiError({
@@ -192,6 +239,28 @@ export class FluentClient {
     }
   }
 
+  /** Normalize a network failure or timeout. A timed-out WRITE is not
+   *  "could not reach the site": the site may have applied it, so say so and
+   *  steer away from a blind retry that could double-refund or double-send. */
+  private transportError(method: string, path: string, err: unknown, timedOut: boolean, as?: 'wordpress'): FluentApiError {
+    const isRead = method === 'GET' || method === 'HEAD';
+    return new FluentApiError({
+      status: 0,
+      message: timedOut ? `timed out after ${this.opts.timeoutMs} ms` : err instanceof Error ? err.message : String(err),
+      product: as ?? this.opts.product,
+      productTitle: as ? 'WordPress' : this.opts.productTitle,
+      envPrefix: as ? 'FLUENT' : this.opts.envPrefix,
+      endpoint: `${method} ${path}`,
+      ...(timedOut
+        ? {
+            hint: isRead
+              ? 'The site did not answer in time — it may be slow or overloaded. Retry, or raise FLUENT_HTTP_TIMEOUT_MS.'
+              : 'The site did not answer in time. The write may still have been applied — read the record before retrying so it is not applied twice.',
+          }
+        : {}),
+    });
+  }
+
   private backoffMs(attempt: number): number {
     const base = 500 * 2 ** (attempt - 1);
     return base + Math.floor(Math.random() * 250);
@@ -200,6 +269,22 @@ export class FluentClient {
 
 /** PHP/WordPress bracket serialization at any depth: arrays -> k[]=v (or
  *  k[i][sub]=v for arrays of objects), objects -> k[sub]=v, recursively. */
+/** Backstop for every request, whoever built the path: refuse dot segments
+ *  (URL parsing collapses them, rerouting the call to another endpoint) and
+ *  the WordPress `_method` override. Tool-level checks give the friendlier
+ *  refusal first; this guarantees nothing slips through hand-written paths. */
+function assertSafeRequest(path: string, query?: Record<string, unknown>): void {
+  const bare = path.split('?')[0];
+  for (const seg of bare.split('/')) {
+    const s = seg.toLowerCase().replace(/%2e/g, '.');
+    if (s === '.' || s === '..') {
+      throw new Error(`Refused (nothing was sent): the request path ${JSON.stringify(path)} contains a "${seg}" segment, which would reach a different endpoint.`);
+    }
+  }
+  const key = methodOverrideKey(query);
+  if (key) throw new Error(`Refused (nothing was sent): query key "${key}" — ${METHOD_OVERRIDE_REFUSAL}.`);
+}
+
 function appendQuery(params: URLSearchParams, key: string, value: unknown): void {
   if (value === undefined || value === null) return;
   if (Array.isArray(value)) {

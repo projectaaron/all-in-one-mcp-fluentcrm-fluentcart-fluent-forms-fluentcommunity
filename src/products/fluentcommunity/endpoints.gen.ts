@@ -1291,7 +1291,8 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/profile/{username}/change-password",
       "summary": "Change Profile Password",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Account security: changes a member's password. Requires confirm:true."
     },
     "list_profile_comments": {
       "op": "profile/list-profile-comments",

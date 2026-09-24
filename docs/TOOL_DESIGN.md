@@ -119,12 +119,13 @@ likely cause, what to try).
   **Mass-send actions are also confirm-gated by override**: sending email or
   SMS to a whole audience is as irreversible as a delete
   (`schedule_campaign`, `resume_campaign`, the three `resend_*` actions,
-  `schedule_sms_campaign`, `resume_sms_campaign`). Single-recipient sends
-  (test emails, one custom SMS) stay ungated.
+  `schedule_sms_campaign`, `resume_sms_campaign`). One-off messages to a real
+  customer (custom email, custom SMS, SMS resend, manual payment reminder)
+  are gated too; only test sends to the admin stay ungated.
   Notable catches: FluentCRM's `reset_database` (full CRM wipe) and
   FluentCart's `regenerate_license_key` are confirm-gated, as is every operation that
   installs/activates plugin code, grants manager rights or permissions, or
-  mints an API key. 203 of 1,290 actions classify as destructive.
+  mints an API key. 230 of 1,290 actions classify as destructive.
 - **Locked tools — a tier above `confirm`.** Twelve operations have no
   legitimate agent use and refuse unconditionally (server-side, both modes):
   `crm_settings_reset_database`, `crm_contacts_delete_contacts`,

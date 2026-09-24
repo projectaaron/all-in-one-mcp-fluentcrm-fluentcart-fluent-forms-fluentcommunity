@@ -15,7 +15,7 @@ describe('safety regressions', () => {
     expect(def.destructive).toBe(true);
   });
 
-  it('mass-send actions are confirm-gated; single-recipient sends are not', () => {
+  it('mass sends and messages to real customers are confirm-gated; test sends to the admin are not', () => {
     const campaigns = spec('fluentcrm', 'crm_campaigns').actions;
     for (const a of [
       'schedule_campaign',
@@ -32,7 +32,10 @@ describe('safety regressions', () => {
     const sms = spec('fluentcrm', 'crm_sms').actions;
     expect(sms.schedule_sms_campaign?.destructive).toBe(true);
     expect(sms.resume_sms_campaign?.destructive).toBe(true);
-    expect(sms.send_subscriber_custom_sms?.destructive).toBe(false);
+    // A one-off message to a real customer can't be recalled, and a
+    // prompt-injected note could otherwise have the assistant send many.
+    expect(sms.send_subscriber_custom_sms?.destructive).toBe(true);
+    expect(spec('fluentcrm', 'crm_contacts').actions.send_contact_custom_email?.destructive).toBe(true);
   });
 
   it('report tools stay pure-read despite refund-ish slugs', () => {

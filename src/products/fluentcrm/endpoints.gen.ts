@@ -15,7 +15,8 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/subscribers/bulk-add-update",
       "summary": "Bulk Add/Update Contacts",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Bulk import: creates or overwrites many contacts at once. Requires confirm:true."
     },
     "create_contact": {
       "op": "contacts/create-contact",
@@ -176,7 +177,8 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/subscribers/{id}/emails/send",
       "summary": "Send Contact Custom Email",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Sends a message to a real customer that cannot be recalled. Requires confirm:true."
     },
     "send_contact_double_optin": {
       "op": "contacts/send-contact-double-optin",
@@ -1662,7 +1664,8 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/sms/messages/{id}/resend",
       "summary": "Resend SMS Message",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Sends a message to a real customer that cannot be recalled. Requires confirm:true."
     },
     "resume_sms_campaign": {
       "op": "sms/resume-sms-campaign",
@@ -1683,7 +1686,8 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/sms/subscribers/{id}/send",
       "summary": "Send Custom SMS to Subscriber",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Sends a message to a real customer that cannot be recalled. Requires confirm:true."
     },
     "unschedule_sms_campaign": {
       "op": "sms/unschedule-sms-campaign",
@@ -2054,49 +2058,56 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/setting/install-fluent-boards",
       "summary": "Install Fluent Boards Plugin",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Code change: installs and activates a plugin on the site. Requires confirm:true."
     },
     "install_fluent_booking": {
       "op": "settings/install-fluent-booking",
       "method": "POST",
       "path": "/setting/install-fluent-booking",
       "summary": "Install Fluent Booking Plugin",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Code change: installs and activates a plugin on the site. Requires confirm:true."
     },
     "install_fluent_cart": {
       "op": "settings/install-fluent-cart",
       "method": "POST",
       "path": "/setting/install-fluent-cart",
       "summary": "Install FluentCart Plugin",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Code change: installs and activates a plugin on the site. Requires confirm:true."
     },
     "install_fluent_community": {
       "op": "settings/install-fluent-community",
       "method": "POST",
       "path": "/setting/install-fluent-community",
       "summary": "Install Fluent Community Plugin",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Code change: installs and activates a plugin on the site. Requires confirm:true."
     },
     "install_fluent_form": {
       "op": "settings/install-fluent-form",
       "method": "POST",
       "path": "/setting/install-fluentform",
       "summary": "Install Fluent Forms Plugin",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Code change: installs and activates a plugin on the site. Requires confirm:true."
     },
     "install_fluent_smtp": {
       "op": "settings/install-fluent-smtp",
       "method": "POST",
       "path": "/setting/install-fluentsmtp",
       "summary": "Install FluentSMTP Plugin",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Code change: installs and activates a plugin on the site. Requires confirm:true."
     },
     "install_fluent_support": {
       "op": "settings/install-fluent-support",
       "method": "POST",
       "path": "/setting/install-fluent-support",
       "summary": "Install Fluent Support Plugin",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Code change: installs and activates a plugin on the site. Requires confirm:true."
     },
     "remove_old_logs": {
       "op": "settings/remove-old-logs",
@@ -2357,7 +2368,8 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/import/csv-import",
       "summary": "Import Contacts from CSV",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Bulk import: creates or overwrites many contacts at once. Requires confirm:true."
     },
     "import_driver_data": {
       "op": "import/import-driver-data",
@@ -2371,7 +2383,8 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/import/users",
       "summary": "Import WordPress Users",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Bulk import: creates or overwrites many contacts at once. Requires confirm:true."
     },
     "upload_csv_import": {
       "op": "import/upload-csv-import",
@@ -2406,7 +2419,8 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/migrators/import",
       "summary": "Execute Migrator Import",
-      "destructive": false
+      "destructive": true,
+      "bodyNote": "Bulk import: creates or overwrites many contacts at once. Requires confirm:true."
     },
     "verify_migrator_credential": {
       "op": "migrators/verify-migrator-credential",
