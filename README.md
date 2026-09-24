@@ -84,14 +84,18 @@ see [How this compares](#how-this-compares-to-the-native-fluent-mcps).
   Pro-only endpoints simply return 404 without the Pro plugin).
 - Your site must use **https://** (WordPress only offers Application
   Passwords over HTTPS) and **Settings → Permalinks** must not be "Plain".
-- A WordPress user who can manage the Fluent plugins you use, and an
-  **Application Password** for that user: in WordPress go to *Users →
-  Profile*, scroll to **Application Passwords**, type a name such as
-  *Claude*, click **Add New Application Password**, and copy the password
-  shown (it is shown once; the spaces are fine). One password covers every
-  product. If you can, create a separate WordPress user just for this, give
-  it only the Fluent permissions it needs, and create the password on that
-  user — you can revoke it in one click.
+- A **separate WordPress user just for Claude** (recommended) and an
+  **Application Password** for it:
+  1. *Users → Add New User*: give it a username such as `claude`, an
+     email address you control (WordPress needs one that differs from
+     your own account's), and the **Administrator** role.
+  2. *Users → All Users*, edit that user, scroll to **Application
+     Passwords**, type a name such as *Claude*, click **Add New
+     Application Password**, and copy the password shown (it is shown
+     once; the spaces are fine). One password covers every product.
+
+  If you ever need to cut off access, revoke that password or delete the
+  user — your own login is untouched.
 - **Option A needs nothing else installed** — Claude Desktop (current
   version, macOS or Windows) runs the extension with its own built-in
   Node.js. Options B and C need **Node 20.6+**.
@@ -120,7 +124,7 @@ Three ways to run it — pick by where you want to use your assistant:
    into the window, and click **Install**.
 3. Fill in the form: your site URL **including https://** (the home page
    address, e.g. `https://example.com` — not the `/wp-admin` address), your
-   WordPress username, and the Application Password. Claude Desktop stores
+   Claude user's username, and its Application Password. Claude Desktop stores
    the password as a sensitive value.
 4. Start a new chat and ask Claude: *"Run verify_setup."* You should see ✅
    next to each Fluent plugin you have; plugins you don't have show ⏭️ and
