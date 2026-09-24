@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.3.2 — 2026-09-24
+
+- Setup now recommends a separate WordPress user just for Claude, with the
+  Administrator role, so you can cut off access by revoking its password or
+  deleting that user without touching your own login. The Claude Desktop settings
+  form, the README and the bundled readme all say so. No code changes.
+
 ## 1.3.1 — 2026-09-24
 
 - The LICENSE copyright holder is now upfluent.io. No code changes.
