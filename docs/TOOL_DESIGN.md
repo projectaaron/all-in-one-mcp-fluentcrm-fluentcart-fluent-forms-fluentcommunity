@@ -125,7 +125,7 @@ likely cause, what to try).
   Notable catches: FluentCRM's `reset_database` (full CRM wipe) and
   FluentCart's `regenerate_license_key` are confirm-gated, as is every operation that
   installs/activates plugin code, grants manager rights or permissions, or
-  mints an API key. 230 of 1,290 actions classify as destructive.
+  mints an API key. 230 of 1,290 endpoint actions classify as destructive (231 tools with `crm_contacts_bulk_action_by_filter`).
 - **Locked tools — a tier above `confirm`.** Twelve operations have no
   legitimate agent use and refuse unconditionally (server-side, both modes):
   `crm_settings_reset_database`, `crm_contacts_delete_contacts`,

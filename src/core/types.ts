@@ -69,16 +69,25 @@ export interface ProductCredentials {
   password: string;
 }
 
+/** Server settings hand-written tools may read (from ServerConfig). */
+export interface ExtrasSettings {
+  suspiciousIpPrefixes?: string[];
+}
+
 /** A product's hand-written tools beyond the generated endpoint surface —
  *  e.g. the FluentCRM sequence schedule preview. Registered in both tool
  *  modes and listed in tool_map under an existing area. */
 export interface ProductExtras {
-  /** Area key the tools are listed under in tool_map, e.g. `crm_sequences`. */
+  /** Default area key the tools are listed under in tool_map, e.g. `crm_sequences`. */
   area: string;
-  /** tool_map entries (name/summary/params/destructive/paginated). */
-  mapTools: Array<{ name: string; summary: string; params: string[]; destructive: boolean; paginated: boolean }>;
+  /** tool_map entries (name/summary/params/destructive/paginated). An entry's
+   *  own `area` overrides the default. */
+  mapTools: Array<{ name: string; summary: string; params: string[]; destructive: boolean; paginated: boolean; area?: string }>;
+  /** Areas that exist only for extras (no generated endpoints) — area key →
+   *  one-sentence description, listed in tool_map after the product's areas. */
+  newAreas?: Record<string, string>;
   /** Register the tools; returns the registered names. */
-  register: (server: McpServer, client: FluentClient) => string[];
+  register: (server: McpServer, client: FluentClient, settings?: ExtrasSettings) => string[];
 }
 
 /** A self-contained Fluent product module. Adding a product never touches core. */

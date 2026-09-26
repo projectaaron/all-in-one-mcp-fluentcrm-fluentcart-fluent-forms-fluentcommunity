@@ -2,7 +2,7 @@
 
 [![Sponsored by upfluent.io](https://img.shields.io/badge/sponsored%20by-upfluent.io-2563eb)](https://upfluent.io)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
-[![Tools](https://img.shields.io/badge/tools-1%2C299-informational)](docs/TOOL_MAP.md)
+[![Tools](https://img.shields.io/badge/tools-1%2C303-informational)](docs/TOOL_MAP.md)
 [![Latest release](https://img.shields.io/github/v/release/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity?label=download)](https://github.com/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity/releases/latest)
 
 **Let your AI assistant run your WordPress business** — the CRM, the store,
@@ -230,6 +230,7 @@ All settings are environment variables (`.env.example` documents every one).
 | `FLUENT_MCP_TOKEN` | remote only | Shared secret for remote mode, 16+ characters |
 | `PORT`, `FLUENT_MCP_HOST` | remote only | Listen port (3000) and bind address (0.0.0.0) |
 | `FLUENT_HTTP_TIMEOUT_MS`, `FLUENT_HTTP_MAX_RETRIES` | no | HTTP tuning (30000 ms, 3 retries with backoff; writes are never blindly retried) |
+| `FLUENT_SUSPICIOUS_IP_PREFIXES` | no | Comma-separated IP prefixes that `crm_analytics_suspicious_contacts` treats as Tor/anonymizer exits, e.g. `185.220.,23.129.64.` (default: a built-in list of well-known Tor exit ranges) |
 
 ---
 
@@ -266,7 +267,8 @@ reaches every session automatically through the MCP `instructions` field.
 | `query` | Filters, search, sorting — `{"search": "jane"}` |
 | `body` | The data for create/update tools |
 | `page` / `per_page` | List pagination — 20 per page by default |
-| `detail` / `fields` | Responses are **compact summaries by default**. `detail: "full"` returns the complete record; `fields: ["id","status"]` returns exactly those columns |
+| `detail` / `fields` | Responses are **compact summaries by default**. `detail: "full"` returns the complete record; `fields: ["id","status"]` returns exactly those columns, and dot paths reach nested values: `["id","subscriber.status","subscriber.ip"]` |
+| `count_only` / `group_by` | On list tools: count instead of listing. `count_only: true` returns the total; `group_by: "subscriber.status"` counts per value across **every** page, e.g. `{"unsubscribed":137,"bounced":25,…}` — one call and a few hundred bytes |
 | `confirm` | `true` to execute a destructive (⚠) tool, or a `mode: "replace"` write |
 | `mode` | On updates with a paired read: `merge` (default) or `replace` — see below |
 | `dry_run` | Preview any write without touching data |
@@ -299,7 +301,7 @@ closes that at the executor:
   plugin advertises *before* writing, and the stored record is returned
   *after* — if the plugin doesn't list it, the tool errors.
 
-**Nothing irreversible runs by accident.** 230 operations are classified
+**Nothing irreversible runs by accident.** 231 operations are classified
 destructive (⚠ in the map): deletes, refunds, cancels, bulk actions, resets,
 mass sends, plugin installs and activations, manager/permission grants,
 API-key minting, and the public form-submit that fires real notifications. Called without `confirm: true`, the tool refuses, does
@@ -328,7 +330,7 @@ human-in-the-loop is your MCP client's approval prompt.
 
 ## The products and their tools
 
-73 areas. Every individual tool is one line in
+74 areas. Every individual tool is one line in
 [`docs/TOOL_MAP.md`](docs/TOOL_MAP.md); area-level examples in
 [`docs/TOOL_CATALOG.md`](docs/TOOL_CATALOG.md); the endpoint inventory per
 product in [`docs/api-reference/`](docs/api-reference/). Request/response
@@ -344,7 +346,7 @@ see [API references](#api-references).
 | `support_report` | A redacted, paste-ready diagnostic (version, transport, connection checks, the recent tool-call log with every error) for support requests and bug reports — see [Getting help](#getting-help) |
 | `wp_media_upload_from_url` / `wp_media_get` / `wp_media_list` | The WordPress media library; sideload an image from a URL and get the attachment ID |
 
-### [FluentCRM](https://fluentcrm.com/?ref=4618) — `crm_*` (23 areas, 366 tools)
+### [FluentCRM](https://fluentcrm.com/?ref=4618) — `crm_*` (24 areas, 370 tools)
 
 | Area | What it manages |
 |------|-----------------|
@@ -357,13 +359,32 @@ see [API references](#api-references).
 | `crm_email_patterns` | Reusable email content patterns and categories |
 | `crm_ai` | FluentCRM's AI assistant: generate/rewrite text, email bodies, contact summaries; provider settings |
 | `crm_reports` · `crm_abandoned_carts` | Read-only analytics |
+| `crm_analytics` | Answers the REST API has no single endpoint for (see below) |
 | `crm_settings` · `crm_settings_pro` · `crm_utilities` | Settings, license, DB index health, MCP adapter, imports, exports, migrations |
 
-**Extras beyond the API:** `crm_sequences_preview_schedule` computes when
-every email in a sequence will send for a hypothetical enrolment (delays are
-absolute from enrolment, a common surprise); `crm_sequences_validate` lints
-timing configuration; `crm_sequences_bulk_update_emails` updates many emails
-in one call with per-row verification.
+**Extras beyond the API:**
+
+- `crm_sequences_preview_schedule` computes when every email in a sequence
+  will send for a hypothetical enrolment (delays are absolute from
+  enrolment, a common surprise); `crm_sequences_validate` lints timing
+  configuration; `crm_sequences_bulk_update_emails` updates many emails in
+  one call with per-row verification.
+- `crm_analytics_funnel_email_stats` — sent, opens, clicks and unsubscribes
+  (with rates) for every email an automation sends, sortable: "which
+  challenge email loses the most subscribers?" in one call.
+- `crm_analytics_funnel_exits` — how many contacts *reached the end* of an
+  automation versus stopped early at an End step, and why cancelled entries
+  stopped (unsubscribed / bounced / complained, and at which step).
+- `crm_analytics_suspicious_contacts` — likely bot signups with the reason
+  for each flag: Tor/anonymizer IPs (the list is set with
+  `FLUENT_SUSPICIOUS_IP_PREFIXES`), the same Gmail with dots or `+tags`
+  moved, generated-looking names, many signups from one IP.
+- `crm_contacts_bulk_action_by_filter` ⚠ — tag, change status, stop an
+  automation or sequence for every contact a filter matches (including "the
+  suspicious ones in automation 11"). `dry_run: true` shows the count, a
+  sample and every change first; a real run needs `confirm: true`, goes
+  through FluentCRM's own endpoints so its hooks run (unsubscribing cancels
+  pending emails and automations), and returns an undo record.
 
 ### [FluentCart](https://fluentcart.com/?by=272) — `cart_*` (25 areas, 436 tools)
 
@@ -472,12 +493,12 @@ pages, since their coverage grows.
 | **Runs where** | Inside WordPress, as plugin code (FluentHub or the WordPress MCP Adapter; needs WordPress 6.9+ for the Abilities API) | Outside WordPress: Claude Desktop extension, local Node process, or a Cloudflare Worker. Nothing installed on the site. |
 | **Products covered** | FluentCRM, FluentCart, Fluent Forms, Fluent Support, FluentBoards. FluentCommunity and WP Social Ninja: none announced. | FluentCRM, FluentCart, Fluent Forms, FluentCommunity, WP Social Ninja. Fluent Support, FluentBooking, FluentBoards and FluentAffiliate coming soon (see [Roadmap](#roadmap-more-fluent-products)). |
 | **Servers to connect** | One per product (Fluent Forms has its own; CRM/Cart/Support/Boards go through FluentHub, each with its own enable switch and snippet) | One. All five products behind one connector, one credential. Products you don't have are simply off. |
-| **Tool count** | FluentCRM ~25 (some Pro-only) · FluentCart 30 · Fluent Forms 20 free / 23 Pro · Fluent Support ~20 | 1,299 tools: every one of the 1,290 documented endpoints plus 9 built-ins and helpers. CRM 366 (363 endpoints + 3 sequence helpers) · Cart 436 · Forms 91 · Community 274 · Social Ninja 126 |
+| **Tool count** | FluentCRM ~25 (some Pro-only) · FluentCart 30 · Fluent Forms 20 free / 23 Pro · Fluent Support ~20 | 1,303 tools: every one of the 1,290 documented endpoints plus 13 built-ins and helpers. CRM 370 (363 endpoints + 7 helpers: sequences, analytics, bulk-by-filter) · Cart 436 · Forms 91 · Community 274 · Social Ninja 126 |
 | **Coverage model** | Curated: a hand-picked subset of common operations | Complete: every documented REST endpoint of each product, generated from the vendor's own API reference and re-checked weekly |
 | **Writes** | Selected writes per product (e.g. Cart: order status, notes, refunds, customer create/update, subscription cancel, coupons, labels) | Every write the admin UI can do: create, update, delete, bulk actions, settings, automations, sequences, templates, integrations, licensing, courses, spaces, chat, reviews, and so on |
 | **Explicitly not exposed natively** | FluentCart: settings, shipping, tax, licensing administration, email templates. FluentCRM: templates, forms, webhooks, settings, SMS, reports (per the vendor's own write-ups). Fluent Forms: form settings beyond styling and notifications, integrations beyond listing | All of those, plus the rest of each REST surface |
 | **Partial updates** | Tool-specific | Merge by default on every update: the record is read, your fields are merged in, written, re-read and diffed. Omitted fields survive. `mode:"replace"` is explicit and confirm-gated. |
-| **Safety** | Preview-then-confirm on selected sensitive actions (refunds, cancellations); permissions inherited from the WordPress user | `confirm:true` gate on 230 destructive or privilege-changing operations, 12 locked outright, `dry_run` on every write, post-write verification, read-back guards, per-operation policy you control via `FLUENT_LOCKED_TOOLS`; permissions likewise inherited from the WordPress user |
+| **Safety** | Preview-then-confirm on selected sensitive actions (refunds, cancellations); permissions inherited from the WordPress user | `confirm:true` gate on 231 destructive or privilege-changing operations, 12 locked outright, `dry_run` on every write, post-write verification, read-back guards, per-operation policy you control via `FLUENT_LOCKED_TOOLS`; permissions likewise inherited from the WordPress user |
 | **Auth** | WordPress Application Password | WordPress Application Password (per product overrides optional) |
 | **Where you can use it** | Claude Desktop, Claude Code, Cursor, Codex via HTTP to your site | Same clients, plus claude.ai web and mobile through the remote connector |
 | **Price / license** | Free with the plugins (some tools Pro-only) | Source is MIT and open. The ready-built extension is free for a limited time during early access; a paid license is planned afterwards |
@@ -516,9 +537,9 @@ the `.mcpb` extension file is Claude Desktop-specific; the config-file
 install ([B](#b--any-mcp-client-config-file)) and the remote connector
 ([C](#c--remote-connector-web-mobile-desktop)) work everywhere.
 
-**Pick the tool mode for your client.** The default surface is 1,299 small
+**Pick the tool mode for your client.** The default surface is 1,303 small
 tools, which Claude handles well but many other clients cap or truncate.
-`grouped` mode collapses the same operations into 79 tools (one per area,
+`grouped` mode collapses the same operations into 83 tools (one per area,
 an `action` parameter picks the operation, plus the built-ins) with identical
 confirm gates, locks, `tool_map` and `support_report`.
 

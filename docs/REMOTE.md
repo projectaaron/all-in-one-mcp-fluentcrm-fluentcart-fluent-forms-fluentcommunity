@@ -137,7 +137,7 @@ docker run -d -p 3000:3000 --env-file .env --restart unless-stopped fluentmcp
   restarts are invisible to clients and horizontal scaling is trivial.
 - `GET /healthz` is unauthenticated and reveals nothing but `{ok: true}`.
 - All the same safety behavior applies remotely: honest tool annotations and
-  `confirm: true` gates on all 230 destructive actions and the 12 locked tools
+  `confirm: true` gates on all 231 destructive actions and the 12 locked tools
   still refuse.
 - Tool mode per URL: append `/grouped` (or `/individual`) to either form —
   `https://your-host/mcp/<token>/grouped`, or `https://your-host/mcp/grouped`

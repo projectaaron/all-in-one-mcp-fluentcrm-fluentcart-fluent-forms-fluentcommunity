@@ -27,7 +27,7 @@ community.** Read the notes below before exposing it anywhere.
   built-in rate limit — put one at the edge (Cloudflare rule, nginx
   `limit_req`) if the endpoint is reachable from the open internet.
 - **Keep your MCP client on "ask" for writes.** The server annotates every tool
-  honestly (`readOnlyHint`, `destructiveHint`) and gates 230 destructive
+  honestly (`readOnlyHint`, `destructiveHint`) and gates 231 destructive
   operations behind `confirm: true` — including every operation that installs
   or activates plugin code, grants a user manager rights or permissions, or
   mints an API key — but the human approval prompt is your client's. Twelve
