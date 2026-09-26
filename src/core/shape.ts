@@ -30,13 +30,59 @@ function paginationOf(p: Rec): Shaped['pagination'] {
   };
 }
 
-function projectItem(item: unknown, fields: string[]): unknown {
-  if (!isRec(item)) return item;
+/** Keep only `paths` (each a list of key segments) of a value, preserving the
+ *  nesting: {subscriber:{status,ip,…}} with [["subscriber","status"]] →
+ *  {subscriber:{status}}. Arrays are projected element-wise, so
+ *  "metrics.status" keeps [{status},…]. A path that names a whole key keeps
+ *  that key's full value. */
+function projectPaths(value: unknown, paths: string[][]): unknown {
+  if (Array.isArray(value)) return value.map((v) => projectPaths(v, paths));
+  if (!isRec(value)) return value;
+  const byKey = new Map<string, string[][]>();
+  for (const p of paths) {
+    if (!(p[0] in value)) continue;
+    const rest = byKey.get(p[0]) ?? [];
+    rest.push(p.slice(1));
+    byKey.set(p[0], rest);
+  }
   const out: Rec = {};
-  for (const f of fields) if (f in item) out[f] = item[f];
-  // Never lose the identifier even if it wasn't requested.
-  if (!('id' in out) && 'id' in item) out.id = item.id;
+  for (const [key, rests] of byKey) {
+    out[key] = rests.some((r) => r.length === 0) ? value[key] : projectPaths(value[key], rests);
+  }
   return out;
+}
+
+/** Split a field spec into path segments. A key that literally contains a
+ *  dot (rare, but some plugin meta keys do) wins over the nested reading. */
+function segmentsOf(item: Rec, field: string): string[] {
+  return field in item || !field.includes('.') ? [field] : field.split('.').filter(Boolean);
+}
+
+/** First segment of a field spec — what a record must carry at its top
+ *  level for the field to apply to it. */
+export function rootOf(field: string): string {
+  return field.split('.')[0];
+}
+
+export function projectItem(item: unknown, fields: string[]): unknown {
+  if (!isRec(item)) return item;
+  const out = projectPaths(item, fields.map((f) => segmentsOf(item, f))) as Rec;
+  // Never lose the identifier even if it wasn't requested.
+  if (!('id' in out) && 'id' in item) return { id: item.id, ...out };
+  return out;
+}
+
+/** Read one field spec ("status", "subscriber.status") from a record.
+ *  Undefined when any segment is missing; arrays are not traversed. */
+export function valueAt(item: unknown, field: string): unknown {
+  if (!isRec(item)) return undefined;
+  if (field in item) return item[field];
+  let cur: unknown = item;
+  for (const seg of field.split('.')) {
+    if (!isRec(cur) || !(seg in cur)) return undefined;
+    cur = cur[seg];
+  }
+  return cur;
 }
 
 /** Truncate long strings; leave structure intact (fallback when no summary list). */
@@ -62,10 +108,61 @@ export function shapeResponse(
   opts: { detail: 'summary' | 'full'; fields?: string[]; summaryFields?: string[] }
 ): Shaped {
   const wantProjection = opts.fields?.length ? opts.fields : opts.detail === 'summary' ? opts.summaryFields : undefined;
+  const container = locateList(raw);
 
-  // Locate the record set: raw array, paginator at root, or the first
-  // paginator/array one level down (Fluent APIs wrap: {orders: {data: []}}).
-  let container: { items: unknown[]; replace: (items: unknown[]) => unknown; pagination?: Shaped['pagination'] } | undefined;
+  if (opts.detail === 'full' && !opts.fields?.length) {
+    return { data: raw, pagination: container?.pagination, itemCount: container?.items.length, summarized: false };
+  }
+
+  if (container) {
+    const items = wantProjection
+      ? container.items.map((i) => prune(projectItem(i, wantProjection)))
+      : container.items.map((i) => prune(i));
+    return {
+      data: container.replace(items),
+      pagination: container.pagination,
+      itemCount: container.items.length,
+      summarized: true,
+    };
+  }
+
+  // Single object (get/create/update responses). Fluent APIs usually wrap the
+  // record one level down ({subscriber: {...}}, {order: {...}}) — project the
+  // record, not the wrapper, and never project down to an empty object.
+  if (wantProjection && isRec(raw)) {
+    // Pick the object that best looks like the record: an id wins, then the
+    // most projection fields. The top level wins ties, but a wrapper like
+    // {status:"success", data:{id,…}} must not be projected down to {status}.
+    const score = (rec: Rec) => ('id' in rec ? 1000 : 0) + wantProjection.filter((f) => f in rec || rootOf(f) in rec).length;
+    let bestKey: string | undefined;
+    let best = score(raw);
+    for (const [key, value] of Object.entries(raw)) {
+      if (isRec(value) && score(value) > best) {
+        best = score(value);
+        bestKey = key;
+      }
+    }
+    if (best > 0) {
+      return bestKey === undefined
+        ? { data: prune(projectItem(raw, wantProjection)), summarized: true }
+        : { data: { [bestKey]: prune(projectItem(raw[bestKey], wantProjection)) }, summarized: true };
+    }
+    // No projection field matches anywhere — pruning beats returning {}.
+  }
+  return { data: prune(raw), summarized: true };
+}
+
+export interface ListContainer {
+  items: unknown[];
+  replace: (items: unknown[]) => unknown;
+  pagination?: Shaped['pagination'];
+}
+
+/** Locate the record set in a response: a raw array, a paginator at the
+ *  root, or the first paginator/array one level down (Fluent APIs wrap:
+ *  {orders: {data: []}}). Undefined for single-record responses. */
+export function locateList(raw: unknown): ListContainer | undefined {
+  let container: ListContainer | undefined;
 
   if (Array.isArray(raw)) {
     container = { items: raw, replace: (items) => items };
@@ -97,46 +194,7 @@ export function shapeResponse(
     }
   }
 
-  if (opts.detail === 'full' && !opts.fields?.length) {
-    return { data: raw, pagination: container?.pagination, itemCount: container?.items.length, summarized: false };
-  }
-
-  if (container) {
-    const items = wantProjection
-      ? container.items.map((i) => prune(projectItem(i, wantProjection)))
-      : container.items.map((i) => prune(i));
-    return {
-      data: container.replace(items),
-      pagination: container.pagination,
-      itemCount: container.items.length,
-      summarized: true,
-    };
-  }
-
-  // Single object (get/create/update responses). Fluent APIs usually wrap the
-  // record one level down ({subscriber: {...}}, {order: {...}}) — project the
-  // record, not the wrapper, and never project down to an empty object.
-  if (wantProjection && isRec(raw)) {
-    // Pick the object that best looks like the record: an id wins, then the
-    // most projection fields. The top level wins ties, but a wrapper like
-    // {status:"success", data:{id,…}} must not be projected down to {status}.
-    const score = (rec: Rec) => ('id' in rec ? 1000 : 0) + wantProjection.filter((f) => f in rec).length;
-    let bestKey: string | undefined;
-    let best = score(raw);
-    for (const [key, value] of Object.entries(raw)) {
-      if (isRec(value) && score(value) > best) {
-        best = score(value);
-        bestKey = key;
-      }
-    }
-    if (best > 0) {
-      return bestKey === undefined
-        ? { data: prune(projectItem(raw, wantProjection)), summarized: true }
-        : { data: { [bestKey]: prune(projectItem(raw[bestKey], wantProjection)) }, summarized: true };
-    }
-    // No projection field matches anywhere — pruning beats returning {}.
-  }
-  return { data: prune(raw), summarized: true };
+  return container;
 }
 
 /** One-line human text summary for the text content block. */

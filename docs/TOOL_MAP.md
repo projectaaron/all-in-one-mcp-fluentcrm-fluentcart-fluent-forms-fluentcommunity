@@ -1,7 +1,7 @@
 # Tool map
 
 The fast map of this server: **every tool, one line each, grouped by area** —
-1299 tools in 73 areas. **Generated** by
+1303 tools in 74 areas. **Generated** by
 `scripts/gen-tool-catalog.mjs` from the live registry; regenerate after any
 tool-surface change. Sessions get the same map at runtime from the
 `tool_map` tool (no args = area overview, `{"area": …}` /
@@ -17,7 +17,7 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 
 | Area | Tools | What it covers |
 |------|-------|----------------|
-| `crm_contacts` | 32 | Look up, create, update, delete, and manage CRM contacts (subscribers), including their notes, tags, lists, and email history. |
+| `crm_contacts` | 33 | Look up, create, update, delete, and manage CRM contacts (subscribers), including their notes, tags, lists, and email history. |
 | `crm_lists` | 7 | View, create, update, or delete the contact lists used to organize CRM subscribers. |
 | `crm_tags` | 7 | View, create, update, or delete the tags used to label CRM contacts. |
 | `crm_segments` | 9 | View, create, update, or delete dynamic contact segments and see which contacts match them. |
@@ -40,6 +40,7 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 | `crm_utilities` | 20 | Administrative utilities: import contacts from CSV or WordPress users, export contacts, migrate from other tools, list WordPress users and roles, browse in-app docs, and receive bounce webhooks. |
 | `crm_ai` | 7 | FluentCRM's AI assistant: generate or rewrite text and email bodies, summarize a contact, list provider models, and manage the AI provider settings and connection test. |
 | `crm_email_patterns` | 11 | Reusable email content patterns and their categories: list, create (incl. from wp_block payloads), update, delete, and bulk actions. |
+| `crm_analytics` | 3 | Read-only analysis FluentCRM's REST API has no single endpoint for: per-email automation stats, why contacts left an automation, likely bot signups. |
 | `cart_orders` | 32 | Look up, create, update, refund, and manage store orders, including their statuses, transactions, addresses, and disputes. |
 | `cart_products` | 32 | Look up, create, update, delete, and bulk-edit store products, including search, duplication, taxonomy terms, and shipping/tax classes. |
 | `cart_product_variants` | 22 | Manage product variations: pricing, inventory and stock, bundles, upgrade paths, media, and variant search. |
@@ -127,6 +128,7 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `crm_contacts_update_note(id, note_id)` — Update Contact Note
 - `crm_contacts_update_property` — Update Contacts Property
 - `crm_contacts_bulk_delete_notes(id)` ⚠ — Bulk Delete Contact Notes
+- `crm_contacts_bulk_action_by_filter(filter, actions)` ⚠ — Tag / set status / stop automation or sequences for every contact a filter matches (dry run + undo)
 
 ### crm_lists — View, create, update, or delete the contact lists used to organize CRM subscribers.
 
@@ -527,6 +529,12 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `crm_email_patterns_list` — List Email Patterns (paginated)
 - `crm_email_patterns_list_wp_format` — List Patterns In wp_block Format (paginated)
 - `crm_email_patterns_update(id)` — Update Email Pattern
+
+### crm_analytics — Read-only analysis FluentCRM's REST API has no single endpoint for: per-email automation stats, why contacts left an automation, likely bot signups.
+
+- `crm_analytics_funnel_email_stats(funnel_id | sequence_id)` — Per-email sent/opens/clicks/unsubscribes (+ rates) for an automation's sequences, sortable
+- `crm_analytics_funnel_exits(funnel_id)` — Completed (reached end vs ended early) and cancelled entries by contact status and step
+- `crm_analytics_suspicious_contacts` — Likely bot signups with reasons (anonymizer IPs, Gmail dot variants, fake names, shared IPs) (paginated)
 
 ## FluentCart (`cart_*`)
 

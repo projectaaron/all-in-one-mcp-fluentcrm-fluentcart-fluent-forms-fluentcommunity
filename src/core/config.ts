@@ -24,6 +24,9 @@ export interface ServerConfig {
   /** Names (never values) of the FLUENT_* / <PREFIX>_* variables that were
    *  set — so support_report can show what is configured without leaking it. */
   presentEnv: string[];
+  /** Anonymizer/Tor IP prefixes for crm_analytics_suspicious_contacts, from
+   *  FLUENT_SUSPICIOUS_IP_PREFIXES (comma-separated). Undefined = built-in list. */
+  suspiciousIpPrefixes?: string[];
 }
 
 /** Locked by default: operations no agent has any business executing —
@@ -121,6 +124,9 @@ export function loadConfig(envPrefixes: string[], env: NodeJS.ProcessEnv = proce
     credentials,
     toolMode: env.FLUENT_TOOL_MODE?.trim().toLowerCase() === 'grouped' ? 'grouped' : 'individual',
     lockedTools: parseLockedTools(env.FLUENT_LOCKED_TOOLS),
+    ...(env.FLUENT_SUSPICIOUS_IP_PREFIXES?.trim()
+      ? { suspiciousIpPrefixes: env.FLUENT_SUSPICIOUS_IP_PREFIXES.split(',').map((p) => p.trim()).filter(Boolean) }
+      : {}),
     presentEnv: Object.keys(env)
       .filter((k) => (k.startsWith('FLUENT_') || envPrefixes.some((p) => k.startsWith(`${p}_`))) && env[k] !== undefined && env[k] !== '')
       .sort(),
