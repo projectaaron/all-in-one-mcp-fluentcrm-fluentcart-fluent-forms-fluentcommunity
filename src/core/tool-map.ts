@@ -47,6 +47,16 @@ export type ToolMode = 'individual' | 'grouped';
  *  the server per request, but the map data is config-static. */
 const AREA_CACHE = new WeakMap<ProductModule, Map<string, MapArea[]>>();
 
+/** A product's hand-written extras that belong in one area (map entries
+ *  without their `area` routing key). */
+function extrasIn(module: ProductModule, area: string) {
+  const extras = module.extras;
+  if (!extras) return [];
+  return extras.mapTools
+    .filter((t) => (t.area ?? extras.area) === area)
+    .map(({ area: _area, ...t }) => t);
+}
+
 /** Build map areas for one product module. */
 export function mapAreasOf(module: ProductModule, mode: ToolMode, enabled: boolean, locked?: Set<string>): MapArea[] {
   const key = `${mode}:${enabled}:${locked ? [...locked].sort().join('|') : ''}`;
@@ -54,7 +64,7 @@ export function mapAreasOf(module: ProductModule, mode: ToolMode, enabled: boole
   const hit = perModule?.get(key);
   if (hit) return hit;
 
-  const areas = module.tools.map((spec) => {
+  const areas: MapArea[] = module.tools.map((spec) => {
     const names = mode === 'individual' ? individualNamesFor(spec) : undefined;
     return {
       area: spec.name,
@@ -78,10 +88,20 @@ export function mapAreasOf(module: ProductModule, mode: ToolMode, enabled: boole
         // Hand-written extras listed under their home area. They register as
         // standalone tools in both modes, so their names never take the
         // grouped `area.action` form.
-        ...(module.extras?.area === spec.name ? module.extras.mapTools : []),
+        ...extrasIn(module, spec.name),
       ],
     };
   });
+  for (const [area, description] of Object.entries(module.extras?.newAreas ?? {})) {
+    areas.push({
+      area,
+      product: module.title,
+      enabled,
+      description,
+      ...(mode === 'grouped' ? { grouped: true as const } : {}),
+      tools: extrasIn(module, area),
+    });
+  }
   if (!perModule) {
     perModule = new Map();
     AREA_CACHE.set(module, perModule);

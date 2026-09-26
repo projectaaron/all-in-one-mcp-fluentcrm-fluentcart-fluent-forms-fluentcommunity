@@ -1,5 +1,39 @@
 # Changelog
 
+## 1.4.0 — 2026-09-26
+
+Analytics and filter-based bulk actions, from a real support session
+(marriageaftergod.com, the 31-Day Prayer Challenge automation) where raw
+SQL answered in 1–2 calls what took FluentMCP dozens.
+
+### Added
+- **Nested paths in `fields`.** `fields: ["id","status","subscriber.status"]`
+  returns just those values with their nesting kept; arrays project
+  element-wise (`"metrics.status"`).
+- **`count_only` and `group_by` on list tools** (every GET that reads a
+  collection). `group_by: "subscriber.status"` counts per value across
+  every page of the filtered list on the server and returns only the
+  counts; `count_only: true` returns the total from one tiny request.
+- **`crm_analytics_funnel_email_stats`** — per-email sent, opens, clicks,
+  unsubscribes and rates for every sequence an automation uses, sortable.
+- **`crm_analytics_funnel_exits`** — completed entries split into "reached
+  the final step" and "stopped early at an End step" (with the branch), and
+  cancelled entries by contact status and by step.
+- **`crm_analytics_suspicious_contacts`** — likely bot signups with a reason
+  per flag: Tor/anonymizer IP ranges (`FLUENT_SUSPICIOUS_IP_PREFIXES`), the
+  same Gmail with dots or `+tags` moved, Gmail addresses with 3+ dots,
+  generated-looking names, many signups from one IP.
+- **`crm_contacts_bulk_action_by_filter`** ⚠ — add/remove tags, set status,
+  stop an automation or sequences for every contact a filter matches.
+  `dry_run` returns the match count, a sample and each change; a real run
+  needs `confirm: true` and a match count within `max_contacts`, uses
+  FluentCRM's own endpoints so its hooks run (unsubscribing fires
+  `fluentcrm_subscriber_status_to_unsubscribed`, which cancels pending
+  emails, automations and sequences), and returns an undo record.
+
+All of it runs on FluentCRM's REST API — nothing to install on WordPress.
+1,303 tools (83 in grouped mode).
+
 ## 1.3.2 — 2026-09-24
 
 - Setup now recommends a separate WordPress user just for Claude, with the
