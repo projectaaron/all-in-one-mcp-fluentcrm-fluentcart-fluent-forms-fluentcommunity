@@ -14,6 +14,10 @@ import {
   lockedRefusal,
   placeholdersOf,
   OUTPUT_SHAPE,
+  LIST_OUTPUT_SHAPE,
+  isCollectionRead,
+  GROUP_BY_FIELD,
+  COUNT_ONLY_FIELD,
   type ToolArgs,
   type ToolRuntime,
 } from './tool-factory.js';
@@ -90,7 +94,7 @@ const PER_PAGE_FIELD = z.number().int().min(1).max(100).optional().describe('Ite
 const FIELDS_FIELD = z
   .array(z.string())
   .optional()
-  .describe('Return only these fields per record, e.g. ["id","status","total_amount"]');
+  .describe('Return only these fields per record; dot paths reach nested values, e.g. ["id","status","subscriber.email"]');
 const DETAIL_FIELD = z
   .enum(['summary', 'full'])
   .optional()
@@ -136,6 +140,8 @@ const RESERVED_PARAMS = new Set([
   'mode',
   'dry_run',
   'if_unmodified_since',
+  'group_by',
+  'count_only',
 ]);
 
 const SHAPE_CACHE = new WeakMap<EndpointDef, Map<string, Record<string, z.ZodTypeAny>>>();
@@ -169,6 +175,10 @@ export function buildActionInputShape(actionName: string, def: EndpointDef, pair
   if (def.method === 'GET' || isListAction(actionName)) {
     shape.page = PAGE_FIELD;
     shape.per_page = PER_PAGE_FIELD;
+  }
+  if (isCollectionRead(def)) {
+    shape.group_by = GROUP_BY_FIELD;
+    shape.count_only = COUNT_ONLY_FIELD;
   }
   shape.fields = FIELDS_FIELD;
   shape.detail = DETAIL_FIELD;
@@ -235,6 +245,8 @@ type ActionArgs = Record<string, unknown> & {
   mode?: 'merge' | 'replace';
   dry_run?: boolean;
   if_unmodified_since?: string;
+  group_by?: string | string[];
+  count_only?: boolean;
 };
 
 /** Adapter: individual-tool args (named path params at the top level) →
@@ -273,6 +285,8 @@ export function makeActionHandler(spec: ToolSpec, action: string, runtime: ToolR
       mode: args.mode,
       dry_run: args.dry_run,
       if_unmodified_since: args.if_unmodified_since,
+      group_by: args.group_by,
+      count_only: args.count_only,
     };
     return executeAction(def, action, toolArgs, runtime, label, spec);
   });
@@ -297,7 +311,7 @@ export function registerActionTools(
           actionDescription(spec, def, ctx, paired) +
           (locked ? ' 🔒 LOCKED on this server — calls always refuse; admin-controlled via FLUENT_LOCKED_TOOLS.' : ''),
         inputSchema: buildActionInputShape(action, def, paired),
-        outputSchema: OUTPUT_SHAPE,
+        outputSchema: isCollectionRead(def) ? LIST_OUTPUT_SHAPE : OUTPUT_SHAPE,
         annotations: actionAnnotations(spec, def),
       },
       makeActionHandler(spec, action, runtime, name) as Parameters<typeof server.registerTool>[2]

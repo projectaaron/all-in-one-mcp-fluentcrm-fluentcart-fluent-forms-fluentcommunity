@@ -15,6 +15,7 @@ import {
   type MergedBody,
   type Verification,
 } from './merge.js';
+import { countOnly, endpointFetcher, groupBy } from './aggregate.js';
 import { shapeResponse, textSummary } from './shape.js';
 import { classifyResult, type DiagnosticsLog } from './support.js';
 import { METHOD_OVERRIDE_REFUSAL, methodOverrideKey, siblingRouteFor, unsafePathValue, type RouteRef } from './path-safety.js';
@@ -91,6 +92,31 @@ export const OUTPUT_SHAPE = {
     .describe('Read-back of the record as the plugin itself lists it after the write — proof the write landed where the plugin reads it'),
 };
 
+/** Output shape for collection reads — adds the count_only/group_by result.
+ *  Declared loosely on purpose: a detailed sub-schema here would ride on
+ *  every collection tool's output schema. */
+export const LIST_OUTPUT_SHAPE = {
+  ...OUTPUT_SHAPE,
+  aggregation: z
+    .record(z.unknown())
+    .optional()
+    .describe('count_only/group_by result: {total, groups?, pages_read, truncated?}'),
+};
+
+/** A GET whose path ends in a literal segment reads a collection
+ *  (/subscribers, /funnels/{id}/subscribers); one ending in a placeholder
+ *  (/funnels/{id}) reads a single record — nothing to count. */
+export function isCollectionRead(def: EndpointDef): boolean {
+  return def.method === 'GET' && !/\{[^}]+\}\/?$/.test(def.path);
+}
+
+/** Shared schemas for the counting parameters (collection reads). */
+export const GROUP_BY_FIELD = z
+  .union([z.string(), z.array(z.string()).min(1).max(3)])
+  .optional()
+  .describe('Count per value across ALL pages instead of listing, e.g. "subscriber.status"');
+export const COUNT_ONLY_FIELD = z.boolean().optional().describe('Return only the total count');
+
 export interface ToolRuntime {
   client: FluentClient;
   summaryFields?: string[];
@@ -132,12 +158,19 @@ export function buildInputShape(spec: ToolSpec) {
       .describe('JSON request body for create/update actions, e.g. {"title": "Spring sale"} — schemas are in the product\'s official developer docs (linked from docs/api-reference/<product>.md)'),
     page: z.number().int().min(1).optional().describe('Page number for list actions (default 1)'),
     per_page: z.number().int().min(1).max(100).optional().describe('Items per page for list actions (default 20)'),
-    fields: z.array(z.string()).optional().describe('Return only these fields per record, e.g. ["id","status","total_amount"]'),
+    fields: z
+      .array(z.string())
+      .optional()
+      .describe('Return only these fields per record; dot paths reach nested values, e.g. ["id","status","subscriber.email"]'),
     detail: z
       .enum(['summary', 'full'])
       .optional()
       .describe('"summary" (default) returns key fields and truncates long values; "full" returns the raw API response'),
   };
+  if (Object.values(spec.actions).some(isCollectionRead)) {
+    shape.group_by = GROUP_BY_FIELD;
+    shape.count_only = COUNT_ONLY_FIELD;
+  }
   const anyWrite = Object.values(spec.actions).some((d) => d.method !== 'GET' && d.method !== 'HEAD');
   const anyPaired = Object.keys(spec.actions).some((a) => pairedReadFor(spec, a));
   if (anyWrite) {
@@ -183,6 +216,8 @@ export type ToolArgs = {
   mode?: 'merge' | 'replace';
   dry_run?: boolean;
   if_unmodified_since?: string;
+  group_by?: string | string[];
+  count_only?: boolean;
 };
 
 function err(text: string) {
@@ -386,6 +421,38 @@ export async function executeAction(
   if (isListAction(action) && def.method === 'GET') {
     if (query.page === undefined) query.page = 1;
     if (query.per_page === undefined) query.per_page = 20;
+  }
+
+  // Counting: walk the list server-side and return only the numbers.
+  if (args.group_by !== undefined || args.count_only === true) {
+    if (!isCollectionRead(def)) {
+      return err(`${label}: group_by and count_only work on list/collection read tools only — nothing was sent.`);
+    }
+    const fields = (Array.isArray(args.group_by) ? args.group_by : args.group_by !== undefined ? [args.group_by] : [])
+      .map((f) => f.trim())
+      .filter(Boolean);
+    if (args.group_by !== undefined && !fields.length) return err(`${label}: group_by needs a field name, e.g. "status".`);
+    const { page: _p, per_page: _pp, ...filters } = query;
+    try {
+      const fetchPage = endpointFetcher(runtime.client, { path, query: filters, siteRoot: def.siteRoot });
+      const aggregation = fields.length ? await groupBy(fetchPage, fields) : await countOnly(fetchPage);
+      const structured = {
+        ok: true,
+        status: 200,
+        action,
+        aggregation,
+        ...(aggregation.truncated
+          ? { note: `stopped after ${aggregation.records_read ?? aggregation.total} records — narrow the list with query filters for an exact count` }
+          : {}),
+      };
+      const head = fields.length
+        ? `${label} → ${aggregation.total} record${aggregation.total === 1 ? '' : 's'} grouped by ${fields.join(', ')} (${aggregation.pages_read} page${aggregation.pages_read === 1 ? '' : 's'} read)`
+        : `${label} → ${aggregation.total} record${aggregation.total === 1 ? '' : 's'}`;
+      return { content: [{ type: 'text' as const, text: `${head}\n${JSON.stringify(structured)}` }], structuredContent: structured };
+    } catch (e) {
+      if (e instanceof FluentApiError) return err(e.message);
+      return err(`${label} failed unexpectedly: ${e instanceof Error ? e.message : String(e)}`);
+    }
   }
 
   try {
@@ -619,7 +686,7 @@ export function registerToolSpec(server: McpServer, spec: ToolSpec, runtime: Too
     {
       description,
       inputSchema: buildInputShape(spec),
-      outputSchema: OUTPUT_SHAPE,
+      outputSchema: Object.values(spec.actions).some(isCollectionRead) ? LIST_OUTPUT_SHAPE : OUTPUT_SHAPE,
       annotations: annotationsFor(spec),
     },
     makeHandler(spec, runtime) as Parameters<typeof server.registerTool>[2]

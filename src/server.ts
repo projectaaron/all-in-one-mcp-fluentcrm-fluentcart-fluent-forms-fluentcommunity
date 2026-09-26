@@ -152,7 +152,11 @@ export function buildServer(config: ServerConfig, options: BuildOptions = {}): B
       }
       // Hand-written product extras (e.g. the sequence schedule preview) —
       // standalone tools in both modes.
-      if (module.extras) toolCount += module.extras.register(guardedServer(server, lockedTools, diagnostics), client).length;
+      if (module.extras) {
+        toolCount += module.extras.register(guardedServer(server, lockedTools, diagnostics), client, {
+          suspiciousIpPrefixes: config.suspiciousIpPrefixes,
+        }).length;
+      }
     }
     return { module, status, client };
   });
