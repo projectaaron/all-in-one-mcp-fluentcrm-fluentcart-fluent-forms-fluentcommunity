@@ -1,6 +1,6 @@
 # FluentCRM REST API — Reference
 
-> **Source:** <https://developers.fluentcrm.com/rest-api/> · **Scraped:** 2026-09-21 · **Endpoints:** 363 across 32 groups
+> **Source:** <https://developers.fluentcrm.com/rest-api/> · **Scraped:** 2026-10-05 · **Endpoints:** 361 across 33 groups
 > Regenerate with `node scripts/gen-api-docs.mjs fluentcrm` — see [MAINTAINING.md](./MAINTAINING.md).
 
 **Base URL:** `https://{website}/wp-json/fluent-crm/v2` (namespace `fluent-crm/v2`)
@@ -30,12 +30,11 @@ Request/response schemas for every endpoint below are in FluentCRM's own develop
 | Campaign Actions (Pro) | 7 |
 | Recurring Campaigns (Pro) | 14 |
 | Email Sequences (Pro) | 19 |
-| Automations (Funnels) | 32 |
+| Automations (Funnels) | 33 |
 | Email Templates | 12 |
 | Forms | 5 |
 | Incoming Webhooks | 4 |
 | Smart Links (Pro) | 5 |
-| SMS (Pro) | 25 |
 | Abandoned Carts (Pro) | 3 |
 | Commerce Reports (Pro) | 2 |
 | Reports | 25 |
@@ -46,12 +45,14 @@ Request/response schemas for every endpoint below are in FluentCRM's own develop
 | Docs & Addons | 3 |
 | Global Search | 1 |
 | Settings | 41 |
-| Pro Settings | 11 |
+| Pro Settings | 8 |
 | Public Bounce Handlers | 2 |
 | ai | 7 |
 | email-patterns | 11 |
-| export | 2 |
+| export | 11 |
 | mcp | 4 |
+| messaging | 12 |
+| whatsapp | 4 |
 
 ## Endpoints by group
 
@@ -292,6 +293,7 @@ Request/response schemas for every endpoint below are in FluentCRM's own develop
 | PUT | `/funnels/{id}/subscribers/{subscriber_id}/status` | PUT Update Funnel Subscription Status |
 | PUT | `/funnels/funnel/{id}/title` | PUT Update Funnel Title |
 | PUT | `/funnels/{id}/sticky-note` | PUT Update Automation Sticky Note |
+| POST | `/funnels/{id}/export` | POST Export Automation |
 
 ### Email Templates
 
@@ -338,36 +340,6 @@ Request/response schemas for every endpoint below are in FluentCRM's own develop
 | DELETE | `/smart-links/{id}` | DELETE Delete Smart Link |
 | GET | `/smart-links` | GET List Smart Links |
 | PUT | `/smart-links/{id}` | PUT Update Smart Link |
-
-### SMS (Pro)
-
-| Method | Path | Summary |
-|--------|------|---------|
-| POST | `/sms/campaigns/do-bulk-action` | POST Bulk Action on SMS Campaigns |
-| POST | `/sms/campaigns` | POST Create SMS Campaign |
-| DELETE | `/sms/campaigns/{id}` | DELETE Delete SMS Campaign |
-| DELETE | `/sms/messages` | DELETE Delete SMS Messages |
-| POST | `/sms/campaigns/{id}/tag-actions` | POST Apply Tag Actions to SMS Campaign Recipients |
-| POST | `/sms/campaigns/{id}/duplicate` | POST Duplicate SMS Campaign |
-| POST | `/sms/campaigns/estimated-contacts` | POST Estimate SMS Campaign Contacts |
-| GET | `/sms/campaigns/{id}` | GET Get SMS Campaign |
-| GET | `/sms/campaigns/{id}/processing-stat` | GET Get SMS Campaign Processing Status |
-| GET | `/sms/campaigns/{id}/recipients` | GET Get SMS Campaign Recipients |
-| GET | `/sms/campaigns/{id}/estimated-recipients-count` | GET Get SMS Campaign Recipients Count |
-| GET | `/sms/campaigns/{id}/status` | GET Get SMS Campaign Status |
-| GET | `/sms/subscribers/{id}/logs` | GET Get Subscriber SMS Logs |
-| GET | `/sms/subscribers/{id}/stats` | GET Get Subscriber SMS Statistics |
-| GET | `/sms/campaigns` | GET List SMS Campaigns |
-| GET | `/sms/messages` | GET List All SMS Messages |
-| POST | `/sms/campaigns/{id}/pause` | POST Pause SMS Campaign |
-| POST | `/sms/messages/{id}/resend` | POST Resend SMS Message |
-| POST | `/sms/campaigns/{id}/resume` | POST Resume SMS Campaign |
-| POST | `/sms/campaigns/{id}/schedule` | POST Schedule SMS Campaign |
-| POST | `/sms/subscribers/{id}/send` | POST Send Custom SMS to Subscriber |
-| POST | `/sms/campaigns/{id}/unschedule` | POST Unschedule SMS Campaign |
-| PUT | `/sms/campaigns/{id}` | PUT Update SMS Campaign |
-| PUT | `/sms/{id}/update-labels` | PUT Update SMS Campaign Labels |
-| POST | `/sms/campaigns/{id}/un-schedule` | POST Unschedule SMS Campaign (Legacy Path) _(deprecated)_ |
 
 ### Abandoned Carts (Pro)
 
@@ -518,13 +490,10 @@ Request/response schemas for every endpoint below are in FluentCRM's own develop
 | POST | `/campaign-pro-settings/managers` | POST Add Manager |
 | DELETE | `/campaign-pro-settings/license` | DELETE Deactivate License |
 | DELETE | `/campaign-pro-settings/managers/{id}` | DELETE Remove Manager |
-| POST | `/campaign-pro-settings/sms/disable` | POST Disable SMS |
 | GET | `/campaign-pro-settings/license` | GET License Status |
 | GET | `/campaign-pro-settings/managers` | GET List Managers |
-| GET | `/campaign-pro-settings/sms` | GET SMS Settings |
 | POST | `/campaign-pro-settings/import_funnel` | POST Import Funnel |
 | POST | `/campaign-pro-settings/license` | POST Save License |
-| POST | `/campaign-pro-settings/sms` | POST Save SMS Settings |
 | PUT | `/campaign-pro-settings/managers/{id}` | PUT Update Manager |
 
 ### Public Bounce Handlers
@@ -568,6 +537,15 @@ Request/response schemas for every endpoint below are in FluentCRM's own develop
 |--------|------|---------|
 | POST | `/subscribers-export` | POST Fetch Contact Export Page |
 | GET | `/subscribers-export` | GET Fetch Contact Export Page |
+| POST | `/exports/campaign-emails` | POST Export Campaign Emails |
+| POST | `/exports/campaigns` | POST Export Email Campaign |
+| POST | `/exports/companies` | POST Export Companies |
+| POST | `/exports/dynamic-segments` | POST Export Dynamic Segment |
+| POST | `/exports/message-campaigns` | POST Export Messaging Campaign |
+| POST | `/exports/notes` | POST Export Contact Notes |
+| POST | `/exports/recurring-campaigns` | POST Export Recurring Campaign |
+| POST | `/exports/sequences` | POST Export Email Sequence |
+| POST | `/exports/templates` | POST Export Email Template |
 
 ### mcp
 
@@ -577,5 +555,31 @@ Request/response schemas for every endpoint below are in FluentCRM's own develop
 | GET | `/mcp/status` | GET MCP Status |
 | POST | `/mcp/install-adapter` | POST Install MCP Adapter |
 | POST | `/mcp/toggle` | POST Toggle MCP Tools |
+
+### messaging
+
+| Method | Path | Summary |
+|--------|------|---------|
+| POST | `/messaging/campaigns` | POST Create Messaging Campaign |
+| GET | `/messaging/campaigns/{id}` | GET Get Messaging Campaign |
+| GET | `/messaging/campaigns/{id}/status` | GET Get Messaging Campaign Status |
+| GET | `/messaging/subscribers/{id}/logs` | GET Get Subscriber Message Logs |
+| GET | `/messaging/campaigns` | GET List Messaging Campaigns |
+| GET | `/messaging/threads` | GET List Message Threads |
+| GET | `/messaging/messages` | GET List Messaging Messages |
+| GET | `/messaging/threads/{id}/messages` | GET List Thread Messages |
+| POST | `/messaging/campaigns/{id}/schedule` | POST Schedule Messaging Campaign |
+| POST | `/messaging/subscribers/{id}/send` | POST Send Subscriber SMS |
+| POST | `/messaging/threads/{id}/messages` | POST Send Thread Message |
+| PUT | `/messaging/campaigns/{id}` | PUT Update Messaging Campaign |
+
+### whatsapp
+
+| Method | Path | Summary |
+|--------|------|---------|
+| POST | `/whatsapp/templates` | POST Create WhatsApp Template |
+| GET | `/whatsapp/subscribers/{id}/messages` | GET Subscriber WhatsApp Messages |
+| GET | `/whatsapp/templates` | GET WhatsApp Templates |
+| POST | `/whatsapp/subscribers/{id}/send` | POST Send Subscriber WhatsApp Message |
 
 _Generated by `scripts/gen-api-docs.mjs` from the per-operation OpenAPI specs published at developers.fluentcrm.com; endpoints marked (Pro) require the product's Pro version._
