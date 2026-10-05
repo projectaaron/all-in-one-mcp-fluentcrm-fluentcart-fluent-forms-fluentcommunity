@@ -1,10 +1,10 @@
 {
   "product": "fluentcrm",
   "source": "https://developers.fluentcrm.com/rest-api/",
-  "scraped": "2026-09-21",
+  "scraped": "2026-10-05",
   "baseUrl": "https://{website}/wp-json/fluent-crm/v2",
   "namespace": "fluent-crm/v2",
-  "count": 363,
+  "count": 361,
   "endpoints": [
     {
       "group": "contacts",
@@ -2203,6 +2203,18 @@
       "deprecated": false
     },
     {
+      "group": "funnels",
+      "slug": "export-funnel",
+      "operationId": "exportFunnel",
+      "method": "POST",
+      "path": "/funnels/{id}/export",
+      "summary": "POST Export Automation",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
       "group": "templates",
       "slug": "bulk-action-templates",
       "operationId": "bulkActionTemplates",
@@ -2513,306 +2525,6 @@
         "ApplicationPasswords"
       ],
       "deprecated": false
-    },
-    {
-      "group": "sms",
-      "slug": "bulk-action-sms-campaigns",
-      "operationId": "bulkActionSmsCampaigns",
-      "method": "POST",
-      "path": "/sms/campaigns/do-bulk-action",
-      "summary": "POST Bulk Action on SMS Campaigns",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "sms",
-      "slug": "create-sms-campaign",
-      "operationId": "createSmsCampaign",
-      "method": "POST",
-      "path": "/sms/campaigns",
-      "summary": "POST Create SMS Campaign",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "sms",
-      "slug": "delete-sms-campaign",
-      "operationId": "deleteSmsCampaign",
-      "method": "DELETE",
-      "path": "/sms/campaigns/{id}",
-      "summary": "DELETE Delete SMS Campaign",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "sms",
-      "slug": "delete-sms-messages",
-      "operationId": "deleteSmsMessages",
-      "method": "DELETE",
-      "path": "/sms/messages",
-      "summary": "DELETE Delete SMS Messages",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "sms",
-      "slug": "do-sms-campaign-tag-actions",
-      "operationId": "doSmsCampaignTagActions",
-      "method": "POST",
-      "path": "/sms/campaigns/{id}/tag-actions",
-      "summary": "POST Apply Tag Actions to SMS Campaign Recipients",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "sms",
-      "slug": "duplicate-sms-campaign",
-      "operationId": "duplicateSmsCampaign",
-      "method": "POST",
-      "path": "/sms/campaigns/{id}/duplicate",
-      "summary": "POST Duplicate SMS Campaign",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "sms",
-      "slug": "estimate-sms-campaign-contacts",
-      "operationId": "estimateSmsCampaignContacts",
-      "method": "POST",
-      "path": "/sms/campaigns/estimated-contacts",
-      "summary": "POST Estimate SMS Campaign Contacts",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "sms",
-      "slug": "get-sms-campaign",
-      "operationId": "getSmsCampaign",
-      "method": "GET",
-      "path": "/sms/campaigns/{id}",
-      "summary": "GET Get SMS Campaign",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "sms",
-      "slug": "get-sms-campaign-processing-stat",
-      "operationId": "getSmsCampaignProcessingStat",
-      "method": "GET",
-      "path": "/sms/campaigns/{id}/processing-stat",
-      "summary": "GET Get SMS Campaign Processing Status",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "sms",
-      "slug": "get-sms-campaign-recipients",
-      "operationId": "getSmsCampaignRecipients",
-      "method": "GET",
-      "path": "/sms/campaigns/{id}/recipients",
-      "summary": "GET Get SMS Campaign Recipients",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "sms",
-      "slug": "get-sms-campaign-recipients-count",
-      "operationId": "getSmsCampaignRecipientsCount",
-      "method": "GET",
-      "path": "/sms/campaigns/{id}/estimated-recipients-count",
-      "summary": "GET Get SMS Campaign Recipients Count",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "sms",
-      "slug": "get-sms-campaign-status",
-      "operationId": "getSmsCampaignStatus",
-      "method": "GET",
-      "path": "/sms/campaigns/{id}/status",
-      "summary": "GET Get SMS Campaign Status",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "sms",
-      "slug": "get-subscriber-sms-logs",
-      "operationId": "getSubscriberSmsLogs",
-      "method": "GET",
-      "path": "/sms/subscribers/{id}/logs",
-      "summary": "GET Get Subscriber SMS Logs",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "sms",
-      "slug": "get-subscriber-sms-stats",
-      "operationId": "getSubscriberSmsStats",
-      "method": "GET",
-      "path": "/sms/subscribers/{id}/stats",
-      "summary": "GET Get Subscriber SMS Statistics",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "sms",
-      "slug": "list-sms-campaigns",
-      "operationId": "listSmsCampaigns",
-      "method": "GET",
-      "path": "/sms/campaigns",
-      "summary": "GET List SMS Campaigns",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "sms",
-      "slug": "list-sms-messages",
-      "operationId": "listSmsMessages",
-      "method": "GET",
-      "path": "/sms/messages",
-      "summary": "GET List All SMS Messages",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "sms",
-      "slug": "pause-sms-campaign",
-      "operationId": "pauseSmsCampaign",
-      "method": "POST",
-      "path": "/sms/campaigns/{id}/pause",
-      "summary": "POST Pause SMS Campaign",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "sms",
-      "slug": "resend-sms-message",
-      "operationId": "resendSmsMessage",
-      "method": "POST",
-      "path": "/sms/messages/{id}/resend",
-      "summary": "POST Resend SMS Message",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "sms",
-      "slug": "resume-sms-campaign",
-      "operationId": "resumeSmsCampaign",
-      "method": "POST",
-      "path": "/sms/campaigns/{id}/resume",
-      "summary": "POST Resume SMS Campaign",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "sms",
-      "slug": "schedule-sms-campaign",
-      "operationId": "scheduleSmsCampaign",
-      "method": "POST",
-      "path": "/sms/campaigns/{id}/schedule",
-      "summary": "POST Schedule SMS Campaign",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "sms",
-      "slug": "send-subscriber-custom-sms",
-      "operationId": "sendSubscriberCustomSms",
-      "method": "POST",
-      "path": "/sms/subscribers/{id}/send",
-      "summary": "POST Send Custom SMS to Subscriber",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "sms",
-      "slug": "unschedule-sms-campaign",
-      "operationId": "unscheduleSmsCampaign",
-      "method": "POST",
-      "path": "/sms/campaigns/{id}/unschedule",
-      "summary": "POST Unschedule SMS Campaign",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "sms",
-      "slug": "update-sms-campaign",
-      "operationId": "updateSmsCampaign",
-      "method": "PUT",
-      "path": "/sms/campaigns/{id}",
-      "summary": "PUT Update SMS Campaign",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "sms",
-      "slug": "update-sms-campaign-labels",
-      "operationId": "updateSmsCampaignLabels",
-      "method": "PUT",
-      "path": "/sms/{id}/update-labels",
-      "summary": "PUT Update SMS Campaign Labels",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "sms",
-      "slug": "unschedule-sms-campaign-legacy",
-      "operationId": "unscheduleSmsCampaignLegacy",
-      "method": "POST",
-      "path": "/sms/campaigns/{id}/un-schedule",
-      "summary": "POST Unschedule SMS Campaign (Legacy Path)",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": true
     },
     {
       "group": "abandon-carts",
@@ -3956,18 +3668,6 @@
     },
     {
       "group": "pro-settings",
-      "slug": "disable-sms",
-      "operationId": "disableSms",
-      "method": "POST",
-      "path": "/campaign-pro-settings/sms/disable",
-      "summary": "POST Disable SMS",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "pro-settings",
       "slug": "get-license-status",
       "operationId": "getLicenseStatus",
       "method": "GET",
@@ -3992,18 +3692,6 @@
     },
     {
       "group": "pro-settings",
-      "slug": "get-sms-settings",
-      "operationId": "getSmsSettings",
-      "method": "GET",
-      "path": "/campaign-pro-settings/sms",
-      "summary": "GET SMS Settings",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "pro-settings",
       "slug": "import-funnel",
       "operationId": "importFunnelProSettings",
       "method": "POST",
@@ -4021,18 +3709,6 @@
       "method": "POST",
       "path": "/campaign-pro-settings/license",
       "summary": "POST Save License",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "pro-settings",
-      "slug": "save-sms-settings",
-      "operationId": "saveSmsSettings",
-      "method": "POST",
-      "path": "/campaign-pro-settings/sms",
-      "summary": "POST Save SMS Settings",
       "security": [
         "ApplicationPasswords"
       ],
@@ -4311,6 +3987,114 @@
       "deprecated": false
     },
     {
+      "group": "export",
+      "slug": "export-campaign-emails",
+      "operationId": "exportCampaignEmails",
+      "method": "POST",
+      "path": "/exports/campaign-emails",
+      "summary": "POST Export Campaign Emails",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "export",
+      "slug": "export-campaigns",
+      "operationId": "exportCampaigns",
+      "method": "POST",
+      "path": "/exports/campaigns",
+      "summary": "POST Export Email Campaign",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "export",
+      "slug": "export-companies",
+      "operationId": "exportCompanies",
+      "method": "POST",
+      "path": "/exports/companies",
+      "summary": "POST Export Companies",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "export",
+      "slug": "export-dynamic-segments",
+      "operationId": "exportDynamicSegments",
+      "method": "POST",
+      "path": "/exports/dynamic-segments",
+      "summary": "POST Export Dynamic Segment",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "export",
+      "slug": "export-message-campaigns",
+      "operationId": "exportMessageCampaigns",
+      "method": "POST",
+      "path": "/exports/message-campaigns",
+      "summary": "POST Export Messaging Campaign",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "export",
+      "slug": "export-notes",
+      "operationId": "exportNotes",
+      "method": "POST",
+      "path": "/exports/notes",
+      "summary": "POST Export Contact Notes",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "export",
+      "slug": "export-recurring-campaigns",
+      "operationId": "exportRecurringCampaigns",
+      "method": "POST",
+      "path": "/exports/recurring-campaigns",
+      "summary": "POST Export Recurring Campaign",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "export",
+      "slug": "export-sequences",
+      "operationId": "exportSequences",
+      "method": "POST",
+      "path": "/exports/sequences",
+      "summary": "POST Export Email Sequence",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "export",
+      "slug": "export-templates",
+      "operationId": "exportTemplates",
+      "method": "POST",
+      "path": "/exports/templates",
+      "summary": "POST Export Email Template",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
       "group": "mcp",
       "slug": "get-mcp-config-snippet",
       "operationId": "getMcpConfigSnippet",
@@ -4353,6 +4137,198 @@
       "method": "POST",
       "path": "/mcp/toggle",
       "summary": "POST Toggle MCP Tools",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "messaging",
+      "slug": "create-campaign",
+      "operationId": "createMessagingCampaign",
+      "method": "POST",
+      "path": "/messaging/campaigns",
+      "summary": "POST Create Messaging Campaign",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "messaging",
+      "slug": "get-campaign",
+      "operationId": "getMessagingCampaign",
+      "method": "GET",
+      "path": "/messaging/campaigns/{id}",
+      "summary": "GET Get Messaging Campaign",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "messaging",
+      "slug": "get-campaign-status",
+      "operationId": "getMessagingCampaignStatus",
+      "method": "GET",
+      "path": "/messaging/campaigns/{id}/status",
+      "summary": "GET Get Messaging Campaign Status",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "messaging",
+      "slug": "get-subscriber-message-logs",
+      "operationId": "getMessagingSubscriberLogs",
+      "method": "GET",
+      "path": "/messaging/subscribers/{id}/logs",
+      "summary": "GET Get Subscriber Message Logs",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "messaging",
+      "slug": "list-campaigns",
+      "operationId": "listMessagingCampaigns",
+      "method": "GET",
+      "path": "/messaging/campaigns",
+      "summary": "GET List Messaging Campaigns",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "messaging",
+      "slug": "list-message-threads",
+      "operationId": "listMessagingThreads",
+      "method": "GET",
+      "path": "/messaging/threads",
+      "summary": "GET List Message Threads",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "messaging",
+      "slug": "list-messages",
+      "operationId": "listMessagingMessages",
+      "method": "GET",
+      "path": "/messaging/messages",
+      "summary": "GET List Messaging Messages",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "messaging",
+      "slug": "list-thread-messages",
+      "operationId": "listMessagingThreadMessages",
+      "method": "GET",
+      "path": "/messaging/threads/{id}/messages",
+      "summary": "GET List Thread Messages",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "messaging",
+      "slug": "schedule-campaign",
+      "operationId": "scheduleMessagingCampaign",
+      "method": "POST",
+      "path": "/messaging/campaigns/{id}/schedule",
+      "summary": "POST Schedule Messaging Campaign",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "messaging",
+      "slug": "send-subscriber-message",
+      "operationId": "sendMessagingSubscriberMessage",
+      "method": "POST",
+      "path": "/messaging/subscribers/{id}/send",
+      "summary": "POST Send Subscriber SMS",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "messaging",
+      "slug": "send-thread-message",
+      "operationId": "sendMessagingThreadMessage",
+      "method": "POST",
+      "path": "/messaging/threads/{id}/messages",
+      "summary": "POST Send Thread Message",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "messaging",
+      "slug": "update-campaign",
+      "operationId": "updateMessagingCampaign",
+      "method": "PUT",
+      "path": "/messaging/campaigns/{id}",
+      "summary": "PUT Update Messaging Campaign",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "whatsapp",
+      "slug": "create-whatsapp-template",
+      "operationId": "createWhatsAppTemplate",
+      "method": "POST",
+      "path": "/whatsapp/templates",
+      "summary": "POST Create WhatsApp Template",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "whatsapp",
+      "slug": "get-subscriber-whatsapp-messages",
+      "operationId": "getSubscriberWhatsAppMessages",
+      "method": "GET",
+      "path": "/whatsapp/subscribers/{id}/messages",
+      "summary": "GET Subscriber WhatsApp Messages",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "whatsapp",
+      "slug": "list-whatsapp-templates",
+      "operationId": "listWhatsAppTemplates",
+      "method": "GET",
+      "path": "/whatsapp/templates",
+      "summary": "GET WhatsApp Templates",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "whatsapp",
+      "slug": "send-subscriber-whatsapp-message",
+      "operationId": "sendSubscriberWhatsAppMessage",
+      "method": "POST",
+      "path": "/whatsapp/subscribers/{id}/send",
+      "summary": "POST Send Subscriber WhatsApp Message",
       "security": [
         "ApplicationPasswords"
       ],
