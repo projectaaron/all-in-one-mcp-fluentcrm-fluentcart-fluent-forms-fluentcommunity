@@ -101,8 +101,9 @@ fluentMCP/
 │   ├── TOOL_CATALOG.md           # GENERATED area-level catalog with examples
 │   └── EXTENDING.md              # Playbook: add a new Fluent product end-to-end
 ├── .github/workflows/
-│   ├── refresh-api-docs.yml      # Weekly reference refresh, PRs on change
-│   └── deploy-cloudflare.yml     # Manual-dispatch Worker deploy (needs CLOUDFLARE_API_TOKEN secret)
+│   ├── ci.yml                    # Tests + generated-files check on PRs and main
+│   ├── release.yml               # v* tag → release assets, then Worker deploy
+│   └── deploy-cloudflare.yml     # Worker deploy (needs CLOUDFLARE_API_TOKEN secret)
 ├── .env.example                  # All env vars, commented, no real values
 ├── wrangler.jsonc                # Cloudflare Workers deploy config (src/worker.ts entry)
 ├── Dockerfile                    # Container image for the Node remote server

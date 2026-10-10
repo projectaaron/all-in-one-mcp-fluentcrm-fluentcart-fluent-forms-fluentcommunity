@@ -752,3 +752,15 @@ SECURITY.md instead of a half-measure that claims more than it checks.
   and a timed-out write says it may have been applied instead of "could not
   reach the site".
 
+
+## 2026-10-10 — Developed in the UpFluent main repository, published here
+
+Development moved into the maintainer's main UpFluent repository, alongside
+the other UpFluent products, with this project's full history. This
+repository stays the public home: issues, pull requests, releases, the
+`latest` download that upfluent.io links to, and the Cloudflare Worker
+deploy. Each publish pushes one snapshot commit (as `upfluent-bot`) and, for
+a release, the `v<version>` tag that starts the Release workflow here. The
+weekly API-docs refresh now runs in the main repository, so its PRs land
+where the work happens. Accepted pull requests here are applied there and
+arrive with the next publish.

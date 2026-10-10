@@ -19,6 +19,9 @@ that can refund orders and delete contacts stays trustworthy.
 5. The maintainer reviews. Small, focused PRs get merged fastest; a PR that
    adds a product or changes safety classification will get questions,
    because those are the decisions recorded in `docs/DECISIONS.md`.
+6. This repository is published from the maintainer's main UpFluent
+   repository. An accepted PR is applied there (you stay the commit's
+   co-author) and arrives here with the next publish, which then closes it.
 
 The fastest way to be useful:
 
@@ -48,28 +51,28 @@ stay in sync, and add a line to `CHANGELOG.md` under the next version.
 
 ## Releasing
 
+Releases are published from the maintainer's main repository, which pushes
+the release commit here as `upfluent-bot` together with a `v<version>` tag.
+
 1. Bump `version` in `package.json` and `SERVER_VERSION` in `src/version.ts`
    (a test keeps them equal), run `npm run gen:catalog` so `manifest.json`
    follows, and move the `CHANGELOG.md` entries under the new version.
-2. Merge to `main`, then tag: `git tag v1.2.3 && git push origin v1.2.3`.
-3. The **Release** workflow (Actions tab → Release → Run workflow, or a
-   `v1.2.3` tag) builds and tests, packs `fluentmcp-1.2.3.mcpb`, the
-   end-user download `all-in-one-mcp-for-fluent-suite-1.2.3.zip` (the
-   `.mcpb` plus `packaging/readme.txt` and the license) and
-   `fluentmcp-1.2.3-source.zip`, and attaches all three to a GitHub release.
-4. Every release also uploads two fixed-name copies,
+2. The `v1.2.3` tag starts the **Release** workflow here: it builds and
+   tests, packs `fluentmcp-1.2.3.mcpb`, the end-user download
+   `all-in-one-mcp-for-fluent-suite-1.2.3.zip` (the `.mcpb` plus
+   `packaging/readme.txt` and the license) and `fluentmcp-1.2.3-source.zip`,
+   and attaches all three to a GitHub release.
+3. Every release also uploads two fixed-name copies,
    `all-in-one-mcp-for-fluent-suite-latest.zip` and `fluentmcp-latest.mcpb`,
    so these URLs always serve the newest version:
    `https://github.com/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity/releases/latest/download/all-in-one-mcp-for-fluent-suite-latest.zip`
    and `.../fluentmcp-latest.mcpb`. The download on upfluent.io links to the
    first one, so it serves each new release with nothing to update by hand.
-5. When the release job succeeds, the same run deploys that commit to the
+4. When the release job succeeds, the same run deploys that commit to the
    Cloudflare Worker (it calls `deploy-cloudflare.yml`), so the hosted
-   connector and the download always match. Untick **Deploy the Cloudflare
-   Worker** when running the workflow by hand for a download-only release.
-   The deploy workflow still runs on its own from the Actions tab for a
-   hotfix or a rollback: run it on an older `v*` tag to put that version
-   back.
+   connector and the download always match. The deploy workflow still runs
+   on its own from the Actions tab for a hotfix or a rollback: run it on an
+   older `v*` tag to put that version back.
 
 ## Code of conduct
 
