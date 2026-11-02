@@ -19,7 +19,7 @@ const NAMESPACE = 'fluent-community/v2';
 /* [method, path, group, slug, summary]. Groups fold the small top-level
    segments into the domain they belong to (e.g. /comments and /documents
    under feeds, /invitations and /notifications under profile) so the tool
-   surface stays at 8 areas for 274 operations. */
+   surface stays at 8 areas for 278 operations. */
 const OPS = [
 
   // ---- spaces: spaces, space groups, paywalls, media gallery
@@ -58,6 +58,16 @@ const OPS = [
   ['POST', '/spaces/{spaceSlug}/members/remove', 'spaces', 'remove-space-member', 'POST Remove Space Member'],
   ['POST', '/spaces/{spaceSlug}/members/resolve-crm-tag', 'spaces', 'resolve-space-member-crm-tag', 'POST Resolve Space Member CRM Tag'],
   ['GET', '/spaces/{spaceSlug}/meta-settings', 'spaces', 'get-space-meta-settings', 'GET Get Space Meta Settings'],
+  ['POST', '/spaces/{spaceSlug}/mark-seen', 'spaces', 'mark-space-seen', 'POST Mark Space as Seen'],
+  ['GET', '/spaces/{spaceSlug}/pages', 'spaces', 'list-space-pages', 'GET List Space Pages'],
+  ['POST', '/spaces/{spaceSlug}/pages', 'spaces', 'create-space-page', 'POST Create Space Page'],
+  ['PATCH', '/spaces/{spaceSlug}/pages/re-index', 'spaces', 'reindex-space-pages', 'PATCH Reindex Space Pages'],
+  ['GET', '/spaces/{spaceSlug}/pages/{pageSlug}', 'spaces', 'get-space-page', 'GET Get Space Page'],
+  ['PUT', '/spaces/{spaceSlug}/pages/{pageId}', 'spaces', 'update-space-page', 'PUT Update Space Page'],
+  ['DELETE', '/spaces/{spaceSlug}/pages/{pageId}', 'spaces', 'delete-space-page', 'DELETE Delete Space Page'],
+  ['POST', '/spaces/{spaceSlug}/pages/{pageId}/duplicate', 'spaces', 'duplicate-space-page', 'POST Duplicate Space Page'],
+  ['GET', '/spaces/{spaceSlug}/primary-menu', 'spaces', 'get-space-primary-menu', 'GET Get Space Primary Menu'],
+  ['POST', '/spaces/{spaceSlug}/primary-menu', 'spaces', 'save-space-primary-menu', 'POST Save Space Primary Menu'],
 
   // ---- feeds: posts, comments, reactions, documents, moderation, scheduled posts
   ['GET', '/activities', 'feeds', 'list-activities', 'GET List Activities'],
@@ -229,18 +239,12 @@ const OPS = [
   ['POST', '/profile/{username}/unfollow', 'profile', 'unfollow-profile', 'POST Unfollow Profile'],
 
   // ---- analytics: community analytics (read-only)
-  ['GET', '/analytics/members/activity', 'analytics', 'get-analytics-member-activity', 'GET Get Analytics Member Activity'],
-  ['GET', '/analytics/members/top-commenters', 'analytics', 'list-top-commenters', 'GET List Top Commenters'],
-  ['GET', '/analytics/members/top-members', 'analytics', 'list-top-members', 'GET List Top Members'],
-  ['GET', '/analytics/members/top-post-starters', 'analytics', 'list-top-post-starters', 'GET List Top Post Starters'],
-  ['GET', '/analytics/members/widget', 'analytics', 'get-analytics-member-widget', 'GET Get Analytics Member Widget'],
-  ['GET', '/analytics/overview/activity', 'analytics', 'get-analytics-overview-activity', 'GET Get Analytics Overview Activity'],
-  ['GET', '/analytics/overview/popular-day-time', 'analytics', 'get-analytics-overview-popular-day-time', 'GET Get Analytics Overview Popular Day Time'],
-  ['GET', '/analytics/overview/widget', 'analytics', 'get-analytics-overview-widget', 'GET Get Analytics Overview Widget'],
-  ['GET', '/analytics/spaces/activity', 'analytics', 'get-analytics-space-activity', 'GET Get Analytics Space Activity'],
-  ['GET', '/analytics/spaces/popular', 'analytics', 'get-analytics-space-popular', 'GET Get Analytics Space Popular'],
-  ['GET', '/analytics/spaces/search', 'analytics', 'search-spaces-analytics', 'GET Search Spaces Analytics'],
-  ['GET', '/analytics/spaces/widget', 'analytics', 'get-analytics-space-widget', 'GET Get Analytics Space Widget'],
+  // FluentCommunity 2.12 replaced the fixed /analytics/* widgets with
+  // /insights: pages that each list their cards, and one route per card.
+  ['GET', '/insights/pages', 'analytics', 'list-insight-pages', 'GET List Insight Pages'],
+  ['GET', '/insights/pages/{pageKey}', 'analytics', 'get-insight-page', 'GET Get Insight Page'],
+  ['GET', '/insights/cards/{card}', 'analytics', 'get-insight-card', 'GET Get Insight Card'],
+  ['GET', '/insights/cards/{card}/export', 'analytics', 'export-insight-card', 'GET Export Insight Card'],
 
   // ---- settings: portal settings and runtime options
   ['GET', '/options/app-vars', 'settings', 'get-app-vars', 'GET Get App Vars'],
@@ -263,6 +267,8 @@ const OPS = [
   ['POST', '/settings/menu-settings', 'settings', 'save-menu-settings', 'POST Save Menu Settings'],
   ['GET', '/settings/privacy-settings', 'settings', 'get-privacy-settings', 'GET Get Privacy Settings'],
   ['POST', '/settings/privacy-settings', 'settings', 'save-privacy-settings', 'POST Save Privacy Settings'],
+  ['GET', '/settings/reorder', 'settings', 'get-reorder-settings', 'GET Get Reorder Settings'],
+  ['POST', '/settings/reorder', 'settings', 'save-reorder-settings', 'POST Save Reorder Settings'],
   ['GET', '/settings/snippets-settings', 'settings', 'get-snippets-settings', 'GET Get Snippets Settings'],
   ['POST', '/settings/snippets-settings', 'settings', 'save-snippets-settings', 'POST Save Snippets Settings'],
 
@@ -336,7 +342,11 @@ if (!offline) {
   for (const [routePath, route] of Object.entries(index.routes ?? {})) {
     const rel = routePath.replace(`/${NAMESPACE}`, '');
     if (!rel) continue;
-    const template = rel.replace(/\(\?P<(\w+)>(?:\[[^\]]*\]|[^)])*\)/g, '{$1}');
+    const template = rel
+      .replace(/\(\?P<(\w+)>(?:\[[^\]]*\]|[^)])*\)/g, '{$1}')
+      // `page` is a reserved tool parameter (pagination), so the table names
+      // that placeholder `pageKey`; only the value reaches the URL.
+      .replace('{page}', '{pageKey}');
     for (const ep of route.endpoints ?? []) {
       for (const method of ep.methods ?? []) live.add(key(method, template));
     }

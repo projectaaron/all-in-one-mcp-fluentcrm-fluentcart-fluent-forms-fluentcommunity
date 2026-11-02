@@ -12,5 +12,5 @@ export const SUMMARY_FIELDS: Record<string, string[]> = {
   crm_sequences: ['id', 'title', 'status', 'created_at'],
   crm_automations: ['id', 'title', 'status', 'trigger_name', 'created_at', 'subscribers_count'],
   crm_templates: ['id', 'ID', 'title', 'post_title', 'post_status', 'created_at', 'edited_at'],
-  crm_sms: ['id', 'title', 'status', 'created_at'],
+  crm_messaging: ['id', 'title', 'status', 'created_at'],
 };

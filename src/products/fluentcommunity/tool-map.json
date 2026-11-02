@@ -33,7 +33,7 @@
       ]
     },
     "community_analytics": {
-      "description": "Read-only community analytics: activity over time, popular spaces, and top members.",
+      "description": "Read-only community insights: list the insight pages, open a page to see its cards, then read or export any card (activity over time, popular spaces, top members, and more).",
       "groups": [
         "analytics"
       ]

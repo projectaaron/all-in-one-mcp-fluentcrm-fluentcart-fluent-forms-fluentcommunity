@@ -29,12 +29,13 @@ describe('safety regressions', () => {
     expect(campaigns.send_campaign_test_email?.destructive).toBe(false);
     expect(campaigns.pause_campaign?.destructive).toBe(false);
 
-    const sms = spec('fluentcrm', 'crm_sms').actions;
-    expect(sms.schedule_sms_campaign?.destructive).toBe(true);
-    expect(sms.resume_sms_campaign?.destructive).toBe(true);
+    const messaging = spec('fluentcrm', 'crm_messaging').actions;
+    expect(messaging.schedule_campaign?.destructive).toBe(true);
     // A one-off message to a real customer can't be recalled, and a
     // prompt-injected note could otherwise have the assistant send many.
-    expect(sms.send_subscriber_custom_sms?.destructive).toBe(true);
+    for (const a of ['send_subscriber_message', 'send_thread_message', 'send_subscriber_whatsapp_message']) {
+      expect(messaging[a]?.destructive, `crm_messaging.${a}`).toBe(true);
+    }
     expect(spec('fluentcrm', 'crm_contacts').actions.send_contact_custom_email?.destructive).toBe(true);
   });
 

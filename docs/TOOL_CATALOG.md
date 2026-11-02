@@ -14,11 +14,11 @@ the tool refuses and explains what would happen. Set
 `FLUENT_TOOL_MODE=grouped` to serve the legacy one-tool-per-area surface
 instead (an `action` parameter selects the operation).
 
-## FluentCRM (`crm_*`, 24 areas, 370 tools)
+## FluentCRM (`crm_*`, 24 areas, 372 tools)
 
 | Area | Class | Tools | Description |
 |------|-------|-------|-------------|
-| `crm_contacts` | read/write/delete | 32 | Look up, create, update, delete, and manage CRM contacts (subscribers), including their notes, tags, lists, and email history. |
+| `crm_contacts` | read/write/delete | 33 | Look up, create, update, delete, and manage CRM contacts (subscribers), including their notes, tags, lists, and email history. |
 | `crm_lists` | read/write/delete | 7 | View, create, update, or delete the contact lists used to organize CRM subscribers. |
 | `crm_tags` | read/write/delete | 7 | View, create, update, or delete the tags used to label CRM contacts. |
 | `crm_segments` | read/write/delete | 9 | View, create, update, or delete dynamic contact segments and see which contacts match them. |
@@ -28,17 +28,17 @@ instead (an `action` parameter selects the operation).
 | `crm_campaigns` | read/write/delete | 39 | Create, schedule, send, pause, duplicate, delete, and analyze one-off email campaigns, including resending failed or unopened emails. |
 | `crm_recurring_campaigns` | read/write/delete | 14 | Manage recurring (automatically repeating) email campaigns from creation through scheduling and deletion (FluentCRM Pro). |
 | `crm_sequences` | read/write/delete | 19 | Manage email sequence (drip) automations, their emails, and their subscribers (FluentCRM Pro). |
-| `crm_automations` | read/write/delete | 32 | Manage marketing automation funnels and their subscribers, from creation and editing to import, export, and deletion. |
+| `crm_automations` | read/write/delete | 33 | Manage marketing automation funnels and their subscribers, from creation and editing to import, export, and deletion. |
 | `crm_templates` | read/write/delete | 12 | Manage reusable email templates, including creating, duplicating, updating, and deleting them. |
 | `crm_forms` | read/write | 5 | View and manage the opt-in forms connected to the CRM. |
 | `crm_webhooks` | read/write/delete | 4 | Manage incoming webhooks that create or update CRM contacts from external services. |
 | `crm_smart_links` | read/write/delete | 5 | Manage Smart Links that tag and redirect contacts when clicked (FluentCRM Pro). |
-| `crm_sms` | read/write/delete | 25 | Manage SMS campaigns, templates, contacts' phone data, and SMS settings (FluentCRM Pro). |
-| `crm_reports` | read | 27 | Read-only CRM analytics: dashboard stats, subscriber growth, email and revenue reports, commerce reports, and global search. |
+| `crm_messaging` | read/write/delete | 16 | Send and manage SMS and WhatsApp messages: messaging campaigns, two-way message threads, per-contact message logs, and WhatsApp templates (FluentCRM Pro, needs a messaging provider connected). |
+| `crm_reports` | read | 30 | Read-only CRM analytics: dashboard stats, subscriber growth, email and revenue reports, commerce reports, and global search. |
 | `crm_abandoned_carts` | read/write/delete | 3 | View abandoned-cart records and their report summary, and delete records in bulk (FluentCRM Pro commerce feature). |
-| `crm_settings` | read/write/delete | 46 | Read or update FluentCRM settings such as double opt-in, business info, email preferences, compliance, and experimental features. |
-| `crm_settings_pro` | read/write/delete | 11 | Read or update FluentCRM Pro settings such as the plugin license and Pro-only features. |
-| `crm_utilities` | read/write/delete | 20 | Administrative utilities: import contacts from CSV or WordPress users, export contacts, migrate from other tools, list WordPress users and roles, browse in-app docs, and receive bounce webhooks. |
+| `crm_settings` | read/write/delete | 47 | Read or update FluentCRM settings such as double opt-in, business info, email preferences, compliance, and experimental features. |
+| `crm_settings_pro` | read/write/delete | 7 | Read or update FluentCRM Pro settings such as the plugin license and Pro-only features. |
+| `crm_utilities` | read/write/delete | 29 | Administrative utilities: import contacts from CSV or WordPress users, export contacts, migrate from other tools, list WordPress users and roles, browse in-app docs, and receive bounce webhooks. |
 | `crm_ai` | read/write | 7 | FluentCRM's AI assistant: generate or rewrite text and email bodies, summarize a contact, list provider models, and manage the AI provider settings and connection test. |
 | `crm_email_patterns` | read/write/delete | 11 | Reusable email content patterns and their categories: list, create (incl. from wp_block payloads), update, delete, and bulk actions. |
 
@@ -59,7 +59,7 @@ Example calls:
 - `crm_forms`: `{"name":"crm_forms_list","arguments":{"per_page":5}}`
 - `crm_webhooks`: `{"name":"crm_webhooks_list","arguments":{"per_page":5}}`
 - `crm_smart_links`: `{"name":"crm_smart_links_list","arguments":{"per_page":5}}`
-- `crm_sms`: `{"name":"crm_sms_list_campaigns","arguments":{"per_page":5}}`
+- `crm_messaging`: `{"name":"crm_messaging_list_campaigns","arguments":{"per_page":5}}`
 - `crm_reports`: `{"name":"crm_reports_get_advanced_providers","arguments":{}}`
 - `crm_abandoned_carts`: `{"name":"crm_abandoned_carts_list","arguments":{"per_page":5}}`
 - `crm_settings`: `{"name":"crm_settings_get_abandon_cart","arguments":{}}`
@@ -68,11 +68,11 @@ Example calls:
 - `crm_ai`: `{"name":"crm_ai_get_settings","arguments":{}}`
 - `crm_email_patterns`: `{"name":"crm_email_patterns_list_categories","arguments":{"per_page":5}}`
 
-## FluentCart (`cart_*`, 25 areas, 436 tools)
+## FluentCart (`cart_*`, 25 areas, 438 tools)
 
 | Area | Class | Tools | Description |
 |------|-------|-------|-------------|
-| `cart_orders` | read/write/delete | 32 | Look up, create, update, refund, and manage store orders, including their statuses, transactions, addresses, and disputes. |
+| `cart_orders` | read/write/delete | 34 | Look up, create, update, refund, and manage store orders, including their statuses, transactions, addresses, and disputes. |
 | `cart_products` | read/write/delete | 32 | Look up, create, update, delete, and bulk-edit store products, including search, duplication, taxonomy terms, and shipping/tax classes. |
 | `cart_product_variants` | read/write/delete | 22 | Manage product variations: pricing, inventory and stock, bundles, upgrade paths, media, and variant search. |
 | `cart_product_assets` | read/write/delete | 9 | Manage products' downloadable files and per-product integration feeds. |
@@ -174,17 +174,17 @@ Example calls:
 - `forms_admin`: `{"name":"forms_admin_list_managers","arguments":{"per_page":5}}`
 - `forms_utilities`: `{"name":"forms_utilities_list_logs","arguments":{"per_page":5}}`
 
-## FluentCommunity (`community_*`, 8 areas, 274 tools)
+## FluentCommunity (`community_*`, 8 areas, 278 tools)
 
 | Area | Class | Tools | Description |
 |------|-------|-------|-------------|
-| `community_spaces` | read/write/delete | 35 | Manage community spaces and space groups: membership, lock screens, links, paywalls, and each space's media gallery. |
+| `community_spaces` | read/write/delete | 45 | Manage community spaces and space groups: membership, lock screens, links, paywalls, and each space's media gallery. |
 | `community_feeds` | read/write/delete | 44 | Posts and the activity feed: create and edit posts, comments, reactions, bookmarks, surveys, uploaded documents and media, scheduled posts, and moderation reports. |
 | `community_chat` | read/write/delete | 30 | Direct and group chat: threads, group membership, messages, reactions, and blocking. |
 | `community_courses` | read/write/delete | 54 | Courses end to end: course CRUD, sections, lessons, students and enrolment, quizzes, progress, and the member-facing course views. |
 | `community_profiles` | read/write/delete | 33 | Member profiles and directory: profile fields, follows and blocks, notification preferences, memberships, invitations, notifications, and the leaderboard. |
-| `community_analytics` | read | 12 | Read-only community analytics: activity over time, popular spaces, and top members. |
-| `community_settings` | read/write/delete | 22 | Portal settings and runtime options: colours, features, menus, privacy, snippets, follower and player settings, and CRM tagging. |
+| `community_analytics` | read | 4 | Read-only community insights: list the insight pages, open a page to see its cards, then read or export any card (activity over time, popular spaces, top members, and more). |
+| `community_settings` | read/write/delete | 24 | Portal settings and runtime options: colours, features, menus, privacy, snippets, follower and player settings, and CRM tagging. |
 | `community_admin` | read/write/delete | 44 | Site administration: licensing, managers, webhooks, topics, badges, onboarding, and the auth, email, push, PWA, storage and messaging settings. |
 
 Example calls:
@@ -194,7 +194,7 @@ Example calls:
 - `community_chat`: `{"name":"community_chat_list_group_members","arguments":{"thread_id":123,"per_page":5}}`
 - `community_courses`: `{"name":"community_courses_list_all_space_courses","arguments":{"per_page":5}}`
 - `community_profiles`: `{"name":"community_profiles_list_invitations","arguments":{"per_page":5}}`
-- `community_analytics`: `{"name":"community_analytics_list_top_commenters","arguments":{"per_page":5}}`
+- `community_analytics`: `{"name":"community_analytics_list_insight_pages","arguments":{"per_page":5}}`
 - `community_settings`: `{"name":"community_settings_list_menu_items","arguments":{"per_page":5}}`
 - `community_admin`: `{"name":"community_admin_list_custom_profile_fields","arguments":{"per_page":5}}`
 
@@ -213,4 +213,4 @@ Examples: `{"name": "verify_setup", "arguments": {}}` ·
 `{"name": "tool_map", "arguments": {"search": "refund"}}` ·
 `{"name": "wp_media_upload_from_url", "arguments": {"source_url": "https://cdn.example.com/photo.jpg", "alt_text": "Product photo"}}`
 
-**Total: 1303 tools** (`FLUENT_TOOL_MODE=grouped` serves 76 instead).
+**Total: 1311 tools** (`FLUENT_TOOL_MODE=grouped` serves 76 instead).

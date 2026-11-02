@@ -233,6 +233,20 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "summary": "Void Renewal Invoice",
       "destructive": true,
       "bodyNote": "Voids a renewal invoice so it will not be collected. Requires confirm:true."
+    },
+    "list_order_currencies": {
+      "op": "orders/list-order-currencies",
+      "method": "GET",
+      "path": "/orders/currencies",
+      "summary": "List Order Currencies",
+      "destructive": false
+    },
+    "price_order": {
+      "op": "orders/price-order",
+      "method": "POST",
+      "path": "/orders/price",
+      "summary": "Price Order",
+      "destructive": false
     }
   },
   "cart_products": {

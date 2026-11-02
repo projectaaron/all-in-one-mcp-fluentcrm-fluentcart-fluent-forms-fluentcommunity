@@ -1,6 +1,6 @@
 # FluentCart REST API — Reference
 
-> **Source:** <https://dev.fluentcart.com/restapi/> · **Scraped:** 2026-09-21 · **Endpoints:** 436 across 24 groups
+> **Source:** <https://dev.fluentcart.com/restapi/> · **Scraped:** 2026-11-02 · **Endpoints:** 438 across 24 groups
 > Regenerate with `node scripts/gen-api-docs.mjs fluentcart` — see [MAINTAINING.md](./MAINTAINING.md).
 
 **Base URL:** `https://{website}/wp-json/fluent-cart/v2` (namespace `fluent-cart/v2`)
@@ -21,7 +21,7 @@ Request/response schemas for every endpoint below are in FluentCart's own develo
 
 | Group | Endpoints |
 |-------|-----------|
-| Orders | 32 |
+| Orders | 34 |
 | Products | 63 |
 | Customers | 18 |
 | Coupons | 12 |
@@ -84,6 +84,8 @@ Request/response schemas for every endpoint below are in FluentCart's own develo
 | POST | `/orders/{order}/transactions/{transaction}/sync` | POST Sync Pending Transaction |
 | PUT | `/orders/{order}/subscriptions/{subscription}/update` | PUT Update Subscription |
 | POST | `/renewals/{order}/void` | POST Void Renewal Invoice |
+| GET | `/orders/currencies` | GET List Order Currencies |
+| POST | `/orders/price` | POST Price Order |
 
 ### Products
 

@@ -434,3 +434,5 @@ saved-views/create-saved-view
 saved-views/delete-saved-view
 saved-views/list-saved-views
 saved-views/update-saved-view
+orders/list-order-currencies
+orders/price-order

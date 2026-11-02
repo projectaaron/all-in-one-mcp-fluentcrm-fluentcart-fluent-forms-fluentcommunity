@@ -1,10 +1,10 @@
 {
   "product": "fluentcart",
   "source": "https://dev.fluentcart.com/restapi/",
-  "scraped": "2026-09-21",
+  "scraped": "2026-11-02",
   "baseUrl": "https://{website}/wp-json/fluent-cart/v2",
   "namespace": "fluent-cart/v2",
-  "count": 436,
+  "count": 438,
   "endpoints": [
     {
       "group": "orders",
@@ -385,6 +385,30 @@
       "method": "POST",
       "path": "/renewals/{order}/void",
       "summary": "POST Void Renewal Invoice",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "orders",
+      "slug": "list-order-currencies",
+      "operationId": "listOrderCurrencies",
+      "method": "GET",
+      "path": "/orders/currencies",
+      "summary": "GET List Order Currencies",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "orders",
+      "slug": "price-order",
+      "operationId": "priceOrder",
+      "method": "POST",
+      "path": "/orders/price",
+      "summary": "POST Price Order",
       "security": [
         "ApplicationPasswords"
       ],
