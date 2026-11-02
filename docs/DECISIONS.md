@@ -7,6 +7,7 @@ from this file plus `PROJECT_MAP.md`.
 
 ---
 
+
 ## 2026-07-16 — Phase 0: repo audit
 
 **State found:** the repo contained only the FluentCart Dev Kit bootstrap
@@ -764,3 +765,18 @@ a release, the `v<version>` tag that starts the Release workflow here. The
 weekly API-docs refresh now runs in the main repository, so its PRs land
 where the work happens. Accepted pull requests here are applied there and
 arrive with the next publish.
+
+
+## 2026-11-02 — Following upstream renames (1.5.0)
+
+FluentCRM 3.3 replaced `/sms/*` with `/messaging/*` + `/whatsapp/*`, and
+FluentCommunity 2.12 replaced `/analytics/*` with `/insights/*`. The old
+tools are removed, not kept as aliases: they point at routes the current
+plugins no longer serve, and a tool that always 404s is worse than a missing
+one. The new SMS area is `crm_messaging` (not `crm_sms`) because it now
+covers WhatsApp too.
+
+FluentCommunity's insights route names its placeholder `{page}`, which
+collides with the reserved pagination parameter. The route table calls it
+`{pageKey}` and the live check maps the name across; only the value reaches
+the URL, so nothing on the wire changes.

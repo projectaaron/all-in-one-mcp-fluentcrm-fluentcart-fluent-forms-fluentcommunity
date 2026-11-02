@@ -2,7 +2,7 @@
 
 [![Sponsored by upfluent.io](https://img.shields.io/badge/sponsored%20by-upfluent.io-2563eb)](https://upfluent.io)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
-[![Tools](https://img.shields.io/badge/tools-1%2C303-informational)](docs/TOOL_MAP.md)
+[![Tools](https://img.shields.io/badge/tools-1%2C311-informational)](docs/TOOL_MAP.md)
 [![Latest release](https://img.shields.io/github/v/release/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity?label=download)](https://github.com/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity/releases/latest)
 
 **Let your AI assistant run your WordPress business** — the CRM, the store,
@@ -14,7 +14,7 @@ suite on your WordPress site: **[FluentCRM](https://fluentcrm.com/?ref=4618)**,
 **[FluentCart](https://fluentcart.com/?by=272)**,
 **[Fluent Forms](https://fluentforms.com/?ref=4618)**,
 **[FluentCommunity](https://fluentcommunity.co/?ref=4618)**, and
-**[WP Social Ninja](https://wpsocialninja.com/?ref=4618)**. Every one of their **1,290
+**[WP Social Ninja](https://wpsocialninja.com/?ref=4618)**. Every one of their **1,298
 documented REST endpoints** is its own clearly named tool
 (`crm_contacts_list`, `cart_orders_refund`, `forms_submissions_list`,
 `community_spaces_list`, …), a built-in `tool_map` answers "which tool do I
@@ -346,7 +346,7 @@ see [API references](#api-references).
 | `support_report` | A redacted, paste-ready diagnostic (version, transport, connection checks, the recent tool-call log with every error) for support requests and bug reports — see [Getting help](#getting-help) |
 | `wp_media_upload_from_url` / `wp_media_get` / `wp_media_list` | The WordPress media library; sideload an image from a URL and get the attachment ID |
 
-### [FluentCRM](https://fluentcrm.com/?ref=4618) — `crm_*` (24 areas, 370 tools)
+### [FluentCRM](https://fluentcrm.com/?ref=4618) — `crm_*` (24 areas, 372 tools)
 
 | Area | What it manages |
 |------|-----------------|
@@ -354,7 +354,7 @@ see [API references](#api-references).
 | `crm_companies` | Companies, their notes, and member contacts |
 | `crm_lists` · `crm_tags` · `crm_segments` · `crm_custom_fields` · `crm_labels` | Audience organization |
 | `crm_campaigns` | One-off email campaigns: create, schedule⚠, send, pause, analyze, resend⚠ |
-| `crm_recurring_campaigns` · `crm_sequences` · `crm_templates` · `crm_sms` | Recurring campaigns, drip sequences, templates, SMS (Pro) |
+| `crm_recurring_campaigns` · `crm_sequences` · `crm_templates` · `crm_messaging` | Recurring campaigns, drip sequences, templates, SMS & WhatsApp messaging (Pro) |
 | `crm_automations` · `crm_forms` · `crm_webhooks` · `crm_smart_links` | Funnels, opt-in forms, incoming webhooks, smart links |
 | `crm_email_patterns` | Reusable email content patterns and categories |
 | `crm_ai` | FluentCRM's AI assistant: generate/rewrite text, email bodies, contact summaries; provider settings |
@@ -386,7 +386,7 @@ see [API references](#api-references).
   through FluentCRM's own endpoints so its hooks run (unsubscribing cancels
   pending emails and automations), and returns an undo record.
 
-### [FluentCart](https://fluentcart.com/?by=272) — `cart_*` (25 areas, 436 tools)
+### [FluentCart](https://fluentcart.com/?by=272) — `cart_*` (25 areas, 438 tools)
 
 | Area | What it manages |
 |------|-----------------|
@@ -409,16 +409,16 @@ see [API references](#api-references).
 | `forms_reports` | Read-only analytics |
 | `forms_admin` · `forms_utilities` | Global settings, licensing, managers, roles, logs, search |
 
-### [FluentCommunity](https://fluentcommunity.co/?ref=4618) — `community_*` (8 areas, 274 tools)
+### [FluentCommunity](https://fluentcommunity.co/?ref=4618) — `community_*` (8 areas, 278 tools)
 
 | Area | What it manages |
 |------|-----------------|
-| `community_spaces` | Spaces, space groups, membership, lock screens, paywalls |
+| `community_spaces` | Spaces, space groups, space pages and menus, membership, lock screens, paywalls |
 | `community_feeds` | Posts, comments, reactions, bookmarks, surveys, documents, scheduled posts, moderation |
 | `community_chat` | Threads, groups, messages |
 | `community_courses` | Courses, sections, lessons, students, quizzes, progress |
 | `community_profiles` | Profiles, follows, blocks, invitations, notifications, leaderboard |
-| `community_analytics` | Read-only analytics |
+| `community_analytics` | Read-only insights: pages, cards, card exports |
 | `community_settings` · `community_admin` | Portal settings, licensing, managers, webhooks, topics, badges |
 
 > Many FluentCommunity tools act **as the configured user** — posting,
@@ -493,7 +493,7 @@ pages, since their coverage grows.
 | **Runs where** | Inside WordPress, as plugin code (FluentHub or the WordPress MCP Adapter; needs WordPress 6.9+ for the Abilities API) | Outside WordPress: Claude Desktop extension, local Node process, or a Cloudflare Worker. Nothing installed on the site. |
 | **Products covered** | FluentCRM, FluentCart, Fluent Forms, Fluent Support, FluentBoards. FluentCommunity and WP Social Ninja: none announced. | FluentCRM, FluentCart, Fluent Forms, FluentCommunity, WP Social Ninja. Fluent Support, FluentBooking, FluentBoards and FluentAffiliate coming soon (see [Roadmap](#roadmap-more-fluent-products)). |
 | **Servers to connect** | One per product (Fluent Forms has its own; CRM/Cart/Support/Boards go through FluentHub, each with its own enable switch and snippet) | One. All five products behind one connector, one credential. Products you don't have are simply off. |
-| **Tool count** | FluentCRM ~25 (some Pro-only) · FluentCart 30 · Fluent Forms 20 free / 23 Pro · Fluent Support ~20 | 1,303 tools: every one of the 1,290 documented endpoints plus 13 built-ins and helpers. CRM 370 (363 endpoints + 7 helpers: sequences, analytics, bulk-by-filter) · Cart 436 · Forms 91 · Community 274 · Social Ninja 126 |
+| **Tool count** | FluentCRM ~25 (some Pro-only) · FluentCart 30 · Fluent Forms 20 free / 23 Pro · Fluent Support ~20 | 1,311 tools: every one of the 1,298 documented endpoints plus 13 built-ins and helpers. CRM 372 (365 endpoints + 7 helpers: sequences, analytics, bulk-by-filter) · Cart 438 · Forms 91 · Community 278 · Social Ninja 126 |
 | **Coverage model** | Curated: a hand-picked subset of common operations | Complete: every documented REST endpoint of each product, generated from the vendor's own API reference and re-checked weekly |
 | **Writes** | Selected writes per product (e.g. Cart: order status, notes, refunds, customer create/update, subscription cancel, coupons, labels) | Every write the admin UI can do: create, update, delete, bulk actions, settings, automations, sequences, templates, integrations, licensing, courses, spaces, chat, reviews, and so on |
 | **Explicitly not exposed natively** | FluentCart: settings, shipping, tax, licensing administration, email templates. FluentCRM: templates, forms, webhooks, settings, SMS, reports (per the vendor's own write-ups). Fluent Forms: form settings beyond styling and notifications, integrations beyond listing | All of those, plus the rest of each REST surface |
@@ -537,7 +537,7 @@ the `.mcpb` extension file is Claude Desktop-specific; the config-file
 install ([B](#b--any-mcp-client-config-file)) and the remote connector
 ([C](#c--remote-connector-web-mobile-desktop)) work everywhere.
 
-**Pick the tool mode for your client.** The default surface is 1,303 small
+**Pick the tool mode for your client.** The default surface is 1,311 small
 tools, which Claude handles well but many other clients cap or truncate.
 `grouped` mode collapses the same operations into 83 tools (one per area,
 an `action` parameter picks the operation, plus the built-ins) with identical

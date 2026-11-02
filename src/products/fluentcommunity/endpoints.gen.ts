@@ -247,6 +247,76 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "path": "/spaces/{spaceSlug}/meta-settings",
       "summary": "Get Space Meta Settings",
       "destructive": false
+    },
+    "mark_space_seen": {
+      "op": "spaces/mark-space-seen",
+      "method": "POST",
+      "path": "/spaces/{spaceSlug}/mark-seen",
+      "summary": "Mark Space as Seen",
+      "destructive": false
+    },
+    "list_space_pages": {
+      "op": "spaces/list-space-pages",
+      "method": "GET",
+      "path": "/spaces/{spaceSlug}/pages",
+      "summary": "List Space Pages",
+      "destructive": false
+    },
+    "create_space_page": {
+      "op": "spaces/create-space-page",
+      "method": "POST",
+      "path": "/spaces/{spaceSlug}/pages",
+      "summary": "Create Space Page",
+      "destructive": false
+    },
+    "reindex_space_pages": {
+      "op": "spaces/reindex-space-pages",
+      "method": "PATCH",
+      "path": "/spaces/{spaceSlug}/pages/re-index",
+      "summary": "Reindex Space Pages",
+      "destructive": false
+    },
+    "get_space_page": {
+      "op": "spaces/get-space-page",
+      "method": "GET",
+      "path": "/spaces/{spaceSlug}/pages/{pageSlug}",
+      "summary": "Get Space Page",
+      "destructive": false
+    },
+    "update_space_page": {
+      "op": "spaces/update-space-page",
+      "method": "PUT",
+      "path": "/spaces/{spaceSlug}/pages/{pageId}",
+      "summary": "Update Space Page",
+      "destructive": false
+    },
+    "delete_space_page": {
+      "op": "spaces/delete-space-page",
+      "method": "DELETE",
+      "path": "/spaces/{spaceSlug}/pages/{pageId}",
+      "summary": "Delete Space Page",
+      "destructive": true
+    },
+    "duplicate_space_page": {
+      "op": "spaces/duplicate-space-page",
+      "method": "POST",
+      "path": "/spaces/{spaceSlug}/pages/{pageId}/duplicate",
+      "summary": "Duplicate Space Page",
+      "destructive": false
+    },
+    "get_space_primary_menu": {
+      "op": "spaces/get-space-primary-menu",
+      "method": "GET",
+      "path": "/spaces/{spaceSlug}/primary-menu",
+      "summary": "Get Space Primary Menu",
+      "destructive": false
+    },
+    "save_space_primary_menu": {
+      "op": "spaces/save-space-primary-menu",
+      "method": "POST",
+      "path": "/spaces/{spaceSlug}/primary-menu",
+      "summary": "Save Space Primary Menu",
+      "destructive": false
     }
   },
   "community_feeds": {
@@ -1387,88 +1457,32 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
     }
   },
   "community_analytics": {
-    "get_analytics_member_activity": {
-      "op": "analytics/get-analytics-member-activity",
+    "list_insight_pages": {
+      "op": "analytics/list-insight-pages",
       "method": "GET",
-      "path": "/analytics/members/activity",
-      "summary": "Get Analytics Member Activity",
+      "path": "/insights/pages",
+      "summary": "List Insight Pages",
       "destructive": false
     },
-    "list_top_commenters": {
-      "op": "analytics/list-top-commenters",
+    "get_insight_page": {
+      "op": "analytics/get-insight-page",
       "method": "GET",
-      "path": "/analytics/members/top-commenters",
-      "summary": "List Top Commenters",
+      "path": "/insights/pages/{pageKey}",
+      "summary": "Get Insight Page",
       "destructive": false
     },
-    "list_top_members": {
-      "op": "analytics/list-top-members",
+    "get_insight_card": {
+      "op": "analytics/get-insight-card",
       "method": "GET",
-      "path": "/analytics/members/top-members",
-      "summary": "List Top Members",
+      "path": "/insights/cards/{card}",
+      "summary": "Get Insight Card",
       "destructive": false
     },
-    "list_top_post_starters": {
-      "op": "analytics/list-top-post-starters",
+    "export_insight_card": {
+      "op": "analytics/export-insight-card",
       "method": "GET",
-      "path": "/analytics/members/top-post-starters",
-      "summary": "List Top Post Starters",
-      "destructive": false
-    },
-    "get_analytics_member_widget": {
-      "op": "analytics/get-analytics-member-widget",
-      "method": "GET",
-      "path": "/analytics/members/widget",
-      "summary": "Get Analytics Member Widget",
-      "destructive": false
-    },
-    "get_analytics_overview_activity": {
-      "op": "analytics/get-analytics-overview-activity",
-      "method": "GET",
-      "path": "/analytics/overview/activity",
-      "summary": "Get Analytics Overview Activity",
-      "destructive": false
-    },
-    "get_analytics_overview_popular_day_time": {
-      "op": "analytics/get-analytics-overview-popular-day-time",
-      "method": "GET",
-      "path": "/analytics/overview/popular-day-time",
-      "summary": "Get Analytics Overview Popular Day Time",
-      "destructive": false
-    },
-    "get_analytics_overview_widget": {
-      "op": "analytics/get-analytics-overview-widget",
-      "method": "GET",
-      "path": "/analytics/overview/widget",
-      "summary": "Get Analytics Overview Widget",
-      "destructive": false
-    },
-    "get_analytics_space_activity": {
-      "op": "analytics/get-analytics-space-activity",
-      "method": "GET",
-      "path": "/analytics/spaces/activity",
-      "summary": "Get Analytics Space Activity",
-      "destructive": false
-    },
-    "get_analytics_space_popular": {
-      "op": "analytics/get-analytics-space-popular",
-      "method": "GET",
-      "path": "/analytics/spaces/popular",
-      "summary": "Get Analytics Space Popular",
-      "destructive": false
-    },
-    "search_spaces_analytics": {
-      "op": "analytics/search-spaces-analytics",
-      "method": "GET",
-      "path": "/analytics/spaces/search",
-      "summary": "Search Spaces Analytics",
-      "destructive": false
-    },
-    "get_analytics_space_widget": {
-      "op": "analytics/get-analytics-space-widget",
-      "method": "GET",
-      "path": "/analytics/spaces/widget",
-      "summary": "Get Analytics Space Widget",
+      "path": "/insights/cards/{card}/export",
+      "summary": "Export Insight Card",
       "destructive": false
     }
   },
@@ -1612,6 +1626,20 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "POST",
       "path": "/settings/privacy-settings",
       "summary": "Save Privacy Settings",
+      "destructive": false
+    },
+    "get_reorder_settings": {
+      "op": "settings/get-reorder-settings",
+      "method": "GET",
+      "path": "/settings/reorder",
+      "summary": "Get Reorder Settings",
+      "destructive": false
+    },
+    "save_reorder_settings": {
+      "op": "settings/save-reorder-settings",
+      "method": "POST",
+      "path": "/settings/reorder",
+      "summary": "Save Reorder Settings",
       "destructive": false
     },
     "get_snippets_settings": {
@@ -1959,7 +1987,7 @@ export const TOOL_META: Record<string, { description: string; note?: string; ide
     "description": "Member profiles and directory: profile fields, follows and blocks, notification preferences, memberships, invitations, notifications, and the leaderboard."
   },
   "community_analytics": {
-    "description": "Read-only community analytics: activity over time, popular spaces, and top members."
+    "description": "Read-only community insights: list the insight pages, open a page to see its cards, then read or export any card (activity over time, popular spaces, top members, and more)."
   },
   "community_settings": {
     "description": "Portal settings and runtime options: colours, features, menus, privacy, snippets, follower and player settings, and CRM tagging."

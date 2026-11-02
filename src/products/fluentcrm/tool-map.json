@@ -94,10 +94,11 @@
         "smart-links"
       ]
     },
-    "crm_sms": {
-      "description": "Manage SMS campaigns, templates, contacts' phone data, and SMS settings (FluentCRM Pro).",
+    "crm_messaging": {
+      "description": "Send and manage SMS and WhatsApp messages: messaging campaigns, two-way message threads, per-contact message logs, and WhatsApp templates (FluentCRM Pro, needs a messaging provider connected).",
       "groups": [
-        "sms"
+        "messaging",
+        "whatsapp"
       ]
     },
     "crm_reports": {
@@ -175,12 +176,6 @@
     "campaigns-pro/resend-unopened-emails": {
       "destructive": true
     },
-    "sms/schedule-sms-campaign": {
-      "destructive": true
-    },
-    "sms/resume-sms-campaign": {
-      "destructive": true
-    },
     "sequences/create-sequence-email": {
       "requiredBody": [
         "email"
@@ -244,14 +239,6 @@
       "destructive": true,
       "bodyNote": "Sends a message to a real customer that cannot be recalled. Requires confirm:true."
     },
-    "sms/resend-sms-message": {
-      "destructive": true,
-      "bodyNote": "Sends a message to a real customer that cannot be recalled. Requires confirm:true."
-    },
-    "sms/send-subscriber-custom-sms": {
-      "destructive": true,
-      "bodyNote": "Sends a message to a real customer that cannot be recalled. Requires confirm:true."
-    },
     "settings/install-fluent-boards": {
       "destructive": true,
       "bodyNote": "Code change: installs and activates a plugin on the site. Requires confirm:true."
@@ -291,6 +278,22 @@
     "migrators/handle-migrator-import": {
       "destructive": true,
       "bodyNote": "Bulk import: creates or overwrites many contacts at once. Requires confirm:true."
+    },
+    "messaging/schedule-campaign": {
+      "destructive": true
+    },
+    "messaging/send-subscriber-message": {
+      "destructive": true,
+      "bodyNote": "Sends a message to a real customer that cannot be recalled. Requires confirm:true.",
+      "summary": "Send Message to Subscriber"
+    },
+    "messaging/send-thread-message": {
+      "destructive": true,
+      "bodyNote": "Sends a message to a real customer that cannot be recalled. Requires confirm:true."
+    },
+    "whatsapp/send-subscriber-whatsapp-message": {
+      "destructive": true,
+      "bodyNote": "Sends a message to a real customer that cannot be recalled. Requires confirm:true."
     }
   }
 }

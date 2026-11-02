@@ -1,5 +1,46 @@
 # Changelog
 
+## 1.5.0 — 2026-11-02
+
+Catches up with the current Fluent releases (FluentCRM 3.3.1, FluentCart 2.2.0,
+FluentCommunity 2.12.0; Fluent Forms 6.2.17 and WP Social Ninja 4.4.0 were
+already current). **Upgrade recommended if you use FluentCommunity analytics:**
+those tools stopped working in FluentCommunity 2.12.
+
+### Fixed
+- **FluentCommunity analytics work again.** 2.12 replaced the fixed
+  `/analytics/*` routes with `/insights`, so all 12 `community_analytics_*`
+  tools returned 404. They are replaced by four that cover every report:
+  `community_analytics_list_insight_pages`, `…_get_insight_page`,
+  `…_get_insight_card` and `…_export_insight_card`.
+
+### Added
+- **FluentCRM messaging (SMS + WhatsApp).** FluentCRM 3.3 moved SMS into a
+  unified messaging API. The new `crm_messaging` area (16 tools) covers
+  messaging campaigns, two-way threads, per-contact logs, and WhatsApp
+  templates and sends. Every send to a real customer and every campaign
+  schedule needs `confirm: true`.
+- FluentCRM: 9 export tools (`crm_utilities_export_campaigns`, `…_sequences`,
+  `…_templates`, `…_companies`, `…_notes`, `…_dynamic_segments`,
+  `…_recurring_campaigns`, `…_message_campaigns`, `…_campaign_emails`),
+  `crm_automations_export_funnel`, `crm_contacts_save_quick_pins`,
+  `crm_settings_preview_double_optin`, and three reports
+  (`crm_reports_get_campaign_calendar`, `…_get_messaging_stats`,
+  `…_get_messaging_performance`).
+- FluentCart: `cart_orders_list_order_currencies`, `cart_orders_price_order`.
+- FluentCommunity: space pages (list, get, create, update, duplicate,
+  reorder, delete⚠), a space's primary menu (get/save), `mark_seen`, and
+  `community_settings_get_reorder` / `save_reorder`.
+
+### Removed
+- `crm_sms_*` (25 tools): FluentCRM replaced the `/sms` API with
+  `/messaging`. Use `crm_messaging_*`.
+- `crm_settings_pro_get_sms`, `…_save_sms`, `…_disable_sms` and
+  `…_import_funnel`: FluentCRM no longer documents
+  them. Use `crm_automations_import_funnel` to import an automation.
+
+1,311 tools for 1,298 documented endpoints.
+
 ## 1.4.0 — 2026-09-26
 
 Analytics and filter-based bulk actions, from a real support session

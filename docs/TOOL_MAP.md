@@ -1,7 +1,7 @@
 # Tool map
 
 The fast map of this server: **every tool, one line each, grouped by area** —
-1303 tools in 74 areas. **Generated** by
+1311 tools in 74 areas. **Generated** by
 `scripts/gen-tool-catalog.mjs` from the live registry; regenerate after any
 tool-surface change. Sessions get the same map at runtime from the
 `tool_map` tool (no args = area overview, `{"area": …}` /
@@ -17,7 +17,7 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 
 | Area | Tools | What it covers |
 |------|-------|----------------|
-| `crm_contacts` | 33 | Look up, create, update, delete, and manage CRM contacts (subscribers), including their notes, tags, lists, and email history. |
+| `crm_contacts` | 34 | Look up, create, update, delete, and manage CRM contacts (subscribers), including their notes, tags, lists, and email history. |
 | `crm_lists` | 7 | View, create, update, or delete the contact lists used to organize CRM subscribers. |
 | `crm_tags` | 7 | View, create, update, or delete the tags used to label CRM contacts. |
 | `crm_segments` | 9 | View, create, update, or delete dynamic contact segments and see which contacts match them. |
@@ -27,21 +27,21 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 | `crm_campaigns` | 39 | Create, schedule, send, pause, duplicate, delete, and analyze one-off email campaigns, including resending failed or unopened emails. |
 | `crm_recurring_campaigns` | 14 | Manage recurring (automatically repeating) email campaigns from creation through scheduling and deletion (FluentCRM Pro). |
 | `crm_sequences` | 22 | Manage email sequence (drip) automations, their emails, and their subscribers (FluentCRM Pro). |
-| `crm_automations` | 32 | Manage marketing automation funnels and their subscribers, from creation and editing to import, export, and deletion. |
+| `crm_automations` | 33 | Manage marketing automation funnels and their subscribers, from creation and editing to import, export, and deletion. |
 | `crm_templates` | 12 | Manage reusable email templates, including creating, duplicating, updating, and deleting them. |
 | `crm_forms` | 5 | View and manage the opt-in forms connected to the CRM. |
 | `crm_webhooks` | 4 | Manage incoming webhooks that create or update CRM contacts from external services. |
 | `crm_smart_links` | 5 | Manage Smart Links that tag and redirect contacts when clicked (FluentCRM Pro). |
-| `crm_sms` | 25 | Manage SMS campaigns, templates, contacts' phone data, and SMS settings (FluentCRM Pro). |
-| `crm_reports` | 27 | Read-only CRM analytics: dashboard stats, subscriber growth, email and revenue reports, commerce reports, and global search. |
+| `crm_messaging` | 16 | Send and manage SMS and WhatsApp messages: messaging campaigns, two-way message threads, per-contact message logs, and WhatsApp templates (FluentCRM Pro, needs a messaging provider connected). |
+| `crm_reports` | 30 | Read-only CRM analytics: dashboard stats, subscriber growth, email and revenue reports, commerce reports, and global search. |
 | `crm_abandoned_carts` | 3 | View abandoned-cart records and their report summary, and delete records in bulk (FluentCRM Pro commerce feature). |
-| `crm_settings` | 46 | Read or update FluentCRM settings such as double opt-in, business info, email preferences, compliance, and experimental features. |
-| `crm_settings_pro` | 11 | Read or update FluentCRM Pro settings such as the plugin license and Pro-only features. |
-| `crm_utilities` | 20 | Administrative utilities: import contacts from CSV or WordPress users, export contacts, migrate from other tools, list WordPress users and roles, browse in-app docs, and receive bounce webhooks. |
+| `crm_settings` | 47 | Read or update FluentCRM settings such as double opt-in, business info, email preferences, compliance, and experimental features. |
+| `crm_settings_pro` | 7 | Read or update FluentCRM Pro settings such as the plugin license and Pro-only features. |
+| `crm_utilities` | 29 | Administrative utilities: import contacts from CSV or WordPress users, export contacts, migrate from other tools, list WordPress users and roles, browse in-app docs, and receive bounce webhooks. |
 | `crm_ai` | 7 | FluentCRM's AI assistant: generate or rewrite text and email bodies, summarize a contact, list provider models, and manage the AI provider settings and connection test. |
 | `crm_email_patterns` | 11 | Reusable email content patterns and their categories: list, create (incl. from wp_block payloads), update, delete, and bulk actions. |
 | `crm_analytics` | 3 | Read-only analysis FluentCRM's REST API has no single endpoint for: per-email automation stats, why contacts left an automation, likely bot signups. |
-| `cart_orders` | 32 | Look up, create, update, refund, and manage store orders, including their statuses, transactions, addresses, and disputes. |
+| `cart_orders` | 34 | Look up, create, update, refund, and manage store orders, including their statuses, transactions, addresses, and disputes. |
 | `cart_products` | 32 | Look up, create, update, delete, and bulk-edit store products, including search, duplication, taxonomy terms, and shipping/tax classes. |
 | `cart_product_variants` | 22 | Manage product variations: pricing, inventory and stock, bundles, upgrade paths, media, and variant search. |
 | `cart_product_assets` | 9 | Manage products' downloadable files and per-product integration feeds. |
@@ -82,13 +82,13 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 | `forms_reports` | 14 | Read-only analytics for forms: submission counts, completion rates, revenue, payment types, heatmaps and top-performing forms. |
 | `forms_admin` | 11 | Site-level Fluent Forms administration: global settings, licensing, managers and role capabilities. |
 | `forms_utilities` | 12 | Maintenance and helper operations: system logs, global search, admin notices, plugin install helpers, and the MCP adapter settings. |
-| `community_spaces` | 35 | Manage community spaces and space groups: membership, lock screens, links, paywalls, and each space's media gallery. |
+| `community_spaces` | 45 | Manage community spaces and space groups: membership, lock screens, links, paywalls, and each space's media gallery. |
 | `community_feeds` | 44 | Posts and the activity feed: create and edit posts, comments, reactions, bookmarks, surveys, uploaded documents and media, scheduled posts, and moderation reports. |
 | `community_chat` | 30 | Direct and group chat: threads, group membership, messages, reactions, and blocking. |
 | `community_courses` | 54 | Courses end to end: course CRUD, sections, lessons, students and enrolment, quizzes, progress, and the member-facing course views. |
 | `community_profiles` | 33 | Member profiles and directory: profile fields, follows and blocks, notification preferences, memberships, invitations, notifications, and the leaderboard. |
-| `community_analytics` | 12 | Read-only community analytics: activity over time, popular spaces, and top members. |
-| `community_settings` | 22 | Portal settings and runtime options: colours, features, menus, privacy, snippets, follower and player settings, and CRM tagging. |
+| `community_analytics` | 4 | Read-only community insights: list the insight pages, open a page to see its cards, then read or export any card (activity over time, popular spaces, top members, and more). |
+| `community_settings` | 24 | Portal settings and runtime options: colours, features, menus, privacy, snippets, follower and player settings, and CRM tagging. |
 | `community_admin` | 44 | Site administration: licensing, managers, webhooks, topics, badges, onboarding, and the auth, email, push, PWA, storage and messaging settings. |
 | `server` | 6 | Built-in tools: this map, setup verification, a support report for bug reports, and the WordPress media library. |
 
@@ -128,6 +128,7 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `crm_contacts_update_note(id, note_id)` — Update Contact Note
 - `crm_contacts_update_property` — Update Contacts Property
 - `crm_contacts_bulk_delete_notes(id)` ⚠ — Bulk Delete Contact Notes
+- `crm_contacts_save_quick_pins` — Save Contact Quick Pins
 - `crm_contacts_bulk_action_by_filter(filter, actions)` ⚠ — Tag / set status / stop automation or sequences for every contact a filter matches (dry run + undo)
 
 ### crm_lists — View, create, update, or delete the contact lists used to organize CRM subscribers.
@@ -317,6 +318,7 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `crm_automations_update_funnel_subscription_status(id, subscriber_id)` — Update Funnel Subscription Status
 - `crm_automations_update_funnel_title(id)` — Update Funnel Title
 - `crm_automations_update_funnel_sticky_note(id)` — Update Automation Sticky Note
+- `crm_automations_export_funnel(id)` — Export Automation
 
 ### crm_templates — Manage reusable email templates, including creating, duplicating, updating, and deleting them.
 
@@ -356,33 +358,24 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `crm_smart_links_list` — List Smart Links (paginated)
 - `crm_smart_links_update(id)` — Update Smart Link
 
-### crm_sms — Manage SMS campaigns, templates, contacts' phone data, and SMS settings (FluentCRM Pro).
+### crm_messaging — Send and manage SMS and WhatsApp messages: messaging campaigns, two-way message threads, per-contact message logs, and WhatsApp templates (FluentCRM Pro, needs a messaging provider connected).
 
-- `crm_sms_bulk_action_campaigns` ⚠ — Bulk Action on SMS Campaigns
-- `crm_sms_create_campaign` — Create SMS Campaign
-- `crm_sms_delete_campaign(id)` ⚠ — Delete SMS Campaign
-- `crm_sms_delete_messages` ⚠ — Delete SMS Messages
-- `crm_sms_do_campaign_tag_actions(id)` — Apply Tag Actions to SMS Campaign Recipients
-- `crm_sms_duplicate_campaign(id)` — Duplicate SMS Campaign
-- `crm_sms_estimate_campaign_contacts` — Estimate SMS Campaign Contacts
-- `crm_sms_get_campaign(id)` — Get SMS Campaign
-- `crm_sms_get_campaign_processing_stat(id)` — Get SMS Campaign Processing Status
-- `crm_sms_get_campaign_recipients(id)` — Get SMS Campaign Recipients
-- `crm_sms_get_campaign_recipients_count(id)` — Get SMS Campaign Recipients Count
-- `crm_sms_get_campaign_status(id)` — Get SMS Campaign Status
-- `crm_sms_get_subscriber_logs(id)` — Get Subscriber SMS Logs
-- `crm_sms_get_subscriber_stats(id)` — Get Subscriber SMS Statistics
-- `crm_sms_list_campaigns` — List SMS Campaigns (paginated)
-- `crm_sms_list_messages` — List All SMS Messages (paginated)
-- `crm_sms_pause_campaign(id)` — Pause SMS Campaign
-- `crm_sms_resend_message(id)` ⚠ — Resend SMS Message
-- `crm_sms_resume_campaign(id)` ⚠ — Resume SMS Campaign
-- `crm_sms_schedule_campaign(id)` ⚠ — Schedule SMS Campaign
-- `crm_sms_send_subscriber_custom(id)` ⚠ — Send Custom SMS to Subscriber
-- `crm_sms_unschedule_campaign(id)` — Unschedule SMS Campaign
-- `crm_sms_update_campaign(id)` — Update SMS Campaign
-- `crm_sms_update_campaign_labels(id)` — Update SMS Campaign Labels
-- `crm_sms_unschedule_campaign_legacy(id)` — Unschedule SMS Campaign (Legacy Path)
+- `crm_messaging_create_campaign` — Create Messaging Campaign
+- `crm_messaging_get_campaign(id)` — Get Messaging Campaign
+- `crm_messaging_get_campaign_status(id)` — Get Messaging Campaign Status
+- `crm_messaging_get_subscriber_message_logs(id)` — Get Subscriber Message Logs
+- `crm_messaging_list_campaigns` — List Messaging Campaigns (paginated)
+- `crm_messaging_list_message_threads` — List Message Threads (paginated)
+- `crm_messaging_list_messages` — List Messaging Messages (paginated)
+- `crm_messaging_list_thread_messages(id)` — List Thread Messages (paginated)
+- `crm_messaging_schedule_campaign(id)` ⚠ — Schedule Messaging Campaign
+- `crm_messaging_send_subscriber_message(id)` ⚠ — Send Message to Subscriber
+- `crm_messaging_send_thread_message(id)` ⚠ — Send Thread Message
+- `crm_messaging_update_campaign(id)` — Update Messaging Campaign
+- `crm_messaging_create_whatsapp_template` — Create WhatsApp Template
+- `crm_messaging_get_subscriber_whatsapp_messages(id)` — Subscriber WhatsApp Messages
+- `crm_messaging_list_whatsapp_templates` — WhatsApp Templates (paginated)
+- `crm_messaging_send_subscriber_whatsapp_message(id)` ⚠ — Send Subscriber WhatsApp Message
 
 ### crm_reports — Read-only CRM analytics: dashboard stats, subscriber growth, email and revenue reports, commerce reports, and global search.
 
@@ -412,6 +405,9 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `crm_reports_get_email_unsub_stats` — Email Unsubscribe Stats
 - `crm_reports_get_recent_tags` — Recently Created Tags
 - `crm_reports_get_top_campaigns` — Top Campaigns
+- `crm_reports_get_campaign_calendar` — Campaign Calendar
+- `crm_reports_get_messaging_performance` — Messaging Performance
+- `crm_reports_get_messaging_stats` — Messaging Stats
 - `crm_reports_global_search` — Global Search
 
 ### crm_abandoned_carts — View abandoned-cart records and their report summary, and delete records in bulk (FluentCRM Pro commerce feature).
@@ -464,6 +460,7 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `crm_settings_export_system_logs` — Export System Logs (CSV)
 - `crm_settings_get_db_index_health` — Database Index Health
 - `crm_settings_repair_db_indexes` ⚠ — Repair Database Indexes
+- `crm_settings_preview_double_optin` — Preview Double Opt-in
 - `crm_settings_get_mcp_config_snippet` — MCP Client Config Snippet
 - `crm_settings_get_mcp_status` — MCP Status
 - `crm_settings_install_mcp_adapter` ⚠ — Install MCP Adapter
@@ -474,13 +471,9 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `crm_settings_pro_add_manager` ⚠ — Add Manager
 - `crm_settings_pro_deactivate_license` ⚠ — Deactivate License
 - `crm_settings_pro_delete_manager(id)` ⚠ — Remove Manager
-- `crm_settings_pro_disable_sms` — Disable SMS
 - `crm_settings_pro_get_license_status` — License Status
 - `crm_settings_pro_get_managers` — List Managers
-- `crm_settings_pro_get_sms` — SMS Settings
-- `crm_settings_pro_import_funnel` — Import Funnel
 - `crm_settings_pro_save_license` — Save License
-- `crm_settings_pro_save_sms` — Save SMS Settings
 - `crm_settings_pro_update_manager(id)` ⚠ — Update Manager
 
 ### crm_utilities — Administrative utilities: import contacts from CSV or WordPress users, export contacts, migrate from other tools, list WordPress users and roles, browse in-app docs, and receive bounce webhooks. The two handle_bounce actions are webhook receivers meant to be called by email services, not by API clients.
@@ -505,6 +498,15 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `crm_utilities_handle_bounce_with_handle(service_name, security_code)` — Handle Bounce Webhook
 - `crm_utilities_export_contacts` — Fetch Contact Export Page
 - `crm_utilities_export_contacts_get` — Fetch Contact Export Page
+- `crm_utilities_export_campaign_emails` — Export Campaign Emails
+- `crm_utilities_export_campaigns` — Export Email Campaign
+- `crm_utilities_export_companies` — Export Companies
+- `crm_utilities_export_dynamic_segments` — Export Dynamic Segment
+- `crm_utilities_export_message_campaigns` — Export Messaging Campaign
+- `crm_utilities_export_notes` — Export Contact Notes
+- `crm_utilities_export_recurring_campaigns` — Export Recurring Campaign
+- `crm_utilities_export_sequences` — Export Email Sequence
+- `crm_utilities_export_templates` — Export Email Template
 
 ### crm_ai — FluentCRM's AI assistant: generate or rewrite text and email bodies, summarize a contact, list provider models, and manage the AI provider settings and connection test. Generation calls are billed by your configured AI provider. save_settings stores the provider API key on the site.
 
@@ -572,6 +574,8 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `cart_orders_sync_pending_transaction(order, transaction)` — Sync Pending Transaction
 - `cart_orders_update_subscription_details(order, subscription)` — Update Subscription
 - `cart_orders_void_renewal(order)` ⚠ — Void Renewal Invoice
+- `cart_orders_list_currencies` — List Order Currencies (paginated)
+- `cart_orders_price` — Price Order
 
 ### cart_products — Look up, create, update, delete, and bulk-edit store products, including search, duplication, taxonomy terms, and shipping/tax classes. cart_products_update: despite its /pricing API path this is the FULL product update and the only action that writes the product gallery/featured image — gallery is [{id, url, title}] where id is a WP media attachment ID, gallery[0] becomes the featured image, and an empty gallery [] deletes the thumbnail. post_title and post_status are set unconditionally, so always send them (omitting them blanks the stored values). Omit variants entirely unless you mean to rewrite them: item_price there is multiplied by 100 on write, so round-tripping read values inflates every price 100×.
 
@@ -1357,6 +1361,16 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `community_spaces_remove_member(spaceSlug)` ⚠ — Remove Space Member
 - `community_spaces_resolve_member_crm_tag(spaceSlug)` — Resolve Space Member CRM Tag
 - `community_spaces_get_meta_settings(spaceSlug)` — Get Space Meta Settings
+- `community_spaces_mark_seen(spaceSlug)` — Mark Space as Seen
+- `community_spaces_list_pages(spaceSlug)` — List Space Pages (paginated)
+- `community_spaces_create_page(spaceSlug)` — Create Space Page
+- `community_spaces_reindex_pages(spaceSlug)` — Reindex Space Pages
+- `community_spaces_get_page(spaceSlug, pageSlug)` — Get Space Page
+- `community_spaces_update_page(spaceSlug, pageId)` — Update Space Page
+- `community_spaces_delete_page(spaceSlug, pageId)` ⚠ — Delete Space Page
+- `community_spaces_duplicate_page(spaceSlug, pageId)` — Duplicate Space Page
+- `community_spaces_get_primary_menu(spaceSlug)` — Get Space Primary Menu
+- `community_spaces_save_primary_menu(spaceSlug)` — Save Space Primary Menu
 
 ### community_feeds — Posts and the activity feed: create and edit posts, comments, reactions, bookmarks, surveys, uploaded documents and media, scheduled posts, and moderation reports.
 
@@ -1531,20 +1545,12 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `community_profiles_unblock(username)` — Unblock Profile
 - `community_profiles_unfollow(username)` — Unfollow Profile
 
-### community_analytics — Read-only community analytics: activity over time, popular spaces, and top members.
+### community_analytics — Read-only community insights: list the insight pages, open a page to see its cards, then read or export any card (activity over time, popular spaces, top members, and more).
 
-- `community_analytics_get_member_activity` — Get Analytics Member Activity
-- `community_analytics_list_top_commenters` — List Top Commenters (paginated)
-- `community_analytics_list_top_members` — List Top Members (paginated)
-- `community_analytics_list_top_post_starters` — List Top Post Starters (paginated)
-- `community_analytics_get_member_widget` — Get Analytics Member Widget
-- `community_analytics_get_overview_activity` — Get Analytics Overview Activity
-- `community_analytics_get_overview_popular_day_time` — Get Analytics Overview Popular Day Time
-- `community_analytics_get_overview_widget` — Get Analytics Overview Widget
-- `community_analytics_get_space_activity` — Get Analytics Space Activity
-- `community_analytics_get_space_popular` — Get Analytics Space Popular
-- `community_analytics_search_spaces` — Search Spaces Analytics (paginated)
-- `community_analytics_get_space_widget` — Get Analytics Space Widget
+- `community_analytics_list_insight_pages` — List Insight Pages (paginated)
+- `community_analytics_get_insight_page(pageKey)` — Get Insight Page
+- `community_analytics_get_insight_card(card)` — Get Insight Card
+- `community_analytics_export_insight_card(card)` — Export Insight Card
 
 ### community_settings — Portal settings and runtime options: colours, features, menus, privacy, snippets, follower and player settings, and CRM tagging.
 
@@ -1568,6 +1574,8 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `community_settings_save_menu` — Save Menu Settings
 - `community_settings_get_privacy` — Get Privacy Settings
 - `community_settings_save_privacy` — Save Privacy Settings
+- `community_settings_get_reorder` — Get Reorder Settings
+- `community_settings_save_reorder` — Save Reorder Settings
 - `community_settings_get_snippets` — Get Snippets Settings
 - `community_settings_save_snippets` — Save Snippets Settings
 

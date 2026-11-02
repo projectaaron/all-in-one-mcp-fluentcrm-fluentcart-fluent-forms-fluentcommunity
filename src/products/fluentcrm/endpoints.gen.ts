@@ -228,6 +228,13 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "path": "/subscribers/{id}/notes/bulk-delete",
       "summary": "Bulk Delete Contact Notes",
       "destructive": true
+    },
+    "save_contact_quick_pins": {
+      "op": "contacts/save-contact-quick-pins",
+      "method": "POST",
+      "path": "/subscribers/quick-pins",
+      "summary": "Save Contact Quick Pins",
+      "destructive": false
     }
   },
   "crm_lists": {
@@ -1347,6 +1354,13 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "path": "/funnels/{id}/sticky-note",
       "summary": "Update Automation Sticky Note",
       "destructive": false
+    },
+    "export_funnel": {
+      "op": "funnels/export-funnel",
+      "method": "POST",
+      "path": "/funnels/{id}/export",
+      "summary": "Export Automation",
+      "destructive": false
     }
   },
   "crm_templates": {
@@ -1539,183 +1553,121 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "destructive": false
     }
   },
-  "crm_sms": {
-    "bulk_action_sms_campaigns": {
-      "op": "sms/bulk-action-sms-campaigns",
+  "crm_messaging": {
+    "create_campaign": {
+      "op": "messaging/create-campaign",
       "method": "POST",
-      "path": "/sms/campaigns/do-bulk-action",
-      "summary": "Bulk Action on SMS Campaigns",
+      "path": "/messaging/campaigns",
+      "summary": "Create Messaging Campaign",
+      "destructive": false
+    },
+    "get_campaign": {
+      "op": "messaging/get-campaign",
+      "method": "GET",
+      "path": "/messaging/campaigns/{id}",
+      "summary": "Get Messaging Campaign",
+      "destructive": false
+    },
+    "get_campaign_status": {
+      "op": "messaging/get-campaign-status",
+      "method": "GET",
+      "path": "/messaging/campaigns/{id}/status",
+      "summary": "Get Messaging Campaign Status",
+      "destructive": false
+    },
+    "get_subscriber_message_logs": {
+      "op": "messaging/get-subscriber-message-logs",
+      "method": "GET",
+      "path": "/messaging/subscribers/{id}/logs",
+      "summary": "Get Subscriber Message Logs",
+      "destructive": false
+    },
+    "list_campaigns": {
+      "op": "messaging/list-campaigns",
+      "method": "GET",
+      "path": "/messaging/campaigns",
+      "summary": "List Messaging Campaigns",
+      "destructive": false
+    },
+    "list_message_threads": {
+      "op": "messaging/list-message-threads",
+      "method": "GET",
+      "path": "/messaging/threads",
+      "summary": "List Message Threads",
+      "destructive": false
+    },
+    "list_messages": {
+      "op": "messaging/list-messages",
+      "method": "GET",
+      "path": "/messaging/messages",
+      "summary": "List Messaging Messages",
+      "destructive": false
+    },
+    "list_thread_messages": {
+      "op": "messaging/list-thread-messages",
+      "method": "GET",
+      "path": "/messaging/threads/{id}/messages",
+      "summary": "List Thread Messages",
+      "destructive": false
+    },
+    "schedule_campaign": {
+      "op": "messaging/schedule-campaign",
+      "method": "POST",
+      "path": "/messaging/campaigns/{id}/schedule",
+      "summary": "Schedule Messaging Campaign",
       "destructive": true
     },
-    "create_sms_campaign": {
-      "op": "sms/create-sms-campaign",
+    "send_subscriber_message": {
+      "op": "messaging/send-subscriber-message",
       "method": "POST",
-      "path": "/sms/campaigns",
-      "summary": "Create SMS Campaign",
-      "destructive": false
-    },
-    "delete_sms_campaign": {
-      "op": "sms/delete-sms-campaign",
-      "method": "DELETE",
-      "path": "/sms/campaigns/{id}",
-      "summary": "Delete SMS Campaign",
-      "destructive": true
-    },
-    "delete_sms_messages": {
-      "op": "sms/delete-sms-messages",
-      "method": "DELETE",
-      "path": "/sms/messages",
-      "summary": "Delete SMS Messages",
-      "destructive": true
-    },
-    "do_sms_campaign_tag_actions": {
-      "op": "sms/do-sms-campaign-tag-actions",
-      "method": "POST",
-      "path": "/sms/campaigns/{id}/tag-actions",
-      "summary": "Apply Tag Actions to SMS Campaign Recipients",
-      "destructive": false
-    },
-    "duplicate_sms_campaign": {
-      "op": "sms/duplicate-sms-campaign",
-      "method": "POST",
-      "path": "/sms/campaigns/{id}/duplicate",
-      "summary": "Duplicate SMS Campaign",
-      "destructive": false
-    },
-    "estimate_sms_campaign_contacts": {
-      "op": "sms/estimate-sms-campaign-contacts",
-      "method": "POST",
-      "path": "/sms/campaigns/estimated-contacts",
-      "summary": "Estimate SMS Campaign Contacts",
-      "destructive": false
-    },
-    "get_sms_campaign": {
-      "op": "sms/get-sms-campaign",
-      "method": "GET",
-      "path": "/sms/campaigns/{id}",
-      "summary": "Get SMS Campaign",
-      "destructive": false
-    },
-    "get_sms_campaign_processing_stat": {
-      "op": "sms/get-sms-campaign-processing-stat",
-      "method": "GET",
-      "path": "/sms/campaigns/{id}/processing-stat",
-      "summary": "Get SMS Campaign Processing Status",
-      "destructive": false
-    },
-    "get_sms_campaign_recipients": {
-      "op": "sms/get-sms-campaign-recipients",
-      "method": "GET",
-      "path": "/sms/campaigns/{id}/recipients",
-      "summary": "Get SMS Campaign Recipients",
-      "destructive": false
-    },
-    "get_sms_campaign_recipients_count": {
-      "op": "sms/get-sms-campaign-recipients-count",
-      "method": "GET",
-      "path": "/sms/campaigns/{id}/estimated-recipients-count",
-      "summary": "Get SMS Campaign Recipients Count",
-      "destructive": false
-    },
-    "get_sms_campaign_status": {
-      "op": "sms/get-sms-campaign-status",
-      "method": "GET",
-      "path": "/sms/campaigns/{id}/status",
-      "summary": "Get SMS Campaign Status",
-      "destructive": false
-    },
-    "get_subscriber_sms_logs": {
-      "op": "sms/get-subscriber-sms-logs",
-      "method": "GET",
-      "path": "/sms/subscribers/{id}/logs",
-      "summary": "Get Subscriber SMS Logs",
-      "destructive": false
-    },
-    "get_subscriber_sms_stats": {
-      "op": "sms/get-subscriber-sms-stats",
-      "method": "GET",
-      "path": "/sms/subscribers/{id}/stats",
-      "summary": "Get Subscriber SMS Statistics",
-      "destructive": false
-    },
-    "list_sms_campaigns": {
-      "op": "sms/list-sms-campaigns",
-      "method": "GET",
-      "path": "/sms/campaigns",
-      "summary": "List SMS Campaigns",
-      "destructive": false
-    },
-    "list_sms_messages": {
-      "op": "sms/list-sms-messages",
-      "method": "GET",
-      "path": "/sms/messages",
-      "summary": "List All SMS Messages",
-      "destructive": false
-    },
-    "pause_sms_campaign": {
-      "op": "sms/pause-sms-campaign",
-      "method": "POST",
-      "path": "/sms/campaigns/{id}/pause",
-      "summary": "Pause SMS Campaign",
-      "destructive": false
-    },
-    "resend_sms_message": {
-      "op": "sms/resend-sms-message",
-      "method": "POST",
-      "path": "/sms/messages/{id}/resend",
-      "summary": "Resend SMS Message",
+      "path": "/messaging/subscribers/{id}/send",
+      "summary": "Send Message to Subscriber",
       "destructive": true,
       "bodyNote": "Sends a message to a real customer that cannot be recalled. Requires confirm:true."
     },
-    "resume_sms_campaign": {
-      "op": "sms/resume-sms-campaign",
+    "send_thread_message": {
+      "op": "messaging/send-thread-message",
       "method": "POST",
-      "path": "/sms/campaigns/{id}/resume",
-      "summary": "Resume SMS Campaign",
-      "destructive": true
-    },
-    "schedule_sms_campaign": {
-      "op": "sms/schedule-sms-campaign",
-      "method": "POST",
-      "path": "/sms/campaigns/{id}/schedule",
-      "summary": "Schedule SMS Campaign",
-      "destructive": true
-    },
-    "send_subscriber_custom_sms": {
-      "op": "sms/send-subscriber-custom-sms",
-      "method": "POST",
-      "path": "/sms/subscribers/{id}/send",
-      "summary": "Send Custom SMS to Subscriber",
+      "path": "/messaging/threads/{id}/messages",
+      "summary": "Send Thread Message",
       "destructive": true,
       "bodyNote": "Sends a message to a real customer that cannot be recalled. Requires confirm:true."
     },
-    "unschedule_sms_campaign": {
-      "op": "sms/unschedule-sms-campaign",
-      "method": "POST",
-      "path": "/sms/campaigns/{id}/unschedule",
-      "summary": "Unschedule SMS Campaign",
-      "destructive": false
-    },
-    "update_sms_campaign": {
-      "op": "sms/update-sms-campaign",
+    "update_campaign": {
+      "op": "messaging/update-campaign",
       "method": "PUT",
-      "path": "/sms/campaigns/{id}",
-      "summary": "Update SMS Campaign",
+      "path": "/messaging/campaigns/{id}",
+      "summary": "Update Messaging Campaign",
       "destructive": false
     },
-    "update_sms_campaign_labels": {
-      "op": "sms/update-sms-campaign-labels",
-      "method": "PUT",
-      "path": "/sms/{id}/update-labels",
-      "summary": "Update SMS Campaign Labels",
-      "destructive": false
-    },
-    "unschedule_sms_campaign_legacy": {
-      "op": "sms/unschedule-sms-campaign-legacy",
+    "create_whatsapp_template": {
+      "op": "whatsapp/create-whatsapp-template",
       "method": "POST",
-      "path": "/sms/campaigns/{id}/un-schedule",
-      "summary": "Unschedule SMS Campaign (Legacy Path)",
+      "path": "/whatsapp/templates",
+      "summary": "Create WhatsApp Template",
       "destructive": false
+    },
+    "get_subscriber_whatsapp_messages": {
+      "op": "whatsapp/get-subscriber-whatsapp-messages",
+      "method": "GET",
+      "path": "/whatsapp/subscribers/{id}/messages",
+      "summary": "Subscriber WhatsApp Messages",
+      "destructive": false
+    },
+    "list_whatsapp_templates": {
+      "op": "whatsapp/list-whatsapp-templates",
+      "method": "GET",
+      "path": "/whatsapp/templates",
+      "summary": "WhatsApp Templates",
+      "destructive": false
+    },
+    "send_subscriber_whatsapp_message": {
+      "op": "whatsapp/send-subscriber-whatsapp-message",
+      "method": "POST",
+      "path": "/whatsapp/subscribers/{id}/send",
+      "summary": "Send Subscriber WhatsApp Message",
+      "destructive": true,
+      "bodyNote": "Sends a message to a real customer that cannot be recalled. Requires confirm:true."
     }
   },
   "crm_reports": {
@@ -1899,6 +1851,27 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "method": "GET",
       "path": "/reports/top-campaigns",
       "summary": "Top Campaigns",
+      "destructive": false
+    },
+    "get_campaign_calendar": {
+      "op": "reports/get-campaign-calendar",
+      "method": "GET",
+      "path": "/reports/campaign-calendar",
+      "summary": "Campaign Calendar",
+      "destructive": false
+    },
+    "get_messaging_performance": {
+      "op": "reports/get-messaging-performance",
+      "method": "GET",
+      "path": "/reports/messaging-performance",
+      "summary": "Messaging Performance",
+      "destructive": false
+    },
+    "get_messaging_stats": {
+      "op": "reports/get-messaging-stats",
+      "method": "GET",
+      "path": "/reports/messaging-stats",
+      "summary": "Messaging Stats",
       "destructive": false
     },
     "global_search": {
@@ -2236,6 +2209,13 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "destructive": true,
       "bodyNote": "Rewrites database indexes on the FluentCRM tables. Run get_db_index_health first; requires confirm:true."
     },
+    "preview_double_optin": {
+      "op": "settings/preview-double-optin",
+      "method": "POST",
+      "path": "/setting/double-optin/preview",
+      "summary": "Preview Double Opt-in",
+      "destructive": false
+    },
     "get_mcp_config_snippet": {
       "op": "mcp/get-mcp-config-snippet",
       "method": "GET",
@@ -2290,13 +2270,6 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "summary": "Remove Manager",
       "destructive": true
     },
-    "disable_sms": {
-      "op": "pro-settings/disable-sms",
-      "method": "POST",
-      "path": "/campaign-pro-settings/sms/disable",
-      "summary": "Disable SMS",
-      "destructive": false
-    },
     "get_license_status": {
       "op": "pro-settings/get-license-status",
       "method": "GET",
@@ -2311,32 +2284,11 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "summary": "List Managers",
       "destructive": false
     },
-    "get_sms_settings": {
-      "op": "pro-settings/get-sms-settings",
-      "method": "GET",
-      "path": "/campaign-pro-settings/sms",
-      "summary": "SMS Settings",
-      "destructive": false
-    },
-    "import_funnel": {
-      "op": "pro-settings/import-funnel",
-      "method": "POST",
-      "path": "/campaign-pro-settings/import_funnel",
-      "summary": "Import Funnel",
-      "destructive": false
-    },
     "save_license": {
       "op": "pro-settings/save-license",
       "method": "POST",
       "path": "/campaign-pro-settings/license",
       "summary": "Save License",
-      "destructive": false
-    },
-    "save_sms_settings": {
-      "op": "pro-settings/save-sms-settings",
-      "method": "POST",
-      "path": "/campaign-pro-settings/sms",
-      "summary": "Save SMS Settings",
       "destructive": false
     },
     "update_manager": {
@@ -2494,6 +2446,69 @@ export const TOOL_ENDPOINTS: Record<string, Record<string, EndpointDef>> = {
       "summary": "Fetch Contact Export Page",
       "destructive": false,
       "toolName": "crm_utilities_export_contacts_get"
+    },
+    "export_campaign_emails": {
+      "op": "export/export-campaign-emails",
+      "method": "POST",
+      "path": "/exports/campaign-emails",
+      "summary": "Export Campaign Emails",
+      "destructive": false
+    },
+    "export_campaigns": {
+      "op": "export/export-campaigns",
+      "method": "POST",
+      "path": "/exports/campaigns",
+      "summary": "Export Email Campaign",
+      "destructive": false
+    },
+    "export_companies": {
+      "op": "export/export-companies",
+      "method": "POST",
+      "path": "/exports/companies",
+      "summary": "Export Companies",
+      "destructive": false
+    },
+    "export_dynamic_segments": {
+      "op": "export/export-dynamic-segments",
+      "method": "POST",
+      "path": "/exports/dynamic-segments",
+      "summary": "Export Dynamic Segment",
+      "destructive": false
+    },
+    "export_message_campaigns": {
+      "op": "export/export-message-campaigns",
+      "method": "POST",
+      "path": "/exports/message-campaigns",
+      "summary": "Export Messaging Campaign",
+      "destructive": false
+    },
+    "export_notes": {
+      "op": "export/export-notes",
+      "method": "POST",
+      "path": "/exports/notes",
+      "summary": "Export Contact Notes",
+      "destructive": false
+    },
+    "export_recurring_campaigns": {
+      "op": "export/export-recurring-campaigns",
+      "method": "POST",
+      "path": "/exports/recurring-campaigns",
+      "summary": "Export Recurring Campaign",
+      "destructive": false
+    },
+    "export_sequences": {
+      "op": "export/export-sequences",
+      "method": "POST",
+      "path": "/exports/sequences",
+      "summary": "Export Email Sequence",
+      "destructive": false
+    },
+    "export_templates": {
+      "op": "export/export-templates",
+      "method": "POST",
+      "path": "/exports/templates",
+      "summary": "Export Email Template",
+      "destructive": false
     }
   },
   "crm_ai": {
@@ -2676,8 +2691,8 @@ export const TOOL_META: Record<string, { description: string; note?: string; ide
   "crm_smart_links": {
     "description": "Manage Smart Links that tag and redirect contacts when clicked (FluentCRM Pro)."
   },
-  "crm_sms": {
-    "description": "Manage SMS campaigns, templates, contacts' phone data, and SMS settings (FluentCRM Pro)."
+  "crm_messaging": {
+    "description": "Send and manage SMS and WhatsApp messages: messaging campaigns, two-way message threads, per-contact message logs, and WhatsApp templates (FluentCRM Pro, needs a messaging provider connected)."
   },
   "crm_reports": {
     "description": "Read-only CRM analytics: dashboard stats, subscriber growth, email and revenue reports, commerce reports, and global search."

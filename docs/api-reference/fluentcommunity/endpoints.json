@@ -1,10 +1,10 @@
 {
   "product": "fluentcommunity",
   "source": "live REST route index (GET /wp-json/fluent-community/v2) — FluentCommunity publishes no REST API reference",
-  "scraped": "2026-09-10",
+  "scraped": "2026-11-02",
   "baseUrl": "https://{website}/wp-json/fluent-community/v2",
   "namespace": "fluent-community/v2",
-  "count": 274,
+  "count": 278,
   "endpoints": [
     {
       "group": "spaces",
@@ -421,6 +421,126 @@
       "method": "GET",
       "path": "/spaces/{spaceSlug}/meta-settings",
       "summary": "GET Get Space Meta Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "mark-space-seen",
+      "operationId": "markSpaceSeen",
+      "method": "POST",
+      "path": "/spaces/{spaceSlug}/mark-seen",
+      "summary": "POST Mark Space as Seen",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "list-space-pages",
+      "operationId": "listSpacePages",
+      "method": "GET",
+      "path": "/spaces/{spaceSlug}/pages",
+      "summary": "GET List Space Pages",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "create-space-page",
+      "operationId": "createSpacePage",
+      "method": "POST",
+      "path": "/spaces/{spaceSlug}/pages",
+      "summary": "POST Create Space Page",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "reindex-space-pages",
+      "operationId": "reindexSpacePages",
+      "method": "PATCH",
+      "path": "/spaces/{spaceSlug}/pages/re-index",
+      "summary": "PATCH Reindex Space Pages",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "get-space-page",
+      "operationId": "getSpacePage",
+      "method": "GET",
+      "path": "/spaces/{spaceSlug}/pages/{pageSlug}",
+      "summary": "GET Get Space Page",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "update-space-page",
+      "operationId": "updateSpacePage",
+      "method": "PUT",
+      "path": "/spaces/{spaceSlug}/pages/{pageId}",
+      "summary": "PUT Update Space Page",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "delete-space-page",
+      "operationId": "deleteSpacePage",
+      "method": "DELETE",
+      "path": "/spaces/{spaceSlug}/pages/{pageId}",
+      "summary": "DELETE Delete Space Page",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "duplicate-space-page",
+      "operationId": "duplicateSpacePage",
+      "method": "POST",
+      "path": "/spaces/{spaceSlug}/pages/{pageId}/duplicate",
+      "summary": "POST Duplicate Space Page",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "get-space-primary-menu",
+      "operationId": "getSpacePrimaryMenu",
+      "method": "GET",
+      "path": "/spaces/{spaceSlug}/primary-menu",
+      "summary": "GET Get Space Primary Menu",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "spaces",
+      "slug": "save-space-primary-menu",
+      "operationId": "saveSpacePrimaryMenu",
+      "method": "POST",
+      "path": "/spaces/{spaceSlug}/primary-menu",
+      "summary": "POST Save Space Primary Menu",
       "security": [
         "ApplicationPasswords"
       ],
@@ -2360,11 +2480,11 @@
     },
     {
       "group": "analytics",
-      "slug": "get-analytics-member-activity",
-      "operationId": "getAnalyticsMemberActivity",
+      "slug": "list-insight-pages",
+      "operationId": "listInsightPages",
       "method": "GET",
-      "path": "/analytics/members/activity",
-      "summary": "GET Get Analytics Member Activity",
+      "path": "/insights/pages",
+      "summary": "GET List Insight Pages",
       "security": [
         "ApplicationPasswords"
       ],
@@ -2372,11 +2492,11 @@
     },
     {
       "group": "analytics",
-      "slug": "list-top-commenters",
-      "operationId": "listTopCommenters",
+      "slug": "get-insight-page",
+      "operationId": "getInsightPage",
       "method": "GET",
-      "path": "/analytics/members/top-commenters",
-      "summary": "GET List Top Commenters",
+      "path": "/insights/pages/{pageKey}",
+      "summary": "GET Get Insight Page",
       "security": [
         "ApplicationPasswords"
       ],
@@ -2384,11 +2504,11 @@
     },
     {
       "group": "analytics",
-      "slug": "list-top-members",
-      "operationId": "listTopMembers",
+      "slug": "get-insight-card",
+      "operationId": "getInsightCard",
       "method": "GET",
-      "path": "/analytics/members/top-members",
-      "summary": "GET List Top Members",
+      "path": "/insights/cards/{card}",
+      "summary": "GET Get Insight Card",
       "security": [
         "ApplicationPasswords"
       ],
@@ -2396,107 +2516,11 @@
     },
     {
       "group": "analytics",
-      "slug": "list-top-post-starters",
-      "operationId": "listTopPostStarters",
+      "slug": "export-insight-card",
+      "operationId": "exportInsightCard",
       "method": "GET",
-      "path": "/analytics/members/top-post-starters",
-      "summary": "GET List Top Post Starters",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "analytics",
-      "slug": "get-analytics-member-widget",
-      "operationId": "getAnalyticsMemberWidget",
-      "method": "GET",
-      "path": "/analytics/members/widget",
-      "summary": "GET Get Analytics Member Widget",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "analytics",
-      "slug": "get-analytics-overview-activity",
-      "operationId": "getAnalyticsOverviewActivity",
-      "method": "GET",
-      "path": "/analytics/overview/activity",
-      "summary": "GET Get Analytics Overview Activity",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "analytics",
-      "slug": "get-analytics-overview-popular-day-time",
-      "operationId": "getAnalyticsOverviewPopularDayTime",
-      "method": "GET",
-      "path": "/analytics/overview/popular-day-time",
-      "summary": "GET Get Analytics Overview Popular Day Time",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "analytics",
-      "slug": "get-analytics-overview-widget",
-      "operationId": "getAnalyticsOverviewWidget",
-      "method": "GET",
-      "path": "/analytics/overview/widget",
-      "summary": "GET Get Analytics Overview Widget",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "analytics",
-      "slug": "get-analytics-space-activity",
-      "operationId": "getAnalyticsSpaceActivity",
-      "method": "GET",
-      "path": "/analytics/spaces/activity",
-      "summary": "GET Get Analytics Space Activity",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "analytics",
-      "slug": "get-analytics-space-popular",
-      "operationId": "getAnalyticsSpacePopular",
-      "method": "GET",
-      "path": "/analytics/spaces/popular",
-      "summary": "GET Get Analytics Space Popular",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "analytics",
-      "slug": "search-spaces-analytics",
-      "operationId": "searchSpacesAnalytics",
-      "method": "GET",
-      "path": "/analytics/spaces/search",
-      "summary": "GET Search Spaces Analytics",
-      "security": [
-        "ApplicationPasswords"
-      ],
-      "deprecated": false
-    },
-    {
-      "group": "analytics",
-      "slug": "get-analytics-space-widget",
-      "operationId": "getAnalyticsSpaceWidget",
-      "method": "GET",
-      "path": "/analytics/spaces/widget",
-      "summary": "GET Get Analytics Space Widget",
+      "path": "/insights/cards/{card}/export",
+      "summary": "GET Export Insight Card",
       "security": [
         "ApplicationPasswords"
       ],
@@ -2737,6 +2761,30 @@
       "method": "POST",
       "path": "/settings/privacy-settings",
       "summary": "POST Save Privacy Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-reorder-settings",
+      "operationId": "getReorderSettings",
+      "method": "GET",
+      "path": "/settings/reorder",
+      "summary": "GET Get Reorder Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-reorder-settings",
+      "operationId": "saveReorderSettings",
+      "method": "POST",
+      "path": "/settings/reorder",
+      "summary": "POST Save Reorder Settings",
       "security": [
         "ApplicationPasswords"
       ],

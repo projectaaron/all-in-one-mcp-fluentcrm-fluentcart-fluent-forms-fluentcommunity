@@ -1,8 +1,8 @@
 # Tool surface design
 
-How 1,290 documented REST endpoints across five products (FluentCRM 363,
-FluentCart 436, WP Social Ninja 126, Fluent Forms 91, FluentCommunity 274)
-become **1,290 individualized MCP tools plus a fast map** without losing coverage or
+How 1,298 documented REST endpoints across five products (FluentCRM 365,
+FluentCart 438, WP Social Ninja 126, Fluent Forms 91, FluentCommunity 278)
+become **1,298 individualized MCP tools plus a fast map** without losing coverage or
 maintainability. Companion documents: `TOOL_MAP.md` (one line per tool,
 generated), `TOOL_CATALOG.md` (area-level classes + examples, generated),
 `PROJECT_MAP.md` (where the code lives), `api-reference/` (the endpoint
@@ -93,7 +93,7 @@ gating; only the registration differs (`src/core/tool-factory.ts` vs
 **Responses** are `structuredContent` conforming to one shared
 `outputSchema` — `{ok, status, action, data, pagination?, note?}` with
 `data` deliberately open-shaped (the upstream response shapes vary per
-endpoint and version; faithfully passing them through beats maintaining 1,290
+endpoint and version; faithfully passing them through beats maintaining 1,298
 brittle schemas) — plus a one-line text summary ("12 of 481 orders,
 page 1"). Errors return `isError` with an actionable message (what failed,
 likely cause, what to try).
@@ -119,13 +119,13 @@ likely cause, what to try).
   **Mass-send actions are also confirm-gated by override**: sending email or
   SMS to a whole audience is as irreversible as a delete
   (`schedule_campaign`, `resume_campaign`, the three `resend_*` actions,
-  `schedule_sms_campaign`, `resume_sms_campaign`). One-off messages to a real
-  customer (custom email, custom SMS, SMS resend, manual payment reminder)
+  the messaging `schedule_campaign`). One-off messages to a real
+  customer (custom email, SMS/WhatsApp sends and thread replies, manual payment reminder)
   are gated too; only test sends to the admin stay ungated.
   Notable catches: FluentCRM's `reset_database` (full CRM wipe) and
   FluentCart's `regenerate_license_key` are confirm-gated, as is every operation that
   installs/activates plugin code, grants manager rights or permissions, or
-  mints an API key. 230 of 1,290 endpoint actions classify as destructive (231 tools with `crm_contacts_bulk_action_by_filter`).
+  mints an API key. 228 of 1,298 endpoint actions classify as destructive (229 tools with `crm_contacts_bulk_action_by_filter`).
 - **Locked tools — a tier above `confirm`.** Twelve operations have no
   legitimate agent use and refuse unconditionally (server-side, both modes):
   `crm_settings_reset_database`, `crm_contacts_delete_contacts`,
@@ -162,11 +162,11 @@ likely cause, what to try).
 | `crm_forms` | forms | 5 | read/write |
 | `crm_webhooks` | webhooks | 5 | read/write/delete |
 | `crm_smart_links` | smart-links (Pro) | 5 | read/write/delete |
-| `crm_sms` | sms (Pro) | 24 | read/write/delete |
+| `crm_messaging` | messaging, whatsapp (Pro) | 16 | read/write |
 | `crm_reports` | reports (minus its one DELETE), commerce-reports, global-search | 16 | **read-only** |
 | `crm_abandoned_carts` | abandon-carts (Pro) | 3 | read/delete |
 | `crm_settings` | settings + `reports/delete-report-emails` (log maintenance) | 39 | read/write/delete |
-| `crm_settings_pro` | pro-settings | 11 | read/write/delete |
+| `crm_settings_pro` | pro-settings | 7 | read/write/delete |
 | `crm_utilities` | import, migrators, users, docs, public-bounce | 18 | read/write |
 
 ### FluentCart — 22 areas / 380 tools
@@ -218,10 +218,10 @@ each area's endpoints are its individual tools) — or 46 in grouped mode.
   with tool search find `cart_orders_refund` directly. The cost — a large
   `tools/list` — is paid once by clients with deferred tool loading and
   avoided entirely via the grouped fallback.
-- **The map is a tool, not just a document.** Descriptions of 1,290 tools are
+- **The map is a tool, not just a document.** Descriptions of 1,298 tools are
   no substitute for an index: `tool_map` gives a session the whole surface
   in ~50 lines, then exact per-area detail on demand — cheaper than reading
-  1,290 schemas and faster than guessing names.
+  1,298 schemas and faster than guessing names.
 - **Area prefix stays in the name.** The docs' resource groups are still
   the natural seams; keeping *area = docs page = generated reference file*
   as the name prefix preserves the stable correspondence (splitting only
@@ -237,7 +237,7 @@ each area's endpoints are its individual tools) — or 46 in grouped mode.
   sessions (documented in `api-reference/auth.md`); with Application
   Passwords most calls will 401. They exist for endpoint coverage and for
   sites with custom auth setups; their descriptions say so plainly.
-- **Open-shaped `body`/`query`.** Full Zod modeling of 1,290 request bodies
+- **Open-shaped `body`/`query`.** Full Zod modeling of 1,298 request bodies
   would be enormous, drift-prone, and mostly redundant — WordPress validates
   server-side and our references document every schema. Zod validates the
   envelope (path params, param types, confirm gating); the per-endpoint

@@ -54,6 +54,16 @@ community portal sends, so read a record first (`detail:"full"`) and mirror its 
 | POST | `/spaces/{spaceSlug}/members/remove` | Remove Space Member |
 | POST | `/spaces/{spaceSlug}/members/resolve-crm-tag` | Resolve Space Member CRM Tag |
 | GET | `/spaces/{spaceSlug}/meta-settings` | Get Space Meta Settings |
+| POST | `/spaces/{spaceSlug}/mark-seen` | Mark Space as Seen |
+| GET | `/spaces/{spaceSlug}/pages` | List Space Pages |
+| POST | `/spaces/{spaceSlug}/pages` | Create Space Page |
+| PATCH | `/spaces/{spaceSlug}/pages/re-index` | Reindex Space Pages |
+| GET | `/spaces/{spaceSlug}/pages/{pageSlug}` | Get Space Page |
+| PUT | `/spaces/{spaceSlug}/pages/{pageId}` | Update Space Page |
+| DELETE | `/spaces/{spaceSlug}/pages/{pageId}` | Delete Space Page |
+| POST | `/spaces/{spaceSlug}/pages/{pageId}/duplicate` | Duplicate Space Page |
+| GET | `/spaces/{spaceSlug}/primary-menu` | Get Space Primary Menu |
+| POST | `/spaces/{spaceSlug}/primary-menu` | Save Space Primary Menu |
 
 ## feeds
 
@@ -240,18 +250,10 @@ community portal sends, so read a record first (`detail:"full"`) and mirror its 
 
 | Method | Path | Summary |
 |---|---|---|
-| GET | `/analytics/members/activity` | Get Analytics Member Activity |
-| GET | `/analytics/members/top-commenters` | List Top Commenters |
-| GET | `/analytics/members/top-members` | List Top Members |
-| GET | `/analytics/members/top-post-starters` | List Top Post Starters |
-| GET | `/analytics/members/widget` | Get Analytics Member Widget |
-| GET | `/analytics/overview/activity` | Get Analytics Overview Activity |
-| GET | `/analytics/overview/popular-day-time` | Get Analytics Overview Popular Day Time |
-| GET | `/analytics/overview/widget` | Get Analytics Overview Widget |
-| GET | `/analytics/spaces/activity` | Get Analytics Space Activity |
-| GET | `/analytics/spaces/popular` | Get Analytics Space Popular |
-| GET | `/analytics/spaces/search` | Search Spaces Analytics |
-| GET | `/analytics/spaces/widget` | Get Analytics Space Widget |
+| GET | `/insights/pages` | List Insight Pages |
+| GET | `/insights/pages/{pageKey}` | Get Insight Page |
+| GET | `/insights/cards/{card}` | Get Insight Card |
+| GET | `/insights/cards/{card}/export` | Export Insight Card |
 
 ## settings
 
@@ -277,6 +279,8 @@ community portal sends, so read a record first (`detail:"full"`) and mirror its 
 | POST | `/settings/menu-settings` | Save Menu Settings |
 | GET | `/settings/privacy-settings` | Get Privacy Settings |
 | POST | `/settings/privacy-settings` | Save Privacy Settings |
+| GET | `/settings/reorder` | Get Reorder Settings |
+| POST | `/settings/reorder` | Save Reorder Settings |
 | GET | `/settings/snippets-settings` | Get Snippets Settings |
 | POST | `/settings/snippets-settings` | Save Snippets Settings |
 
