@@ -85,4 +85,7 @@ fixed, if you want it.
   configured user.
 - `POST /form-submit` (Fluent Forms) and most FluentCommunity feed/chat/course
   tools act *as* the configured user and are visible to real people — they are
-  documented as such and the public submit is confirm-gated.
+  documented as such and the public submit is confirm-gated. Fluent Support's
+  `support_portal_*` tools act as the signed-in *customer* (portal session
+  policy), and its `support_utilities` public receivers accept what external
+  services post under a per-integration token.

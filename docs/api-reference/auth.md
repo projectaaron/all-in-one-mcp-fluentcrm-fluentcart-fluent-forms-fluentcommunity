@@ -2,7 +2,7 @@
 
 Verified against each product's official docs on 2026-07-16 (not guessed;
 WP Social Ninja, Fluent Forms and FluentCommunity verified against a live
-install and the plugin source on 2026-09-10). All products authenticate with **WordPress
+install and the plugin source on 2026-09-10; Fluent Support on 2026-11-03). All products authenticate with **WordPress
 Application Passwords over HTTP Basic auth** — but the credentials are
 created in different places and carry different permission models.
 
@@ -110,6 +110,35 @@ created in different places and carry different permission models.
   Application Password for a manager user scopes the API to their
   permissions.
 
+## Fluent Support
+
+- **Source:** <https://fluentsupport.com/rest-api/> (authentication section;
+  the page documents a subset of the routes) plus the plugin's route files
+  and a live install. Generated index: [`fluentsupport.md`](./fluentsupport.md).
+- **Namespace:** `https://<site>/wp-json/fluent-support/v2`
+- **Model:** HTTP Basic `username:application_password` — the official docs'
+  recommended method ("the easiest way to connect is application password").
+  Every route group carries a policy: `AgentTicketPolicy` (any support
+  agent), `AdminSettingsPolicy` / `AdminSensitivePolicy` (support admin),
+  `ReportPolicy`, `ActivityLoggerPolicy`, `SystemToolsPolicy`.
+- **Customer context.** `customer-portal/*`, `me`, `options/countries`,
+  `ticket_file_upload` and the `auth` group run under `PortalPolicy`: they
+  act as the *signed-in customer*, resolved from the WordPress user. With an
+  admin Application Password that is the admin's own customer record (if
+  any), not a chosen customer — use `support_tickets_create` /
+  `support_replies_create_response` to act on a customer's behalf as an
+  agent. `signup`, `login`, `two_fa` and `reset_pass` additionally check the
+  portal's own nonce, so they are rejected outside a browser session.
+- **Public receivers.** `public/*` (incoming webhook, Telegram, Slack,
+  Twilio replies, OAuth callbacks) and `mail-piping/*/push/{token}` are
+  token-authenticated endpoints meant for external services, not for
+  agents; they are exposed for completeness.
+- **Scoping:** an Application Password for a user with the *support agent*
+  role (not administrator) scopes the API to that agent's permissions —
+  the least-privilege option. Pro-only routes (workflows, AI, saved replies,
+  ticket tags, agent groups, advanced reports, time tracking, custom fields,
+  scheduled replies, merge/split) return 404 without Fluent Support Pro.
+
 ## What this server does with it
 
 - Site URL + **one shared credential pair** come from environment variables
@@ -128,6 +157,7 @@ created in different places and carry different permission models.
 | `FLUENT_API_USERNAME` / `FLUENT_API_PASSWORD` | shared | one WP user + Application Password for everything (the default setup) |
 | `FLUENTCRM_API_USERNAME` / `FLUENTCRM_API_PASSWORD` | FluentCRM | optional override — e.g. a scoped FluentCRM manager user |
 | `FLUENTCART_API_USERNAME` / `FLUENTCART_API_PASSWORD` | FluentCart | optional override |
+| `FLUENTSUPPORT_API_USERNAME` / `FLUENTSUPPORT_API_PASSWORD` | Fluent Support | optional override — e.g. a support-agent user |
 
 401/403 troubleshooting lives in the README; the short version: 401 means
 the Basic credentials are wrong or the key was revoked; 403 usually means

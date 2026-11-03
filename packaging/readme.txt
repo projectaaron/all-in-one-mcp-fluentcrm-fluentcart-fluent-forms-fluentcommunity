@@ -5,8 +5,8 @@ Homepage: https://upfluent.io
 Support: https://upfluent.io/support/  (or email support@upfluent.io)
 Source and issues: https://github.com/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity
 
-Connect Claude to FluentCRM, FluentCart, Fluent Forms, FluentCommunity and
-WP Social Ninja on your WordPress site: every documented REST endpoint as an
+Connect Claude to FluentCRM, FluentCart, Fluent Forms, FluentCommunity,
+Fluent Support and WP Social Ninja on your WordPress site: every documented REST endpoint as an
 individual tool, with confirm gates on every destructive operation.
 
 FREE FOR A LIMITED TIME. This build is being given away during the
@@ -85,5 +85,6 @@ See CHANGELOG.md in the repository for the full history.
 
 Independent community project. Not associated with, endorsed by or
 supported by WPManageNinja. FluentCRM, FluentCart, Fluent Forms,
-FluentCommunity and WP Social Ninja are trademarks of their owners. Use at
+FluentCommunity, Fluent Support and WP Social Ninja are trademarks of their
+owners. Use at
 your own risk; see the MIT license for the warranty and liability terms.

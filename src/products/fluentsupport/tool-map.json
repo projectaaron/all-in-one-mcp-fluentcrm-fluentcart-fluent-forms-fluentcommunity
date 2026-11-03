@@ -1,0 +1,175 @@
+{
+  "product": "fluentsupport",
+  "toolPrefix": "support",
+  "tools": {
+    "support_tickets": {
+      "description": "Tickets end to end: list and filter, create for a customer, properties (status, priority, agent, product), tags, watchers, close and re-open, merge and split, bulk actions, custom fields, time tracking, and the FluentCRM, FluentBooking and FluentBoards links on a ticket.",
+      "groups": [
+        "tickets"
+      ]
+    },
+    "support_replies": {
+      "description": "Ticket conversations: replies and internal notes, drafts and draft approval, scheduled replies, bulk replies, saved reply templates, and AI reply drafts, summaries and tone.",
+      "groups": [
+        "responses",
+        "saved-replies",
+        "ai"
+      ],
+      "note": "AI, scheduled replies and bulk replies need Fluent Support Pro."
+    },
+    "support_customers": {
+      "description": "Support customers: find and search, create, update, custom fields, avatars, bulk status changes and deletes.",
+      "groups": [
+        "customers"
+      ]
+    },
+    "support_agents": {
+      "description": "Support staff: agents and their permissions, agent groups, and the signed-in agent's notifications.",
+      "groups": [
+        "agents",
+        "agent-groups",
+        "notifications"
+      ]
+    },
+    "support_mailboxes": {
+      "description": "Business mailboxes (inboxes): CRUD, default mailbox, email notification settings, moving tickets between mailboxes, and email piping status and push endpoints.",
+      "groups": [
+        "mailboxes"
+      ]
+    },
+    "support_workflows": {
+      "description": "Automation workflows: triggers, conditions and action sequences, duplication, run history, and manual runs on selected tickets.",
+      "groups": [
+        "workflows"
+      ],
+      "note": "Workflows need Fluent Support Pro."
+    },
+    "support_reports": {
+      "description": "Read-only reporting: overall and per-agent stats, the agent dashboard, ticket and response growth, advanced reports and snapshots, timesheets, and the activity logs.",
+      "groups": [
+        "reports",
+        "my-reports",
+        "mailbox-reports",
+        "advanced-reports",
+        "timesheet",
+        "activity-logger"
+      ]
+    },
+    "support_products": {
+      "description": "Products tickets are filed under, and the ticket tags used to classify them.",
+      "groups": [
+        "products",
+        "ticket-tags"
+      ]
+    },
+    "support_settings": {
+      "description": "Global settings: business settings, integrations (FluentCRM, AI provider, cloud uploads, incoming webhook, remote portal), the ticket form, auto-close, activity logging, the Pro license, portal setup and the site-side MCP adapter.",
+      "groups": [
+        "settings"
+      ]
+    },
+    "support_portal": {
+      "description": "The customer-facing side: the customer portal's ticket endpoints (act as the signed-in customer), portal sign-up and login, and the remote portal connection.",
+      "groups": [
+        "customer-portal",
+        "auth",
+        "remote-portal"
+      ],
+      "note": "customer-portal and auth endpoints run under the portal session policy: with an admin Application Password they act as that user's customer record (none for a pure admin), and signup/login/two_fa/reset_pass check the portal's own nonce, so most are rejected outside a browser."
+    },
+    "support_utilities": {
+      "description": "Maintenance and plumbing: REST connectivity tests, cron and database health, log cleanup, the ticket importer, report data audits, and the public token-authenticated receivers for incoming webhooks, chat replies and OAuth callbacks.",
+      "groups": [
+        "system-tools",
+        "ticket-importer",
+        "public",
+        "audit"
+      ]
+    }
+  },
+  "operationOverrides": {
+    "tickets/merge-tickets": {
+      "destructive": true,
+      "bodyNote": "Irreversible: the merged tickets' responses move into this ticket and the source tickets are closed. Requires confirm:true."
+    },
+    "tickets/split-ticket": {
+      "destructive": true,
+      "bodyNote": "Moves a response out of this ticket into a newly created ticket. Requires confirm:true."
+    },
+    "tickets/bulk-action-tickets": {
+      "destructive": true,
+      "bodyNote": "Body: {\"bulk_action\": \"close_tickets\"|\"delete_tickets\"|\"reopen_tickets\"|\"assign_agent\"|\"assign_agent_group\"|\"assign_tags\"|\"remove_tags\"|\"change_priority\"|\"change_product\", \"ticket_ids\": [...], plus the action's value (agent_id, tag_ids, priority, product_id)}."
+    },
+    "responses/bulk-reply": {
+      "destructive": true,
+      "summary": "Send One Reply to Many Tickets (mass send)",
+      "toolName": "support_replies_bulk_reply"
+    },
+    "customers/bulk-update-customer-status": {
+      "destructive": true
+    },
+    "agents/create-agent": {
+      "destructive": true,
+      "bodyNote": "Privilege change: grants a WordPress user support-agent access and permissions. Requires confirm:true."
+    },
+    "agents/update-agent": {
+      "destructive": true,
+      "bodyNote": "Privilege change: can change an agent's role and permissions. Requires confirm:true."
+    },
+    "mailboxes/move-mailbox-tickets": {
+      "destructive": true,
+      "summary": "Move All of a Mailbox's Tickets to Another Mailbox (mass move)"
+    },
+    "workflows/run-workflow": {
+      "destructive": true,
+      "summary": "Run a Manual Workflow on Selected Tickets (executes its actions)"
+    },
+    "system-tools/repair-database": {
+      "destructive": true
+    },
+    "ticket-importer/import-tickets": {
+      "destructive": true,
+      "summary": "Import Tickets from Another Helpdesk (mass create)"
+    },
+    "settings/setup-portal": {
+      "destructive": true,
+      "summary": "Run the Portal Setup (creates the portal page and rewrites page settings)"
+    },
+    "settings/setup-installation": {
+      "destructive": true
+    },
+    "settings/install-fluentcrm": {
+      "destructive": true,
+      "summary": "Install the FluentCRM Plugin",
+      "bodyNote": "Installs plugin code (wordpress.org fluent-crm) on the site. Requires confirm:true."
+    },
+    "settings/install-mcp-adapter": {
+      "destructive": true,
+      "summary": "Install the MCP Adapter Plugin"
+    },
+    "settings/toggle-mcp": {
+      "destructive": true,
+      "bodyNote": "Privilege/code change: Enables/disables the site-side MCP adapter (a second AI control surface). Requires confirm:true."
+    },
+    "settings/create-remote-portal-connection-key": {
+      "destructive": true,
+      "bodyNote": "Mints a standing connection credential for a remote portal. Requires confirm:true."
+    },
+    "remote-portal/rotate-remote-portal-token": {
+      "destructive": true,
+      "bodyNote": "Invalidates the current remote portal token and issues a new one; the remote site must be reconnected. Requires confirm:true."
+    },
+    "tickets/list-customer-tickets": {
+      "toolName": "support_tickets_list_customer_tickets"
+    },
+    "settings/get-form-settings": {
+      "toolName": "support_settings_get_form_settings"
+    },
+    "settings/save-form-settings": {
+      "toolName": "support_settings_save_form_settings"
+    },
+    "settings/get-fluentcrm-settings": {
+      "toolName": "support_settings_get_fluentcrm_settings"
+    }
+  }
+}

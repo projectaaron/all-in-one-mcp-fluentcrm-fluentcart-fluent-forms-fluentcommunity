@@ -1,7 +1,7 @@
 # Tool map
 
 The fast map of this server: **every tool, one line each, grouped by area** —
-1311 tools in 74 areas. **Generated** by
+1564 tools in 85 areas. **Generated** by
 `scripts/gen-tool-catalog.mjs` from the live registry; regenerate after any
 tool-surface change. Sessions get the same map at runtime from the
 `tool_map` tool (no args = area overview, `{"area": …}` /
@@ -90,6 +90,17 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 | `community_analytics` | 4 | Read-only community insights: list the insight pages, open a page to see its cards, then read or export any card (activity over time, popular spaces, top members, and more). |
 | `community_settings` | 24 | Portal settings and runtime options: colours, features, menus, privacy, snippets, follower and player settings, and CRM tagging. |
 | `community_admin` | 44 | Site administration: licensing, managers, webhooks, topics, badges, onboarding, and the auth, email, push, PWA, storage and messaging settings. |
+| `support_tickets` | 44 | Tickets end to end: list and filter, create for a customer, properties (status, priority, agent, product), tags, watchers, close and re-open, merge and split, bulk actions, custom fields, time tracking, and the FluentCRM, FluentBooking and FluentBoards links on a ticket. |
+| `support_replies` | 21 | Ticket conversations: replies and internal notes, drafts and draft approval, scheduled replies, bulk replies, saved reply templates, and AI reply drafts, summaries and tone. |
+| `support_customers` | 11 | Support customers: find and search, create, update, custom fields, avatars, bulk status changes and deletes. |
+| `support_agents` | 16 | Support staff: agents and their permissions, agent groups, and the signed-in agent's notifications. |
+| `support_mailboxes` | 18 | Business mailboxes (inboxes): CRUD, default mailbox, email notification settings, moving tickets between mailboxes, and email piping status and push endpoints. |
+| `support_workflows` | 12 | Automation workflows: triggers, conditions and action sequences, duplication, run history, and manual runs on selected tickets. |
+| `support_reports` | 24 | Read-only reporting: overall and per-agent stats, the agent dashboard, ticket and response growth, advanced reports and snapshots, timesheets, and the activity logs. |
+| `support_products` | 12 | Products tickets are filed under, and the ticket tags used to classify them. |
+| `support_settings` | 44 | Global settings: business settings, integrations (FluentCRM, AI provider, cloud uploads, incoming webhook, remote portal), the ticket form, auto-close, activity logging, the Pro license, portal setup and the site-side MCP adapter. |
+| `support_portal` | 26 | The customer-facing side: the customer portal's ticket endpoints (act as the signed-in customer), portal sign-up and login, and the remote portal connection. |
+| `support_utilities` | 25 | Maintenance and plumbing: REST connectivity tests, cron and database health, log cleanup, the ticket importer, report data audits, and the public token-authenticated receivers for incoming webhooks, chat replies and OAuth callbacks. |
 | `server` | 6 | Built-in tools: this map, setup verification, a support report for bug reports, and the WordPress media library. |
 
 ## FluentCRM (`crm_*`)
@@ -1625,6 +1636,294 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `community_admin_delete_webhook(id)` ⚠ — Delete Webhook
 - `community_admin_get_welcome_banner` — Get Welcome Banner
 - `community_admin_save_welcome_banner` — Save Welcome Banner
+
+## Fluent Support (`support_*`)
+
+### support_tickets — Tickets end to end: list and filter, create for a customer, properties (status, priority, agent, product), tags, watchers, close and re-open, merge and split, bulk actions, custom fields, time tracking, and the FluentCRM, FluentBooking and FluentBoards links on a ticket.
+
+- `support_tickets_list` — List Tickets (paginated)
+- `support_tickets_create` — Create Ticket (as an agent, on behalf of a customer)
+- `support_tickets_ping` — Ping the Support API
+- `support_tickets_get_sidebar_counts` — Get Ticket Sidebar Counts
+- `support_tickets_list_label_searches` — List Saved Label Searches (paginated)
+- `support_tickets_save_label_search` — Create or Update a Saved Label Search
+- `support_tickets_delete_label_search(label_search_id)` ⚠ — Delete Saved Label Search
+- `support_tickets_list_mentionable_agents(ticket_id)` — List Agents Mentionable on a Ticket (paginated)
+- `support_tickets_get(ticket_id)` — Get Ticket (with responses)
+- `support_tickets_get_widgets(ticket_id)` — Get Ticket Sidebar Widgets
+- `support_tickets_get_live_activity(ticket_id)` — Get Ticket Live Activity (who is viewing)
+- `support_tickets_remove_live_activity(ticket_id)` ⚠ — Remove Own Live Activity from a Ticket
+- `support_tickets_update_property(ticket_id)` — Update a Ticket Property (status, priority, agent, product, …)
+- `support_tickets_update_content(ticket_id)` — Update Ticket Title and Content
+- `support_tickets_add_tag(ticket_id)` — Add a Tag to a Ticket
+- `support_tickets_remove_tag(ticket_id, tag_id)` ⚠ — Remove a Tag from a Ticket
+- `support_tickets_close(ticket_id)` — Close Ticket
+- `support_tickets_delete(ticket_id)` ⚠ — Delete Ticket
+- `support_tickets_reopen(ticket_id)` — Re-open Ticket
+- `support_tickets_change_customer(ticket_id)` — Change Ticket Customer
+- `support_tickets_get_custom_data(ticket_id)` — Get Ticket Custom Field Data
+- `support_tickets_list_customer_tickets(customer_id)` — List a Customer's Tickets (paginated)
+- `support_tickets_sync_watchers(ticket_id)` — Replace Ticket Watchers
+- `support_tickets_add_watchers(ticket_id)` — Add Ticket Watchers
+- `support_tickets_merge(ticket_id)` ⚠ — Merge Tickets into This Ticket
+- `support_tickets_split(ticket_id)` ⚠ — Split a Response into a New Ticket
+- `support_tickets_bulk_action` ⚠ — Bulk Action Tickets (close, delete, reopen, assign, tag, priority, product)
+- `support_tickets_sync_fluentcrm_tags` — Sync FluentCRM Tags for Ticket Filters
+- `support_tickets_sync_fluentcrm_lists` — Sync FluentCRM Lists for Ticket Filters
+- `support_tickets_list_booking_event_types` — List FluentBooking Event Types (paginated)
+- `support_tickets_get_booking_availability(ticket_id)` — Get FluentBooking Availability for a Ticket
+- `support_tickets_create_booking_link(ticket_id)` — Create a FluentBooking Link for a Ticket
+- `support_tickets_list_booking_meetings(ticket_id)` — List FluentBooking Meetings for a Ticket (paginated)
+- `support_tickets_list_boards` — List FluentBoards Boards (paginated)
+- `support_tickets_list_board_stages(board_id)` — List FluentBoards Stages of a Board (paginated)
+- `support_tickets_create_board_task` — Create a FluentBoards Task from a Ticket
+- `support_tickets_list_widgets` — List Ticket Sidebar Widgets (paginated)
+- `support_tickets_upload_file` — Upload a Ticket Attachment (agent editor)
+- `support_tickets_list_custom_fields` — List Ticket Custom Fields (paginated)
+- `support_tickets_save_custom_fields` — Save Ticket Custom Fields
+- `support_tickets_sync_custom_fields(ticket_id)` — Sync a Ticket's Custom Field Values
+- `support_tickets_list_time_tracks(ticket_id)` — List Time Tracks of a Ticket (paginated)
+- `support_tickets_create_time_track(ticket_id)` — Log Time on a Ticket
+- `support_tickets_set_estimated_time(ticket_id)` — Set a Ticket's Estimated Time
+
+### support_replies — Ticket conversations: replies and internal notes, drafts and draft approval, scheduled replies, bulk replies, saved reply templates, and AI reply drafts, summaries and tone. AI, scheduled replies and bulk replies need Fluent Support Pro.
+
+- `support_replies_create_response(ticket_id)` — Reply to a Ticket (response or internal note)
+- `support_replies_update_response(ticket_id, response_id)` — Update a Response
+- `support_replies_delete_response(ticket_id, response_id)` ⚠ — Delete a Response
+- `support_replies_save_draft(ticket_id)` — Create or Update the Draft Reply
+- `support_replies_get_draft(ticket_id)` — Get the Draft Reply
+- `support_replies_delete_draft(draft_id)` ⚠ — Delete a Draft Reply
+- `support_replies_approve_draft_response(ticket_id, response_id)` — Approve and Send a Draft Response
+- `support_replies_update_scheduled(ticket_id, response_id)` — Update a Scheduled Reply
+- `support_replies_delete_scheduled(ticket_id, response_id)` ⚠ — Delete a Scheduled Reply
+- `support_replies_send_scheduled_now(ticket_id, response_id)` — Send a Scheduled Reply Now
+- `support_replies_resume_scheduled(ticket_id, response_id)` — Resume a Paused Scheduled Reply
+- `support_replies_bulk_reply` ⚠ — Send One Reply to Many Tickets (mass send)
+- `support_replies_list_saved` — List Saved Replies (paginated)
+- `support_replies_create_saved` — Create Saved Reply
+- `support_replies_get_saved(id)` — Get Saved Reply
+- `support_replies_update_saved(id)` — Update Saved Reply
+- `support_replies_delete_saved(id)` ⚠ — Delete Saved Reply
+- `support_replies_list_preset_prompts` — List AI Preset Prompts (paginated)
+- `support_replies_generate_response(id)` — Generate an AI Reply Draft for a Ticket
+- `support_replies_get_ticket_summary(id)` — Get an AI Summary of a Ticket
+- `support_replies_get_ticket_tone(id)` — Get the AI-detected Tone of a Ticket
+
+### support_customers — Support customers: find and search, create, update, custom fields, avatars, bulk status changes and deletes.
+
+- `support_customers_list` — List Customers (paginated)
+- `support_customers_create` — Create Customer
+- `support_customers_get_fields(customer_id)` — Get a Customer's Custom Fields
+- `support_customers_get(customer_id)` — Get Customer
+- `support_customers_update(customer_id)` — Update Customer
+- `support_customers_delete(customer_id)` ⚠ — Delete Customer
+- `support_customers_bulk_delete` ⚠ — Bulk Delete Customers
+- `support_customers_bulk_update_status` ⚠ — Bulk Update Customer Status
+- `support_customers_upload_avatar(customer_id)` — Upload a Customer's Avatar
+- `support_customers_reset_avatar(customer)` ⚠ — Reset a Customer's Avatar
+- `support_customers_search_contact` — Search Contacts (for a new ticket) (paginated)
+
+### support_agents — Support staff: agents and their permissions, agent groups, and the signed-in agent's notifications.
+
+- `support_agents_list` — List Agents (paginated)
+- `support_agents_create` ⚠ — Create Agent (grants a WordPress user support-agent access)
+- `support_agents_update(agent_id)` ⚠ — Update Agent (profile, role, permissions)
+- `support_agents_delete(agent_id)` ⚠ — Delete Agent (reassigns their tickets to fallback_id)
+- `support_agents_upload_avatar(agent_id)` — Upload an Agent's Avatar
+- `support_agents_reset_avatar(agent)` ⚠ — Reset an Agent's Avatar
+- `support_agents_list_groups` — List Agent Groups (paginated)
+- `support_agents_create_group` — Create Agent Group
+- `support_agents_get_group(group_id)` — Get Agent Group
+- `support_agents_update_group(group_id)` — Update Agent Group
+- `support_agents_delete_group(group_id)` ⚠ — Delete Agent Group
+- `support_agents_list_notifications` — List the Current Agent's Notifications (paginated)
+- `support_agents_list_unread_notifications` — List Unread Notifications (paginated)
+- `support_agents_get_unread_notification_count` — Get Unread Notification Count
+- `support_agents_mark_all_notifications_read` — Mark All Notifications Read
+- `support_agents_mark_notification_read(notification_id)` — Mark a Notification Read
+
+### support_mailboxes — Business mailboxes (inboxes): CRUD, default mailbox, email notification settings, moving tickets between mailboxes, and email piping status and push endpoints.
+
+- `support_mailboxes_list` — List Mailboxes (business inboxes) (paginated)
+- `support_mailboxes_create` — Create Mailbox
+- `support_mailboxes_get(id)` — Get Mailbox
+- `support_mailboxes_update(id)` — Update Mailbox
+- `support_mailboxes_delete(id)` ⚠ — Delete Mailbox (moves its tickets to fallback_id)
+- `support_mailboxes_move_tickets(id)` ⚠ — Move All of a Mailbox's Tickets to Another Mailbox (mass move)
+- `support_mailboxes_list_tickets(id)` — List a Mailbox's Tickets (paginated)
+- `support_mailboxes_get_email_settings(id)` — Get Mailbox Email Settings (one email_type)
+- `support_mailboxes_save_email_settings(id)` — Save Mailbox Email Settings
+- `support_mailboxes_get_email_configs(id)` — Get Mailbox Email Notification Configs
+- `support_mailboxes_set_default(id)` — Set the Default Mailbox
+- `support_mailboxes_get_email_box_status(box_id)` — Get Mailbox Email Piping Status
+- `support_mailboxes_issue_email_box_email(box_id)` — Issue a Mailbox Piping Email Address
+- `support_mailboxes_receive_piped_mail_get(box_id, token)` — Mail Piping Push Endpoint (GET — webhook, token-authenticated)
+- `support_mailboxes_receive_piped_mail_post(box_id, token)` — Mail Piping Push Endpoint (POST — webhook, token-authenticated)
+- `support_mailboxes_receive_piped_mail_put(box_id, token)` — Mail Piping Push Endpoint (PUT — webhook, token-authenticated)
+- `support_mailboxes_receive_piped_mail_patch(box_id, token)` — Mail Piping Push Endpoint (PATCH — webhook, token-authenticated)
+- `support_mailboxes_receive_piped_mail_delete(box_id, token)` ⚠ — Mail Piping Push Endpoint (DELETE — webhook, token-authenticated)
+
+### support_workflows — Automation workflows: triggers, conditions and action sequences, duplication, run history, and manual runs on selected tickets. Workflows need Fluent Support Pro.
+
+- `support_workflows_list` — List Workflows (paginated)
+- `support_workflows_create` — Create Workflow
+- `support_workflows_get_options` — Get Workflow Trigger, Condition and Action Options
+- `support_workflows_get_commerce_options` — Get Workflow Commerce (product) Options
+- `support_workflows_save_action_sequence` — Save a Workflow Action Sequence
+- `support_workflows_duplicate(workflow_id)` — Duplicate Workflow
+- `support_workflows_get(workflow_id)` — Get Workflow
+- `support_workflows_update(workflow_id)` — Update Workflow
+- `support_workflows_delete(workflow_id)` ⚠ — Delete Workflow
+- `support_workflows_list_actions(workflow_id)` — List a Workflow's Actions (paginated)
+- `support_workflows_list_runs(workflow_id)` — List a Workflow's Runs (paginated)
+- `support_workflows_run(workflow_id)` ⚠ — Run a Manual Workflow on Selected Tickets (executes its actions)
+
+### support_reports — Read-only reporting: overall and per-agent stats, the agent dashboard, ticket and response growth, advanced reports and snapshots, timesheets, and the activity logs.
+
+- `support_reports_get_stats` — Get Overall Ticket Stats
+- `support_reports_get_agents_summary` — Get Per-Agent Summary
+- `support_reports_get_day_time_stats` — Get Tickets by Day and Hour
+- `support_reports_get_dashboard_stats` — Get the Agent Dashboard Stats
+- `support_reports_get_agent_performance_today` — Get Today's Agent Performance
+- `support_reports_get_my_resolve_growth` — Get Tickets Closed by the Current Agent
+- `support_reports_get_my_response_growth` — Get Replies by the Current Agent
+- `support_reports_get_my_summary` — Get the Current Agent's Summary
+- `support_reports_get_tickets_growth` — Get Ticket Growth
+- `support_reports_get_tickets_resolve_growth` — Get Resolved Ticket Growth
+- `support_reports_get_response_growth` — Get Response Growth
+- `support_reports_get_ticket_overview` — Get Ticket Overview Report
+- `support_reports_get_response_activity` — Get Response Activity Report
+- `support_reports_get_product_insights` — Get Product Insights Report
+- `support_reports_get_workload_health` — Get Workload Health Report
+- `support_reports_get_performance_overview_filters` — Get Performance Overview Filter Options
+- `support_reports_get_performance_overview` — Get Performance Overview Report
+- `support_reports_list_snapshots` — List Report Snapshots (paginated)
+- `support_reports_get_snapshot(id)` — Get a Report Snapshot
+- `support_reports_get_timesheet_by_tickets` — Get Timesheet by Ticket
+- `support_reports_get_timesheet_by_agents` — Get Timesheet by Agent
+- `support_reports_get_timesheet_by_customers` — Get Timesheet by Customer
+- `support_reports_list_activities` — List Activity Log Entries (paginated)
+- `support_reports_list_ai_activities` — List AI Activity Log Entries (paginated)
+
+### support_products — Products tickets are filed under, and the ticket tags used to classify them.
+
+- `support_products_list` — List Products (paginated)
+- `support_products_create` — Create Product
+- `support_products_get(product_id)` — Get Product
+- `support_products_save(product_id)` — Save Product (create handler with an id)
+- `support_products_update(product_id)` — Update Product
+- `support_products_delete(product_id)` ⚠ — Delete Product
+- `support_products_list_ticket_tags` — List Ticket Tags (paginated)
+- `support_products_create_ticket_tag` — Create Ticket Tag
+- `support_products_list_ticket_tag_options` — List Ticket Tags as Options (paginated)
+- `support_products_get_ticket_tag(tag_id)` — Get Ticket Tag
+- `support_products_update_ticket_tag(tag_id)` — Update Ticket Tag
+- `support_products_delete_ticket_tag(tag_id)` ⚠ — Delete Ticket Tag
+
+### support_settings — Global settings: business settings, integrations (FluentCRM, AI provider, cloud uploads, incoming webhook, remote portal), the ticket form, auto-close, activity logging, the Pro license, portal setup and the site-side MCP adapter.
+
+- `support_settings_get` — Get Settings (settings_key, with[]=fields)
+- `support_settings_save` — Save Settings
+- `support_settings_get_integration_settings` — Get Integration Settings Overview
+- `support_settings_get_integration` — Get One Integration's Settings
+- `support_settings_save_integration` — Save One Integration's Settings
+- `support_settings_list_pages` — List WordPress Pages (for the portal page setting) (paginated)
+- `support_settings_setup_portal` ⚠ — Run the Portal Setup (creates the portal page and rewrites page settings)
+- `support_settings_setup_installation` ⚠ — Run the Installation Setup Wizard Step
+- `support_settings_save_recaptcha` — Save reCAPTCHA Settings
+- `support_settings_get_recaptcha` — Get reCAPTCHA Settings
+- `support_settings_get_integration_statuses` — Get Integration Statuses
+- `support_settings_get_fluentcrm_settings` — Get FluentCRM Integration Settings
+- `support_settings_install_fluentcrm` ⚠ — Install the FluentCRM Plugin
+- `support_settings_get_remote_upload` — Get Remote Upload (cloud storage) Settings
+- `support_settings_update_remote_upload_driver` — Set the Remote Upload Driver
+- `support_settings_update_remote_upload_options` — Save Remote Upload Driver Options
+- `support_settings_retry_remote_uploads` — Retry Failed Remote Uploads
+- `support_settings_get_ai_integration` — Get AI Provider Settings
+- `support_settings_save_ai_integration` — Save AI Provider Settings
+- `support_settings_get_menu` — Get the Settings Menu
+- `support_settings_get_mcp_status` — Get Site-side MCP Adapter Status
+- `support_settings_toggle_mcp` ⚠ — Enable or Disable the Site-side MCP Adapter
+- `support_settings_install_mcp_adapter` ⚠ — Install the MCP Adapter Plugin
+- `support_settings_get_mcp_config_snippets` — Get MCP Client Config Snippets
+- `support_settings_get_incoming_webhook` — Get Incoming Webhook Settings
+- `support_settings_save_incoming_webhook` — Save Incoming Webhook Settings
+- `support_settings_get_upload_integration` — Get Upload Integration Settings
+- `support_settings_save_upload_integration` — Save Upload Integration Settings
+- `support_settings_get_auto_close` — Get Auto-close Settings
+- `support_settings_save_auto_close` — Save Auto-close Settings
+- `support_settings_get_remote_portal` — Get Remote Portal Settings
+- `support_settings_save_remote_portal` — Save Remote Portal Settings
+- `support_settings_create_remote_portal_connection_key` ⚠ — Generate a Remote Portal Connection Key
+- `support_settings_disconnect_remote_portal` ⚠ — Disconnect the Remote Portal
+- `support_settings_test_remote_portal` — Test the Remote Portal Connection
+- `support_settings_get_license` — Get Pro License Status
+- `support_settings_activate_license` — Activate Pro License
+- `support_settings_remove_license` ⚠ — Remove Pro License
+- `support_settings_get_form_settings` — Get Ticket Form Settings
+- `support_settings_save_form_settings` — Save Ticket Form Settings
+- `support_settings_get_activity_logger` — Get Activity Logger Settings
+- `support_settings_save_activity_logger` — Save Activity Logger Settings
+- `support_settings_get_ai_activity_logger` — Get AI Activity Logger Settings
+- `support_settings_save_ai_activity_logger` — Save AI Activity Logger Settings
+
+### support_portal — The customer-facing side: the customer portal's ticket endpoints (act as the signed-in customer), portal sign-up and login, and the remote portal connection. customer-portal and auth endpoints run under the portal session policy: with an admin Application Password they act as that user's customer record (none for a pure admin), and signup/login/two_fa/reset_pass check the portal's own nonce, so most are rejected outside a browser.
+
+- `support_portal_get_public_options` — Get Public Portal Options
+- `support_portal_get_rendered_custom_fields` — Get Rendered Ticket Form Custom Fields
+- `support_portal_logout` — Log the Portal Session Out
+- `support_portal_get_portal_me` — Get the Portal User
+- `support_portal_list_tickets` — List the Customer's Own Tickets (paginated)
+- `support_portal_create_ticket` — Create a Ticket as the Customer
+- `support_portal_get_ticket(ticket_id)` — Get One of the Customer's Tickets
+- `support_portal_reply_ticket(ticket_id)` — Reply as the Customer
+- `support_portal_close_ticket(ticket_id)` — Close a Ticket as the Customer
+- `support_portal_reopen_ticket(ticket_id)` — Re-open a Ticket as the Customer
+- `support_portal_rate_agent(ticket_id)` — Rate the Agent on a Ticket
+- `support_portal_upload_ticket_file` — Upload a Ticket Attachment (portal)
+- `support_portal_search_docs` — Search Help Docs from the Portal (paginated)
+- `support_portal_get_me` — Get the Current User
+- `support_portal_list_countries` — List Countries (paginated)
+- `support_portal_signup` — Portal Sign-up
+- `support_portal_login` — Portal Login
+- `support_portal_verify_login_code` — Verify the Portal Login Code (2FA)
+- `support_portal_reset_password` ⚠ — Portal Password Reset
+- `support_portal_connect_remote` — Connect a Remote Portal
+- `support_portal_rotate_remote_token` ⚠ — Rotate the Remote Portal Token
+- `support_portal_ping_remote` — Ping the Remote Portal
+- `support_portal_get_remote_config` — Get the Remote Portal Config
+- `support_portal_set_remote_url` — Set the Remote Portal URL
+- `support_portal_test_remote_widgets` — Test the Remote Portal Widgets
+- `support_portal_disconnect_remote_connection` ⚠ — Disconnect the Remote Portal Connection
+
+### support_utilities — Maintenance and plumbing: REST connectivity tests, cron and database health, log cleanup, the ticket importer, report data audits, and the public token-authenticated receivers for incoming webhooks, chat replies and OAuth callbacks.
+
+- `support_utilities_rest_test_get` — REST Connectivity Test (GET)
+- `support_utilities_rest_test_post` — REST Connectivity Test (POST)
+- `support_utilities_rest_test_put` — REST Connectivity Test (PUT)
+- `support_utilities_rest_test_patch` — REST Connectivity Test (PATCH)
+- `support_utilities_rest_test_delete` ⚠ — REST Connectivity Test (DELETE)
+- `support_utilities_list_cron_events` — List Scheduled Cron Events (paginated)
+- `support_utilities_run_cron` — Run the Support Cron Now
+- `support_utilities_get_database_health` — Get Database Health
+- `support_utilities_repair_database` ⚠ — Repair Database Tables
+- `support_utilities_get_cleanup_counts` — Get Old Log Counts (cleanup preview)
+- `support_utilities_delete_old_logs` ⚠ — Delete Old Logs
+- `support_utilities_get_import_stats` — Get Ticket Import Stats
+- `support_utilities_import_tickets` ⚠ — Import Tickets from Another Helpdesk (mass create)
+- `support_utilities_save_helpscout_token` — Save the Help Scout Import Token
+- `support_utilities_delete_imported_tickets` ⚠ — Delete Imported Tickets of a Source
+- `support_utilities_receive_incoming_webhook(token)` — Incoming Webhook Receiver (public, token-authenticated)
+- `support_utilities_dropbox_auth_callback` — Dropbox OAuth Callback
+- `support_utilities_google_auth_callback` — Google Drive OAuth Callback
+- `support_utilities_helpscout_auth_callback` — Help Scout OAuth Callback
+- `support_utilities_telegram_bot_response(token)` — Telegram Bot Reply Receiver (public, token-authenticated)
+- `support_utilities_slack_response(token)` — Slack Reply Receiver (public, token-authenticated)
+- `support_utilities_twilio_response(token)` — Twilio SMS Reply Receiver (public, token-authenticated)
+- `support_utilities_run_audit` — Start a Report Data Audit
+- `support_utilities_process_audit_batch` — Process the Next Audit Batch
+- `support_utilities_get_audit_results` — Get Audit Results
 
 ## Server built-ins
 

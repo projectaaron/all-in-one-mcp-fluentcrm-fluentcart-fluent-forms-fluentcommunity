@@ -20,6 +20,7 @@ const READS = {
   wpsocialninja: { tool: 'social_platforms_list_enabled', args: {}, label: 'WP Social Ninja: list enabled platforms' },
   fluentforms: { tool: 'forms_forms_list', args: { per_page: 1 }, label: 'Fluent Forms: list 1 form' },
   fluentcommunity: { tool: 'community_spaces_list', args: { per_page: 1 }, label: 'FluentCommunity: list 1 space' },
+  fluentsupport: { tool: 'support_mailboxes_list', args: { per_page: 1 }, label: 'Fluent Support: list 1 mailbox' },
 };
 
 // Pin the individual surface — the READS table uses individual tool names,

@@ -33,6 +33,7 @@ slug, method, path, one-line summary, auth scheme, deprecation flag.
 | Fluent Forms | <https://developers.fluentforms.com/api/endpoints/> |
 | FluentCommunity | [WPManageNinja/fluent-community-developer-docs](https://github.com/WPManageNinja/fluent-community-developer-docs) |
 | WP Social Ninja | [WPManageNinja/wpsocialninja-docs](https://github.com/WPManageNinja/wpsocialninja-docs) |
+| Fluent Support | <https://fluentsupport.com/rest-api/> (subset) · <https://developers.fluentsupport.com/> — inventory from the live route index (`scripts/gen-fluentsupport-docs.mjs`) |
 | `scripts/<product>-operations.txt` | Canonical operation list — ordering + offline fallback (auto-updated) |
 
 It prints **added/removed** operations so you can see what changed. Commit

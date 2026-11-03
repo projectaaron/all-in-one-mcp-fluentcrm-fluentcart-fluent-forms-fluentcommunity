@@ -198,6 +198,36 @@ Example calls:
 - `community_settings`: `{"name":"community_settings_list_menu_items","arguments":{"per_page":5}}`
 - `community_admin`: `{"name":"community_admin_list_custom_profile_fields","arguments":{"per_page":5}}`
 
+## Fluent Support (`support_*`, 11 areas, 253 tools)
+
+| Area | Class | Tools | Description |
+|------|-------|-------|-------------|
+| `support_tickets` | read/write/delete | 44 | Tickets end to end: list and filter, create for a customer, properties (status, priority, agent, product), tags, watchers, close and re-open, merge and split, bulk actions, custom fields, time tracking, and the FluentCRM, FluentBooking and FluentBoards links on a ticket. |
+| `support_replies` | read/write/delete | 21 | Ticket conversations: replies and internal notes, drafts and draft approval, scheduled replies, bulk replies, saved reply templates, and AI reply drafts, summaries and tone. |
+| `support_customers` | read/write/delete | 11 | Support customers: find and search, create, update, custom fields, avatars, bulk status changes and deletes. |
+| `support_agents` | read/write/delete | 16 | Support staff: agents and their permissions, agent groups, and the signed-in agent's notifications. |
+| `support_mailboxes` | read/write/delete | 18 | Business mailboxes (inboxes): CRUD, default mailbox, email notification settings, moving tickets between mailboxes, and email piping status and push endpoints. |
+| `support_workflows` | read/write/delete | 12 | Automation workflows: triggers, conditions and action sequences, duplication, run history, and manual runs on selected tickets. |
+| `support_reports` | read | 24 | Read-only reporting: overall and per-agent stats, the agent dashboard, ticket and response growth, advanced reports and snapshots, timesheets, and the activity logs. |
+| `support_products` | read/write/delete | 12 | Products tickets are filed under, and the ticket tags used to classify them. |
+| `support_settings` | read/write/delete | 44 | Global settings: business settings, integrations (FluentCRM, AI provider, cloud uploads, incoming webhook, remote portal), the ticket form, auto-close, activity logging, the Pro license, portal setup and the site-side MCP adapter. |
+| `support_portal` | read/write/delete | 26 | The customer-facing side: the customer portal's ticket endpoints (act as the signed-in customer), portal sign-up and login, and the remote portal connection. |
+| `support_utilities` | read/write/delete | 25 | Maintenance and plumbing: REST connectivity tests, cron and database health, log cleanup, the ticket importer, report data audits, and the public token-authenticated receivers for incoming webhooks, chat replies and OAuth callbacks. |
+
+Example calls:
+
+- `support_tickets`: `{"name":"support_tickets_list","arguments":{"per_page":5}}`
+- `support_replies`: `{"name":"support_replies_list_saved","arguments":{"per_page":5}}`
+- `support_customers`: `{"name":"support_customers_list","arguments":{"per_page":5}}`
+- `support_agents`: `{"name":"support_agents_list","arguments":{"per_page":5}}`
+- `support_mailboxes`: `{"name":"support_mailboxes_list","arguments":{"per_page":5}}`
+- `support_workflows`: `{"name":"support_workflows_list","arguments":{"per_page":5}}`
+- `support_reports`: `{"name":"support_reports_list_snapshots","arguments":{"per_page":5}}`
+- `support_products`: `{"name":"support_products_list","arguments":{"per_page":5}}`
+- `support_settings`: `{"name":"support_settings_list_pages","arguments":{"per_page":5}}`
+- `support_portal`: `{"name":"support_portal_list_tickets","arguments":{"per_page":5}}`
+- `support_utilities`: `{"name":"support_utilities_list_cron_events","arguments":{"per_page":5}}`
+
 ## Server built-ins (6 tools)
 
 | Tool | Class | Description |
@@ -213,4 +243,4 @@ Examples: `{"name": "verify_setup", "arguments": {}}` ·
 `{"name": "tool_map", "arguments": {"search": "refund"}}` ·
 `{"name": "wp_media_upload_from_url", "arguments": {"source_url": "https://cdn.example.com/photo.jpg", "alt_text": "Product photo"}}`
 
-**Total: 1311 tools** (`FLUENT_TOOL_MODE=grouped` serves 76 instead).
+**Total: 1564 tools** (`FLUENT_TOOL_MODE=grouped` serves 87 instead).

@@ -57,6 +57,8 @@ fluentMCP/
 │       │                         #   see scripts/gen-fluentforms-docs.mjs)
 │       ├── fluentcommunity/      # Same layout (no REST reference published —
 │       │                         #   see scripts/gen-fluentcommunity-docs.mjs)
+│       ├── fluentsupport/        # Same layout (docs cover a subset; live route index —
+│       │                         #   see scripts/gen-fluentsupport-docs.mjs)
 │       └── _template/            # Scaffold (.tpl files, ignored by tsc/generators)
 ├── tests/                        # Vitest, mocked HTTP, no network — 244 tests
 │   ├── helpers.ts                # mockFetch + client factory
@@ -72,6 +74,7 @@ fluentMCP/
 │   ├── gen-wpsocialninja-docs.mjs # WP Social Ninja inventory from the live REST route index
 │   ├── gen-fluentforms-docs.mjs  # Fluent Forms inventory (docs route reference + live check)
 │   ├── gen-fluentcommunity-docs.mjs # FluentCommunity inventory from the live route index
+│   ├── gen-fluentsupport-docs.mjs # Fluent Support inventory from the live route index
 │   ├── gen-tool-catalog.mjs      # dist registry -> docs/TOOL_MAP.md + TOOL_CATALOG.md + manifest sync
 │   ├── smoke-test.mjs            # Post-install READ-ONLY smoke test over stdio
 │   └── *-operations.txt          # Discovered operation lists (ordering + offline fallback)
@@ -90,7 +93,7 @@ fluentMCP/
 │   ├── api-reference/            # GENERATED per-product endpoint inventories (endpoints.json + overview);
 │   │                         #   schemas live in WPManageNinja's own docs (see README → API references)
 │   │   ├── <product>.md          # Overviews (fluentcrm, fluentcart, wpsocialninja,
-│   │   │                         #   fluentforms, fluentcommunity)
+│   │   │                         #   fluentforms, fluentcommunity, fluentsupport)
 │   │   ├── <product>/            # Per-endpoint docs + endpoints.json
 │   │   ├── auth.md               # Confirmed auth models (hand-written)
 │   │   └── MAINTAINING.md        # How scraping works + how to refresh (hand-written)

@@ -780,3 +780,48 @@ FluentCommunity's insights route names its placeholder `{page}`, which
 collides with the reserved pagination parameter. The route table calls it
 `{pageKey}` and the live check maps the name across; only the value reaches
 the URL, so nothing on the wire changes.
+
+
+## 2026-11-03 — Fluent Support (253 endpoints): the docs cover a subset, the route index is the source
+
+Sixth product. Fluent Support publishes a REST reference
+(<https://fluentsupport.com/rest-api/>), but it is a single hand-written page
+listing about sixty routes — tickets, customers, reports, saved replies,
+mailboxes, workflows, settings, tags, products, agents — with no OpenAPI
+specs. The live route index (`GET /wp-json/fluent-support/v2`) of a 2.5.0
+free + Pro install serves 253 method+path pairs. Following the FluentCommunity
+precedent, the inventory is the live index, curated into a table and named
+from the plugin's own route files (`app/Http/Routes/api.php` and
+`app/Modules/*/routes.php` give controller and method names for the free
+routes; the Pro-only modules are named from their paths). The official page
+is cited for auth and as the body-shape reference for the routes it covers.
+
+**Three auth contexts, one credential.** Most routes are agent or admin
+policies and behave like the other products. Two groups do not. The
+customer-portal routes (`customer-portal/*`, `me`, `ticket_file_upload`,
+`options/countries`, and the `auth` group) run under `PortalPolicy`: they act
+as the signed-in *customer*, so an admin credential does not pick a customer —
+it is whoever that WordPress user is in the customers table — and the portal
+login routes check the portal's own nonce. The public receivers (`public/*`,
+`mail-piping/*/push/{token}`) authenticate by per-integration token and exist
+for Telegram, Slack, Twilio, Help Scout, Dropbox, Google and mail piping to
+call. Both are kept in the surface for completeness (the coverage contract is
+every live route), gathered into `support_portal` and `support_utilities`, and
+recorded in `auth.md` rather than in tool descriptions, as with
+FluentCommunity's member context.
+
+**Gating followed the two existing lines.** *Mass versus individual*: bulk
+ticket actions, bulk replies, the mailbox ticket move, manual workflow runs
+and the ticket importer gate; a single reply, close or re-open does not.
+*Privilege or code change*: creating an agent and updating one (role and
+permissions live on the same route) gate, as do the FluentCRM and MCP-adapter
+installers, the MCP toggle, and the two remote-portal credential routes
+(connection key, token rotation). Merge and split gate as irreversible data
+moves. Nothing new is locked by default: the two installers install a fixed
+plugin (fluent-crm, the MCP adapter) rather than an arbitrary slug, which is
+the line the lock list draws.
+
+**`rest-test` and mail piping are `any`-method routes.** The router registers
+five methods on one path; each is its own operation so the live check stays
+exact, and the DELETE variants are confirm-gated by the DELETE rule even
+though they are harmless — a consistent rule beats a special case.

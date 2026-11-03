@@ -1,5 +1,26 @@
 # Changelog
 
+## 1.6.0 — 2026-11-03
+
+### Added
+- **Fluent Support** (free + Pro, verified against 2.5.0): the sixth product,
+  `support_*`, 253 endpoints in 11 areas — `support_tickets`,
+  `support_replies`, `support_customers`, `support_agents`,
+  `support_mailboxes`, `support_workflows`, `support_reports` (read-only),
+  `support_products`, `support_settings`, `support_portal` and
+  `support_utilities`. Every documented route plus the Pro-only ones the
+  official reference leaves out (workflows, AI replies, saved replies,
+  ticket tags, agent groups, advanced reports, time tracking, custom
+  fields, scheduled replies, merge/split). 44 operations are confirm-gated,
+  including merge/split, bulk actions and bulk replies, agent creation and
+  permission changes, manual workflow runs, the ticket importer, portal
+  setup, the plugin installers and the remote-portal credentials.
+  `verify_setup`, `support_report`, the smoke test and the per-product
+  credential override (`FLUENTSUPPORT_API_*`) cover it like the others.
+  Inventory: `docs/api-reference/fluentsupport.md`
+  (`scripts/gen-fluentsupport-docs.mjs`, checked against the live route
+  index). 1,564 tools / 1,551 endpoints; grouped mode has 94 tools.
+
 ## 1.5.0 — 2026-11-02
 
 Catches up with the current Fluent releases (FluentCRM 3.3.1, FluentCart 2.2.0,

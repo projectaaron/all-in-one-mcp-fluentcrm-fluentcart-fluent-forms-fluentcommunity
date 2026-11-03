@@ -1,0 +1,3046 @@
+{
+  "product": "fluentsupport",
+  "source": "live REST route index (GET /wp-json/fluent-support/v2, free + Pro), named from the plugin route files; https://fluentsupport.com/rest-api/ documents a subset",
+  "scraped": "2026-11-03",
+  "baseUrl": "https://{website}/wp-json/fluent-support/v2",
+  "namespace": "fluent-support/v2",
+  "count": 253,
+  "endpoints": [
+    {
+      "group": "tickets",
+      "slug": "list-tickets",
+      "operationId": "listTickets",
+      "method": "GET",
+      "path": "/tickets",
+      "summary": "GET List Tickets",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "create-ticket",
+      "operationId": "createTicket",
+      "method": "POST",
+      "path": "/tickets",
+      "summary": "POST Create Ticket (as an agent, on behalf of a customer)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "ping",
+      "operationId": "ping",
+      "method": "GET",
+      "path": "/tickets/ping",
+      "summary": "GET Ping the Support API",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "get-sidebar-counts",
+      "operationId": "getSidebarCounts",
+      "method": "GET",
+      "path": "/tickets/sidebar-counts",
+      "summary": "GET Get Ticket Sidebar Counts",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "list-label-searches",
+      "operationId": "listLabelSearches",
+      "method": "GET",
+      "path": "/tickets/label-search",
+      "summary": "GET List Saved Label Searches",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "save-label-search",
+      "operationId": "saveLabelSearch",
+      "method": "POST",
+      "path": "/tickets/label-search",
+      "summary": "POST Create or Update a Saved Label Search",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "delete-label-search",
+      "operationId": "deleteLabelSearch",
+      "method": "DELETE",
+      "path": "/tickets/{label_search_id}/label-search",
+      "summary": "DELETE Delete Saved Label Search",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "list-mentionable-agents",
+      "operationId": "listMentionableAgents",
+      "method": "GET",
+      "path": "/tickets/{ticket_id}/mentionable-agents",
+      "summary": "GET List Agents Mentionable on a Ticket",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "get-ticket",
+      "operationId": "getTicket",
+      "method": "GET",
+      "path": "/tickets/{ticket_id}",
+      "summary": "GET Get Ticket (with responses)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "get-ticket-widgets",
+      "operationId": "getTicketWidgets",
+      "method": "GET",
+      "path": "/tickets/{ticket_id}/widgets",
+      "summary": "GET Get Ticket Sidebar Widgets",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "get-ticket-live-activity",
+      "operationId": "getTicketLiveActivity",
+      "method": "GET",
+      "path": "/tickets/{ticket_id}/live_activity",
+      "summary": "GET Get Ticket Live Activity (who is viewing)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "remove-ticket-live-activity",
+      "operationId": "removeTicketLiveActivity",
+      "method": "DELETE",
+      "path": "/tickets/{ticket_id}/live_activity",
+      "summary": "DELETE Remove Own Live Activity from a Ticket",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "update-ticket-property",
+      "operationId": "updateTicketProperty",
+      "method": "PUT",
+      "path": "/tickets/{ticket_id}/property",
+      "summary": "PUT Update a Ticket Property (status, priority, agent, product, …)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "update-ticket-content",
+      "operationId": "updateTicketContent",
+      "method": "PUT",
+      "path": "/tickets/{ticket_id}/content",
+      "summary": "PUT Update Ticket Title and Content",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "add-ticket-tag",
+      "operationId": "addTicketTag",
+      "method": "POST",
+      "path": "/tickets/{ticket_id}/tags",
+      "summary": "POST Add a Tag to a Ticket",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "remove-ticket-tag",
+      "operationId": "removeTicketTag",
+      "method": "DELETE",
+      "path": "/tickets/{ticket_id}/tags/{tag_id}",
+      "summary": "DELETE Remove a Tag from a Ticket",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "close-ticket",
+      "operationId": "closeTicket",
+      "method": "POST",
+      "path": "/tickets/{ticket_id}/close",
+      "summary": "POST Close Ticket",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "delete-ticket",
+      "operationId": "deleteTicket",
+      "method": "DELETE",
+      "path": "/tickets/{ticket_id}/delete",
+      "summary": "DELETE Delete Ticket",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "reopen-ticket",
+      "operationId": "reopenTicket",
+      "method": "POST",
+      "path": "/tickets/{ticket_id}/re-open",
+      "summary": "POST Re-open Ticket",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "change-ticket-customer",
+      "operationId": "changeTicketCustomer",
+      "method": "PUT",
+      "path": "/tickets/{ticket_id}/change-customer",
+      "summary": "PUT Change Ticket Customer",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "get-ticket-custom-data",
+      "operationId": "getTicketCustomData",
+      "method": "GET",
+      "path": "/tickets/{ticket_id}/custom-data",
+      "summary": "GET Get Ticket Custom Field Data",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "list-customer-tickets",
+      "operationId": "listCustomerTickets",
+      "method": "GET",
+      "path": "/tickets/customer_tickets/{customer_id}",
+      "summary": "GET List a Customer's Tickets",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "sync-ticket-watchers",
+      "operationId": "syncTicketWatchers",
+      "method": "POST",
+      "path": "/tickets/{ticket_id}/sync-watchers",
+      "summary": "POST Replace Ticket Watchers",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "add-ticket-watchers",
+      "operationId": "addTicketWatchers",
+      "method": "POST",
+      "path": "/tickets/{ticket_id}/add_watchers",
+      "summary": "POST Add Ticket Watchers",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "merge-tickets",
+      "operationId": "mergeTickets",
+      "method": "POST",
+      "path": "/tickets/{ticket_id}/merge_tickets",
+      "summary": "POST Merge Tickets into This Ticket",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "split-ticket",
+      "operationId": "splitTicket",
+      "method": "POST",
+      "path": "/tickets/{ticket_id}/split_ticket",
+      "summary": "POST Split a Response into a New Ticket",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "bulk-action-tickets",
+      "operationId": "bulkActionTickets",
+      "method": "POST",
+      "path": "/tickets/bulk-actions",
+      "summary": "POST Bulk Action Tickets (close, delete, reopen, assign, tag, priority, product)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "sync-fluentcrm-tags",
+      "operationId": "syncFluentcrmTags",
+      "method": "POST",
+      "path": "/tickets/sync-fluentcrm-tags",
+      "summary": "POST Sync FluentCRM Tags for Ticket Filters",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "sync-fluentcrm-lists",
+      "operationId": "syncFluentcrmLists",
+      "method": "POST",
+      "path": "/tickets/sync-fluentcrm-lists",
+      "summary": "POST Sync FluentCRM Lists for Ticket Filters",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "list-booking-event-types",
+      "operationId": "listBookingEventTypes",
+      "method": "GET",
+      "path": "/tickets/fluent-booking/event-types",
+      "summary": "GET List FluentBooking Event Types",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "get-booking-availability",
+      "operationId": "getBookingAvailability",
+      "method": "GET",
+      "path": "/tickets/{ticket_id}/fluent-booking/availability",
+      "summary": "GET Get FluentBooking Availability for a Ticket",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "create-booking-link",
+      "operationId": "createBookingLink",
+      "method": "POST",
+      "path": "/tickets/{ticket_id}/fluent-booking/booking-link",
+      "summary": "POST Create a FluentBooking Link for a Ticket",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "list-booking-meetings",
+      "operationId": "listBookingMeetings",
+      "method": "GET",
+      "path": "/tickets/{ticket_id}/fluent-booking/meetings",
+      "summary": "GET List FluentBooking Meetings for a Ticket",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "list-boards",
+      "operationId": "listBoards",
+      "method": "GET",
+      "path": "/tickets/fluent-boards/boards",
+      "summary": "GET List FluentBoards Boards",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "list-board-stages",
+      "operationId": "listBoardStages",
+      "method": "GET",
+      "path": "/tickets/fluent-boards/stages/{board_id}",
+      "summary": "GET List FluentBoards Stages of a Board",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "create-board-task",
+      "operationId": "createBoardTask",
+      "method": "POST",
+      "path": "/tickets/fluent-boards/stages",
+      "summary": "POST Create a FluentBoards Task from a Ticket",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "list-widgets",
+      "operationId": "listWidgets",
+      "method": "GET",
+      "path": "/widgets",
+      "summary": "GET List Ticket Sidebar Widgets",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "upload-ticket-file",
+      "operationId": "uploadTicketFile",
+      "method": "POST",
+      "path": "/ticket_file_upload",
+      "summary": "POST Upload a Ticket Attachment (agent editor)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "list-ticket-custom-fields",
+      "operationId": "listTicketCustomFields",
+      "method": "GET",
+      "path": "/ticket-custom-fields",
+      "summary": "GET List Ticket Custom Fields",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "save-ticket-custom-fields",
+      "operationId": "saveTicketCustomFields",
+      "method": "POST",
+      "path": "/ticket-custom-fields",
+      "summary": "POST Save Ticket Custom Fields",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "sync-ticket-custom-fields",
+      "operationId": "syncTicketCustomFields",
+      "method": "POST",
+      "path": "/ticket-custom-fields/{ticket_id}/sync",
+      "summary": "POST Sync a Ticket's Custom Field Values",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "list-time-tracks",
+      "operationId": "listTimeTracks",
+      "method": "GET",
+      "path": "/time-tracks/{ticket_id}",
+      "summary": "GET List Time Tracks of a Ticket",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "create-time-track",
+      "operationId": "createTimeTrack",
+      "method": "POST",
+      "path": "/time-tracks/{ticket_id}",
+      "summary": "POST Log Time on a Ticket",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "tickets",
+      "slug": "set-estimated-time",
+      "operationId": "setEstimatedTime",
+      "method": "POST",
+      "path": "/time-tracks/{ticket_id}/estimated-time",
+      "summary": "POST Set a Ticket's Estimated Time",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "responses",
+      "slug": "create-response",
+      "operationId": "createResponse",
+      "method": "POST",
+      "path": "/tickets/{ticket_id}/responses",
+      "summary": "POST Reply to a Ticket (response or internal note)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "responses",
+      "slug": "update-response",
+      "operationId": "updateResponse",
+      "method": "PUT",
+      "path": "/tickets/{ticket_id}/responses/{response_id}",
+      "summary": "PUT Update a Response",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "responses",
+      "slug": "delete-response",
+      "operationId": "deleteResponse",
+      "method": "DELETE",
+      "path": "/tickets/{ticket_id}/responses/{response_id}",
+      "summary": "DELETE Delete a Response",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "responses",
+      "slug": "save-draft",
+      "operationId": "saveDraft",
+      "method": "POST",
+      "path": "/tickets/{ticket_id}/draft",
+      "summary": "POST Create or Update the Draft Reply",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "responses",
+      "slug": "get-draft",
+      "operationId": "getDraft",
+      "method": "GET",
+      "path": "/tickets/{ticket_id}/draft",
+      "summary": "GET Get the Draft Reply",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "responses",
+      "slug": "delete-draft",
+      "operationId": "deleteDraft",
+      "method": "DELETE",
+      "path": "/tickets/{draft_id}/draft",
+      "summary": "DELETE Delete a Draft Reply",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "responses",
+      "slug": "approve-draft-response",
+      "operationId": "approveDraftResponse",
+      "method": "PUT",
+      "path": "/tickets/{ticket_id}/approve_draft_response/{response_id}",
+      "summary": "PUT Approve and Send a Draft Response",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "responses",
+      "slug": "update-scheduled-reply",
+      "operationId": "updateScheduledReply",
+      "method": "PUT",
+      "path": "/tickets/{ticket_id}/scheduled_reply/{response_id}",
+      "summary": "PUT Update a Scheduled Reply",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "responses",
+      "slug": "delete-scheduled-reply",
+      "operationId": "deleteScheduledReply",
+      "method": "DELETE",
+      "path": "/tickets/{ticket_id}/scheduled_reply/{response_id}",
+      "summary": "DELETE Delete a Scheduled Reply",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "responses",
+      "slug": "send-scheduled-reply-now",
+      "operationId": "sendScheduledReplyNow",
+      "method": "POST",
+      "path": "/tickets/{ticket_id}/scheduled_reply/{response_id}/send_now",
+      "summary": "POST Send a Scheduled Reply Now",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "responses",
+      "slug": "resume-scheduled-reply",
+      "operationId": "resumeScheduledReply",
+      "method": "POST",
+      "path": "/tickets/{ticket_id}/scheduled_reply/{response_id}/resume",
+      "summary": "POST Resume a Paused Scheduled Reply",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "responses",
+      "slug": "bulk-reply",
+      "operationId": "bulkReply",
+      "method": "POST",
+      "path": "/tickets/bulk-reply",
+      "summary": "POST Send One Reply to Many Tickets",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "saved-replies",
+      "slug": "list-saved-replies",
+      "operationId": "listSavedReplies",
+      "method": "GET",
+      "path": "/saved-replies",
+      "summary": "GET List Saved Replies",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "saved-replies",
+      "slug": "create-saved-reply",
+      "operationId": "createSavedReply",
+      "method": "POST",
+      "path": "/saved-replies",
+      "summary": "POST Create Saved Reply",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "saved-replies",
+      "slug": "get-saved-reply",
+      "operationId": "getSavedReply",
+      "method": "GET",
+      "path": "/saved-replies/{id}",
+      "summary": "GET Get Saved Reply",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "saved-replies",
+      "slug": "update-saved-reply",
+      "operationId": "updateSavedReply",
+      "method": "PUT",
+      "path": "/saved-replies/{id}",
+      "summary": "PUT Update Saved Reply",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "saved-replies",
+      "slug": "delete-saved-reply",
+      "operationId": "deleteSavedReply",
+      "method": "DELETE",
+      "path": "/saved-replies/{id}",
+      "summary": "DELETE Delete Saved Reply",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "ai",
+      "slug": "list-preset-prompts",
+      "operationId": "listPresetPrompts",
+      "method": "GET",
+      "path": "/ai/preset-prompts",
+      "summary": "GET List AI Preset Prompts",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "ai",
+      "slug": "generate-response",
+      "operationId": "generateResponse",
+      "method": "POST",
+      "path": "/ai/{id}/generate-response",
+      "summary": "POST Generate an AI Reply Draft for a Ticket",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "ai",
+      "slug": "get-ticket-summary",
+      "operationId": "getTicketSummary",
+      "method": "POST",
+      "path": "/ai/{id}/get-ticket-summary",
+      "summary": "POST Get an AI Summary of a Ticket",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "ai",
+      "slug": "get-ticket-tone",
+      "operationId": "getTicketTone",
+      "method": "POST",
+      "path": "/ai/{id}/get-ticket-tone",
+      "summary": "POST Get the AI-detected Tone of a Ticket",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customers",
+      "slug": "list-customers",
+      "operationId": "listCustomers",
+      "method": "GET",
+      "path": "/customers",
+      "summary": "GET List Customers",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customers",
+      "slug": "create-customer",
+      "operationId": "createCustomer",
+      "method": "POST",
+      "path": "/customers",
+      "summary": "POST Create Customer",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customers",
+      "slug": "get-customer-fields",
+      "operationId": "getCustomerFields",
+      "method": "GET",
+      "path": "/customers/customerField/{customer_id}",
+      "summary": "GET Get a Customer's Custom Fields",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customers",
+      "slug": "get-customer",
+      "operationId": "getCustomer",
+      "method": "GET",
+      "path": "/customers/{customer_id}",
+      "summary": "GET Get Customer",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customers",
+      "slug": "update-customer",
+      "operationId": "updateCustomer",
+      "method": "PUT",
+      "path": "/customers/{customer_id}",
+      "summary": "PUT Update Customer",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customers",
+      "slug": "delete-customer",
+      "operationId": "deleteCustomer",
+      "method": "DELETE",
+      "path": "/customers/{customer_id}",
+      "summary": "DELETE Delete Customer",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customers",
+      "slug": "bulk-delete-customers",
+      "operationId": "bulkDeleteCustomers",
+      "method": "DELETE",
+      "path": "/customers/bulk-delete",
+      "summary": "DELETE Bulk Delete Customers",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customers",
+      "slug": "bulk-update-customer-status",
+      "operationId": "bulkUpdateCustomerStatus",
+      "method": "PUT",
+      "path": "/customers/bulk-status",
+      "summary": "PUT Bulk Update Customer Status",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customers",
+      "slug": "upload-customer-avatar",
+      "operationId": "uploadCustomerAvatar",
+      "method": "POST",
+      "path": "/customers/profile_image/{customer_id}",
+      "summary": "POST Upload a Customer's Avatar",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customers",
+      "slug": "reset-customer-avatar",
+      "operationId": "resetCustomerAvatar",
+      "method": "POST",
+      "path": "/customers/reset_avatar/{customer}",
+      "summary": "POST Reset a Customer's Avatar",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customers",
+      "slug": "search-contact",
+      "operationId": "searchContact",
+      "method": "GET",
+      "path": "/tickets/search-contact",
+      "summary": "GET Search Contacts (for a new ticket)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "agents",
+      "slug": "list-agents",
+      "operationId": "listAgents",
+      "method": "GET",
+      "path": "/agents",
+      "summary": "GET List Agents",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "agents",
+      "slug": "create-agent",
+      "operationId": "createAgent",
+      "method": "POST",
+      "path": "/agents",
+      "summary": "POST Create Agent (grants a WordPress user support-agent access)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "agents",
+      "slug": "update-agent",
+      "operationId": "updateAgent",
+      "method": "PUT",
+      "path": "/agents/{agent_id}",
+      "summary": "PUT Update Agent (profile, role, permissions)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "agents",
+      "slug": "delete-agent",
+      "operationId": "deleteAgent",
+      "method": "DELETE",
+      "path": "/agents/{agent_id}",
+      "summary": "DELETE Delete Agent (reassigns their tickets to fallback_id)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "agents",
+      "slug": "upload-agent-avatar",
+      "operationId": "uploadAgentAvatar",
+      "method": "POST",
+      "path": "/agents/avatar/{agent_id}",
+      "summary": "POST Upload an Agent's Avatar",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "agents",
+      "slug": "reset-agent-avatar",
+      "operationId": "resetAgentAvatar",
+      "method": "POST",
+      "path": "/agents/reset_avatar/{agent}",
+      "summary": "POST Reset an Agent's Avatar",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "agent-groups",
+      "slug": "list-agent-groups",
+      "operationId": "listAgentGroups",
+      "method": "GET",
+      "path": "/agent-groups",
+      "summary": "GET List Agent Groups",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "agent-groups",
+      "slug": "create-agent-group",
+      "operationId": "createAgentGroup",
+      "method": "POST",
+      "path": "/agent-groups",
+      "summary": "POST Create Agent Group",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "agent-groups",
+      "slug": "get-agent-group",
+      "operationId": "getAgentGroup",
+      "method": "GET",
+      "path": "/agent-groups/{group_id}",
+      "summary": "GET Get Agent Group",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "agent-groups",
+      "slug": "update-agent-group",
+      "operationId": "updateAgentGroup",
+      "method": "PUT",
+      "path": "/agent-groups/{group_id}",
+      "summary": "PUT Update Agent Group",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "agent-groups",
+      "slug": "delete-agent-group",
+      "operationId": "deleteAgentGroup",
+      "method": "DELETE",
+      "path": "/agent-groups/{group_id}",
+      "summary": "DELETE Delete Agent Group",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "notifications",
+      "slug": "list-notifications",
+      "operationId": "listNotifications",
+      "method": "GET",
+      "path": "/notifications",
+      "summary": "GET List the Current Agent's Notifications",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "notifications",
+      "slug": "list-unread-notifications",
+      "operationId": "listUnreadNotifications",
+      "method": "GET",
+      "path": "/notifications/unread",
+      "summary": "GET List Unread Notifications",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "notifications",
+      "slug": "get-unread-notification-count",
+      "operationId": "getUnreadNotificationCount",
+      "method": "GET",
+      "path": "/notifications/unread-count",
+      "summary": "GET Get Unread Notification Count",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "notifications",
+      "slug": "mark-all-notifications-read",
+      "operationId": "markAllNotificationsRead",
+      "method": "POST",
+      "path": "/notifications/mark-all-read",
+      "summary": "POST Mark All Notifications Read",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "notifications",
+      "slug": "mark-notification-read",
+      "operationId": "markNotificationRead",
+      "method": "POST",
+      "path": "/notifications/{notification_id}/mark-read",
+      "summary": "POST Mark a Notification Read",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "mailboxes",
+      "slug": "list-mailboxes",
+      "operationId": "listMailboxes",
+      "method": "GET",
+      "path": "/mailboxes",
+      "summary": "GET List Mailboxes (business inboxes)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "mailboxes",
+      "slug": "create-mailbox",
+      "operationId": "createMailbox",
+      "method": "POST",
+      "path": "/mailboxes",
+      "summary": "POST Create Mailbox",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "mailboxes",
+      "slug": "get-mailbox",
+      "operationId": "getMailbox",
+      "method": "GET",
+      "path": "/mailboxes/{id}",
+      "summary": "GET Get Mailbox",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "mailboxes",
+      "slug": "update-mailbox",
+      "operationId": "updateMailbox",
+      "method": "PUT",
+      "path": "/mailboxes/{id}",
+      "summary": "PUT Update Mailbox",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "mailboxes",
+      "slug": "delete-mailbox",
+      "operationId": "deleteMailbox",
+      "method": "DELETE",
+      "path": "/mailboxes/{id}",
+      "summary": "DELETE Delete Mailbox (moves its tickets to fallback_id)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "mailboxes",
+      "slug": "move-mailbox-tickets",
+      "operationId": "moveMailboxTickets",
+      "method": "PUT",
+      "path": "/mailboxes/{id}/move_tickets",
+      "summary": "PUT Move All of a Mailbox's Tickets to Another Mailbox",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "mailboxes",
+      "slug": "list-mailbox-tickets",
+      "operationId": "listMailboxTickets",
+      "method": "GET",
+      "path": "/mailboxes/{id}/tickets",
+      "summary": "GET List a Mailbox's Tickets",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "mailboxes",
+      "slug": "get-mailbox-email-settings",
+      "operationId": "getMailboxEmailSettings",
+      "method": "GET",
+      "path": "/mailboxes/{id}/email_settings",
+      "summary": "GET Get Mailbox Email Settings (one email_type)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "mailboxes",
+      "slug": "save-mailbox-email-settings",
+      "operationId": "saveMailboxEmailSettings",
+      "method": "PUT",
+      "path": "/mailboxes/{id}/email_settings",
+      "summary": "PUT Save Mailbox Email Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "mailboxes",
+      "slug": "get-mailbox-email-configs",
+      "operationId": "getMailboxEmailConfigs",
+      "method": "GET",
+      "path": "/mailboxes/{id}/email_configs",
+      "summary": "GET Get Mailbox Email Notification Configs",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "mailboxes",
+      "slug": "set-default-mailbox",
+      "operationId": "setDefaultMailbox",
+      "method": "PUT",
+      "path": "/mailboxes/{id}/set_default",
+      "summary": "PUT Set the Default Mailbox",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "mailboxes",
+      "slug": "get-email-box-status",
+      "operationId": "getEmailBoxStatus",
+      "method": "GET",
+      "path": "/email-box/{box_id}/status",
+      "summary": "GET Get Mailbox Email Piping Status",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "mailboxes",
+      "slug": "issue-email-box-email",
+      "operationId": "issueEmailBoxEmail",
+      "method": "POST",
+      "path": "/email-box/{box_id}/issue-email",
+      "summary": "POST Issue a Mailbox Piping Email Address",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "mailboxes",
+      "slug": "receive-piped-mail-get",
+      "operationId": "receivePipedMailGet",
+      "method": "GET",
+      "path": "/mail-piping/{box_id}/push/{token}",
+      "summary": "GET Mail Piping Push Endpoint (GET — webhook, token-authenticated)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "mailboxes",
+      "slug": "receive-piped-mail-post",
+      "operationId": "receivePipedMailPost",
+      "method": "POST",
+      "path": "/mail-piping/{box_id}/push/{token}",
+      "summary": "POST Mail Piping Push Endpoint (POST — webhook, token-authenticated)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "mailboxes",
+      "slug": "receive-piped-mail-put",
+      "operationId": "receivePipedMailPut",
+      "method": "PUT",
+      "path": "/mail-piping/{box_id}/push/{token}",
+      "summary": "PUT Mail Piping Push Endpoint (PUT — webhook, token-authenticated)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "mailboxes",
+      "slug": "receive-piped-mail-patch",
+      "operationId": "receivePipedMailPatch",
+      "method": "PATCH",
+      "path": "/mail-piping/{box_id}/push/{token}",
+      "summary": "PATCH Mail Piping Push Endpoint (PATCH — webhook, token-authenticated)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "mailboxes",
+      "slug": "receive-piped-mail-delete",
+      "operationId": "receivePipedMailDelete",
+      "method": "DELETE",
+      "path": "/mail-piping/{box_id}/push/{token}",
+      "summary": "DELETE Mail Piping Push Endpoint (DELETE — webhook, token-authenticated)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "workflows",
+      "slug": "list-workflows",
+      "operationId": "listWorkflows",
+      "method": "GET",
+      "path": "/workflows",
+      "summary": "GET List Workflows",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "workflows",
+      "slug": "create-workflow",
+      "operationId": "createWorkflow",
+      "method": "POST",
+      "path": "/workflows",
+      "summary": "POST Create Workflow",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "workflows",
+      "slug": "get-workflow-options",
+      "operationId": "getWorkflowOptions",
+      "method": "GET",
+      "path": "/workflows/options",
+      "summary": "GET Get Workflow Trigger, Condition and Action Options",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "workflows",
+      "slug": "get-workflow-commerce-options",
+      "operationId": "getWorkflowCommerceOptions",
+      "method": "GET",
+      "path": "/workflows/commerce-options",
+      "summary": "GET Get Workflow Commerce (product) Options",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "workflows",
+      "slug": "save-workflow-action-sequence",
+      "operationId": "saveWorkflowActionSequence",
+      "method": "POST",
+      "path": "/workflows/action-sequence",
+      "summary": "POST Save a Workflow Action Sequence",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "workflows",
+      "slug": "duplicate-workflow",
+      "operationId": "duplicateWorkflow",
+      "method": "POST",
+      "path": "/workflows/duplicate/{workflow_id}",
+      "summary": "POST Duplicate Workflow",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "workflows",
+      "slug": "get-workflow",
+      "operationId": "getWorkflow",
+      "method": "GET",
+      "path": "/workflows/{workflow_id}",
+      "summary": "GET Get Workflow",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "workflows",
+      "slug": "update-workflow",
+      "operationId": "updateWorkflow",
+      "method": "POST",
+      "path": "/workflows/{workflow_id}",
+      "summary": "POST Update Workflow",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "workflows",
+      "slug": "delete-workflow",
+      "operationId": "deleteWorkflow",
+      "method": "DELETE",
+      "path": "/workflows/{workflow_id}",
+      "summary": "DELETE Delete Workflow",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "workflows",
+      "slug": "list-workflow-actions",
+      "operationId": "listWorkflowActions",
+      "method": "GET",
+      "path": "/workflows/{workflow_id}/actions",
+      "summary": "GET List a Workflow's Actions",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "workflows",
+      "slug": "list-workflow-runs",
+      "operationId": "listWorkflowRuns",
+      "method": "GET",
+      "path": "/workflows/{workflow_id}/runs",
+      "summary": "GET List a Workflow's Runs",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "workflows",
+      "slug": "run-workflow",
+      "operationId": "runWorkflow",
+      "method": "POST",
+      "path": "/workflows/{workflow_id}/run",
+      "summary": "POST Run a Manual Workflow on Selected Tickets",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "get-stats",
+      "operationId": "getStats",
+      "method": "GET",
+      "path": "/reports/stats",
+      "summary": "GET Get Overall Ticket Stats",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "get-agents-summary",
+      "operationId": "getAgentsSummary",
+      "method": "GET",
+      "path": "/reports/agents-summary",
+      "summary": "GET Get Per-Agent Summary",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "get-day-time-stats",
+      "operationId": "getDayTimeStats",
+      "method": "GET",
+      "path": "/reports/day-time-stats",
+      "summary": "GET Get Tickets by Day and Hour",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "get-dashboard-stats",
+      "operationId": "getDashboardStats",
+      "method": "GET",
+      "path": "/tickets/my_stats",
+      "summary": "GET Get the Agent Dashboard Stats",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "get-agent-performance-today",
+      "operationId": "getAgentPerformanceToday",
+      "method": "GET",
+      "path": "/tickets/agent_performance",
+      "summary": "GET Get Today's Agent Performance",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "my-reports",
+      "slug": "get-my-resolve-growth",
+      "operationId": "getMyResolveGrowth",
+      "method": "GET",
+      "path": "/my-reports/tickets-resolve-growth",
+      "summary": "GET Get Tickets Closed by the Current Agent",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "my-reports",
+      "slug": "get-my-response-growth",
+      "operationId": "getMyResponseGrowth",
+      "method": "GET",
+      "path": "/my-reports/response-growth",
+      "summary": "GET Get Replies by the Current Agent",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "my-reports",
+      "slug": "get-my-summary",
+      "operationId": "getMySummary",
+      "method": "GET",
+      "path": "/my-reports/my-summary",
+      "summary": "GET Get the Current Agent's Summary",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "mailbox-reports",
+      "slug": "get-tickets-growth",
+      "operationId": "getTicketsGrowth",
+      "method": "GET",
+      "path": "/mailbox-reports/tickets-growth",
+      "summary": "GET Get Ticket Growth",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "mailbox-reports",
+      "slug": "get-tickets-resolve-growth",
+      "operationId": "getTicketsResolveGrowth",
+      "method": "GET",
+      "path": "/mailbox-reports/tickets-resolve-growth",
+      "summary": "GET Get Resolved Ticket Growth",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "mailbox-reports",
+      "slug": "get-response-growth",
+      "operationId": "getResponseGrowth",
+      "method": "GET",
+      "path": "/mailbox-reports/response-growth",
+      "summary": "GET Get Response Growth",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "advanced-reports",
+      "slug": "get-ticket-overview",
+      "operationId": "getTicketOverview",
+      "method": "GET",
+      "path": "/advanced-reports/ticket-overview",
+      "summary": "GET Get Ticket Overview Report",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "advanced-reports",
+      "slug": "get-response-activity",
+      "operationId": "getResponseActivity",
+      "method": "GET",
+      "path": "/advanced-reports/response-activity",
+      "summary": "GET Get Response Activity Report",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "advanced-reports",
+      "slug": "get-product-insights",
+      "operationId": "getProductInsights",
+      "method": "GET",
+      "path": "/advanced-reports/product-insights",
+      "summary": "GET Get Product Insights Report",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "advanced-reports",
+      "slug": "get-workload-health",
+      "operationId": "getWorkloadHealth",
+      "method": "GET",
+      "path": "/advanced-reports/workload-health",
+      "summary": "GET Get Workload Health Report",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "advanced-reports",
+      "slug": "get-performance-overview-filters",
+      "operationId": "getPerformanceOverviewFilters",
+      "method": "GET",
+      "path": "/advanced-reports/performance-overview/filters",
+      "summary": "GET Get Performance Overview Filter Options",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "advanced-reports",
+      "slug": "get-performance-overview",
+      "operationId": "getPerformanceOverview",
+      "method": "GET",
+      "path": "/advanced-reports/performance-overview",
+      "summary": "GET Get Performance Overview Report",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "advanced-reports",
+      "slug": "list-snapshots",
+      "operationId": "listSnapshots",
+      "method": "GET",
+      "path": "/advanced-reports/snapshots",
+      "summary": "GET List Report Snapshots",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "advanced-reports",
+      "slug": "get-snapshot",
+      "operationId": "getSnapshot",
+      "method": "GET",
+      "path": "/advanced-reports/snapshots/{id}",
+      "summary": "GET Get a Report Snapshot",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "timesheet",
+      "slug": "get-timesheet-by-tickets",
+      "operationId": "getTimesheetByTickets",
+      "method": "GET",
+      "path": "/reports/timesheet/by-tickets",
+      "summary": "GET Get Timesheet by Ticket",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "timesheet",
+      "slug": "get-timesheet-by-agents",
+      "operationId": "getTimesheetByAgents",
+      "method": "GET",
+      "path": "/reports/timesheet/by-agents",
+      "summary": "GET Get Timesheet by Agent",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "timesheet",
+      "slug": "get-timesheet-by-customers",
+      "operationId": "getTimesheetByCustomers",
+      "method": "GET",
+      "path": "/reports/timesheet/by-customers",
+      "summary": "GET Get Timesheet by Customer",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "activity-logger",
+      "slug": "list-activities",
+      "operationId": "listActivities",
+      "method": "GET",
+      "path": "/activity-logger",
+      "summary": "GET List Activity Log Entries",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "activity-logger",
+      "slug": "list-ai-activities",
+      "operationId": "listAiActivities",
+      "method": "GET",
+      "path": "/ai-activity-logger",
+      "summary": "GET List AI Activity Log Entries",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "list-products",
+      "operationId": "listProducts",
+      "method": "GET",
+      "path": "/products",
+      "summary": "GET List Products",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "create-product",
+      "operationId": "createProduct",
+      "method": "POST",
+      "path": "/products",
+      "summary": "POST Create Product",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "get-product",
+      "operationId": "getProduct",
+      "method": "GET",
+      "path": "/products/{product_id}",
+      "summary": "GET Get Product",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "save-product",
+      "operationId": "saveProduct",
+      "method": "POST",
+      "path": "/products/{product_id}",
+      "summary": "POST Save Product (create handler with an id)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "update-product",
+      "operationId": "updateProduct",
+      "method": "PUT",
+      "path": "/products/{product_id}",
+      "summary": "PUT Update Product",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "products",
+      "slug": "delete-product",
+      "operationId": "deleteProduct",
+      "method": "DELETE",
+      "path": "/products/{product_id}",
+      "summary": "DELETE Delete Product",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "ticket-tags",
+      "slug": "list-ticket-tags",
+      "operationId": "listTicketTags",
+      "method": "GET",
+      "path": "/ticket-tags",
+      "summary": "GET List Ticket Tags",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "ticket-tags",
+      "slug": "create-ticket-tag",
+      "operationId": "createTicketTag",
+      "method": "POST",
+      "path": "/ticket-tags",
+      "summary": "POST Create Ticket Tag",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "ticket-tags",
+      "slug": "list-ticket-tag-options",
+      "operationId": "listTicketTagOptions",
+      "method": "GET",
+      "path": "/ticket-tags/options",
+      "summary": "GET List Ticket Tags as Options",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "ticket-tags",
+      "slug": "get-ticket-tag",
+      "operationId": "getTicketTag",
+      "method": "GET",
+      "path": "/ticket-tags/{tag_id}",
+      "summary": "GET Get Ticket Tag",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "ticket-tags",
+      "slug": "update-ticket-tag",
+      "operationId": "updateTicketTag",
+      "method": "PUT",
+      "path": "/ticket-tags/{tag_id}",
+      "summary": "PUT Update Ticket Tag",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "ticket-tags",
+      "slug": "delete-ticket-tag",
+      "operationId": "deleteTicketTag",
+      "method": "DELETE",
+      "path": "/ticket-tags/{tag_id}",
+      "summary": "DELETE Delete Ticket Tag",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-settings",
+      "operationId": "getSettings",
+      "method": "GET",
+      "path": "/settings",
+      "summary": "GET Get Settings (settings_key, with[]=fields)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-settings",
+      "operationId": "saveSettings",
+      "method": "POST",
+      "path": "/settings",
+      "summary": "POST Save Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-integration-settings",
+      "operationId": "getIntegrationSettings",
+      "method": "GET",
+      "path": "/settings/integration-settings",
+      "summary": "GET Get Integration Settings Overview",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-integration",
+      "operationId": "getIntegration",
+      "method": "GET",
+      "path": "/settings/integration",
+      "summary": "GET Get One Integration's Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-integration",
+      "operationId": "saveIntegration",
+      "method": "POST",
+      "path": "/settings/integration",
+      "summary": "POST Save One Integration's Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "list-pages",
+      "operationId": "listPages",
+      "method": "GET",
+      "path": "/settings/pages",
+      "summary": "GET List WordPress Pages (for the portal page setting)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "setup-portal",
+      "operationId": "setupPortal",
+      "method": "POST",
+      "path": "/settings/setup",
+      "summary": "POST Run the Portal Setup (creates the portal page)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "setup-installation",
+      "operationId": "setupInstallation",
+      "method": "POST",
+      "path": "/settings/setup-installation",
+      "summary": "POST Run the Installation Setup Wizard Step",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-recaptcha-settings",
+      "operationId": "saveRecaptchaSettings",
+      "method": "POST",
+      "path": "/settings/recaptcha-settings",
+      "summary": "POST Save reCAPTCHA Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-recaptcha-settings",
+      "operationId": "getRecaptchaSettings",
+      "method": "GET",
+      "path": "/settings/recaptcha-settings",
+      "summary": "GET Get reCAPTCHA Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-integration-statuses",
+      "operationId": "getIntegrationStatuses",
+      "method": "GET",
+      "path": "/settings/integration-statuses",
+      "summary": "GET Get Integration Statuses",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-fluentcrm-settings",
+      "operationId": "getFluentcrmSettings",
+      "method": "GET",
+      "path": "/settings/fluentcrm-settings",
+      "summary": "GET Get FluentCRM Integration Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "install-fluentcrm",
+      "operationId": "installFluentcrm",
+      "method": "POST",
+      "path": "/settings/install-fluentcrm",
+      "summary": "POST Install the FluentCRM Plugin",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-remote-upload-settings",
+      "operationId": "getRemoteUploadSettings",
+      "method": "GET",
+      "path": "/settings/remote-upload-settings",
+      "summary": "GET Get Remote Upload (cloud storage) Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "update-remote-upload-driver",
+      "operationId": "updateRemoteUploadDriver",
+      "method": "POST",
+      "path": "/settings/update-remote-upload-driver",
+      "summary": "POST Set the Remote Upload Driver",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "update-remote-upload-options",
+      "operationId": "updateRemoteUploadOptions",
+      "method": "POST",
+      "path": "/settings/remote-upload-options",
+      "summary": "POST Save Remote Upload Driver Options",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "retry-remote-uploads",
+      "operationId": "retryRemoteUploads",
+      "method": "POST",
+      "path": "/settings/remote-upload-retry",
+      "summary": "POST Retry Failed Remote Uploads",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-ai-integration",
+      "operationId": "getAiIntegration",
+      "method": "GET",
+      "path": "/settings/ai-integration",
+      "summary": "GET Get AI Provider Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-ai-integration",
+      "operationId": "saveAiIntegration",
+      "method": "POST",
+      "path": "/settings/ai-integration",
+      "summary": "POST Save AI Provider Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-settings-menu",
+      "operationId": "getSettingsMenu",
+      "method": "GET",
+      "path": "/settings/settings-menu",
+      "summary": "GET Get the Settings Menu",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-mcp-status",
+      "operationId": "getMcpStatus",
+      "method": "GET",
+      "path": "/settings/mcp",
+      "summary": "GET Get Site-side MCP Adapter Status",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "toggle-mcp",
+      "operationId": "toggleMcp",
+      "method": "POST",
+      "path": "/settings/mcp/toggle",
+      "summary": "POST Enable or Disable the Site-side MCP Adapter",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "install-mcp-adapter",
+      "operationId": "installMcpAdapter",
+      "method": "POST",
+      "path": "/settings/mcp/install-adapter",
+      "summary": "POST Install the MCP Adapter Plugin",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-mcp-config-snippets",
+      "operationId": "getMcpConfigSnippets",
+      "method": "GET",
+      "path": "/settings/mcp/config-snippets",
+      "summary": "GET Get MCP Client Config Snippets",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-incoming-webhook",
+      "operationId": "getIncomingWebhook",
+      "method": "GET",
+      "path": "/settings/incoming-webhook",
+      "summary": "GET Get Incoming Webhook Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-incoming-webhook",
+      "operationId": "saveIncomingWebhook",
+      "method": "PUT",
+      "path": "/settings/incoming-webhook",
+      "summary": "PUT Save Incoming Webhook Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-upload-integration",
+      "operationId": "getUploadIntegration",
+      "method": "GET",
+      "path": "/settings/upload_integration",
+      "summary": "GET Get Upload Integration Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-upload-integration",
+      "operationId": "saveUploadIntegration",
+      "method": "POST",
+      "path": "/settings/upload_integration",
+      "summary": "POST Save Upload Integration Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-auto-close",
+      "operationId": "getAutoClose",
+      "method": "GET",
+      "path": "/settings/auto-close",
+      "summary": "GET Get Auto-close Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-auto-close",
+      "operationId": "saveAutoClose",
+      "method": "POST",
+      "path": "/settings/auto-close",
+      "summary": "POST Save Auto-close Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-remote-portal-settings",
+      "operationId": "getRemotePortalSettings",
+      "method": "GET",
+      "path": "/settings/remote-portal",
+      "summary": "GET Get Remote Portal Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-remote-portal-settings",
+      "operationId": "saveRemotePortalSettings",
+      "method": "POST",
+      "path": "/settings/remote-portal",
+      "summary": "POST Save Remote Portal Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "create-remote-portal-connection-key",
+      "operationId": "createRemotePortalConnectionKey",
+      "method": "POST",
+      "path": "/settings/remote-portal/connection-key",
+      "summary": "POST Generate a Remote Portal Connection Key",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "disconnect-remote-portal",
+      "operationId": "disconnectRemotePortal",
+      "method": "POST",
+      "path": "/settings/remote-portal/disconnect",
+      "summary": "POST Disconnect the Remote Portal",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "test-remote-portal",
+      "operationId": "testRemotePortal",
+      "method": "POST",
+      "path": "/settings/remote-portal/test",
+      "summary": "POST Test the Remote Portal Connection",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-license",
+      "operationId": "getLicense",
+      "method": "GET",
+      "path": "/pro/license",
+      "summary": "GET Get Pro License Status",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "activate-license",
+      "operationId": "activateLicense",
+      "method": "POST",
+      "path": "/pro/license",
+      "summary": "POST Activate Pro License",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "remove-license",
+      "operationId": "removeLicense",
+      "method": "POST",
+      "path": "/pro/remove-license",
+      "summary": "POST Remove Pro License",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-form-settings",
+      "operationId": "getFormSettings",
+      "method": "GET",
+      "path": "/pro/form-settings",
+      "summary": "GET Get Ticket Form Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-form-settings",
+      "operationId": "saveFormSettings",
+      "method": "POST",
+      "path": "/pro/form-settings",
+      "summary": "POST Save Ticket Form Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-activity-logger-settings",
+      "operationId": "getActivityLoggerSettings",
+      "method": "GET",
+      "path": "/activity-logger/settings",
+      "summary": "GET Get Activity Logger Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-activity-logger-settings",
+      "operationId": "saveActivityLoggerSettings",
+      "method": "POST",
+      "path": "/activity-logger/settings",
+      "summary": "POST Save Activity Logger Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-ai-activity-logger-settings",
+      "operationId": "getAiActivityLoggerSettings",
+      "method": "GET",
+      "path": "/ai-activity-logger/settings",
+      "summary": "GET Get AI Activity Logger Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-ai-activity-logger-settings",
+      "operationId": "saveAiActivityLoggerSettings",
+      "method": "POST",
+      "path": "/ai-activity-logger/settings",
+      "summary": "POST Save AI Activity Logger Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customer-portal",
+      "slug": "get-public-options",
+      "operationId": "getPublicOptions",
+      "method": "GET",
+      "path": "/customer-portal/public_options",
+      "summary": "GET Get Public Portal Options",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customer-portal",
+      "slug": "get-rendered-custom-fields",
+      "operationId": "getRenderedCustomFields",
+      "method": "GET",
+      "path": "/customer-portal/custom-fields-rendered",
+      "summary": "GET Get Rendered Ticket Form Custom Fields",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customer-portal",
+      "slug": "logout",
+      "operationId": "logout",
+      "method": "POST",
+      "path": "/customer-portal/logout",
+      "summary": "POST Log the Portal Session Out",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customer-portal",
+      "slug": "get-portal-me",
+      "operationId": "getPortalMe",
+      "method": "GET",
+      "path": "/customer-portal/me",
+      "summary": "GET Get the Portal User",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customer-portal",
+      "slug": "list-portal-tickets",
+      "operationId": "listPortalTickets",
+      "method": "GET",
+      "path": "/customer-portal/tickets",
+      "summary": "GET List the Customer's Own Tickets",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customer-portal",
+      "slug": "create-portal-ticket",
+      "operationId": "createPortalTicket",
+      "method": "POST",
+      "path": "/customer-portal/tickets",
+      "summary": "POST Create a Ticket as the Customer",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customer-portal",
+      "slug": "get-portal-ticket",
+      "operationId": "getPortalTicket",
+      "method": "GET",
+      "path": "/customer-portal/tickets/{ticket_id}",
+      "summary": "GET Get One of the Customer's Tickets",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customer-portal",
+      "slug": "reply-portal-ticket",
+      "operationId": "replyPortalTicket",
+      "method": "POST",
+      "path": "/customer-portal/tickets/{ticket_id}/responses",
+      "summary": "POST Reply as the Customer",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customer-portal",
+      "slug": "close-portal-ticket",
+      "operationId": "closePortalTicket",
+      "method": "POST",
+      "path": "/customer-portal/tickets/{ticket_id}/close",
+      "summary": "POST Close a Ticket as the Customer",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customer-portal",
+      "slug": "reopen-portal-ticket",
+      "operationId": "reopenPortalTicket",
+      "method": "POST",
+      "path": "/customer-portal/tickets/{ticket_id}/re-open",
+      "summary": "POST Re-open a Ticket as the Customer",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customer-portal",
+      "slug": "rate-agent",
+      "operationId": "rateAgent",
+      "method": "POST",
+      "path": "/customer-portal/tickets/{ticket_id}/agent-feedback",
+      "summary": "POST Rate the Agent on a Ticket",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customer-portal",
+      "slug": "upload-portal-ticket-file",
+      "operationId": "uploadPortalTicketFile",
+      "method": "POST",
+      "path": "/customer-portal/ticket_file_upload",
+      "summary": "POST Upload a Ticket Attachment (portal)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customer-portal",
+      "slug": "search-docs",
+      "operationId": "searchDocs",
+      "method": "GET",
+      "path": "/customer-portal/search-doc",
+      "summary": "GET Search Help Docs from the Portal",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customer-portal",
+      "slug": "get-me",
+      "operationId": "getMe",
+      "method": "GET",
+      "path": "/me",
+      "summary": "GET Get the Current User",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "customer-portal",
+      "slug": "list-countries",
+      "operationId": "listCountries",
+      "method": "GET",
+      "path": "/options/countries",
+      "summary": "GET List Countries",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "auth",
+      "slug": "signup",
+      "operationId": "signup",
+      "method": "POST",
+      "path": "/signup",
+      "summary": "POST Portal Sign-up",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "auth",
+      "slug": "login",
+      "operationId": "login",
+      "method": "POST",
+      "path": "/login",
+      "summary": "POST Portal Login",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "auth",
+      "slug": "verify-login-code",
+      "operationId": "verifyLoginCode",
+      "method": "POST",
+      "path": "/two_fa",
+      "summary": "POST Verify the Portal Login Code (2FA)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "auth",
+      "slug": "reset-password",
+      "operationId": "resetPassword",
+      "method": "POST",
+      "path": "/reset_pass",
+      "summary": "POST Portal Password Reset",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "remote-portal",
+      "slug": "connect-remote-portal",
+      "operationId": "connectRemotePortal",
+      "method": "POST",
+      "path": "/remote-portal/connect",
+      "summary": "POST Connect a Remote Portal",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "remote-portal",
+      "slug": "rotate-remote-portal-token",
+      "operationId": "rotateRemotePortalToken",
+      "method": "POST",
+      "path": "/remote-portal/rotate-token",
+      "summary": "POST Rotate the Remote Portal Token",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "remote-portal",
+      "slug": "ping-remote-portal",
+      "operationId": "pingRemotePortal",
+      "method": "GET",
+      "path": "/remote-portal/ping",
+      "summary": "GET Ping the Remote Portal",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "remote-portal",
+      "slug": "get-remote-portal-config",
+      "operationId": "getRemotePortalConfig",
+      "method": "GET",
+      "path": "/remote-portal/portal-config",
+      "summary": "GET Get the Remote Portal Config",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "remote-portal",
+      "slug": "set-remote-portal-url",
+      "operationId": "setRemotePortalUrl",
+      "method": "POST",
+      "path": "/remote-portal/portal-url",
+      "summary": "POST Set the Remote Portal URL",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "remote-portal",
+      "slug": "test-remote-portal-widgets",
+      "operationId": "testRemotePortalWidgets",
+      "method": "POST",
+      "path": "/remote-portal/test-widgets",
+      "summary": "POST Test the Remote Portal Widgets",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "remote-portal",
+      "slug": "disconnect-remote-portal-connection",
+      "operationId": "disconnectRemotePortalConnection",
+      "method": "POST",
+      "path": "/remote-portal/disconnect",
+      "summary": "POST Disconnect the Remote Portal Connection",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "system-tools",
+      "slug": "rest-test-get",
+      "operationId": "restTestGet",
+      "method": "GET",
+      "path": "/system-tools/rest-test",
+      "summary": "GET REST Connectivity Test (GET)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "system-tools",
+      "slug": "rest-test-post",
+      "operationId": "restTestPost",
+      "method": "POST",
+      "path": "/system-tools/rest-test",
+      "summary": "POST REST Connectivity Test (POST)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "system-tools",
+      "slug": "rest-test-put",
+      "operationId": "restTestPut",
+      "method": "PUT",
+      "path": "/system-tools/rest-test",
+      "summary": "PUT REST Connectivity Test (PUT)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "system-tools",
+      "slug": "rest-test-patch",
+      "operationId": "restTestPatch",
+      "method": "PATCH",
+      "path": "/system-tools/rest-test",
+      "summary": "PATCH REST Connectivity Test (PATCH)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "system-tools",
+      "slug": "rest-test-delete",
+      "operationId": "restTestDelete",
+      "method": "DELETE",
+      "path": "/system-tools/rest-test",
+      "summary": "DELETE REST Connectivity Test (DELETE)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "system-tools",
+      "slug": "list-cron-events",
+      "operationId": "listCronEvents",
+      "method": "GET",
+      "path": "/system-tools/cron",
+      "summary": "GET List Scheduled Cron Events",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "system-tools",
+      "slug": "run-cron",
+      "operationId": "runCron",
+      "method": "POST",
+      "path": "/system-tools/cron/run",
+      "summary": "POST Run the Support Cron Now",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "system-tools",
+      "slug": "get-database-health",
+      "operationId": "getDatabaseHealth",
+      "method": "GET",
+      "path": "/system-tools/database",
+      "summary": "GET Get Database Health",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "system-tools",
+      "slug": "repair-database",
+      "operationId": "repairDatabase",
+      "method": "POST",
+      "path": "/system-tools/database/repair",
+      "summary": "POST Repair Database Tables",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "system-tools",
+      "slug": "get-cleanup-counts",
+      "operationId": "getCleanupCounts",
+      "method": "GET",
+      "path": "/system-tools/cleanup",
+      "summary": "GET Get Old Log Counts (cleanup preview)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "system-tools",
+      "slug": "delete-old-logs",
+      "operationId": "deleteOldLogs",
+      "method": "DELETE",
+      "path": "/system-tools/cleanup",
+      "summary": "DELETE Delete Old Logs",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "ticket-importer",
+      "slug": "get-import-stats",
+      "operationId": "getImportStats",
+      "method": "GET",
+      "path": "/ticket_importer",
+      "summary": "GET Get Ticket Import Stats",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "ticket-importer",
+      "slug": "import-tickets",
+      "operationId": "importTickets",
+      "method": "POST",
+      "path": "/ticket_importer/import",
+      "summary": "POST Import Tickets from Another Helpdesk",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "ticket-importer",
+      "slug": "save-helpscout-token",
+      "operationId": "saveHelpscoutToken",
+      "method": "POST",
+      "path": "/ticket_importer/helpscout/token",
+      "summary": "POST Save the Help Scout Import Token",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "ticket-importer",
+      "slug": "delete-imported-tickets",
+      "operationId": "deleteImportedTickets",
+      "method": "DELETE",
+      "path": "/ticket_importer/delete",
+      "summary": "DELETE Delete Imported Tickets of a Source",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "public",
+      "slug": "receive-incoming-webhook",
+      "operationId": "receiveIncomingWebhook",
+      "method": "POST",
+      "path": "/public/incoming_webhook/{token}",
+      "summary": "POST Incoming Webhook Receiver (public, token-authenticated)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "public",
+      "slug": "dropbox-auth-callback",
+      "operationId": "dropboxAuthCallback",
+      "method": "GET",
+      "path": "/public/dropbox_auth",
+      "summary": "GET Dropbox OAuth Callback",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "public",
+      "slug": "google-auth-callback",
+      "operationId": "googleAuthCallback",
+      "method": "GET",
+      "path": "/public/google_auth",
+      "summary": "GET Google Drive OAuth Callback",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "public",
+      "slug": "helpscout-auth-callback",
+      "operationId": "helpscoutAuthCallback",
+      "method": "GET",
+      "path": "/public/authorize",
+      "summary": "GET Help Scout OAuth Callback",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "public",
+      "slug": "telegram-bot-response",
+      "operationId": "telegramBotResponse",
+      "method": "POST",
+      "path": "/public/telegram_bot_response/{token}",
+      "summary": "POST Telegram Bot Reply Receiver (public, token-authenticated)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "public",
+      "slug": "slack-response",
+      "operationId": "slackResponse",
+      "method": "POST",
+      "path": "/public/slack_response/{token}",
+      "summary": "POST Slack Reply Receiver (public, token-authenticated)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "public",
+      "slug": "twilio-response",
+      "operationId": "twilioResponse",
+      "method": "POST",
+      "path": "/public/twilio-response/{token}",
+      "summary": "POST Twilio SMS Reply Receiver (public, token-authenticated)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "audit",
+      "slug": "run-audit",
+      "operationId": "runAudit",
+      "method": "POST",
+      "path": "/advanced-reports/audit/run",
+      "summary": "POST Start a Report Data Audit",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "audit",
+      "slug": "process-audit-batch",
+      "operationId": "processAuditBatch",
+      "method": "POST",
+      "path": "/advanced-reports/audit/process-batch",
+      "summary": "POST Process the Next Audit Batch",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "audit",
+      "slug": "get-audit-results",
+      "operationId": "getAuditResults",
+      "method": "GET",
+      "path": "/advanced-reports/audit/results",
+      "summary": "GET Get Audit Results",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    }
+  ]
+}

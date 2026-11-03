@@ -124,6 +124,7 @@ describe('verify_setup', () => {
     expect(byKey.fluentcart).toBe('plugin_missing'); // listed, yet the route 404s: a real problem
     expect(byKey.fluentforms).toBe('not_installed');
     expect(byKey.fluentcommunity).toBe('not_installed');
+    expect(byKey.fluentsupport).toBe('not_installed');
     expect(byKey.wpsocialninja).toBe('not_installed');
     expect(res.content[0].text).toContain('⏭️ Fluent Forms: not_installed');
   });
