@@ -1,0 +1,1678 @@
+{
+  "product": "fluentbooking",
+  "source": "https://developers.fluentbooking.com/rest-api/ module pages (free + Pro, FluentBooking 2.6.0), checked against the live REST route index when run with a site",
+  "scraped": "2026-11-19",
+  "baseUrl": "https://{website}/wp-json/fluent-booking/v2",
+  "namespace": "fluent-booking/v2",
+  "count": 139,
+  "endpoints": [
+    {
+      "group": "calendars",
+      "slug": "list-calendars",
+      "operationId": "listCalendars",
+      "method": "GET",
+      "path": "/calendars",
+      "summary": "GET List Calendars",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "calendars",
+      "slug": "create-calendar",
+      "operationId": "createCalendar",
+      "method": "POST",
+      "path": "/calendars",
+      "summary": "POST Create Calendar",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "calendars",
+      "slug": "check-calendar-slug",
+      "operationId": "checkCalendarSlug",
+      "method": "POST",
+      "path": "/calendars/check-slug",
+      "summary": "POST Check a Calendar Slug Is Available",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "calendars",
+      "slug": "get-location-fields",
+      "operationId": "getLocationFields",
+      "method": "GET",
+      "path": "/calendars/location-fields",
+      "summary": "GET Get Event Location Field Options",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "calendars",
+      "slug": "get-calendar",
+      "operationId": "getCalendar",
+      "method": "GET",
+      "path": "/calendars/{id}",
+      "summary": "GET Get Calendar",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "calendars",
+      "slug": "update-calendar",
+      "operationId": "updateCalendar",
+      "method": "POST",
+      "path": "/calendars/{id}",
+      "summary": "POST Update Calendar",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "calendars",
+      "slug": "delete-calendar",
+      "operationId": "deleteCalendar",
+      "method": "DELETE",
+      "path": "/calendars/{id}",
+      "summary": "DELETE Delete Calendar",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "calendars",
+      "slug": "create-event",
+      "operationId": "createEvent",
+      "method": "POST",
+      "path": "/calendars/{id}/events",
+      "summary": "POST Create an Event Type in a Calendar",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "calendars",
+      "slug": "get-event-schema",
+      "operationId": "getEventSchema",
+      "method": "GET",
+      "path": "/calendars/{id}/event-schema",
+      "summary": "GET Get the New Event Type Schema",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "calendars",
+      "slug": "save-event-order",
+      "operationId": "saveEventOrder",
+      "method": "POST",
+      "path": "/calendars/{id}/event-order",
+      "summary": "POST Save the Order of a Calendar's Event Types",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "calendars",
+      "slug": "clone-event",
+      "operationId": "cloneEvent",
+      "method": "POST",
+      "path": "/calendars/{id}/clone-event/{event_id}",
+      "summary": "POST Clone an Event Type (optionally into another calendar)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "sharing",
+      "slug": "get-sharing-settings",
+      "operationId": "getSharingSettings",
+      "method": "GET",
+      "path": "/calendars/{id}/sharing-settings",
+      "summary": "GET Get Calendar Sharing and Landing Page Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "sharing",
+      "slug": "save-sharing-settings",
+      "operationId": "saveSharingSettings",
+      "method": "POST",
+      "path": "/calendars/{id}/sharing-settings",
+      "summary": "POST Save Calendar Sharing and Landing Page Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "events",
+      "slug": "get-event",
+      "operationId": "getEvent",
+      "method": "GET",
+      "path": "/calendars/{id}/events/{event_id}",
+      "summary": "GET Get Event Type",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "events",
+      "slug": "patch-event",
+      "operationId": "patchEvent",
+      "method": "PUT",
+      "path": "/calendars/{id}/events/{event_id}",
+      "summary": "PUT Patch Event Type (e.g. status)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "events",
+      "slug": "delete-event",
+      "operationId": "deleteEvent",
+      "method": "DELETE",
+      "path": "/calendars/{id}/events/{event_id}",
+      "summary": "DELETE Delete Event Type",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "events",
+      "slug": "find-event",
+      "operationId": "findEvent",
+      "method": "GET",
+      "path": "/events/{event_id}",
+      "summary": "GET Get Event Type by ID (no calendar needed)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "event-settings",
+      "slug": "update-event-details",
+      "operationId": "updateEventDetails",
+      "method": "POST",
+      "path": "/calendars/{id}/events/{event_id}/details",
+      "summary": "POST Update Event Type Details (title, duration, status, location, description)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "event-settings",
+      "slug": "update-event-limits",
+      "operationId": "updateEventLimits",
+      "method": "POST",
+      "path": "/calendars/{id}/events/{event_id}/limits",
+      "summary": "POST Update Event Type Limits (buffers, slot interval, booking frequency and duration, timezone lock)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "event-settings",
+      "slug": "update-event-assignments",
+      "operationId": "updateEventAssignments",
+      "method": "POST",
+      "path": "/calendars/{id}/events/{event_id}/assignments",
+      "summary": "POST Update Event Type Host Assignments",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "event-settings",
+      "slug": "update-event-advanced-settings",
+      "operationId": "updateEventAdvancedSettings",
+      "method": "POST",
+      "path": "/calendars/{id}/events/{event_id}/advanced-settings",
+      "summary": "POST Update Event Type Advanced Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "event-settings",
+      "slug": "update-event-recurring-settings",
+      "operationId": "updateEventRecurringSettings",
+      "method": "POST",
+      "path": "/calendars/{id}/events/{event_id}/recurring-settings",
+      "summary": "POST Update Event Type Recurring Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "booking-fields",
+      "slug": "get-event-booking-fields",
+      "operationId": "getEventBookingFields",
+      "method": "GET",
+      "path": "/calendars/{id}/events/{event_id}/booking-fields",
+      "summary": "GET Get Event Type Booking Form Fields",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "booking-fields",
+      "slug": "save-event-booking-fields",
+      "operationId": "saveEventBookingFields",
+      "method": "POST",
+      "path": "/calendars/{id}/events/{event_id}/booking-fields",
+      "summary": "POST Save Event Type Booking Form Fields",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "event-availability",
+      "slug": "get-event-availability",
+      "operationId": "getEventAvailability",
+      "method": "GET",
+      "path": "/calendars/{id}/events/{event_id}/availability",
+      "summary": "GET Get Event Type Availability Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "event-availability",
+      "slug": "update-event-availability",
+      "operationId": "updateEventAvailability",
+      "method": "POST",
+      "path": "/calendars/{id}/events/{event_id}/availability",
+      "summary": "POST Update Event Type Availability Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "event-availability",
+      "slug": "get-event-available-slots",
+      "operationId": "getEventAvailableSlots",
+      "method": "GET",
+      "path": "/calendars/{id}/events/{event_id}/event-available-slots",
+      "summary": "GET Get Event Type Available Slots",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "event-availability",
+      "slug": "update-event-schedule-availability",
+      "operationId": "updateEventScheduleAvailability",
+      "method": "POST",
+      "path": "/calendars/{id}/events/{event_id}/event-availability",
+      "summary": "POST Update Event Type Availability (Pro schedule options)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "event-notifications",
+      "slug": "get-email-notifications",
+      "operationId": "getEmailNotifications",
+      "method": "GET",
+      "path": "/calendars/{id}/events/{event_id}/email-notifications",
+      "summary": "GET Get Event Type Email Notifications",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "event-notifications",
+      "slug": "save-email-notifications",
+      "operationId": "saveEmailNotifications",
+      "method": "POST",
+      "path": "/calendars/{id}/events/{event_id}/email-notifications",
+      "summary": "POST Save Event Type Email Notifications",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "event-notifications",
+      "slug": "clone-email-notifications",
+      "operationId": "cloneEmailNotifications",
+      "method": "POST",
+      "path": "/calendars/{id}/events/{event_id}/email-notifications/clone",
+      "summary": "POST Copy Email Notifications from Another Event Type",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "webhooks-sms",
+      "slug": "get-sms-notifications",
+      "operationId": "getSmsNotifications",
+      "method": "GET",
+      "path": "/calendars/{id}/events/{event_id}/sms-notifications",
+      "summary": "GET Get Event Type SMS Notifications",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "webhooks-sms",
+      "slug": "save-sms-notifications",
+      "operationId": "saveSmsNotifications",
+      "method": "POST",
+      "path": "/calendars/{id}/events/{event_id}/sms-notifications",
+      "summary": "POST Save Event Type SMS Notifications",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "webhooks-sms",
+      "slug": "clone-sms-notifications",
+      "operationId": "cloneSmsNotifications",
+      "method": "POST",
+      "path": "/calendars/{id}/events/{event_id}/sms-notifications/clone",
+      "summary": "POST Copy SMS Notifications from Another Event Type",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "webhooks-sms",
+      "slug": "list-webhooks",
+      "operationId": "listWebhooks",
+      "method": "GET",
+      "path": "/calendars/{id}/events/{event_id}/webhooks",
+      "summary": "GET List Event Type Webhook Feeds",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "webhooks-sms",
+      "slug": "save-webhook",
+      "operationId": "saveWebhook",
+      "method": "POST",
+      "path": "/calendars/{id}/events/{event_id}/webhooks",
+      "summary": "POST Save an Event Type Webhook Feed",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "webhooks-sms",
+      "slug": "clone-webhooks",
+      "operationId": "cloneWebhooks",
+      "method": "POST",
+      "path": "/calendars/{id}/events/{event_id}/webhooks/clone",
+      "summary": "POST Copy Webhook Feeds from Another Event Type",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "webhooks-sms",
+      "slug": "delete-webhook",
+      "operationId": "deleteWebhook",
+      "method": "DELETE",
+      "path": "/calendars/{id}/events/{event_id}/webhooks/{webhook_id}",
+      "summary": "DELETE Delete an Event Type Webhook Feed",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "event-integrations",
+      "slug": "list-integration-feeds",
+      "operationId": "listIntegrationFeeds",
+      "method": "GET",
+      "path": "/calendars/{id}/events/{event_id}/integrations",
+      "summary": "GET List Event Type Integration Feeds",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "event-integrations",
+      "slug": "clone-integration-feeds",
+      "operationId": "cloneIntegrationFeeds",
+      "method": "POST",
+      "path": "/calendars/{id}/events/{event_id}/integrations/clone",
+      "summary": "POST Copy Integration Feeds from Another Event Type",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "event-integrations",
+      "slug": "get-integration-feed",
+      "operationId": "getIntegrationFeed",
+      "method": "GET",
+      "path": "/calendars/{id}/events/{event_id}/integrations/{integration_id}",
+      "summary": "GET Get an Event Type Integration Feed",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "event-integrations",
+      "slug": "save-integration-feed",
+      "operationId": "saveIntegrationFeed",
+      "method": "POST",
+      "path": "/calendars/{id}/events/{event_id}/integrations/{integration_id}",
+      "summary": "POST Save an Event Type Integration Feed",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "event-integrations",
+      "slug": "delete-integration-feed",
+      "operationId": "deleteIntegrationFeed",
+      "method": "DELETE",
+      "path": "/calendars/{id}/events/{event_id}/integrations/{integration_id}",
+      "summary": "DELETE Delete an Event Type Integration Feed",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "event-integrations",
+      "slug": "get-integration-merge-fields",
+      "operationId": "getIntegrationMergeFields",
+      "method": "GET",
+      "path": "/calendars/{id}/events/{event_id}/integrations/{integration_id}/merge-fields",
+      "summary": "GET Get an Integration's Merge Fields",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "event-integrations",
+      "slug": "get-integration-field-options",
+      "operationId": "getIntegrationFieldOptions",
+      "method": "GET",
+      "path": "/calendars/{id}/events/{event_id}/integrations/{integration_id}/config-field-options",
+      "summary": "GET Get an Integration's Config Field Options",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "event-integrations",
+      "slug": "create-crm-taxonomy",
+      "operationId": "createCrmTaxonomy",
+      "method": "POST",
+      "path": "/calendars/{id}/events/{event_id}/integrations/{integration_id}/crm-taxonomy",
+      "summary": "POST Create a CRM Taxonomy for an Integration Feed",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "schedules",
+      "slug": "list-bookings",
+      "operationId": "listBookings",
+      "method": "GET",
+      "path": "/schedules",
+      "summary": "GET List Bookings (booked meetings)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "schedules",
+      "slug": "export-bookings",
+      "operationId": "exportBookings",
+      "method": "GET",
+      "path": "/schedules/export",
+      "summary": "GET Export Bookings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "schedules",
+      "slug": "get-crm-contact-prefill",
+      "operationId": "getCrmContactPrefill",
+      "method": "GET",
+      "path": "/schedules/crm-contact-prefill",
+      "summary": "GET Get FluentCRM Contact Prefill for a New Booking",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "schedules",
+      "slug": "search-crm-contacts",
+      "operationId": "searchCrmContacts",
+      "method": "GET",
+      "path": "/schedules/crm-contact-search",
+      "summary": "GET Search FluentCRM Contacts",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "schedules",
+      "slug": "get-booking",
+      "operationId": "getBooking",
+      "method": "GET",
+      "path": "/schedules/{id}",
+      "summary": "GET Get Booking",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "schedules",
+      "slug": "update-booking",
+      "operationId": "updateBooking",
+      "method": "PUT",
+      "path": "/schedules/{id}",
+      "summary": "PUT Patch Booking",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "schedules",
+      "slug": "delete-booking",
+      "operationId": "deleteBooking",
+      "method": "DELETE",
+      "path": "/schedules/{id}",
+      "summary": "DELETE Delete Booking",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "schedules",
+      "slug": "get-booking-activities",
+      "operationId": "getBookingActivities",
+      "method": "GET",
+      "path": "/schedules/{id}/activities",
+      "summary": "GET Get Booking Activity Log",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "schedules",
+      "slug": "get-booking-meta-info",
+      "operationId": "getBookingMetaInfo",
+      "method": "GET",
+      "path": "/schedules/{id}/meta-info",
+      "summary": "GET Get Booking Meta Info",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "schedules",
+      "slug": "get-booking-crm-contact",
+      "operationId": "getBookingCrmContact",
+      "method": "GET",
+      "path": "/schedules/{id}/crm-contact",
+      "summary": "GET Get the Booking's FluentCRM Contact",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "schedules",
+      "slug": "get-booking-crm-options",
+      "operationId": "getBookingCrmOptions",
+      "method": "GET",
+      "path": "/schedules/{id}/crm-options",
+      "summary": "GET Get FluentCRM Tag and List Options for a Booking",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "schedules",
+      "slug": "update-booking-crm-tags",
+      "operationId": "updateBookingCrmTags",
+      "method": "POST",
+      "path": "/schedules/{id}/crm-contact/tags",
+      "summary": "POST Update the Booking Contact's FluentCRM Tags",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "schedules",
+      "slug": "update-booking-crm-lists",
+      "operationId": "updateBookingCrmLists",
+      "method": "POST",
+      "path": "/schedules/{id}/crm-contact/lists",
+      "summary": "POST Update the Booking Contact's FluentCRM Lists",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "schedules",
+      "slug": "send-confirmation-email",
+      "operationId": "sendConfirmationEmail",
+      "method": "POST",
+      "path": "/schedules/{id}/send-confirmation-email",
+      "summary": "POST Send the Booking Confirmation Email",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "schedules",
+      "slug": "list-group-attendees",
+      "operationId": "listGroupAttendees",
+      "method": "GET",
+      "path": "/schedules/group-bookings/{group_id}/attendees",
+      "summary": "GET List a Group Booking's Attendees",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "schedules",
+      "slug": "list-booking-notes",
+      "operationId": "listBookingNotes",
+      "method": "GET",
+      "path": "/schedules/{id}/notes",
+      "summary": "GET List Booking Notes",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "schedules",
+      "slug": "add-booking-note",
+      "operationId": "addBookingNote",
+      "method": "POST",
+      "path": "/schedules/{id}/notes",
+      "summary": "POST Add a Booking Note",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "schedules",
+      "slug": "update-booking-note",
+      "operationId": "updateBookingNote",
+      "method": "PUT",
+      "path": "/schedules/{id}/notes/{note_id}",
+      "summary": "PUT Update a Booking Note",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "schedules",
+      "slug": "delete-booking-note",
+      "operationId": "deleteBookingNote",
+      "method": "DELETE",
+      "path": "/schedules/{id}/notes/{note_id}",
+      "summary": "DELETE Delete a Booking Note",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "bookings",
+      "slug": "get-bookings-index",
+      "operationId": "getBookingsIndex",
+      "method": "GET",
+      "path": "/bookings",
+      "summary": "GET Get Bookings (Bookings module index)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "bookings",
+      "slug": "get-bookable-event",
+      "operationId": "getBookableEvent",
+      "method": "GET",
+      "path": "/bookings/event/{event_id}",
+      "summary": "GET Get an Event Type for Booking",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "bookings",
+      "slug": "get-event-slots",
+      "operationId": "getEventSlots",
+      "method": "GET",
+      "path": "/bookings/slots/{event_id}",
+      "summary": "GET Get Open Slots for an Event Type",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "bookings",
+      "slug": "create-booking",
+      "operationId": "createBooking",
+      "method": "POST",
+      "path": "/bookings/create/{event_id}",
+      "summary": "POST Create a Booking for an Event Type",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "bookings",
+      "slug": "get-reschedule-slots",
+      "operationId": "getRescheduleSlots",
+      "method": "GET",
+      "path": "/bookings/reschedule/{event_id}/{id}/slots",
+      "summary": "GET Get Open Slots to Reschedule a Booking",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "bookings",
+      "slug": "reschedule-booking",
+      "operationId": "rescheduleBooking",
+      "method": "POST",
+      "path": "/bookings/reschedule/{event_id}/{id}",
+      "summary": "POST Reschedule a Booking",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "availability",
+      "slug": "list-availability-schedules",
+      "operationId": "listAvailabilitySchedules",
+      "method": "GET",
+      "path": "/availability",
+      "summary": "GET List Availability Schedules",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "availability",
+      "slug": "create-availability-schedule",
+      "operationId": "createAvailabilitySchedule",
+      "method": "POST",
+      "path": "/availability",
+      "summary": "POST Create Availability Schedule",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "availability",
+      "slug": "get-availability-schedule",
+      "operationId": "getAvailabilitySchedule",
+      "method": "GET",
+      "path": "/availability/{schedule_id}",
+      "summary": "GET Get Availability Schedule",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "availability",
+      "slug": "get-availability-schedule-usages",
+      "operationId": "getAvailabilityScheduleUsages",
+      "method": "GET",
+      "path": "/availability/{schedule_id}/usages",
+      "summary": "GET Get Availability Schedule Usages",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "availability",
+      "slug": "update-availability-schedule",
+      "operationId": "updateAvailabilitySchedule",
+      "method": "POST",
+      "path": "/availability/{schedule_id}",
+      "summary": "POST Update Availability Schedule",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "availability",
+      "slug": "update-availability-schedule-title",
+      "operationId": "updateAvailabilityScheduleTitle",
+      "method": "POST",
+      "path": "/availability/{schedule_id}/update-title",
+      "summary": "POST Rename Availability Schedule",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "availability",
+      "slug": "update-availability-schedule-default",
+      "operationId": "updateAvailabilityScheduleDefault",
+      "method": "POST",
+      "path": "/availability/{schedule_id}/update-status",
+      "summary": "POST Update an Availability Schedule's Default Status",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "availability",
+      "slug": "clone-availability-schedule",
+      "operationId": "cloneAvailabilitySchedule",
+      "method": "POST",
+      "path": "/availability/{schedule_id}/clone",
+      "summary": "POST Clone Availability Schedule",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "availability",
+      "slug": "delete-availability-schedule",
+      "operationId": "deleteAvailabilitySchedule",
+      "method": "DELETE",
+      "path": "/availability/{schedule_id}",
+      "summary": "DELETE Delete Availability Schedule",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "integrations",
+      "slug": "list-integrations",
+      "operationId": "listIntegrations",
+      "method": "GET",
+      "path": "/integrations",
+      "summary": "GET List Global Integrations",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "integrations",
+      "slug": "save-integration",
+      "operationId": "saveIntegration",
+      "method": "POST",
+      "path": "/integrations",
+      "summary": "POST Update Global Integration Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "integrations",
+      "slug": "get-host-integration-settings",
+      "operationId": "getHostIntegrationSettings",
+      "method": "GET",
+      "path": "/integrations/{host_id}/settings",
+      "summary": "GET Get a Host's Integration Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "integrations",
+      "slug": "save-host-integration-settings",
+      "operationId": "saveHostIntegrationSettings",
+      "method": "POST",
+      "path": "/integrations/{host_id}/settings",
+      "summary": "POST Save a Host's Integration Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "integrations",
+      "slug": "disconnect-host-integration",
+      "operationId": "disconnectHostIntegration",
+      "method": "POST",
+      "path": "/integrations/{host_id}/disconnect",
+      "summary": "POST Disconnect (revoke) a Host's Integration",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "integrations",
+      "slug": "get-integrations-menu",
+      "operationId": "getIntegrationsMenu",
+      "method": "GET",
+      "path": "/integrations/menu",
+      "summary": "GET Get the Integrations Menu",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "integrations",
+      "slug": "list-zoom-users",
+      "operationId": "listZoomUsers",
+      "method": "GET",
+      "path": "/integrations/zoom/connected-users",
+      "summary": "GET List Connected Zoom Accounts",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "integrations",
+      "slug": "save-zoom-account",
+      "operationId": "saveZoomAccount",
+      "method": "POST",
+      "path": "/integrations/zoom/save-user-account",
+      "summary": "POST Connect a Zoom Account",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "integrations",
+      "slug": "disconnect-zoom-account",
+      "operationId": "disconnectZoomAccount",
+      "method": "POST",
+      "path": "/integrations/zoom/disconnect",
+      "summary": "POST Disconnect a Zoom Account",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "calendar-integrations",
+      "slug": "list-remote-calendars",
+      "operationId": "listRemoteCalendars",
+      "method": "GET",
+      "path": "/calendars/{id}/integrations/remote-calendars",
+      "summary": "GET List a Calendar's Connected Remote Calendars (Google, Outlook, CalDAV)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "calendar-integrations",
+      "slug": "update-remote-calendar-conflicts",
+      "operationId": "updateRemoteCalendarConflicts",
+      "method": "POST",
+      "path": "/calendars/{id}/integrations/remote-calendars/patch-conflicts",
+      "summary": "POST Patch Remote Calendar Conflict Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "calendar-integrations",
+      "slug": "update-remote-calendar-settings",
+      "operationId": "updateRemoteCalendarSettings",
+      "method": "POST",
+      "path": "/calendars/{id}/integrations/remote-calendars/patch-settings",
+      "summary": "POST Patch Remote Calendar Additional Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "calendar-integrations",
+      "slug": "update-remote-calendar-sync",
+      "operationId": "updateRemoteCalendarSync",
+      "method": "POST",
+      "path": "/calendars/{id}/integrations/remote-calendars/sync-settings",
+      "summary": "POST Sync Remote Calendar Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "calendar-integrations",
+      "slug": "disconnect-remote-calendar",
+      "operationId": "disconnectRemoteCalendar",
+      "method": "POST",
+      "path": "/calendars/{id}/integrations/remote-calendars/disconnect-calendar",
+      "summary": "POST Disconnect a Remote Calendar",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "calendar-integrations",
+      "slug": "add-caldav-credential",
+      "operationId": "addCaldavCredential",
+      "method": "POST",
+      "path": "/calendars/{id}/integrations/remote-calendars/cal-dav-auth",
+      "summary": "POST Connect a CalDAV Calendar",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "calendar-integrations",
+      "slug": "get-calendar-zoom-connection",
+      "operationId": "getCalendarZoomConnection",
+      "method": "GET",
+      "path": "/calendars/{id}/integrations/zoom-connection",
+      "summary": "GET Get a Calendar's Zoom Connection",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "calendar-integrations",
+      "slug": "add-calendar-zoom-connection",
+      "operationId": "addCalendarZoomConnection",
+      "method": "POST",
+      "path": "/calendars/{id}/integrations/zoom-connection/add",
+      "summary": "POST Connect Zoom to a Calendar",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "calendar-integrations",
+      "slug": "disconnect-calendar-zoom-connection",
+      "operationId": "disconnectCalendarZoomConnection",
+      "method": "POST",
+      "path": "/calendars/{id}/integrations/zoom-connection/disconnect",
+      "summary": "POST Disconnect Zoom from a Calendar",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "calendar-integrations",
+      "slug": "get-calendar-integration-feed",
+      "operationId": "getCalendarIntegrationFeed",
+      "method": "GET",
+      "path": "/calendars/{id}/integrations/general_integration_feed",
+      "summary": "GET Get a Calendar's General Integration Feed",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "calendar-integrations",
+      "slug": "disconnect-calendar-integration-feed",
+      "operationId": "disconnectCalendarIntegrationFeed",
+      "method": "POST",
+      "path": "/calendars/{id}/integrations/general_integration_feed/disconnect",
+      "summary": "POST Disconnect a Calendar's General Integration Feed",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "payments",
+      "slug": "get-event-payment-settings",
+      "operationId": "getEventPaymentSettings",
+      "method": "GET",
+      "path": "/calendars/{id}/events/{event_id}/payment-settings",
+      "summary": "GET Get Event Type Payment Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "payments",
+      "slug": "update-event-payment-settings",
+      "operationId": "updateEventPaymentSettings",
+      "method": "POST",
+      "path": "/calendars/{id}/events/{event_id}/payment-settings",
+      "summary": "POST Update Event Type Payment Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "payments",
+      "slug": "update-booking-transaction",
+      "operationId": "updateBookingTransaction",
+      "method": "PUT",
+      "path": "/schedules/{id}/transactions/{transaction_id}",
+      "summary": "PUT Update a Booking's Payment Transaction",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "payments",
+      "slug": "list-payment-methods",
+      "operationId": "listPaymentMethods",
+      "method": "GET",
+      "path": "/integrations/settings/payment-methods/all",
+      "summary": "GET List Payment Methods",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "payments",
+      "slug": "get-payment-method-settings",
+      "operationId": "getPaymentMethodSettings",
+      "method": "GET",
+      "path": "/integrations/settings/payment-methods",
+      "summary": "GET Get Payment Method Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "payments",
+      "slug": "save-payment-method-settings",
+      "operationId": "savePaymentMethodSettings",
+      "method": "POST",
+      "path": "/integrations/settings/payment-methods",
+      "summary": "POST Save Payment Method Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "payments",
+      "slug": "get-payment-connect-info",
+      "operationId": "getPaymentConnectInfo",
+      "method": "GET",
+      "path": "/integrations/settings/payment-methods/connect/info",
+      "summary": "GET Get Payment Method Connection Info",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "payments",
+      "slug": "disconnect-payment-method",
+      "operationId": "disconnectPaymentMethod",
+      "method": "POST",
+      "path": "/integrations/settings/payment-methods/disconnect",
+      "summary": "POST Disconnect a Payment Method",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "payments",
+      "slug": "list-currencies",
+      "operationId": "listCurrencies",
+      "method": "GET",
+      "path": "/integrations/settings/payment-methods/currencies",
+      "summary": "GET List Currencies",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "payments",
+      "slug": "list-woo-products",
+      "operationId": "listWooProducts",
+      "method": "GET",
+      "path": "/integrations/options/woo-products",
+      "summary": "GET List WooCommerce Products",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-general-settings",
+      "operationId": "getGeneralSettings",
+      "method": "GET",
+      "path": "/settings/general",
+      "summary": "GET Get General Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-general-settings",
+      "operationId": "saveGeneralSettings",
+      "method": "POST",
+      "path": "/settings/general",
+      "summary": "POST Save General Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-payment-settings",
+      "operationId": "savePaymentSettings",
+      "method": "POST",
+      "path": "/settings/payment",
+      "summary": "POST Save Global Payment Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-theme-settings",
+      "operationId": "saveThemeSettings",
+      "method": "POST",
+      "path": "/settings/theme",
+      "summary": "POST Save Theme Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-settings-menu",
+      "operationId": "getSettingsMenu",
+      "method": "GET",
+      "path": "/settings/menu",
+      "summary": "GET Get the Settings Menu",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-global-modules",
+      "operationId": "getGlobalModules",
+      "method": "GET",
+      "path": "/settings/global-modules",
+      "summary": "GET Get Global Modules (feature switches)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-global-modules",
+      "operationId": "saveGlobalModules",
+      "method": "POST",
+      "path": "/settings/global-modules",
+      "summary": "POST Save Global Modules (feature switches)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "list-pages",
+      "operationId": "listPages",
+      "method": "GET",
+      "path": "/settings/pages",
+      "summary": "GET List WordPress Pages",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-addons-settings",
+      "operationId": "saveAddonsSettings",
+      "method": "POST",
+      "path": "/settings/addons-settings",
+      "summary": "POST Save Add-on Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "install-plugin",
+      "operationId": "installPlugin",
+      "method": "POST",
+      "path": "/settings/install-plugin",
+      "summary": "POST Install Plugin",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-optin",
+      "operationId": "saveOptin",
+      "method": "POST",
+      "path": "/settings/optin",
+      "summary": "POST Update Opt-in",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-mcp-settings",
+      "operationId": "getMcpSettings",
+      "method": "GET",
+      "path": "/settings/mcp",
+      "summary": "GET Get the Site-side MCP Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-mcp-settings",
+      "operationId": "saveMcpSettings",
+      "method": "POST",
+      "path": "/settings/mcp",
+      "summary": "POST Save the Site-side MCP Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "install-mcp-adapter",
+      "operationId": "installMcpAdapter",
+      "method": "POST",
+      "path": "/settings/mcp/install-adapter",
+      "summary": "POST Install the MCP Adapter Plugin",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "list-team-members",
+      "operationId": "listTeamMembers",
+      "method": "GET",
+      "path": "/settings/team",
+      "summary": "GET List Team Members",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "update-team-member",
+      "operationId": "updateTeamMember",
+      "method": "POST",
+      "path": "/settings/team",
+      "summary": "POST Update a Team Member's Permissions",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "delete-team-member",
+      "operationId": "deleteTeamMember",
+      "method": "DELETE",
+      "path": "/settings/team/{id}",
+      "summary": "DELETE Remove a Team Member",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-spam-protection",
+      "operationId": "getSpamProtection",
+      "method": "GET",
+      "path": "/settings/spam-protection",
+      "summary": "GET Get Spam Protection Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-spam-protection",
+      "operationId": "saveSpamProtection",
+      "method": "POST",
+      "path": "/settings/spam-protection",
+      "summary": "POST Save Spam Protection Settings",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "verify-spam-protection-keys",
+      "operationId": "verifySpamProtectionKeys",
+      "method": "POST",
+      "path": "/settings/spam-protection/verify-keys",
+      "summary": "POST Verify Spam Protection (captcha) Keys",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "get-license",
+      "operationId": "getLicense",
+      "method": "GET",
+      "path": "/settings/license",
+      "summary": "GET Get the Pro License Status",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "save-license",
+      "operationId": "saveLicense",
+      "method": "POST",
+      "path": "/settings/license",
+      "summary": "POST Save the Pro License",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "settings",
+      "slug": "deactivate-license",
+      "operationId": "deactivateLicense",
+      "method": "DELETE",
+      "path": "/settings/license",
+      "summary": "DELETE Deactivate the Pro License",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "list-remaining-hosts",
+      "operationId": "listRemainingHosts",
+      "method": "GET",
+      "path": "/admin/remaining-hosts",
+      "summary": "GET List Remaining Hosts",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "list-other-hosts",
+      "operationId": "listOtherHosts",
+      "method": "GET",
+      "path": "/admin/other-hosts",
+      "summary": "GET List Other Hosts",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "admin",
+      "slug": "list-all-hosts",
+      "operationId": "listAllHosts",
+      "method": "GET",
+      "path": "/admin/all-hosts",
+      "summary": "GET List All Hosts",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "get-reports",
+      "operationId": "getReports",
+      "method": "GET",
+      "path": "/reports",
+      "summary": "GET Get Booking Report Totals (startTime and endTime together)",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "get-graph-reports",
+      "operationId": "getGraphReports",
+      "method": "GET",
+      "path": "/reports/graph-reports",
+      "summary": "GET Get Booking Graph Data (date_range[])",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    },
+    {
+      "group": "reports",
+      "slug": "list-activities",
+      "operationId": "listActivities",
+      "method": "GET",
+      "path": "/reports/activities",
+      "summary": "GET List the Latest 100 Booking Activities",
+      "security": [
+        "ApplicationPasswords"
+      ],
+      "deprecated": false
+    }
+  ]
+}

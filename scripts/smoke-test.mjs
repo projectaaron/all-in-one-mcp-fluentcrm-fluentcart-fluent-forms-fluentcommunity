@@ -21,6 +21,7 @@ const READS = {
   fluentforms: { tool: 'forms_forms_list', args: { per_page: 1 }, label: 'Fluent Forms: list 1 form' },
   fluentcommunity: { tool: 'community_spaces_list', args: { per_page: 1 }, label: 'FluentCommunity: list 1 space' },
   fluentsupport: { tool: 'support_mailboxes_list', args: { per_page: 1 }, label: 'Fluent Support: list 1 mailbox' },
+  fluentbooking: { tool: 'booking_calendars_list', args: { per_page: 1 }, label: 'FluentBooking: list 1 calendar' },
 };
 
 // Pin the individual surface — the READS table uses individual tool names,

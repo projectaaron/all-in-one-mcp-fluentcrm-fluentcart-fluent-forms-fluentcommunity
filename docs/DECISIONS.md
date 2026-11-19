@@ -825,3 +825,37 @@ the line the lock list draws.
 five methods on one path; each is its own operation so the live check stays
 exact, and the DELETE variants are confirm-gated by the DELETE rule even
 though they are harmless — a consistent rule beats a special case.
+
+## 2026-11-19 — FluentBooking (seventh product)
+
+**Source: the official REST reference, curated.** FluentBooking publishes
+hand-written module pages at <https://developers.fluentbooking.com/rest-api/>
+(no OpenAPI specs) covering free and Pro routes. The inventory is curated from
+those pages into `scripts/gen-fluentbooking-docs.mjs`, with paths exactly as
+documented and slugs named from the operation titles. The Payments page lists
+`GET /calendars/{id}/events/{event_id}/payment-settings` twice (the core and
+Pro handlers of one route); it is one operation, so 139 operations from 140
+doc rows. The generator keeps the live drift check of the other generators
+(`--site`); it was not run for this release because the building session
+could not reach a FluentBooking site, so the first `--site` run may rename a
+path placeholder or add a route the docs omit.
+
+**Areas follow what a host does, not the docs' 18 modules.** Calendars (with
+sharing), event types (details, limits, assignments, fields, availability),
+notifications (email, SMS, webhooks, integration feeds), meetings (the docs'
+"schedules" plus the admin booking routes: create, reschedule, slots),
+availability schedules, integrations (global and per calendar), payments,
+settings (with hosts) and read-only reports: 9 areas. "Schedules" became
+`booking_meetings` because FluentBooking's "schedules" are booked meetings
+while "availability" holds the working-hours schedules; the docs' own word
+would have confused the two.
+
+**Gating.** DELETEs and the disconnects gate by rule. Added: the site-side
+MCP settings and MCP-adapter installer (second AI surface), team member
+permission changes (privilege), payment transaction edits (money), and
+resending a confirmation email (a one-off message to a real person, as in
+FluentCRM). Creating, rescheduling and patching a single booking stay
+ungated, like a single Fluent Support reply. `booking_settings_install_plugin`
+is locked by default: the docs don't say which plugin it installs, so it is
+treated like the arbitrary-slug installers in Fluent Forms and FluentCart
+until a live check shows otherwise.

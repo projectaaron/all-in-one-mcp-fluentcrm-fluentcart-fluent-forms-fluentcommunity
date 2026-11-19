@@ -200,7 +200,7 @@ describe('support_report', () => {
     expect(md).toContain(`- Version: ${SERVER_VERSION}`);
     expect(md).toContain('- Transport: stdio');
     expect(md).toContain('- Tool mode: individual (1298 tools registered)');
-    expect(md).toContain('- Locked tools: 12 (the default list)');
+    expect(md).toContain('- Locked tools: 13 (the default list)');
     expect(md).toContain('- Site URL: https://[site]/blog');
     expect(md).toContain('shared FLUENT_API_USERNAME/PASSWORD set; per-product overrides for FLUENTCRM');
     expect(md).toContain('FLUENT_API_PASSWORD'); // the *name* is listed…

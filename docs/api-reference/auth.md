@@ -2,7 +2,7 @@
 
 Verified against each product's official docs on 2026-07-16 (not guessed;
 WP Social Ninja, Fluent Forms and FluentCommunity verified against a live
-install and the plugin source on 2026-09-10; Fluent Support on 2026-11-03). All products authenticate with **WordPress
+install and the plugin source on 2026-09-10; Fluent Support on 2026-11-03; FluentBooking against its official docs on 2026-11-19). All products authenticate with **WordPress
 Application Passwords over HTTP Basic auth** — but the credentials are
 created in different places and carry different permission models.
 
@@ -139,6 +139,23 @@ created in different places and carry different permission models.
   ticket tags, agent groups, advanced reports, time tracking, custom fields,
   scheduled replies, merge/split) return 404 without Fluent Support Pro.
 
+## FluentBooking
+
+- **Source:** <https://developers.fluentbooking.com/rest-api/> (Getting
+  Started and module pages). Generated index: [`fluentbooking.md`](./fluentbooking.md).
+- **Namespace:** `https://<site>/wp-json/fluent-booking/v2`
+- **Model:** HTTP Basic `username:application_password` for admin, settings
+  and server-to-server calls (the docs also allow a WordPress nonce in
+  `X-WP-Nonce` for browser clients). Each module carries a policy:
+  `CalendarPolicy`, `CalendarEventPolicy`, `MeetingPolicy`,
+  `AvailabilityPolicy`, `SettingsPolicy` / `PlatformPolicy` /
+  `SuperAdminPolicy`, `AdminPolicy`.
+- **Scoping:** an Application Password for a host (not an administrator)
+  scopes the API to what FluentBooking lets that host manage. Pro-only
+  routes (assignments, advanced and recurring settings, booking notes, team,
+  spam protection, license, calendar integrations, SMS, webhooks and most
+  payments) return 404 without FluentBooking Pro.
+
 ## What this server does with it
 
 - Site URL + **one shared credential pair** come from environment variables
@@ -158,6 +175,7 @@ created in different places and carry different permission models.
 | `FLUENTCRM_API_USERNAME` / `FLUENTCRM_API_PASSWORD` | FluentCRM | optional override — e.g. a scoped FluentCRM manager user |
 | `FLUENTCART_API_USERNAME` / `FLUENTCART_API_PASSWORD` | FluentCart | optional override |
 | `FLUENTSUPPORT_API_USERNAME` / `FLUENTSUPPORT_API_PASSWORD` | Fluent Support | optional override — e.g. a support-agent user |
+| `FLUENTBOOKING_API_USERNAME` / `FLUENTBOOKING_API_PASSWORD` | FluentBooking | optional override — e.g. a host user |
 
 401/403 troubleshooting lives in the README; the short version: 401 means
 the Basic credentials are wrong or the key was revoked; 403 usually means

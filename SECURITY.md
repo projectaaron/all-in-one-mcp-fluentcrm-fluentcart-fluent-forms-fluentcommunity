@@ -30,7 +30,7 @@ community.** Read the notes below before exposing it anywhere.
   honestly (`readOnlyHint`, `destructiveHint`) and gates 231 destructive
   operations behind `confirm: true` — including every operation that installs
   or activates plugin code, grants a user manager rights or permissions, or
-  mints an API key — but the human approval prompt is your client's. Twelve
+  mints an API key — but the human approval prompt is your client's. Thirteen
   catastrophic operations are locked by default and refuse even with
   `confirm: true` (see `FLUENT_LOCKED_TOOLS` in `.env.example`).
 - **Prompt injection is the threat model.** Content the tools read back
@@ -88,4 +88,5 @@ fixed, if you want it.
   documented as such and the public submit is confirm-gated. Fluent Support's
   `support_portal_*` tools act as the signed-in *customer* (portal session
   policy), and its `support_utilities` public receivers accept what external
-  services post under a per-integration token.
+  services post under a per-integration token. FluentBooking's booking
+  create, reschedule and update tools act on real attendees' meetings.

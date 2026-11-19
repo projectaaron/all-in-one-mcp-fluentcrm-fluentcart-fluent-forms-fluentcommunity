@@ -8,5 +8,6 @@ import { wpsocialninja } from './wpsocialninja/index.js';
 import { fluentforms } from './fluentforms/index.js';
 import { fluentcommunity } from './fluentcommunity/index.js';
 import { fluentsupport } from './fluentsupport/index.js';
+import { fluentbooking } from './fluentbooking/index.js';
 
-export const PRODUCTS: ProductModule[] = [fluentcrm, fluentcart, wpsocialninja, fluentforms, fluentcommunity, fluentsupport];
+export const PRODUCTS: ProductModule[] = [fluentcrm, fluentcart, wpsocialninja, fluentforms, fluentcommunity, fluentsupport, fluentbooking];

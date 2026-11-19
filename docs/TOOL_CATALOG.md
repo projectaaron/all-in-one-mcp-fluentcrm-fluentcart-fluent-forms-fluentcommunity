@@ -228,6 +228,32 @@ Example calls:
 - `support_portal`: `{"name":"support_portal_list_tickets","arguments":{"per_page":5}}`
 - `support_utilities`: `{"name":"support_utilities_list_cron_events","arguments":{"per_page":5}}`
 
+## FluentBooking (`booking_*`, 9 areas, 139 tools)
+
+| Area | Class | Tools | Description |
+|------|-------|-------|-------------|
+| `booking_calendars` | read/write/delete | 13 | Calendars (a host's booking page): list, create, update and delete, add, clone and order their event types, and the sharing and landing page settings. |
+| `booking_events` | read/write/delete | 15 | Event types (what people book): read, patch and delete, details, limits, host assignments, advanced and recurring settings, booking form fields, and per-event availability and open slots. |
+| `booking_notifications` | read/write/delete | 18 | Per-event automations: email and SMS notifications, webhook feeds, and integration feeds (FluentCRM and other connected apps), including copying them from another event type. |
+| `booking_meetings` | read/write/delete | 25 | Booked meetings: list, search and export, read, patch and delete, create and reschedule a booking, open slots, notes, activity, group attendees, confirmation emails, and the attendee's FluentCRM contact, tags and lists. |
+| `booking_availability` | read/write/delete | 9 | Availability schedules (working hours): list, create, update, rename, clone, make default and delete, and see which event types use them. |
+| `booking_integrations` | read/write/delete | 20 | Connected services: global integrations, per-host integration settings, Zoom accounts, and each calendar's remote calendars (Google, Outlook, CalDAV), conflict checking and Zoom connection. |
+| `booking_payments` | read/write/delete | 10 | Paid bookings: an event type's payment settings, payment methods and their connection, currencies, WooCommerce products, and a booking's payment transaction. |
+| `booking_settings` | read/write/delete | 26 | Global settings: general, payment and theme settings, feature modules, add-ons, team members and hosts, spam protection, the Pro license, and the site-side MCP adapter. |
+| `booking_reports` | read | 3 | Read-only reporting: booking totals for a period, graph data, and the latest booking activity. |
+
+Example calls:
+
+- `booking_calendars`: `{"name":"booking_calendars_list","arguments":{"per_page":5}}`
+- `booking_events`: `{"name":"booking_events_get","arguments":{"id":123,"event_id":123}}`
+- `booking_notifications`: `{"name":"booking_notifications_list_webhooks","arguments":{"id":123,"event_id":123,"per_page":5}}`
+- `booking_meetings`: `{"name":"booking_meetings_list","arguments":{"per_page":5}}`
+- `booking_availability`: `{"name":"booking_availability_list_schedules","arguments":{"per_page":5}}`
+- `booking_integrations`: `{"name":"booking_integrations_list","arguments":{"per_page":5}}`
+- `booking_payments`: `{"name":"booking_payments_list_methods","arguments":{"per_page":5}}`
+- `booking_settings`: `{"name":"booking_settings_list_pages","arguments":{"per_page":5}}`
+- `booking_reports`: `{"name":"booking_reports_list_activities","arguments":{"per_page":5}}`
+
 ## Server built-ins (6 tools)
 
 | Tool | Class | Description |
@@ -243,4 +269,4 @@ Examples: `{"name": "verify_setup", "arguments": {}}` ·
 `{"name": "tool_map", "arguments": {"search": "refund"}}` ·
 `{"name": "wp_media_upload_from_url", "arguments": {"source_url": "https://cdn.example.com/photo.jpg", "alt_text": "Product photo"}}`
 
-**Total: 1564 tools** (`FLUENT_TOOL_MODE=grouped` serves 87 instead).
+**Total: 1703 tools** (`FLUENT_TOOL_MODE=grouped` serves 96 instead).

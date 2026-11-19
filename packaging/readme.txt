@@ -6,7 +6,7 @@ Support: https://upfluent.io/support/  (or email support@upfluent.io)
 Source and issues: https://github.com/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity
 
 Connect Claude to FluentCRM, FluentCart, Fluent Forms, FluentCommunity,
-Fluent Support and WP Social Ninja on your WordPress site: every documented REST endpoint as an
+Fluent Support, FluentBooking and WP Social Ninja on your WordPress site: every documented REST endpoint as an
 individual tool, with confirm gates on every destructive operation.
 
 FREE FOR A LIMITED TIME. This build is being given away during the
@@ -73,7 +73,7 @@ https://github.com/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms
 
 Every hard-to-undo tool (deletes, refunds, cancels, mass sends, plugin
 installs, permission changes) refuses to run without confirm: true, and
-twelve catastrophic operations are locked outright. Keep Claude Desktop on
+thirteen catastrophic operations are locked outright. Keep Claude Desktop on
 "Allow once" for writes. Full details: the Safety and Disclaimer sections
 of the README at the repository link above.
 

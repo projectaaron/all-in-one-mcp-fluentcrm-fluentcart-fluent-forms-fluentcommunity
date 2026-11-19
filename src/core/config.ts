@@ -52,6 +52,9 @@ export const DEFAULT_LOCKED_TOOLS = [
   // Same reason: FluentCart's addon installers fetch and install plugin code.
   'cart_settings_install_plugin_addon',
   'cart_settings_install_payment_addon',
+  // FluentBooking's settings installer: its docs don't say which plugin it
+  // installs, so it is treated like the arbitrary-slug installers above.
+  'booking_settings_install_plugin',
   // Mints a standing REST API key — a persistent credential a compromised
   // session could hand to someone else. Create keys in wp-admin instead.
   'crm_settings_create_rest_key',

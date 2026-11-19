@@ -1,12 +1,12 @@
-# All-In-One MCP for Fluent Suite: FluentCRM, FluentCart, Fluent Forms, FluentCommunity, Fluent Support & WP Social Ninja
+# All-In-One MCP for Fluent Suite: FluentCRM, FluentCart, Fluent Forms, FluentCommunity, Fluent Support, FluentBooking & WP Social Ninja
 
 [![Sponsored by upfluent.io](https://img.shields.io/badge/sponsored%20by-upfluent.io-2563eb)](https://upfluent.io)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
-[![Tools](https://img.shields.io/badge/tools-1%2C564-informational)](docs/TOOL_MAP.md)
+[![Tools](https://img.shields.io/badge/tools-1%2C703-informational)](docs/TOOL_MAP.md)
 [![Latest release](https://img.shields.io/github/v/release/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity?label=download)](https://github.com/projectaaron/all-in-one-mcp-fluentcrm-fluentcart-fluent-forms-fluentcommunity/releases/latest)
 
 **Let your AI assistant run your WordPress business** — the CRM, the store,
-the forms, the community, the helpdesk — through one safe, complete
+the forms, the community, the helpdesk, the calendar — through one safe, complete
 [MCP](https://modelcontextprotocol.io) server.
 
 All-In-One MCP for Fluent Suite connects Claude (or any MCP client) to the WPManageNinja plugin
@@ -14,11 +14,12 @@ suite on your WordPress site: **[FluentCRM](https://fluentcrm.com/?ref=4618)**,
 **[FluentCart](https://fluentcart.com/?by=272)**,
 **[Fluent Forms](https://fluentforms.com/?ref=4618)**,
 **[FluentCommunity](https://fluentcommunity.co/?ref=4618)**,
-**[Fluent Support](https://fluentsupport.com/?ref=4618)**, and
-**[WP Social Ninja](https://wpsocialninja.com/?ref=4618)**. Every one of their **1,551
+**[Fluent Support](https://fluentsupport.com/?ref=4618)**,
+**[FluentBooking](https://fluentbooking.com/?ref=4618)**, and
+**[WP Social Ninja](https://wpsocialninja.com/?ref=4618)**. Every one of their **1,690
 documented REST endpoints** is its own clearly named tool
 (`crm_contacts_list`, `cart_orders_refund`, `forms_submissions_list`,
-`community_spaces_list`, `support_tickets_list`, …), a built-in `tool_map` answers "which tool do I
+`community_spaces_list`, `support_tickets_list`, `booking_meetings_list`, …), a built-in `tool_map` answers "which tool do I
 need?" in one call, partial updates can't silently wipe data, and every risky
 operation is confirm-gated.
 
@@ -82,6 +83,7 @@ see [How this compares](#how-this-compares-to-the-native-fluent-mcps).
   [Fluent Forms](https://fluentforms.com/?ref=4618),
   [FluentCommunity](https://fluentcommunity.co/?ref=4618),
   [Fluent Support](https://fluentsupport.com/?ref=4618),
+  [FluentBooking](https://fluentbooking.com/?ref=4618),
   [WP Social Ninja](https://wpsocialninja.com/?ref=4618) (free or Pro —
   Pro-only endpoints simply return 404 without the Pro plugin).
 - Your site must use **https://** (WordPress only offers Application
@@ -310,12 +312,12 @@ API-key minting, and the public form-submit that fires real notifications. Calle
 nothing, and explains what would have happened. Annotations are accurate per
 operation — every read-only tool really is `readOnlyHint: true`.
 
-**Some things no agent should ever do.** Twelve operations are locked by
+**Some things no agent should ever do.** Thirteen operations are locked by
 default and refuse even with `confirm: true`: full CRM wipe
 (`crm_settings_reset_database`), audience-wide contact delete, REST-key
 creation and deletion, the test delete resolver, payment-method disconnect,
 license-key regeneration, WP Social Ninja's delete-all-data, and the plugin
-installers in Fluent Forms and FluentCart (they fetch and run new code on
+installers in Fluent Forms, FluentCart and FluentBooking settings (they fetch and run new code on
 your site). They stay visible (🔒 in the map) so sessions get a clear refusal
 instead of a mystery. Adjust with `FLUENT_LOCKED_TOOLS`.
 
@@ -443,6 +445,18 @@ see [API references](#api-references).
 > as the signed-in customer, not as an administrator. See
 > [auth.md](docs/api-reference/auth.md).
 
+### [FluentBooking](https://fluentbooking.com/?ref=4618) — `booking_*` (9 areas, 139 tools)
+
+| Area | What it manages |
+|------|-----------------|
+| `booking_calendars` | Calendars (booking pages): create, update, delete⚠, add, clone and order event types, sharing and landing page |
+| `booking_events` | Event types: details, limits, host assignments, advanced and recurring settings, booking form fields, availability and open slots |
+| `booking_meetings` | Booked meetings: list, search, export, create, reschedule, update, delete⚠, notes, activity, group attendees, confirmation emails, FluentCRM contact, tags and lists |
+| `booking_availability` | Working-hours schedules: create, update, rename, clone, make default, delete⚠, usages |
+| `booking_notifications` | Per-event email and SMS notifications, webhooks, integration feeds |
+| `booking_integrations` · `booking_payments` | Global and per-host integrations, Zoom, remote calendars (Google, Outlook, CalDAV), disconnects⚠; payment settings, methods, currencies, transactions⚠ |
+| `booking_settings` · `booking_reports` | General, theme and module settings, team members⚠, hosts, spam protection, license, MCP adapter⚠; read-only booking reports |
+
 ### [WP Social Ninja](https://wpsocialninja.com/?ref=4618) — `social_*` (9 areas, 126 tools)
 
 | Area | What it manages |
@@ -458,14 +472,13 @@ see [API references](#api-references).
 ## Roadmap: more Fluent products
 
 Covered today: FluentCRM, FluentCart, Fluent Forms, FluentCommunity, Fluent
-Support and WP Social Ninja. The rest of the WPManageNinja lineup, in the order they are
+Support, FluentBooking and WP Social Ninja. The rest of the WPManageNinja lineup, in the order they are
 likely to land. Each product is a self-contained module (see
 [`docs/EXTENDING.md`](docs/EXTENDING.md)), so adding one never touches the
 core or the existing tools.
 
 | Product | Status | What it would cover |
 |---------|--------|---------------------|
-| **FluentBooking** | Coming soon | Calendars, events, bookings, availability, hosts |
 | **FluentBoards** | Coming soon | Boards, stages, tasks, comments, members, time tracking |
 | **FluentAffiliate** | Coming soon | Affiliates, referrals, commissions, payouts |
 | **Paymattic** | Planned | Payment forms, submissions, subscriptions, donors |
@@ -487,6 +500,7 @@ documents publicly. The schemas live with them, not here:
 | Fluent Forms | [developers.fluentforms.com/api/endpoints](https://developers.fluentforms.com/api/endpoints/) |
 | FluentCommunity | [GitHub: fluent-community-developer-docs](https://github.com/WPManageNinja/fluent-community-developer-docs) |
 | Fluent Support | [fluentsupport.com/rest-api](https://fluentsupport.com/rest-api/) (a subset; the inventory comes from the live route index) · [developers.fluentsupport.com](https://developers.fluentsupport.com/) |
+| FluentBooking | [developers.fluentbooking.com/rest-api](https://developers.fluentbooking.com/rest-api/) |
 | WP Social Ninja | [GitHub: wpsocialninja-docs](https://github.com/WPManageNinja/wpsocialninja-docs) |
 
 All of WPManageNinja's public repositories: <https://github.com/WPManageNinja>.
@@ -509,14 +523,14 @@ pages, since their coverage grows.
 | | Native Fluent MCPs (FluentHub / per-product) | All-In-One MCP for Fluent Suite |
 |---|---|---|
 | **Runs where** | Inside WordPress, as plugin code (FluentHub or the WordPress MCP Adapter; needs WordPress 6.9+ for the Abilities API) | Outside WordPress: Claude Desktop extension, local Node process, or a Cloudflare Worker. Nothing installed on the site. |
-| **Products covered** | FluentCRM, FluentCart, Fluent Forms, Fluent Support, FluentBoards. FluentCommunity and WP Social Ninja: none announced. | FluentCRM, FluentCart, Fluent Forms, FluentCommunity, Fluent Support, WP Social Ninja. FluentBooking, FluentBoards and FluentAffiliate coming soon (see [Roadmap](#roadmap-more-fluent-products)). |
-| **Servers to connect** | One per product (Fluent Forms has its own; CRM/Cart/Support/Boards go through FluentHub, each with its own enable switch and snippet) | One. All six products behind one connector, one credential. Products you don't have are simply off. |
-| **Tool count** | FluentCRM ~25 (some Pro-only) · FluentCart 30 · Fluent Forms 20 free / 23 Pro · Fluent Support ~20 | 1,564 tools: every one of the 1,551 documented endpoints plus 13 built-ins and helpers. CRM 372 (365 endpoints + 7 helpers: sequences, analytics, bulk-by-filter) · Cart 438 · Forms 91 · Community 278 · Support 253 · Social Ninja 126 |
+| **Products covered** | FluentCRM, FluentCart, Fluent Forms, Fluent Support, FluentBoards. FluentCommunity and WP Social Ninja: none announced. | FluentCRM, FluentCart, Fluent Forms, FluentCommunity, Fluent Support, FluentBooking, WP Social Ninja. FluentBoards and FluentAffiliate coming soon (see [Roadmap](#roadmap-more-fluent-products)). |
+| **Servers to connect** | One per product (Fluent Forms has its own; CRM/Cart/Support/Boards go through FluentHub, each with its own enable switch and snippet) | One. All seven products behind one connector, one credential. Products you don't have are simply off. |
+| **Tool count** | FluentCRM ~25 (some Pro-only) · FluentCart 30 · Fluent Forms 20 free / 23 Pro · Fluent Support ~20 | 1,703 tools: every one of the 1,690 documented endpoints plus 13 built-ins and helpers. CRM 372 (365 endpoints + 7 helpers: sequences, analytics, bulk-by-filter) · Cart 438 · Forms 91 · Community 278 · Support 253 · Booking 139 · Social Ninja 126 |
 | **Coverage model** | Curated: a hand-picked subset of common operations | Complete: every documented REST endpoint of each product, generated from the vendor's own API reference and re-checked weekly |
 | **Writes** | Selected writes per product (e.g. Cart: order status, notes, refunds, customer create/update, subscription cancel, coupons, labels) | Every write the admin UI can do: create, update, delete, bulk actions, settings, automations, sequences, templates, integrations, licensing, courses, spaces, chat, reviews, and so on |
 | **Explicitly not exposed natively** | FluentCart: settings, shipping, tax, licensing administration, email templates. FluentCRM: templates, forms, webhooks, settings, SMS, reports (per the vendor's own write-ups). Fluent Forms: form settings beyond styling and notifications, integrations beyond listing | All of those, plus the rest of each REST surface |
 | **Partial updates** | Tool-specific | Merge by default on every update: the record is read, your fields are merged in, written, re-read and diffed. Omitted fields survive. `mode:"replace"` is explicit and confirm-gated. |
-| **Safety** | Preview-then-confirm on selected sensitive actions (refunds, cancellations); permissions inherited from the WordPress user | `confirm:true` gate on 231 destructive or privilege-changing operations, 12 locked outright, `dry_run` on every write, post-write verification, read-back guards, per-operation policy you control via `FLUENT_LOCKED_TOOLS`; permissions likewise inherited from the WordPress user |
+| **Safety** | Preview-then-confirm on selected sensitive actions (refunds, cancellations); permissions inherited from the WordPress user | `confirm:true` gate on 231 destructive or privilege-changing operations, 13 locked outright, `dry_run` on every write, post-write verification, read-back guards, per-operation policy you control via `FLUENT_LOCKED_TOOLS`; permissions likewise inherited from the WordPress user |
 | **Auth** | WordPress Application Password | WordPress Application Password (per product overrides optional) |
 | **Where you can use it** | Claude Desktop, Claude Code, Cursor, Codex via HTTP to your site | Same clients, plus claude.ai web and mobile through the remote connector |
 | **Price / license** | Free with the plugins (some tools Pro-only) | Source is MIT and open. The ready-built extension is free for a limited time during early access; a paid license is planned afterwards |
@@ -555,9 +569,9 @@ the `.mcpb` extension file is Claude Desktop-specific; the config-file
 install ([B](#b--any-mcp-client-config-file)) and the remote connector
 ([C](#c--remote-connector-web-mobile-desktop)) work everywhere.
 
-**Pick the tool mode for your client.** The default surface is 1,564 small
+**Pick the tool mode for your client.** The default surface is 1,703 small
 tools, which Claude handles well but many other clients cap or truncate.
-`grouped` mode collapses the same operations into 94 tools (one per area,
+`grouped` mode collapses the same operations into 103 tools (one per area,
 an `action` parameter picks the operation, plus the built-ins) with identical
 confirm gates, locks, `tool_map` and `support_report`.
 
@@ -758,11 +772,10 @@ hosts the build. If the project saves you time, three things help keep it
 maintained:
 
 - **Buy the plugins through the links in this README.** The FluentCRM,
-  FluentCart, Fluent Forms, FluentCommunity, Fluent Support and WP Social Ninja links above
+  FluentCart, Fluent Forms, FluentCommunity, Fluent Support, FluentBooking and WP Social Ninja links above
   are affiliate links: you pay the same price, and WPManageNinja pays the
   maintainer a referral commission. That is the main way this project earns
   anything. The same applies to the rest of their suite if you need it:
-  [FluentBooking](https://fluentbooking.com/?ref=4618),
   [FluentBoards](https://fluentboards.com/?ref=4618),
   [Paymattic](https://paymattic.com/?ref=4618),
   [Ninja Tables](https://ninjatables.com/?ref=4618),

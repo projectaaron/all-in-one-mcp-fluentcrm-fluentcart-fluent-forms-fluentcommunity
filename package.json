@@ -1,7 +1,7 @@
 {
   "name": "fluentmcp",
-  "version": "1.6.0",
-  "description": "All-In-One MCP for Fluent Suite — MCP server that gives AI assistants safe, complete control of WPManageNinja products (FluentCRM, FluentCart, Fluent Forms, FluentCommunity, Fluent Support, WP Social Ninja) on a WordPress site",
+  "version": "1.7.0",
+  "description": "All-In-One MCP for Fluent Suite — MCP server that gives AI assistants safe, complete control of WPManageNinja products (FluentCRM, FluentCart, Fluent Forms, FluentCommunity, Fluent Support, FluentBooking, WP Social Ninja) on a WordPress site",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -22,6 +22,7 @@
     "fluent-forms",
     "fluentcommunity",
     "fluentsupport",
+    "fluentbooking",
     "wp-social-ninja",
     "wpmanageninja",
     "claude",

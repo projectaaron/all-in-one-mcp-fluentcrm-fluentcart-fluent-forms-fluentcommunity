@@ -1,0 +1,102 @@
+{
+  "product": "fluentbooking",
+  "toolPrefix": "booking",
+  "tools": {
+    "booking_calendars": {
+      "description": "Calendars (a host's booking page): list, create, update and delete, add, clone and order their event types, and the sharing and landing page settings.",
+      "groups": [
+        "calendars",
+        "sharing"
+      ]
+    },
+    "booking_events": {
+      "description": "Event types (what people book): read, patch and delete, details, limits, host assignments, advanced and recurring settings, booking form fields, and per-event availability and open slots.",
+      "groups": [
+        "events",
+        "event-settings",
+        "booking-fields",
+        "event-availability"
+      ],
+      "note": "Assignments, advanced and recurring settings, available slots and the Pro availability options need FluentBooking Pro."
+    },
+    "booking_notifications": {
+      "description": "Per-event automations: email and SMS notifications, webhook feeds, and integration feeds (FluentCRM and other connected apps), including copying them from another event type.",
+      "groups": [
+        "event-notifications",
+        "webhooks-sms",
+        "event-integrations"
+      ],
+      "note": "SMS notifications and webhooks need FluentBooking Pro."
+    },
+    "booking_meetings": {
+      "description": "Booked meetings: list, search and export, read, patch and delete, create and reschedule a booking, open slots, notes, activity, group attendees, confirmation emails, and the attendee's FluentCRM contact, tags and lists.",
+      "groups": [
+        "schedules",
+        "bookings"
+      ],
+      "note": "Booking notes need FluentBooking Pro."
+    },
+    "booking_availability": {
+      "description": "Availability schedules (working hours): list, create, update, rename, clone, make default and delete, and see which event types use them.",
+      "groups": [
+        "availability"
+      ]
+    },
+    "booking_integrations": {
+      "description": "Connected services: global integrations, per-host integration settings, Zoom accounts, and each calendar's remote calendars (Google, Outlook, CalDAV), conflict checking and Zoom connection.",
+      "groups": [
+        "integrations",
+        "calendar-integrations"
+      ],
+      "note": "Per-host settings, Zoom and calendar integrations need FluentBooking Pro."
+    },
+    "booking_payments": {
+      "description": "Paid bookings: an event type's payment settings, payment methods and their connection, currencies, WooCommerce products, and a booking's payment transaction.",
+      "groups": [
+        "payments"
+      ],
+      "note": "Everything except reading an event type's payment settings needs FluentBooking Pro."
+    },
+    "booking_settings": {
+      "description": "Global settings: general, payment and theme settings, feature modules, add-ons, team members and hosts, spam protection, the Pro license, and the site-side MCP adapter.",
+      "groups": [
+        "settings",
+        "admin"
+      ],
+      "note": "Team, spam protection and license settings need FluentBooking Pro."
+    },
+    "booking_reports": {
+      "description": "Read-only reporting: booking totals for a period, graph data, and the latest booking activity.",
+      "groups": [
+        "reports"
+      ]
+    }
+  },
+  "operationOverrides": {
+    "settings/install-plugin": {
+      "destructive": true,
+      "bodyNote": "Privilege/code change: installs plugin code on the site. Requires confirm:true."
+    },
+    "settings/install-mcp-adapter": {
+      "destructive": true,
+      "summary": "Install the MCP Adapter Plugin",
+      "bodyNote": "Privilege/code change: installs plugin code on the site. Requires confirm:true."
+    },
+    "settings/save-mcp-settings": {
+      "destructive": true,
+      "bodyNote": "Privilege/code change: changes the site-side MCP adapter (a second AI control surface). Requires confirm:true."
+    },
+    "settings/update-team-member": {
+      "destructive": true,
+      "bodyNote": "Privilege change: grants or changes a WordPress user's FluentBooking permissions. Requires confirm:true."
+    },
+    "payments/update-booking-transaction": {
+      "destructive": true,
+      "bodyNote": "Changes a booking's payment record. Requires confirm:true."
+    },
+    "schedules/send-confirmation-email": {
+      "destructive": true,
+      "bodyNote": "Emails the attendee (a real person). Requires confirm:true."
+    }
+  }
+}

@@ -1,7 +1,7 @@
 # Tool map
 
 The fast map of this server: **every tool, one line each, grouped by area** —
-1564 tools in 85 areas. **Generated** by
+1703 tools in 94 areas. **Generated** by
 `scripts/gen-tool-catalog.mjs` from the live registry; regenerate after any
 tool-surface change. Sessions get the same map at runtime from the
 `tool_map` tool (no args = area overview, `{"area": …}` /
@@ -101,6 +101,15 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 | `support_settings` | 44 | Global settings: business settings, integrations (FluentCRM, AI provider, cloud uploads, incoming webhook, remote portal), the ticket form, auto-close, activity logging, the Pro license, portal setup and the site-side MCP adapter. |
 | `support_portal` | 26 | The customer-facing side: the customer portal's ticket endpoints (act as the signed-in customer), portal sign-up and login, and the remote portal connection. |
 | `support_utilities` | 25 | Maintenance and plumbing: REST connectivity tests, cron and database health, log cleanup, the ticket importer, report data audits, and the public token-authenticated receivers for incoming webhooks, chat replies and OAuth callbacks. |
+| `booking_calendars` | 13 | Calendars (a host's booking page): list, create, update and delete, add, clone and order their event types, and the sharing and landing page settings. |
+| `booking_events` | 15 | Event types (what people book): read, patch and delete, details, limits, host assignments, advanced and recurring settings, booking form fields, and per-event availability and open slots. |
+| `booking_notifications` | 18 | Per-event automations: email and SMS notifications, webhook feeds, and integration feeds (FluentCRM and other connected apps), including copying them from another event type. |
+| `booking_meetings` | 25 | Booked meetings: list, search and export, read, patch and delete, create and reschedule a booking, open slots, notes, activity, group attendees, confirmation emails, and the attendee's FluentCRM contact, tags and lists. |
+| `booking_availability` | 9 | Availability schedules (working hours): list, create, update, rename, clone, make default and delete, and see which event types use them. |
+| `booking_integrations` | 20 | Connected services: global integrations, per-host integration settings, Zoom accounts, and each calendar's remote calendars (Google, Outlook, CalDAV), conflict checking and Zoom connection. |
+| `booking_payments` | 10 | Paid bookings: an event type's payment settings, payment methods and their connection, currencies, WooCommerce products, and a booking's payment transaction. |
+| `booking_settings` | 26 | Global settings: general, payment and theme settings, feature modules, add-ons, team members and hosts, spam protection, the Pro license, and the site-side MCP adapter. |
+| `booking_reports` | 3 | Read-only reporting: booking totals for a period, graph data, and the latest booking activity. |
 | `server` | 6 | Built-in tools: this map, setup verification, a support report for bug reports, and the WordPress media library. |
 
 ## FluentCRM (`crm_*`)
@@ -1924,6 +1933,174 @@ Full endpoint schemas: [`docs/api-reference/`](./api-reference/).
 - `support_utilities_run_audit` — Start a Report Data Audit
 - `support_utilities_process_audit_batch` — Process the Next Audit Batch
 - `support_utilities_get_audit_results` — Get Audit Results
+
+## FluentBooking (`booking_*`)
+
+### booking_calendars — Calendars (a host's booking page): list, create, update and delete, add, clone and order their event types, and the sharing and landing page settings.
+
+- `booking_calendars_list` — List Calendars (paginated)
+- `booking_calendars_create` — Create Calendar
+- `booking_calendars_check_slug` — Check a Calendar Slug Is Available
+- `booking_calendars_get_location_fields` — Get Event Location Field Options
+- `booking_calendars_get(id)` — Get Calendar
+- `booking_calendars_update(id)` — Update Calendar
+- `booking_calendars_delete(id)` ⚠ — Delete Calendar
+- `booking_calendars_create_event(id)` — Create an Event Type in a Calendar
+- `booking_calendars_get_event_schema(id)` — Get the New Event Type Schema
+- `booking_calendars_save_event_order(id)` — Save the Order of a Calendar's Event Types
+- `booking_calendars_clone_event(id, event_id)` — Clone an Event Type (optionally into another calendar)
+- `booking_calendars_get_sharing_settings(id)` — Get Calendar Sharing and Landing Page Settings
+- `booking_calendars_save_sharing_settings(id)` — Save Calendar Sharing and Landing Page Settings
+
+### booking_events — Event types (what people book): read, patch and delete, details, limits, host assignments, advanced and recurring settings, booking form fields, and per-event availability and open slots. Assignments, advanced and recurring settings, available slots and the Pro availability options need FluentBooking Pro.
+
+- `booking_events_get(id, event_id)` — Get Event Type
+- `booking_events_patch(id, event_id)` — Patch Event Type (e.g. status)
+- `booking_events_delete(id, event_id)` ⚠ — Delete Event Type
+- `booking_events_find(event_id)` — Get Event Type by ID (no calendar needed)
+- `booking_events_update_details(id, event_id)` — Update Event Type Details (title, duration, status, location, description)
+- `booking_events_update_limits(id, event_id)` — Update Event Type Limits (buffers, slot interval, booking frequency and duration, timezone lock)
+- `booking_events_update_assignments(id, event_id)` — Update Event Type Host Assignments
+- `booking_events_update_advanced_settings(id, event_id)` — Update Event Type Advanced Settings
+- `booking_events_update_recurring_settings(id, event_id)` — Update Event Type Recurring Settings
+- `booking_events_get_fields(id, event_id)` — Get Event Type Booking Form Fields
+- `booking_events_save_fields(id, event_id)` — Save Event Type Booking Form Fields
+- `booking_events_get_availability(id, event_id)` — Get Event Type Availability Settings
+- `booking_events_update_availability(id, event_id)` — Update Event Type Availability Settings
+- `booking_events_get_available_slots(id, event_id)` — Get Event Type Available Slots
+- `booking_events_update_schedule_availability(id, event_id)` — Update Event Type Availability (Pro schedule options)
+
+### booking_notifications — Per-event automations: email and SMS notifications, webhook feeds, and integration feeds (FluentCRM and other connected apps), including copying them from another event type. SMS notifications and webhooks need FluentBooking Pro.
+
+- `booking_notifications_get_email(id, event_id)` — Get Event Type Email Notifications
+- `booking_notifications_save_email(id, event_id)` — Save Event Type Email Notifications
+- `booking_notifications_clone_email(id, event_id)` — Copy Email Notifications from Another Event Type
+- `booking_notifications_get_sms(id, event_id)` — Get Event Type SMS Notifications
+- `booking_notifications_save_sms(id, event_id)` — Save Event Type SMS Notifications
+- `booking_notifications_clone_sms(id, event_id)` — Copy SMS Notifications from Another Event Type
+- `booking_notifications_list_webhooks(id, event_id)` — List Event Type Webhook Feeds (paginated)
+- `booking_notifications_save_webhook(id, event_id)` — Save an Event Type Webhook Feed
+- `booking_notifications_clone_webhooks(id, event_id)` — Copy Webhook Feeds from Another Event Type
+- `booking_notifications_delete_webhook(id, event_id, webhook_id)` ⚠ — Delete an Event Type Webhook Feed
+- `booking_notifications_list_integration_feeds(id, event_id)` — List Event Type Integration Feeds (paginated)
+- `booking_notifications_clone_integration_feeds(id, event_id)` — Copy Integration Feeds from Another Event Type
+- `booking_notifications_get_integration_feed(id, event_id, integration_id)` — Get an Event Type Integration Feed
+- `booking_notifications_save_integration_feed(id, event_id, integration_id)` — Save an Event Type Integration Feed
+- `booking_notifications_delete_integration_feed(id, event_id, integration_id)` ⚠ — Delete an Event Type Integration Feed
+- `booking_notifications_get_integration_merge_fields(id, event_id, integration_id)` — Get an Integration's Merge Fields
+- `booking_notifications_get_integration_field_options(id, event_id, integration_id)` — Get an Integration's Config Field Options
+- `booking_notifications_create_crm_taxonomy(id, event_id, integration_id)` — Create a CRM Taxonomy for an Integration Feed
+
+### booking_meetings — Booked meetings: list, search and export, read, patch and delete, create and reschedule a booking, open slots, notes, activity, group attendees, confirmation emails, and the attendee's FluentCRM contact, tags and lists. Booking notes need FluentBooking Pro.
+
+- `booking_meetings_list` — List Bookings (booked meetings) (paginated)
+- `booking_meetings_export` — Export Bookings
+- `booking_meetings_get_crm_contact_prefill` — Get FluentCRM Contact Prefill for a New Booking
+- `booking_meetings_search_crm_contacts` — Search FluentCRM Contacts (paginated)
+- `booking_meetings_get(id)` — Get Booking
+- `booking_meetings_update(id)` — Patch Booking
+- `booking_meetings_delete(id)` ⚠ — Delete Booking
+- `booking_meetings_get_activities(id)` — Get Booking Activity Log
+- `booking_meetings_get_meta_info(id)` — Get Booking Meta Info
+- `booking_meetings_get_crm_contact(id)` — Get the Booking's FluentCRM Contact
+- `booking_meetings_get_crm_options(id)` — Get FluentCRM Tag and List Options for a Booking
+- `booking_meetings_update_crm_tags(id)` — Update the Booking Contact's FluentCRM Tags
+- `booking_meetings_update_crm_lists(id)` — Update the Booking Contact's FluentCRM Lists
+- `booking_meetings_send_confirmation_email(id)` ⚠ — Send the Booking Confirmation Email
+- `booking_meetings_list_group_attendees(group_id)` — List a Group Booking's Attendees (paginated)
+- `booking_meetings_list_notes(id)` — List Booking Notes (paginated)
+- `booking_meetings_add_note(id)` — Add a Booking Note
+- `booking_meetings_update_note(id, note_id)` — Update a Booking Note
+- `booking_meetings_delete_note(id, note_id)` ⚠ — Delete a Booking Note
+- `booking_meetings_get_index` — Get Bookings (Bookings module index)
+- `booking_meetings_get_bookable_event(event_id)` — Get an Event Type for Booking
+- `booking_meetings_get_event_slots(event_id)` — Get Open Slots for an Event Type
+- `booking_meetings_create(event_id)` — Create a Booking for an Event Type
+- `booking_meetings_get_reschedule_slots(event_id, id)` — Get Open Slots to Reschedule a Booking
+- `booking_meetings_reschedule(event_id, id)` — Reschedule a Booking
+
+### booking_availability — Availability schedules (working hours): list, create, update, rename, clone, make default and delete, and see which event types use them.
+
+- `booking_availability_list_schedules` — List Availability Schedules (paginated)
+- `booking_availability_create_schedule` — Create Availability Schedule
+- `booking_availability_get_schedule(schedule_id)` — Get Availability Schedule
+- `booking_availability_get_schedule_usages(schedule_id)` — Get Availability Schedule Usages
+- `booking_availability_update_schedule(schedule_id)` — Update Availability Schedule
+- `booking_availability_update_schedule_title(schedule_id)` — Rename Availability Schedule
+- `booking_availability_update_schedule_default(schedule_id)` — Update an Availability Schedule's Default Status
+- `booking_availability_clone_schedule(schedule_id)` — Clone Availability Schedule
+- `booking_availability_delete_schedule(schedule_id)` ⚠ — Delete Availability Schedule
+
+### booking_integrations — Connected services: global integrations, per-host integration settings, Zoom accounts, and each calendar's remote calendars (Google, Outlook, CalDAV), conflict checking and Zoom connection. Per-host settings, Zoom and calendar integrations need FluentBooking Pro.
+
+- `booking_integrations_list` — List Global Integrations (paginated)
+- `booking_integrations_save` — Update Global Integration Settings
+- `booking_integrations_get_host_settings(host_id)` — Get a Host's Integration Settings
+- `booking_integrations_save_host_settings(host_id)` — Save a Host's Integration Settings
+- `booking_integrations_disconnect_host(host_id)` ⚠ — Disconnect (revoke) a Host's Integration
+- `booking_integrations_get_menu` — Get the Integrations Menu
+- `booking_integrations_list_zoom_users` — List Connected Zoom Accounts (paginated)
+- `booking_integrations_save_zoom_account` — Connect a Zoom Account
+- `booking_integrations_disconnect_zoom_account` ⚠ — Disconnect a Zoom Account
+- `booking_integrations_list_remote_calendars(id)` — List a Calendar's Connected Remote Calendars (Google, Outlook, CalDAV) (paginated)
+- `booking_integrations_update_remote_calendar_conflicts(id)` — Patch Remote Calendar Conflict Settings
+- `booking_integrations_update_remote_calendar_settings(id)` — Patch Remote Calendar Additional Settings
+- `booking_integrations_update_remote_calendar_sync(id)` — Sync Remote Calendar Settings
+- `booking_integrations_disconnect_remote_calendar(id)` ⚠ — Disconnect a Remote Calendar
+- `booking_integrations_add_caldav_credential(id)` — Connect a CalDAV Calendar
+- `booking_integrations_get_calendar_zoom_connection(id)` — Get a Calendar's Zoom Connection
+- `booking_integrations_add_calendar_zoom_connection(id)` — Connect Zoom to a Calendar
+- `booking_integrations_disconnect_calendar_zoom_connection(id)` ⚠ — Disconnect Zoom from a Calendar
+- `booking_integrations_get_calendar_feed(id)` — Get a Calendar's General Integration Feed
+- `booking_integrations_disconnect_calendar_feed(id)` ⚠ — Disconnect a Calendar's General Integration Feed
+
+### booking_payments — Paid bookings: an event type's payment settings, payment methods and their connection, currencies, WooCommerce products, and a booking's payment transaction. Everything except reading an event type's payment settings needs FluentBooking Pro.
+
+- `booking_payments_get_event_settings(id, event_id)` — Get Event Type Payment Settings
+- `booking_payments_update_event_settings(id, event_id)` — Update Event Type Payment Settings
+- `booking_payments_update_transaction(id, transaction_id)` ⚠ — Update a Booking's Payment Transaction
+- `booking_payments_list_methods` — List Payment Methods (paginated)
+- `booking_payments_get_method_settings` — Get Payment Method Settings
+- `booking_payments_save_method_settings` — Save Payment Method Settings
+- `booking_payments_get_connect_info` — Get Payment Method Connection Info
+- `booking_payments_disconnect_method` ⚠ — Disconnect a Payment Method
+- `booking_payments_list_currencies` — List Currencies (paginated)
+- `booking_payments_list_woo_products` — List WooCommerce Products (paginated)
+
+### booking_settings — Global settings: general, payment and theme settings, feature modules, add-ons, team members and hosts, spam protection, the Pro license, and the site-side MCP adapter. Team, spam protection and license settings need FluentBooking Pro.
+
+- `booking_settings_get_general` — Get General Settings
+- `booking_settings_save_general` — Save General Settings
+- `booking_settings_save_payment` — Save Global Payment Settings
+- `booking_settings_save_theme` — Save Theme Settings
+- `booking_settings_get_menu` — Get the Settings Menu
+- `booking_settings_get_global_modules` — Get Global Modules (feature switches)
+- `booking_settings_save_global_modules` — Save Global Modules (feature switches)
+- `booking_settings_list_pages` — List WordPress Pages (paginated)
+- `booking_settings_save_addons` — Save Add-on Settings
+- `booking_settings_install_plugin` ⚠ 🔒 — Install Plugin
+- `booking_settings_save_optin` — Update Opt-in
+- `booking_settings_get_mcp` — Get the Site-side MCP Settings
+- `booking_settings_save_mcp` ⚠ — Save the Site-side MCP Settings
+- `booking_settings_install_mcp_adapter` ⚠ — Install the MCP Adapter Plugin
+- `booking_settings_list_team_members` — List Team Members (paginated)
+- `booking_settings_update_team_member` ⚠ — Update a Team Member's Permissions
+- `booking_settings_delete_team_member(id)` ⚠ — Remove a Team Member
+- `booking_settings_get_spam_protection` — Get Spam Protection Settings
+- `booking_settings_save_spam_protection` — Save Spam Protection Settings
+- `booking_settings_verify_spam_protection_keys` — Verify Spam Protection (captcha) Keys
+- `booking_settings_get_license` — Get the Pro License Status
+- `booking_settings_save_license` — Save the Pro License
+- `booking_settings_deactivate_license` ⚠ — Deactivate the Pro License
+- `booking_settings_list_remaining_hosts` — List Remaining Hosts (paginated)
+- `booking_settings_list_other_hosts` — List Other Hosts (paginated)
+- `booking_settings_list_all_hosts` — List All Hosts (paginated)
+
+### booking_reports — Read-only reporting: booking totals for a period, graph data, and the latest booking activity.
+
+- `booking_reports_get` — Get Booking Report Totals (startTime and endTime together)
+- `booking_reports_get_graph` — Get Booking Graph Data (date_range[])
+- `booking_reports_list_activities` — List the Latest 100 Booking Activities (paginated)
 
 ## Server built-ins
 

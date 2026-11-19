@@ -125,6 +125,7 @@ describe('verify_setup', () => {
     expect(byKey.fluentforms).toBe('not_installed');
     expect(byKey.fluentcommunity).toBe('not_installed');
     expect(byKey.fluentsupport).toBe('not_installed');
+    expect(byKey.fluentbooking).toBe('not_installed');
     expect(byKey.wpsocialninja).toBe('not_installed');
     expect(res.content[0].text).toContain('⏭️ Fluent Forms: not_installed');
   });

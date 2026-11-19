@@ -1,5 +1,25 @@
 # Changelog
 
+## 1.7.0 — 2026-11-19
+
+### Added
+- **FluentBooking** (free + Pro, 2.6.0): the seventh product, `booking_*`,
+  139 endpoints in 9 areas — `booking_calendars`, `booking_events`,
+  `booking_meetings`, `booking_availability`, `booking_notifications`,
+  `booking_integrations`, `booking_payments`, `booking_settings` and
+  `booking_reports` (read-only). Calendars and event types, booked meetings
+  (create, reschedule, notes, FluentCRM contact), availability schedules,
+  email/SMS notifications, webhooks and integration feeds, remote calendars
+  and Zoom, payments, settings, hosts and reports. 21 operations are
+  confirm-gated: deletes, disconnects, resending a confirmation email, the plugin and MCP-adapter installers,
+  the site-side MCP settings, team permission changes, payment transaction
+  edits and license deactivation; `booking_settings_install_plugin` is
+  locked by default (13 locked tools). `verify_setup`, `support_report`, the smoke
+  test and the per-product credential override (`FLUENTBOOKING_API_*`) cover
+  it like the others. Inventory: `docs/api-reference/fluentbooking.md`
+  (`scripts/gen-fluentbooking-docs.mjs`, from the official REST reference).
+  1,703 tools / 1,690 endpoints; grouped mode has 103 tools.
+
 ## 1.6.0 — 2026-11-03
 
 ### Added
